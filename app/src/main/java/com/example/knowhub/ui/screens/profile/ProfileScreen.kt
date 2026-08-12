@@ -43,47 +43,47 @@ fun ProfileScreen(
 ) {
     Box() {
         backgroundImage()
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            barraArriba(
-                R.drawable.casa,
-                ""
-            )
-            bodyProfileScreen()
-        }
+        BodyProfileScreen()
     }
 }
 
 @Composable
-fun bodyProfileScreen(
+fun BodyProfileScreen(
     modifier: Modifier = Modifier
 ){
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize()
     ) {
-        AppButton(
-            "Tu perfil",
-            modifier = Modifier
-                .fillMaxWidth()
+        barraArriba(
+            R.drawable.casa,
+            ""
         )
-        Spacer(modifier = Modifier.padding(10.dp))
-        Image(
-            painter = painterResource(R.drawable.perfil),
-            contentDescription = stringResource(R.string.imagen_perfil),
-            modifier = modifier
-                .background(colorResource(R.color.blancoKnowHUB))
-                .border(2.dp, colorResource(R.color.NegroKnowHUB))
-        )
-        Spacer(modifier = Modifier.padding(10.dp))
-        AppButton("\uD83D\uDCF8 Subir Foto")
-        Spacer(modifier = Modifier.padding(10.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AppButton(
+                "Tu perfil",
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.padding(10.dp))
+            Image(
+                painter = painterResource(R.drawable.perfil),
+                contentDescription = stringResource(R.string.imagen_perfil),
+                modifier = modifier
+                    .background(colorResource(R.color.blancoKnowHUB))
+                    .border(2.dp, colorResource(R.color.NegroKnowHUB))
+            )
+            Spacer(modifier = Modifier.padding(10.dp))
+            AppButton("\uD83D\uDCF8 Subir Foto")
+            Spacer(modifier = Modifier.padding(10.dp))
 
-        CuadroInformaciónPersonal()
+            CuadroInformaciónPersonal()
 
-        Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-        BotonEliminarCuenta()
+            BotonEliminarCuenta()
+        }
     }
 }
 

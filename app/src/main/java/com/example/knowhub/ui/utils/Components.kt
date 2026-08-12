@@ -22,9 +22,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
+import com.example.knowhub.ui.screens.register.RegisterScreen
 
 
 @Composable
@@ -47,6 +49,12 @@ fun LogoApp(
         modifier = modifier
 
     )
+}
+
+@Composable
+@Preview(showBackground = true)
+fun LogoAppPreview(){
+    LogoApp()
 }
 
 @Composable

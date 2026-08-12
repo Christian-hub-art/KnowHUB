@@ -40,37 +40,34 @@ fun HomeScreen(
 ) {
     Box() {
         backgroundImage()
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            barraArriba(
-                R.drawable.inciotarea,
-                stringResource(R.string.inicio)
-            )
-            bodyHomeScreen()
-        }
+        BodyHomeScreen()
     }
 }
 @Composable
-fun bodyHomeScreen(
+fun BodyHomeScreen(
     modifier: Modifier = Modifier
 
 ){
-
-    Image(
-        painter = painterResource(R.drawable.menuimagen),
-        contentDescription = "Imagen Menu",
-        modifier = modifier
-            .border(2.dp, colorResource(R.color.NegroKnowHUB))
-            .fillMaxWidth(),
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        barraArriba(
+            R.drawable.inciotarea,
+            stringResource(R.string.inicio)
+        )
+        Image(
+            painter = painterResource(R.drawable.menuimagen),
+            contentDescription = "Imagen Menu",
+            modifier = modifier
+                .border(2.dp, colorResource(R.color.NegroKnowHUB))
+                .fillMaxWidth(),
             contentScale = ContentScale.FillWidth
-    )
+        )
 
-    Spacer(modifier = Modifier.padding(30.dp))
-    BotonesHomeScreen()
-
-
+        Spacer(modifier = Modifier.padding(30.dp))
+        BotonesHomeScreen()
+    }
 }
 
 

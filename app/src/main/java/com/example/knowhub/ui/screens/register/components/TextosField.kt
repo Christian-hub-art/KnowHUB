@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.knowhub.R
 
 @Composable
@@ -78,3 +79,8 @@ fun TextosField(
     }
 }
 
+@Composable
+@Preview(showBackground = true)
+fun TextosFieldPreview(){
+    TextosField()
+}

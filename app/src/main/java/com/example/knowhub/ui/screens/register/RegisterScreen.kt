@@ -45,22 +45,24 @@ fun bodyRegisterScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LogoApp()
-        SignUPMessage(
-            modifier = Modifier
-                .offset(y = (-50).dp)
-        )
-
-        TextosField(
-            modifier = Modifier
-                .offset(y = (-40).dp)
-        )
-
-        AppButton("Registrarse",
-            modifier = Modifier
-                .offset(y = (-30).dp)
-        )
-        Text("¿Ya tienes cuenta? Login ",
-            fontFamily = FontFamily.Monospace)
+        Column(modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally)
+        {
+            SignUPMessage(
+                modifier = Modifier
+            )
+            TextosField(
+                modifier = Modifier
+            )
+            AppButton(
+                "Registrarse",
+                modifier = Modifier
+            )
+            Text(
+                "¿Ya tienes cuenta? Login ",
+                fontFamily = FontFamily.Monospace
+            )
+        }
     }
 }
 

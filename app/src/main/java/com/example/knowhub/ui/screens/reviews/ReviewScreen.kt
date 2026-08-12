@@ -31,16 +31,7 @@ fun ReviewScreen(
 ) {
     Box() {
         backgroundImage()
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            barraArriba(
-                R.drawable.casa,
-                ""
-            )
-            bodyReviewScreen()
-        }
+        bodyReviewScreen()
     }
 }
 
@@ -48,39 +39,48 @@ fun ReviewScreen(
 fun bodyReviewScreen(
     modifier: Modifier = Modifier
 ){
-    AppButton("Tus reseñas")
-    Spacer(modifier= Modifier.padding(9.dp))
-    Row{
-        Button(
-            onClick = { },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(R.color.NegroKnowHUB)
-            ),
-            modifier = modifier
-        ) {
-            Row{
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        barraArriba(
+            R.drawable.casa,
+            ""
+        )
+        AppButton("Tus reseñas")
+        Spacer(modifier= Modifier.padding(9.dp))
+        Row{
+            Button(
+                onClick = { },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(R.color.NegroKnowHUB)
+                ),
+                modifier = modifier
+            ) {
+                Row{
 
-                Icon(
-                    painter = painterResource(R.drawable.perfil),
-                    contentDescription = "Perfil",
-                    modifier = Modifier.size(20.dp)
-                )
-                Text(
-                    "Alejandro Sanchez",
-                    fontFamily = FontFamily.Monospace
-                )
+                    Icon(
+                        painter = painterResource(R.drawable.perfil),
+                        contentDescription = "Perfil",
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        "Alejandro Sanchez",
+                        fontFamily = FontFamily.Monospace
+                    )
+                }
             }
+            Spacer(modifier = Modifier.padding(10.dp))
+            AppButton("3 Reseñas")
+
         }
-        Spacer(modifier = Modifier.padding(10.dp))
-        AppButton("3 Reseñas")
+
+        Spacer(modifier= Modifier.padding(23.dp))
+        CajaReview("15 Nov 2026","1342","Desarrollo Movil", "Angarita", "Es una muy buena clase.")
+        Spacer(modifier= Modifier.padding(23.dp))
+        CajaReview("14 AGOS 206","5830","Ecuaciones Diferenciales", "Tole", "Los parciales son imposibles")
 
     }
-
-    Spacer(modifier= Modifier.padding(23.dp))
-    CajaReview("15 Nov 2026","1342","Desarrollo Movil", "Angarita", "Es una muy buena clase.")
-    Spacer(modifier= Modifier.padding(23.dp))
-    CajaReview("14 AGOS 206","5830","Ecuaciones Diferenciales", "Tole", "Los parciales son imposibles")
-
 }
 
 
