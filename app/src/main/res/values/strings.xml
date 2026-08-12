@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">KnowHUB</string>
+    <string name="confirmaci_n_de_contrase_a">Confirmación de contraseña</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="nombre_de_usuario">Nombre de Usuario</string>
+    <string name="correo_electr_nico">Correo Electrónico</string>
+    <string name="nombre">Nombre</string>
+    <string name="inicio">Inicio</string>
+    <string name="imagen_perfil">Imagen perfil</string>
+    <string name="perfil">Perfil</string>
+    <string name="imagen_rese_a">Imagen Reseña</string>
+    <string name="rese_a">Reseña</string>
+    <string name="imagen_buscar">Imagen buscar</string>
+    <string name="buscar_rese_as">Buscar reseñas</string>
+    <string name="notificaci_n">Notificación</string>
+    <string name="imagen_notificaci_n">Imagen notificación</string>
+</resources>
