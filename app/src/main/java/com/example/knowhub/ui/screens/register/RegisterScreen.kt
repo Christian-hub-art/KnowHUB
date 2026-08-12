@@ -64,17 +64,17 @@ fun BodyRegisterScreen(
             modifier = Modifier
 
         )
-
+        Spacer(modifier = Modifier.weight(10.0F))
         AppButton("Registrarse",
             colorResource(R.color.blancoKnowHUB),
             modifier = modifier
                 .background(
                     color = colorResource(R.color.NegroKnowHUB)
                     )
-                .height(40.dp)
+                .height(30.dp)
                 .width(280.dp)
         )
-
+        Spacer(modifier = Modifier.weight(10.0F))
         Text("¿Ya tienes cuenta? Login ",
             fontFamily = BangersFont
         )

@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import androidx.compose.ui.text.font.Font
-
+import androidx.compose.ui.text.style.TextAlign
 
 
 val BangersFont = FontFamily(
@@ -84,8 +84,10 @@ fun AppButton(
         Text(
             text = textoBoton,
             color = colorTexto,
+            textAlign = TextAlign.Center,
             fontFamily = BangersFont,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
