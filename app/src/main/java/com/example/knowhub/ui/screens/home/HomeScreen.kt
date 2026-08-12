@@ -28,10 +28,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.knowhub.ui.utils.barraArriba
+import com.example.knowhub.ui.utils.BarraArriba
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.home.components.BotonesHomeScreen
-import com.example.knowhub.ui.utils.backgroundImage
+import com.example.knowhub.ui.utils.BackgroundImage
 
 
 @Composable
@@ -39,12 +39,12 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     Box() {
-        backgroundImage()
+        BackgroundImage()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            barraArriba(
+            BarraArriba(
                 R.drawable.inciotarea,
                 stringResource(R.string.inicio)
             )

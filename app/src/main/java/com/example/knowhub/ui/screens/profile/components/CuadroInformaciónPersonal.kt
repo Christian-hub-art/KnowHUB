@@ -39,7 +39,8 @@ fun CuadroInformaciónPersonal(
 
         ) {
 
-            AppButton("INFORMACIÓN PERSONAL")
+            AppButton("INFORMACIÓN PERSONAL",
+                colorResource(R.color.blancoKnowHUB))
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -63,8 +64,9 @@ fun CuadroInformaciónPersonal(
             }
             Row {
 
-                AppButton("💾 GUARDAR CAMBIOS")
-                AppButton(" CANCELAR")
+                AppButton("💾 GUARDAR CAMBIOS",
+                    colorResource(R.color.blancoKnowHUB))
+                AppButton(" CANCELAR", colorResource(R.color.blancoKnowHUB))
             }
             Button(
                 onClick = { },

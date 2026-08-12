@@ -30,7 +30,7 @@ fun CajaReview(
     Codigo: String,
     Materia: String,
     Profesor: String,
-    Reseña: String,
+    Reseña: String, // Modificar a dataclass
     modifier: Modifier = Modifier
 ) {
     Column(

@@ -22,33 +22,34 @@ import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.reviews.components.CajaReview
 import com.example.knowhub.ui.utils.AppButton
-import com.example.knowhub.ui.utils.backgroundImage
-import com.example.knowhub.ui.utils.barraArriba
+import com.example.knowhub.ui.utils.BackgroundImage
+import com.example.knowhub.ui.utils.BarraArriba
 
 @Composable
 fun ReviewScreen(
     modifier: Modifier = Modifier
 ) {
     Box() {
-        backgroundImage()
+        BackgroundImage()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            barraArriba(
+            BarraArriba(
                 R.drawable.casa,
                 ""
             )
-            bodyReviewScreen()
+            BodyReviewScreen()
         }
     }
 }
 
 @Composable
-fun bodyReviewScreen(
+fun BodyReviewScreen(
     modifier: Modifier = Modifier
 ){
-    AppButton("Tus reseñas")
+    AppButton("Tus reseñas",
+        colorResource(R.color.blancoKnowHUB))
     Spacer(modifier= Modifier.padding(9.dp))
     Row{
         Button(
@@ -72,7 +73,8 @@ fun bodyReviewScreen(
             }
         }
         Spacer(modifier = Modifier.padding(10.dp))
-        AppButton("3 Reseñas")
+        AppButton("3 Reseñas",
+            colorResource(R.color.blancoKnowHUB))
 
     }
 

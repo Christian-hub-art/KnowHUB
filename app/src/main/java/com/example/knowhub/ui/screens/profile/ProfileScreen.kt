@@ -2,7 +2,6 @@ package com.example.knowhub.ui.screens.profile
 
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,30 +32,31 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.profile.components.BotonEliminarCuenta
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
+import com.example.knowhub.ui.theme.KnowHUBTheme
 import com.example.knowhub.ui.utils.AppButton
-import com.example.knowhub.ui.utils.backgroundImage
-import com.example.knowhub.ui.utils.barraArriba
+import com.example.knowhub.ui.utils.BackgroundImage
+import com.example.knowhub.ui.utils.BarraArriba
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier
 ) {
-    Box() {
-        backgroundImage()
+    Box(modifier = modifier) {
+        BackgroundImage()
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            barraArriba(
+            BarraArriba(
                 R.drawable.casa,
                 ""
             )
-            bodyProfileScreen()
+            BodyProfileScreen()
         }
     }
 }
 
 @Composable
-fun bodyProfileScreen(
+fun BodyProfileScreen(
     modifier: Modifier = Modifier
 ){
     Column(
@@ -64,6 +64,7 @@ fun bodyProfileScreen(
     ) {
         AppButton(
             "Tu perfil",
+            colorResource(R.color.blancoKnowHUB),
             modifier = Modifier
                 .fillMaxWidth()
         )
@@ -72,16 +73,16 @@ fun bodyProfileScreen(
             painter = painterResource(R.drawable.perfil),
             contentDescription = stringResource(R.string.imagen_perfil),
             modifier = modifier
-                .background(colorResource(R.color.blancoKnowHUB))
                 .border(2.dp, colorResource(R.color.NegroKnowHUB))
         )
         Spacer(modifier = Modifier.padding(10.dp))
-        AppButton("\uD83D\uDCF8 Subir Foto")
+        AppButton("\uD83D\uDCF8 Subir Foto",
+            colorResource(R.color.blancoKnowHUB))
         Spacer(modifier = Modifier.padding(10.dp))
 
         CuadroInformaciónPersonal()
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         BotonEliminarCuenta()
     }
@@ -89,8 +90,10 @@ fun bodyProfileScreen(
 
 
 
+@Preview
 @Composable
-@Preview()
-fun ProfileScreenPreview(){
-    ProfileScreen()
+fun ProfileScreenPreview() {
+    KnowHUBTheme {
+        ProfileScreen()
+    }
 }
