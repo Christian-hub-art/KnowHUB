@@ -11,6 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.knowhub.ui.screens.home.HomeScreen
+import com.example.knowhub.ui.screens.profile.ProfileScreen
+import com.example.knowhub.ui.screens.register.RegisterScreen
+import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import com.example.knowhub.ui.theme.KnowHUBTheme
 
 class MainActivity : ComponentActivity() {

@@ -21,23 +21,23 @@ import com.example.knowhub.ui.utils.LogoApp
 import com.example.knowhub.ui.utils.backgroundImage
 
 @Composable
-fun RegistrarScreen(
+fun RegisterScreen(
     modifier: Modifier = Modifier
 ){
     Box(){
         backgroundImage()
-        bodyRegistrarScreen()
+        bodyRegisterScreen()
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun RegistrarScreenPreview(){
-    RegistrarScreen()
+fun RegisterScreenPreview(){
+    RegisterScreen()
 }
 
 @Composable
-fun bodyRegistrarScreen(
+fun bodyRegisterScreen(
     modifier: Modifier = Modifier
 ){
     Column(

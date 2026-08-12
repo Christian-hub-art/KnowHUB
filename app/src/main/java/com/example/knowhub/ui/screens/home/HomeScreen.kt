@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.ui.utils.barraArriba
 import com.example.knowhub.R
+import com.example.knowhub.ui.screens.home.components.BotonesHomeScreen
 import com.example.knowhub.ui.utils.backgroundImage
 
 
@@ -67,64 +68,11 @@ fun bodyHomeScreen(
     )
 
     Spacer(modifier = Modifier.padding(30.dp))
-
-    Row(){
-        IconoImagen(R.drawable.perfil, stringResource(R.string.imagen_perfil),
-            stringResource(R.string.perfil)
-        )
-        IconoImagen(R.drawable.resena, stringResource(R.string.imagen_rese_a),
-            stringResource(R.string.rese_a)
-        )
-    }
-    Spacer(modifier = Modifier.padding(8.dp))
-    Row(){
-        IconoImagen(R.drawable.resenabus, stringResource(R.string.imagen_buscar),
-            stringResource(R.string.buscar_rese_as)
-        )
-        IconoImagen(R.drawable.notificacion, stringResource(R.string.imagen_notificaci_n),
-            stringResource(R.string.notificaci_n)
-        )
-    }
+    BotonesHomeScreen()
 
 
 }
 
-@Composable
-fun IconoImagen(
-    idIcono: Int,
-    description: String,
-    motivo: String,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-    ) {
-        Text(
-            "${motivo}",
-            fontSize = 14.sp,
-            fontFamily = FontFamily.Monospace
-        )
-
-        IconButton(
-            onClick = { },
-            modifier = Modifier
-                .height(120.dp)
-                .width(120.dp)
-                .border(
-                    3.dp,
-                    colorResource(R.color.NegroKnowHUB)
-                )
-                .padding(15.dp)
-        ) {
-            Icon(
-                painter = painterResource(idIcono),
-                contentDescription = description,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-    }
-}
 
 
 @Composable

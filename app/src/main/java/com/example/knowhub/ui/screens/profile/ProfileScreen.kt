@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.profile
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
+import com.example.knowhub.ui.screens.profile.components.BotonEliminarCuenta
+import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.backgroundImage
 import com.example.knowhub.ui.utils.barraArriba
@@ -69,102 +72,22 @@ fun bodyProfileScreen(
             painter = painterResource(R.drawable.perfil),
             contentDescription = stringResource(R.string.imagen_perfil),
             modifier = modifier
+                .background(colorResource(R.color.blancoKnowHUB))
                 .border(2.dp, colorResource(R.color.NegroKnowHUB))
         )
         Spacer(modifier = Modifier.padding(10.dp))
         AppButton("\uD83D\uDCF8 Subir Foto")
         Spacer(modifier = Modifier.padding(10.dp))
 
-        Box(
-            modifier = Modifier
-                .border(
-                    4.dp,
-                    colorResource(R.color.NegroKnowHUB)
-                )
-                .padding(20.dp)
+        CuadroInformaciónPersonal()
 
-        ) {
+        Spacer(modifier = Modifier.height(10.dp))
 
-            Column {
-
-                AppButton("INFORMACIÓN PERSONAL")
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text("Nombre de usuario",
-                    fontFamily = FontFamily.Monospace)
-                Spacer(modifier = Modifier.height(10.dp))
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.blancoKnowHUB)
-                    ), modifier = modifier
-
-
-                ){
-                    Text(
-                        "Alejandro Sanchez",
-                        fontFamily = FontFamily.Cursive,
-                        color = Color.Black
-                    )
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-                Row {
-
-                    AppButton("💾 GUARDAR CAMBIOS")
-                    AppButton(" CANCELAR")
-                }
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.AzulKnowHUB)
-                    ), modifier = modifier
-
-
-                ){
-                    Text(
-                        "CAMBIAR CONTRASEÑA",
-                        fontFamily = FontFamily.Monospace
-                    )
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.AzulKnowHUB)
-                    ), modifier = modifier
-
-
-                ){
-                    Text(
-                        "CAMBIAR CORREO ELECTRÓNICO",
-                        fontFamily = FontFamily.Monospace
-                    )
-                }
-
-            }
-        }
-
-        Spacer(modifier = Modifier.height(5.dp))
-
-        Button(
-            onClick = { },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(R.color.AmarilloKnowHUB)
-            ), modifier = modifier
-                .border(2.dp,
-                    colorResource(R.color.NegroKnowHUB))
-
-
-        ){
-            Text(
-                "ELIMINAR CUENTA",
-                fontFamily = FontFamily.Monospace,
-                color = Color.Black
-            )
-        }
+        BotonEliminarCuenta()
     }
 }
+
+
 
 @Composable
 @Preview()
