@@ -73,7 +73,7 @@ fun bodyProfileScreen(
         )
         Spacer(modifier = Modifier.padding(10.dp))
         AppButton("\uD83D\uDCF8 Subir Foto")
-        Spacer(modifier = Modifier.padding(15.dp))
+        Spacer(modifier = Modifier.padding(10.dp))
 
         Box(
             modifier = Modifier
@@ -91,7 +91,8 @@ fun bodyProfileScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Text("Nombre de usuario")
+                Text("Nombre de usuario",
+                    fontFamily = FontFamily.Monospace)
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(
                     onClick = { },
@@ -144,11 +145,15 @@ fun bodyProfileScreen(
             }
         }
 
+        Spacer(modifier = Modifier.height(5.dp))
+
         Button(
             onClick = { },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.AmarilloKnowHUB)
             ), modifier = modifier
+                .border(2.dp,
+                    colorResource(R.color.NegroKnowHUB))
 
 
         ){

@@ -126,6 +126,7 @@ fun IconoImagen(
     }
 }
 
+
 @Composable
 @Preview
 fun HomeScreenPreview(){
