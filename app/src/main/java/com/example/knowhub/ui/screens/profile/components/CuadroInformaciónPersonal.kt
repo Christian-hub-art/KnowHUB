@@ -95,8 +95,8 @@ fun CuadroInformaciónPersonal(
 
                 AppButton(
                     "💾 GUARDAR CAMBIOS",
-                    colorResource(R.color.blancoKnowHUB),
                     colorResource(R.color.NegroKnowHUB),
+                    colorResource(R.color.blancoKnowHUB),
                     modifier = Modifier
                         .height(35.dp)
                         .width(150.dp)
@@ -104,8 +104,8 @@ fun CuadroInformaciónPersonal(
 
                 AppButton(
                     "X CANCELAR",
-                    colorResource(R.color.blancoKnowHUB),
                     colorResource(R.color.NegroKnowHUB),
+                    colorResource(R.color.blancoKnowHUB),
                     modifier = Modifier
                         .height(35.dp)
                         .width(150.dp)
