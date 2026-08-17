@@ -35,7 +35,7 @@ fun LoginScreen(
     }
 }
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun LoginScreenPreview(){
     LoginScreen()
 }

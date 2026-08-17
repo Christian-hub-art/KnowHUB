@@ -15,4 +15,8 @@
     <string name="notificaci_n">Notificación</string>
     <string name="imagen_notificaci_n">Imagen notificación</string>
     <string name="editar">EDITAR</string>
+    <string name="lapizEditar">✏️ Editar</string>
+    <string name="tus_rese_as">Tus reseñas</string>
+    <string name="rese_as">Reseñas</string>
+    <string name="notificaciones">Notificaciones</string>
 </resources>

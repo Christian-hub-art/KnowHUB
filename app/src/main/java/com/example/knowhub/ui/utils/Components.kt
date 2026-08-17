@@ -35,7 +35,10 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import com.example.knowhub.ui.screens.register.RegisterScreen
+import com.example.knowhub.ui.screens.reviews.ReviewScreen
 
 
 val BangersFont = FontFamily(
@@ -141,7 +144,7 @@ fun BarraArriba(
             Icon(
                 painter = painterResource(idImagen),
                 contentDescription = "Icono",
-                modifier = Modifier.size(70.dp)
+                modifier = Modifier.size(30.dp)
             )
         }
     }

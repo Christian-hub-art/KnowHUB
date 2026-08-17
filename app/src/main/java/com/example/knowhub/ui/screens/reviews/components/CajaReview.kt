@@ -10,19 +10,29 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
+import com.example.knowhub.ui.screens.reviews.ReviewScreen
+import com.example.knowhub.ui.utils.AppButton
+import com.example.knowhub.ui.utils.BangersFont
+import com.example.knowhub.ui.utils.generarEstrellas
 
 @Composable
 fun CajaReview(
@@ -31,10 +41,23 @@ fun CajaReview(
     Materia: String,
     Profesor: String,
     Reseña: String, // Modificar a dataclass
+    Calificacion: Int,
+    colorCaja: Color,
+    colorTexto: Color,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
+            .drawBehind {
+                drawRect(
+                    color = colorCaja,
+                    topLeft = Offset(
+                        5.dp.toPx(),
+                        5.dp.toPx()
+                    ),
+                    size = size
+                )
+            }
             .fillMaxWidth()
             .border(
                 2.dp,
@@ -48,21 +71,26 @@ fun CajaReview(
 
         Row(
             modifier = Modifier
+
+                .background(colorCaja)
                 .fillMaxWidth()
-                .background(colorResource(R.color.AzulKnowHUB))
+                .border(
+                    2.dp,
+                    colorResource(R.color.NegroKnowHUB)
+                )
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = Codigo,
-                color = colorResource(R.color.blancoKnowHUB),
-                fontWeight = FontWeight.Bold
+                color = colorTexto,
+                fontFamily = BangersFont
             )
 
             Text(
                 text = Fecha,
-                color = colorResource(R.color.blancoKnowHUB),
-                fontWeight = FontWeight.Bold
+                color = colorTexto,
+                fontFamily = BangersFont
             )
         }
 
@@ -74,8 +102,7 @@ fun CajaReview(
             Text(
                 text = Materia,
                 fontSize = 17.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.Monospace
+                fontFamily = BangersFont
             )
 
             Spacer(modifier = Modifier.height(6.dp))
@@ -89,8 +116,9 @@ fun CajaReview(
 
             Spacer(modifier = Modifier.height(5.dp))
 
+            val estrellas= generarEstrellas(Calificacion)
             Text(
-                text = "★★★★★",
+                text = estrellas,
                 fontSize = 18.sp
             )
 
@@ -117,18 +145,29 @@ fun CajaReview(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                Button(
-                    onClick = { },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(R.color.AmarilloKnowHUB)
+                AppButton(
+                    stringResource(R.string.lapizEditar),
+                        colorTexto,
+                        colorCaja,
+                        modifier = Modifier.height(35.dp)
                     )
-
-                ) {
-                    Text(
-                        stringResource(R.string.editar),
-                        color = colorResource(R.color.NegroKnowHUB))
-                }
             }
         }
     }
+}
+
+
+@Composable
+@Preview
+fun CajaReviewPreview(){
+    CajaReview(
+        "15 Nov 2026",
+        "1342",
+        "Desarrollo Movil",
+        "Angarita",
+        "Es una muy buena clase.",
+        5,
+        colorResource(id = R.color.AzulKnowHUB),
+        colorResource(id = R.color.blancoKnowHUB)
+        )
 }
