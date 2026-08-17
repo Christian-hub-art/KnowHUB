@@ -1,6 +1,7 @@
 package com.example.knowhub.ui.utils
 
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -21,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.fontResource
@@ -32,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 
 
 val BangersFont = FontFamily(
@@ -40,6 +44,7 @@ val BangersFont = FontFamily(
 val ArvoFont = FontFamily(
     Font(R.font.arvo_regular)
 )
+
 @Composable
 fun BackgroundImage(){
     Image(
@@ -64,30 +69,29 @@ fun LogoApp(
 
 @Composable
 fun AppButton(
-    textoBoton: String,
+    textoButon: String,
     colorTexto: Color,
+    colorBoton: Color,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Button(
+        onClick = {},
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorBoton
+        ),
+        shape = RectangleShape,
+        border = BorderStroke(
+            2.dp,
+            colorResource(R.color.NegroKnowHUB)
+        ),
         modifier = modifier
-            .border(
-                width = 2.dp,
-                color = colorResource(R.color.NegroKnowHUB)
-            )
-            .clickable() { }
-            .padding(
-                horizontal = 16.dp,
-                vertical = 8.dp
-            )
-
     ) {
         Text(
-            text = textoBoton,
+            text = textoButon,
             color = colorTexto,
             textAlign = TextAlign.Center,
             fontFamily = BangersFont,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.fillMaxWidth()
+            fontWeight = FontWeight.Bold
         )
     }
 }
@@ -100,9 +104,16 @@ fun BarraArriba(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(80.dp)
+            .background(
+                colorResource(R.color.blancoKnowHUB)
+            )
+            .border(
+                width = 2.dp,
+                color = colorResource(R.color.NegroKnowHUB),
+                shape = RectangleShape
+            )
     ) {
-
 
         Image(
             painter = painterResource(R.drawable.logoknowhub),
@@ -112,7 +123,6 @@ fun BarraArriba(
                 .align(Alignment.CenterStart)
                 .padding(start = 16.dp)
         )
-
 
         Text(
             text = texto,
@@ -131,8 +141,50 @@ fun BarraArriba(
             Icon(
                 painter = painterResource(idImagen),
                 contentDescription = "Icono",
-                modifier = Modifier.size(70.dp)            )
+                modifier = Modifier.size(70.dp)
+            )
         }
+    }
+}
+
+@Composable
+fun Message(
+    texto: String,
+    modifier: Modifier = Modifier
+){
+    Text(
+        texto,
+        fontSize = 50.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = ArvoFont,
+        modifier = modifier
+    )
+
+}
+
+@Composable
+fun CuadroTexto(
+    textoCuadro: String,
+    fondoCuadro: Color,
+    alto: Dp,
+    ancho: Dp,
+    modifier: Modifier = Modifier
+){
+    Box(
+        modifier = Modifier
+            .height(alto)
+            .width(ancho)
+            .background(fondoCuadro)
+            .border(
+                2.dp,
+                colorResource(R.color.NegroKnowHUB)
+            ),
+        contentAlignment = Alignment.Center
+    ){
+        Text(
+            textoCuadro,
+            textAlign = TextAlign.Center,
+            fontFamily = BangersFont)
     }
 }
 

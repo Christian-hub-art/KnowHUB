@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.profile
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,8 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draganddrop.DragAndDropSourceModifierNode
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -41,17 +45,12 @@ import com.example.knowhub.ui.utils.BarraArriba
 fun ProfileScreen(
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier) {
+    Box(
+        modifier = modifier
+    ) {
         BackgroundImage()
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            BarraArriba(
-                R.drawable.casa,
-                ""
-            )
-            BodyProfileScreen()
-        }
+        BodyProfileScreen()
+
     }
 }
 
@@ -62,29 +61,60 @@ fun BodyProfileScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        BarraArriba(R.drawable.casa,
+            "")
+
+        Spacer(modifier = Modifier.weight(17.0F))
+
         AppButton(
             "Tu perfil",
             colorResource(R.color.blancoKnowHUB),
+            colorResource(R.color.NegroKnowHUB),
             modifier = Modifier
-                .fillMaxWidth()
+                .height(40.dp)
+                .width(320.dp)
         )
-        Spacer(modifier = Modifier.padding(10.dp))
+
+        Spacer(modifier = Modifier.weight(10.0F))
+
         Image(
             painter = painterResource(R.drawable.perfil),
             contentDescription = stringResource(R.string.imagen_perfil),
-            modifier = modifier
-                .border(2.dp, colorResource(R.color.NegroKnowHUB))
+            modifier = Modifier
+                .background(
+                    colorResource(R.color.blancoKnowHUB)
+                )
+                .border(
+                    1.dp,
+                    colorResource(R.color.NegroKnowHUB)
+                )
         )
-        Spacer(modifier = Modifier.padding(10.dp))
-        AppButton("\uD83D\uDCF8 Subir Foto",
-            colorResource(R.color.blancoKnowHUB))
-        Spacer(modifier = Modifier.padding(10.dp))
+        Spacer(modifier = Modifier.weight(10.0F))
+
+        AppButton(
+            "📸 Subir Foto",
+            colorResource(R.color.NegroKnowHUB),
+            colorResource(R.color.blancoKnowHUB),
+            modifier = Modifier
+                .height(30.dp)
+                .width(180.dp)
+
+        )
+
+        Spacer(modifier = Modifier.weight(10.0F))
 
         CuadroInformaciónPersonal()
 
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.weight(10.0F))
+        AppButton("\uD83D\uDDD1\uFE0F Eliminar cuenta",
+            colorResource(R.color.NegroKnowHUB),
+            colorResource(R.color.AmarilloKnowHUB),
+            modifier = Modifier
+                .height(40.dp)
+                .width(180.dp)
+                )
 
-        BotonEliminarCuenta()
+        Spacer(modifier = Modifier.weight(20.0F))
     }
 }
 

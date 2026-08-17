@@ -7,17 +7,14 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.ui.utils.ArvoFont
+import com.example.knowhub.ui.utils.Message
 
 @Composable
 fun SignUPMessage(
     modifier: Modifier = Modifier
 ){
-    Text(
-        "Sign Up",
-        fontSize = 50.sp,
-        fontWeight = FontWeight.Bold,
-        fontFamily = ArvoFont,
-        modifier = modifier
+    Message(
+        "SIGN UP"
     )
 
 }

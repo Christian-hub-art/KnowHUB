@@ -49,7 +49,8 @@ fun BodyReviewScreen(
     modifier: Modifier = Modifier
 ){
     AppButton("Tus reseñas",
-        colorResource(R.color.blancoKnowHUB))
+        colorResource(R.color.blancoKnowHUB),
+        colorResource(R.color.NegroKnowHUB))
     Spacer(modifier= Modifier.padding(9.dp))
     Row{
         Button(
@@ -74,7 +75,8 @@ fun BodyReviewScreen(
         }
         Spacer(modifier = Modifier.padding(10.dp))
         AppButton("3 Reseñas",
-            colorResource(R.color.blancoKnowHUB))
+            colorResource(R.color.blancoKnowHUB),
+            colorResource(R.color.NegroKnowHUB))
 
     }
 
