@@ -16,7 +16,7 @@ import com.example.knowhub.ui.screens.home.components.IconoImagen
 fun BotonesHomeScreen(
     modifier : Modifier = Modifier
 ){
-    Row(){
+    Row(modifier=modifier){
         IconoImagen(R.drawable.perfil, stringResource(R.string.imagen_perfil),
             stringResource(R.string.perfil), modifier = Modifier.background(colorResource(R.color.blancoKnowHUB))
         )

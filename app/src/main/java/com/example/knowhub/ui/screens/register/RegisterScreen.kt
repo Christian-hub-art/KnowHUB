@@ -33,7 +33,7 @@ import com.example.knowhub.ui.utils.BackgroundImage
 fun RegisterScreen(
     modifier: Modifier = Modifier
 ){
-    Box(){
+    Box(modifier=modifier){
         BackgroundImage()
         BodyRegisterScreen()
     }
@@ -67,7 +67,7 @@ fun BodyRegisterScreen(
 
         AppButton("Registrarse",
             colorResource(R.color.blancoKnowHUB),
-            modifier = modifier
+            modifier = Modifier
                 .background(
                     color = colorResource(R.color.NegroKnowHUB)
                     )

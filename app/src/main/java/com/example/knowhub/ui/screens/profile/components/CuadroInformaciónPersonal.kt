@@ -25,7 +25,7 @@ fun CuadroInformaciónPersonal(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(colorResource(R.color.blancoKnowHUB))
             .border(
                 4.dp,

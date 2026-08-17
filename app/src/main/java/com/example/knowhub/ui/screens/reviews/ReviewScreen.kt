@@ -29,7 +29,7 @@ import com.example.knowhub.ui.utils.BarraArriba
 fun ReviewScreen(
     modifier: Modifier = Modifier
 ) {
-    Box() {
+    Box(modifier=modifier) {
         BackgroundImage()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -48,16 +48,17 @@ fun ReviewScreen(
 fun BodyReviewScreen(
     modifier: Modifier = Modifier
 ){
+    Row{
     AppButton("Tus reseñas",
         colorResource(R.color.blancoKnowHUB))
-    Spacer(modifier= Modifier.padding(9.dp))
+    Spacer(modifier= modifier.padding(9.dp))
+    }
     Row{
         Button(
             onClick = { },
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(R.color.NegroKnowHUB)
-            ),
-            modifier = modifier
+            )
         ) {
             Row{
 

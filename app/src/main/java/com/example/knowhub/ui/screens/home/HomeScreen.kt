@@ -38,7 +38,7 @@ import com.example.knowhub.ui.utils.BackgroundImage
 fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
-    Box() {
+    Box(modifier=modifier) {
         BackgroundImage()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

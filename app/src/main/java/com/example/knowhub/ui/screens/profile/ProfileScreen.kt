@@ -60,7 +60,8 @@ fun BodyProfileScreen(
     modifier: Modifier = Modifier
 ){
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier=modifier
     ) {
         AppButton(
             "Tu perfil",
