@@ -19,4 +19,7 @@
     <string name="tus_rese_as">Tus reseñas</string>
     <string name="rese_as">Reseñas</string>
     <string name="notificaciones">Notificaciones</string>
+    <string name="escribe_tu_rese_a">¡Escribe tu reseña!</string>
+    <string name="para_ti">Para ti</string>
+    <string name="siguiendo">Siguiendo</string>
 </resources>

@@ -191,3 +191,32 @@ fun CuadroTexto(
     }
 }
 
+@Composable
+fun AppButtonBig(
+    textoButon: String,
+    colorTexto: Color,
+    colorBoton: Color,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = {},
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colorBoton
+        ),
+        shape = RectangleShape,
+        border = BorderStroke(
+            2.dp,
+            colorResource(R.color.NegroKnowHUB)
+        ),
+        modifier = modifier
+    ) {
+        Text(
+            text = textoButon,
+            color = colorTexto,
+            textAlign = TextAlign.Center,
+            fontFamily = BangersFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp
+        )
+    }
+}
