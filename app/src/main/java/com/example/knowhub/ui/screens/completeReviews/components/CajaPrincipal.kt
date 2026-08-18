@@ -1,4 +1,4 @@
-package com.example.knowhub.ui.screens.reviews.components
+package com.example.knowhub.ui.screens.completeReviews.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,10 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,31 +18,31 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
-import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BangersFont
 import com.example.knowhub.ui.utils.generarEstrellas
 
 @Composable
-fun CajaReview(
+fun CajaPrincipal(
     Fecha: String,
     Codigo: String,
     Materia: String,
     Profesor: String,
-    Reseña: String, // Modificar a dataclass
     Calificacion: Int,
-    colorCaja: Color,
-    colorTexto: Color,
+    CantidadReviews: Int,
+    Hashtags: List<String>,
+    Dificultad: String,
     modifier: Modifier = Modifier
 ) {
+    val colorCaja= colorResource(id = R.color.AzulKnowHUB)
+    val colorTexto= colorResource(id = R.color.blancoKnowHUB)
+
     Column(
         modifier = modifier
             .drawBehind {
@@ -125,32 +122,38 @@ fun CajaReview(
             Spacer(modifier = Modifier.height(6.dp))
 
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(2.dp, Color.Black)
-                    .padding(8.dp)
-            ) {
-                Text(
-                    text = "\"$Reseña\"",
-                    fontSize = 13.sp,
-                    fontFamily = FontFamily.Monospace
-                )
-            }
+            Text(
+                text = "Basado en $CantidadReviews reseñas",
+                fontSize = 13.sp,
+                fontFamily = FontFamily.Monospace
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Hashtags.forEach {
+                    AppButton(
+                        it,
+                        colorResource(id = R.color.NegroKnowHUB),
+                        colorResource(id = R.color.AmarilloKnowHUB),
+                        modifier = Modifier.height(40.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                }
+            }
+            Spacer(modifier = Modifier.height(6.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
-            ) {
+            ){
                 AppButton(
-                    stringResource(R.string.lapizEditar),
-                        colorTexto,
-                        colorCaja,
-                        modifier = Modifier.height(40.dp)
-                    )
+                    "$Dificultad dificultad",
+                    colorResource(id = R.color.NegroKnowHUB),
+                    colorResource(id = R.color.blancoKnowHUB),
+                    modifier = Modifier.height(40.dp)
+                )
             }
         }
     }
@@ -159,15 +162,15 @@ fun CajaReview(
 
 @Composable
 @Preview
-fun CajaReviewPreview(){
-    CajaReview(
+fun CajaPrincipalPreview(){
+    CajaPrincipal(
         "15 Nov 2026",
         "1342",
         "Desarrollo Movil",
         "Angarita",
-        "Es una muy buena clase.",
-        5,
-        colorResource(id = R.color.AzulKnowHUB),
-        colorResource(id = R.color.blancoKnowHUB)
-        )
+        4,
+        60,
+        listOf("#Integrales", "#Derivadas", "#Algebra"),
+        "Media"
+    )
 }
