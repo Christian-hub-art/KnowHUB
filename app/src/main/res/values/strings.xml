@@ -22,4 +22,9 @@
     <string name="escribe_tu_rese_a">¡Escribe tu reseña!</string>
     <string name="para_ti">Para ti</string>
     <string name="siguiendo">Siguiendo</string>
+    <string name="icono">Icono</string>
+    <string name="explorar">Explorar</string>
+    <string name="buscar">Buscar</string>
+    <string name="crear_rese_a">Crear reseña</string>
+    <string name="cerrar_sesion">Cerrar sesion</string>
 </resources>
