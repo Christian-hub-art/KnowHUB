@@ -20,14 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
-import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 
 import com.example.knowhub.ui.utils.generarEstrellas
@@ -70,11 +69,11 @@ fun Review(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
                 .background(
-                    colorResource(R.color.blancoKnowHUB)
+                    primaryLight
                 )
                 .border(
                     4.dp,
-                    colorResource(R.color.NegroKnowHUB) ,
+                    tertiaryContainerLight ,
                     shape = RoundedCornerShape(16.dp)
                 )
         ) {
@@ -96,6 +95,7 @@ fun Review(
                 Row( modifier= Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    
                     Icon(
                         painter = painterResource(R.drawable.iconolike),
                         contentDescription = "Icono",

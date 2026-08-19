@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.knowhub.ui.screens.login.LoginScreen
+import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.theme.KnowHUBTheme
 
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KnowHUBTheme() {
                 Scaffold() {
-                    LoginScreen(
+                    NotificatonsScreen(
                         modifier = Modifier.padding(it)
                     )
                 }
