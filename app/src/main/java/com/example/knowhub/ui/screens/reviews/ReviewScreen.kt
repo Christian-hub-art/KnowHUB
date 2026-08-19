@@ -47,10 +47,6 @@ fun BodyReviewScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        BarraArriba(
-            R.drawable.iconomenu,
-            ""
-        )
         Spacer(modifier = modifier.height(35.dp))
 
         AppLabel(
