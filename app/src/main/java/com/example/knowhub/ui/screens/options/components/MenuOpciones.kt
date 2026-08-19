@@ -25,7 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
-import com.example.knowhub.ui.utils.ArvoFont
+import com.example.knowhub.ui.theme.ArvoFont
+
 
 @Composable
 fun MenuOpciones(
@@ -48,12 +49,12 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.casa),
-                contentDescription = stringResource(R.string.icono),
+                contentDescription = "Icono",
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                stringResource(R.string.explorar),
+                "Explorar",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,
@@ -66,7 +67,7 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.inciotarea),
-                contentDescription = stringResource(R.string.icono),
+                contentDescription = "Icono",
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
@@ -84,7 +85,7 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.libro),
-                contentDescription = stringResource(R.string.icono),
+                contentDescription = "Icono",
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
@@ -102,7 +103,7 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.notificacion),
-                contentDescription = stringResource(R.string.icono),
+                contentDescription = "Icono",
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
@@ -120,12 +121,12 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.mas),
-                contentDescription = stringResource(R.string.icono),
+                contentDescription = "Icono",
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                stringResource(R.string.crear_rese_a),
+                "Crear reseña",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,
@@ -138,12 +139,12 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.buscar),
-                contentDescription = stringResource(R.string.icono),
+                contentDescription = "Icono",
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                stringResource(R.string.buscar),
+                "Buscar",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,
@@ -156,7 +157,7 @@ fun MenuOpciones(
             horizontalArrangement = Arrangement.End
         ) {
             Text(
-                stringResource(R.string.cerrar_sesion),
+                "Cerrar sesión",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,

@@ -84,7 +84,7 @@ fun BodyRegisterScreen(
         Spacer(modifier = Modifier.weight(10.0F))
 
         AppButton(
-            stringResource(R.string.registrarse),
+            "Registrars",
             colorResource(R.color.blancoKnowHUB),
                colorResource(R.color.NegroKnowHUB),
                 onClick = {
@@ -109,7 +109,7 @@ fun BodyRegisterScreen(
 
         Spacer(modifier = Modifier.weight(10.0F))
         Text(
-            stringResource(R.string.ya_tienes_cuenta_login),
+            "¿Ya tienes cuentas?  Login",
             fontFamily = BangersFont
         )
 
