@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +30,7 @@ import com.example.knowhub.R
 import com.example.knowhub.data.Notificacion
 import com.example.knowhub.data.local.LocalNotificacionProvider
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
-import com.example.knowhub.ui.theme.ArvoFont
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 
 import com.example.knowhub.ui.utils.CuadroTexto
@@ -44,26 +43,26 @@ fun CuadroNotificacion(
     modifier: Modifier = Modifier
 ) {
 
-    val colorSombra = colorResource(R.color.NegroKnowHUB)
-    val colorNotificacion: Int
+    val colorSombra = tertiaryContainerLight
+    val colorNotificacion: Color
     val idImagen: Int
 
     when(infoNotificacion.tipo){
         "follower" -> {
-            colorNotificacion = R.color.AmarilloKnowHUB
+            colorNotificacion = secondaryContainerLight
             idImagen= R.drawable.iconofollower
         }
         "comment" -> {
-            colorNotificacion = R.color.GrisKnowHUB
+            colorNotificacion = secondaryLight
             idImagen= R.drawable.iconocomentario
         }
         "like" -> {
-            colorNotificacion = R.color.CelesteKnowHUB
+            colorNotificacion = tertiaryLight
             idImagen= R.drawable.iconolike
         }
         //Caso default, tipo de notificacion invalido
         else -> {
-            colorNotificacion = R.color.NegroKnowHUB
+            colorNotificacion = tertiaryContainerLight
             idImagen= R.drawable.iconodesconocido
         }
     }
@@ -81,10 +80,10 @@ fun CuadroNotificacion(
                     size = size
                 )
             }
-            .background(colorResource(R.color.blancoKnowHUB))
+            .background(primaryLight)
             .border(
                 2.dp,
-                colorResource(R.color.NegroKnowHUB)
+                tertiaryContainerLight
             )
             .height(80.dp)
             .width(360.dp)
@@ -94,7 +93,7 @@ fun CuadroNotificacion(
             Box(
                 modifier = modifier
                     .size(20.dp, 100.dp)
-                    .background(colorResource(colorNotificacion))
+                    .background(colorNotificacion)
                     .border(2.dp, Color.Black)
             )
 

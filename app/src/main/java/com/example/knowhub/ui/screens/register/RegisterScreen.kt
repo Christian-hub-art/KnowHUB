@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.register.components.SignUPMessage
 import com.example.knowhub.ui.screens.register.components.TextosField
-import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.LogoApp
@@ -85,9 +84,9 @@ fun BodyRegisterScreen(
 
         AppButton(
             "Registrars",
-            colorResource(R.color.blancoKnowHUB),
-               colorResource(R.color.NegroKnowHUB),
-                onClick = {
+            primaryLight,
+            tertiaryContainerLight,
+            onClick = {
                     Log.d("Register screen", "Register button clicked")
                     Log.d("Register screen", "$nombre")
                     Log.d("Register screen", "$correoElectronico")

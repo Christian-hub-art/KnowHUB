@@ -16,7 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -24,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.reviews.components.CajaReview
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
@@ -54,8 +54,8 @@ fun BodyReviewScreen(
 
         AppButton(
             stringResource(R.string.tus_rese_as),
-            colorResource(R.color.blancoKnowHUB),
-            colorResource(R.color.NegroKnowHUB),
+            primaryLight,
+            tertiaryContainerLight,
             modifier = Modifier
                 .height(40.dp)
                 .width(320.dp)
@@ -65,14 +65,14 @@ fun BodyReviewScreen(
         Row{
 
             AppButton("Leo6767",
-                colorResource(R.color.NegroKnowHUB),
-                colorResource(R.color.blancoKnowHUB))
+                tertiaryContainerLight,
+                primaryLight)
 
             Spacer(modifier = Modifier.width(20.dp))
 
             AppButton("3" + " " + stringResource(R.string.rese_as),
-                colorResource(R.color.NegroKnowHUB),
-                colorResource(R.color.blancoKnowHUB))
+                tertiaryContainerLight,
+                primaryLight)
             Spacer(modifier = Modifier.width(120.dp))
 
         }
@@ -88,8 +88,8 @@ fun BodyReviewScreen(
                 "Angarita",
                 "Es una muy buena clase.",
                 5,
-                colorResource(id = R.color.AzulKnowHUB),
-                colorResource(id = R.color.blancoKnowHUB)
+                primaryContainerLight,
+                primaryLight
             )
             Spacer(modifier = Modifier.height(15.dp))
             CajaReview(
@@ -99,8 +99,8 @@ fun BodyReviewScreen(
                 "Angarita",
                 "Es una muy buena clase.",
                 2,
-                colorResource(id = R.color.AmarilloKnowHUB),
-                colorResource(id = R.color.NegroKnowHUB)
+                secondaryContainerLight,
+                tertiaryContainerLight
             )
             Spacer(modifier = Modifier.height(15.dp))
             CajaReview(
@@ -110,8 +110,8 @@ fun BodyReviewScreen(
                 "Angarita",
                 "Es una muy buena clase.",
                 1,
-                colorResource(id = R.color.AzulKnowHUB),
-                colorResource(id = R.color.blancoKnowHUB)
+                primaryContainerLight,
+                primaryLight
             )
         }
     }

@@ -16,14 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.login.components.LoginMessage
 import com.example.knowhub.ui.screens.login.components.TextosLogin
-import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.LogoApp
@@ -77,8 +76,8 @@ fun BodyLoginScreen(
 
         AppButton(
             stringResource(R.string.inciar_sesi_n),
-            colorResource(R.color.blancoKnowHUB),
-            colorResource(R.color.NegroKnowHUB),
+            primaryLight,
+            tertiaryContainerLight,
             onClick = {
                 Log.d("Login Screen", "Login button clicked")
                 Log.d("Login screen", "$nombreOCorreo")

@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.completeReviews.components.CajaPrincipal
 import com.example.knowhub.ui.screens.completeReviews.components.Review
-import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppButtonBig
 import com.example.knowhub.ui.utils.BackgroundImage
@@ -65,7 +64,7 @@ fun BodyCompleteReviewsScreen(
         Spacer(modifier = modifier.height(30.dp))
         Row() {
             Box(modifier = modifier
-                .background(colorResource(id = R.color.NegroKnowHUB))
+                .background(tertiaryContainerLight)
                 .height(2.5F.dp)
                 .width(150.dp)
             ) {}
@@ -77,7 +76,7 @@ fun BodyCompleteReviewsScreen(
             )
             Spacer(modifier = Modifier.width(10.dp))
             Box(modifier = modifier
-                .background(colorResource(id = R.color.NegroKnowHUB))
+                .background(tertiaryContainerLight)
                 .height(2.5F.dp)
                 .width(150.dp)
             ) {}
@@ -87,15 +86,15 @@ fun BodyCompleteReviewsScreen(
         ) {
             AppButton(
                 stringResource(R.string.para_ti),
-                colorResource(id = R.color.blancoKnowHUB),
-                colorResource(id = R.color.AzulKnowHUB),
+                primaryLight,
+                primaryContainerLight,
                 modifier = Modifier.height(40.dp)
             )
             Spacer(modifier = Modifier.width(6.dp))
             AppButton(
                 stringResource(R.string.siguiendo),
-                colorResource(id = R.color.NegroKnowHUB),
-                colorResource(id = R.color.AmarilloKnowHUB),
+                tertiaryContainerLight,
+                secondaryContainerLight,
                 modifier = Modifier.height(40.dp)
             )
         }
@@ -122,8 +121,8 @@ fun BodyCompleteReviewsScreen(
         Spacer(modifier = Modifier.weight(1f))
         AppButtonBig(
             stringResource(R.string.escribe_tu_rese_a),
-            colorResource(id = R.color.AmarilloKnowHUB),
-            colorResource(id = R.color.NegroKnowHUB),
+            secondaryContainerLight,
+            tertiaryContainerLight,
             modifier = Modifier
                 .width(300.dp)
         )

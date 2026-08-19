@@ -19,11 +19,10 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
-import com.example.knowhub.ui.theme.ArvoFont
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 
 import com.example.knowhub.ui.utils.CuadroTexto
@@ -33,7 +32,7 @@ import com.example.knowhub.ui.utils.CuadroTexto
 fun CuadroInformaciónPersonal(
     modifier: Modifier = Modifier
 ) {
-    val colorSombra = colorResource(R.color.NegroKnowHUB)
+    val colorSombra = tertiaryContainerLight
 
     Box(
         modifier = modifier
@@ -47,10 +46,10 @@ fun CuadroInformaciónPersonal(
                     size = size
                 )
             }
-            .background(colorResource(R.color.blancoKnowHUB))
+            .background(primaryLight)
             .border(
                 2.dp,
-                colorResource(R.color.NegroKnowHUB)
+                tertiaryContainerLight
             )
             .height(320.dp)
             .width(360.dp)
@@ -64,8 +63,8 @@ fun CuadroInformaciónPersonal(
             // TÍTULO
             AppButton(
                 "👤 INFORMACIÓN PERSONAL",
-                colorResource(R.color.blancoKnowHUB),
-                colorResource(R.color.NegroKnowHUB),
+                primaryLight,
+                tertiaryContainerLight,
                 modifier = Modifier
                     .height(35.dp)
             )
@@ -82,7 +81,7 @@ fun CuadroInformaciónPersonal(
 
             CuadroTexto(
                 "Santiago Perez",
-                colorResource(R.color.blancoKnowHUB),
+                primaryLight,
                 alto = 40.dp,
                 ancho = 275.dp
             )
@@ -96,8 +95,8 @@ fun CuadroInformaciónPersonal(
 
                 AppButton(
                     "💾 GUARDAR CAMBIOS",
-                    colorResource(R.color.NegroKnowHUB),
-                    colorResource(R.color.blancoKnowHUB),
+                    tertiaryContainerLight,
+                    primaryLight,
                     modifier = Modifier
                         .height(35.dp)
                         .width(150.dp)
@@ -105,8 +104,8 @@ fun CuadroInformaciónPersonal(
 
                 AppButton(
                     "X CANCELAR",
-                    colorResource(R.color.NegroKnowHUB),
-                    colorResource(R.color.blancoKnowHUB),
+                    tertiaryContainerLight,
+                    primaryLight,
                     modifier = Modifier
                         .height(35.dp)
                         .width(150.dp)
@@ -118,8 +117,8 @@ fun CuadroInformaciónPersonal(
             // CAMBIAR CONTRASEÑA
             AppButton(
                 "CAMBIAR CONTRASEÑA",
-                colorResource(R.color.blancoKnowHUB),
-                colorResource(R.color.AzulKnowHUB),
+                primaryLight,
+                primaryContainerLight,
                 modifier = Modifier
                     .height(35.dp)
                     .width(150.dp)
@@ -130,8 +129,8 @@ fun CuadroInformaciónPersonal(
             // CAMBIAR CORREO
             AppButton(
                 "CAMBIAR CORREO ELECTRÓNICO",
-                colorResource(R.color.blancoKnowHUB),
-                colorResource(R.color.AzulKnowHUB),
+                primaryLight,
+                primaryContainerLight,
                 modifier = Modifier
                     .height(35.dp)
                     .width(200.dp)
