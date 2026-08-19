@@ -76,7 +76,7 @@ fun BodyLoginScreen(
 
 
         AppButton(
-            stringResource(R.string.iniciar_sesi_n),
+            stringResource(R.string.inciar_sesi_n),
             colorResource(R.color.blancoKnowHUB),
             colorResource(R.color.NegroKnowHUB),
             onClick = {
