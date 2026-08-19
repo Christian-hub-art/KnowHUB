@@ -28,6 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
+import com.example.knowhub.data.Notificacion
+import com.example.knowhub.data.local.LocalNotificacionProvider
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.utils.AppButton
@@ -38,9 +40,7 @@ import com.example.knowhub.ui.utils.CuadroTexto
 
 @Composable
 fun CuadroNotificacion(
-    tipoNotificacion: String,
-    titulo: String,
-    descripcion: String,
+    infoNotificacion: Notificacion,
     modifier: Modifier = Modifier
 ) {
 
@@ -48,7 +48,7 @@ fun CuadroNotificacion(
     val colorNotificacion: Int
     val idImagen: Int
 
-    when(tipoNotificacion){
+    when(infoNotificacion.tipo){
         "follower" -> {
             colorNotificacion = R.color.AmarilloKnowHUB
             idImagen= R.drawable.iconofollower
@@ -104,7 +104,7 @@ fun CuadroNotificacion(
                 modifier = Modifier.fillMaxHeight()
             ) {
                 Text(
-                    text = titulo,
+                    text = infoNotificacion.titulo,
                     textAlign = TextAlign.Left,
                     fontFamily = ArvoFont,
                     fontWeight = FontWeight.Bold,
@@ -112,7 +112,7 @@ fun CuadroNotificacion(
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
-                    text = descripcion,
+                    text = infoNotificacion.descripcion,
                     textAlign = TextAlign.Left,
                     fontFamily = ArvoFont,
                     fontSize = 12.sp
@@ -131,4 +131,10 @@ fun CuadroNotificacion(
             Spacer(modifier = Modifier.weight(1.0F))
         }
     }
+}
+
+@Composable
+@Preview
+fun CuadroNotificacionPreview(){
+    CuadroNotificacion(LocalNotificacionProvider.notificaciones[9])
 }
