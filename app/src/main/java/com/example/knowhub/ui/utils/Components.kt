@@ -25,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
@@ -167,11 +169,16 @@ fun BarraArriba(
             .background(
                 primaryLight
             )
-            .border(
-                width = 2.dp,
-                color = tertiaryContainerLight,
-                shape = RectangleShape
-            )
+            .drawBehind {
+                val strokeWidth = 2.dp.toPx()
+                val y = size.height - strokeWidth / 2
+                drawLine(
+                    color = tertiaryContainerLight,
+                    start = Offset(0f, y),
+                    end = Offset(size.width, y),
+                    strokeWidth = strokeWidth
+                )
+            }
     ) {
 
         Image(

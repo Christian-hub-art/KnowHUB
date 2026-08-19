@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KnowHUBTheme() {
                 Scaffold() {
-                    CreateReviewsScreen(
+                    NotificatonsScreen(
                         modifier = Modifier.padding(it)
                     )
                 }
