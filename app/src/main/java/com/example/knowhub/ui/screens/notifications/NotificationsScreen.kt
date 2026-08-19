@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +22,7 @@ import com.example.knowhub.ui.screens.notifications.components.CuadroNotificacio
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
 import com.example.knowhub.ui.screens.register.BodyRegisterScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
@@ -56,8 +56,8 @@ fun BodyNotificationsScreen(
 
                     AppButton(
                         stringResource(R.string.notificaciones),
-                        colorResource(R.color.blancoKnowHUB),
-                        colorResource(R.color.NegroKnowHUB),
+                        primaryLight,
+                        tertiaryContainerLight,
                         modifier = Modifier
                             .height(40.dp)
                             .width(320.dp)

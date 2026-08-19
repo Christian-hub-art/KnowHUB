@@ -17,14 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
-import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 
 import com.example.knowhub.ui.utils.generarEstrellas
@@ -41,8 +40,8 @@ fun CajaPrincipal(
     Dificultad: String,
     modifier: Modifier = Modifier
 ) {
-    val colorCaja= colorResource(id = R.color.AzulKnowHUB)
-    val colorTexto= colorResource(id = R.color.blancoKnowHUB)
+    val colorCaja= primaryContainerLight
+    val colorTexto= primaryLight
 
     Column(
         modifier = modifier
@@ -59,10 +58,10 @@ fun CajaPrincipal(
             .fillMaxWidth()
             .border(
                 2.dp,
-                colorResource(R.color.NegroKnowHUB)
+                tertiaryContainerLight
             )
             .background(
-                colorResource(R.color.blancoKnowHUB)
+                primaryLight
             )
     ) {
 
@@ -74,7 +73,7 @@ fun CajaPrincipal(
                 .fillMaxWidth()
                 .border(
                     2.dp,
-                    colorResource(R.color.NegroKnowHUB)
+                    tertiaryContainerLight
                 )
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -137,8 +136,8 @@ fun CajaPrincipal(
                 Hashtags.forEach {
                     AppButton(
                         it,
-                        colorResource(id = R.color.NegroKnowHUB),
-                        colorResource(id = R.color.AmarilloKnowHUB),
+                        tertiaryContainerLight,
+                        secondaryContainerLight,
                         modifier = Modifier.height(40.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
@@ -151,8 +150,8 @@ fun CajaPrincipal(
             ){
                 AppButton(
                     "$Dificultad dificultad",
-                    colorResource(id = R.color.NegroKnowHUB),
-                    colorResource(id = R.color.blancoKnowHUB),
+                    tertiaryContainerLight,
+                    primaryLight,
                     modifier = Modifier.height(40.dp)
                 )
             }

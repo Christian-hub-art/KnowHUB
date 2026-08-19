@@ -10,10 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.example.knowhub.R
+import com.example.knowhub.ui.theme.*
 
 @Composable
 fun TextosField(
@@ -36,10 +36,10 @@ fun TextosField(
             onValueChange = onNombreChange,
             label = { Text(stringResource(R.string.nombre)) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedBorderColor = colorResource(R.color.NegroKnowHUB),
-                unfocusedBorderColor = colorResource(R.color.NegroKnowHUB)
+                unfocusedContainerColor = primaryLight,
+                focusedContainerColor = primaryLight,
+                focusedBorderColor = tertiaryContainerLight,
+                unfocusedBorderColor = tertiaryContainerLight
             )
         )
         OutlinedTextField(
@@ -47,10 +47,10 @@ fun TextosField(
             onValueChange = onCorreoElectronicoChange,
             label = { Text(stringResource(R.string.correo_electr_nico)) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedBorderColor = colorResource(R.color.NegroKnowHUB),
-                unfocusedBorderColor = colorResource(R.color.NegroKnowHUB)
+                unfocusedContainerColor = primaryLight,
+                focusedContainerColor = primaryLight,
+                focusedBorderColor = tertiaryContainerLight,
+                unfocusedBorderColor = tertiaryContainerLight
             )
         )
         OutlinedTextField(
@@ -58,10 +58,10 @@ fun TextosField(
             onValueChange = onNombreUsuarioChange,
             label = { Text(stringResource(R.string.nombre_de_usuario)) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedBorderColor = colorResource(R.color.NegroKnowHUB),
-                unfocusedBorderColor = colorResource(R.color.NegroKnowHUB)
+                unfocusedContainerColor = primaryLight,
+                focusedContainerColor = primaryLight,
+                focusedBorderColor = tertiaryContainerLight,
+                unfocusedBorderColor = tertiaryContainerLight
 
             )
         )
@@ -71,10 +71,10 @@ fun TextosField(
             label = { Text(stringResource(R.string.contrase_a)) },
             visualTransformation = PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedBorderColor = colorResource(R.color.NegroKnowHUB),
-                unfocusedBorderColor = colorResource(R.color.NegroKnowHUB)
+                unfocusedContainerColor = primaryLight,
+                focusedContainerColor = primaryLight,
+                focusedBorderColor = tertiaryContainerLight,
+                unfocusedBorderColor = tertiaryContainerLight
             ),
 
             )
@@ -84,10 +84,10 @@ fun TextosField(
             label = { Text(stringResource(R.string.confirmaci_n_de_contrase_a)) },
             visualTransformation = PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedContainerColor = colorResource(R.color.blancoKnowHUB),
-                focusedBorderColor = colorResource(R.color.NegroKnowHUB),
-                unfocusedBorderColor = colorResource(R.color.NegroKnowHUB)
+                unfocusedContainerColor = primaryLight,
+                focusedContainerColor = primaryLight,
+                focusedBorderColor = tertiaryContainerLight,
+                unfocusedBorderColor = tertiaryContainerLight
             )
         )
     }

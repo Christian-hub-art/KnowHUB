@@ -17,26 +17,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
+import com.example.knowhub.ui.theme.*
 
 @Composable
 fun IconoNotificacion(
     idIcono: Int,
-    colorIcono: Int,
+    colorIcono: Color,
     modifier: Modifier = Modifier
 ) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .background(colorResource(colorIcono))
+            .background(colorIcono)
             .border(
                 2.dp,
-                colorResource(R.color.NegroKnowHUB)
+                tertiaryContainerLight
             )
             .size(30.dp)
     ) {

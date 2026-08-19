@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.options.components.MenuOpciones
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
-import com.example.knowhub.ui.theme.KnowHUBTheme
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
@@ -58,8 +57,8 @@ fun BodyOptionsScreen(
 
             AppButton(
                 "Tu perfil",
-                colorResource(R.color.blancoKnowHUB),
-                colorResource(R.color.NegroKnowHUB),
+                primaryLight,
+                tertiaryContainerLight,
                 modifier = Modifier
                     .height(40.dp)
                     .width(320.dp)
@@ -72,19 +71,19 @@ fun BodyOptionsScreen(
                 contentDescription = stringResource(R.string.imagen_perfil),
                 modifier = Modifier
                     .background(
-                        colorResource(R.color.blancoKnowHUB)
+                        primaryLight
                     )
                     .border(
                         1.dp,
-                        colorResource(R.color.NegroKnowHUB)
+                        tertiaryContainerLight
                     )
             )
             Spacer(modifier = Modifier.weight(10.0F))
 
             AppButton(
                 "📸 Subir Foto",
-                colorResource(R.color.NegroKnowHUB),
-                colorResource(R.color.blancoKnowHUB),
+                tertiaryContainerLight,
+                primaryLight,
                 modifier = Modifier
                     .height(30.dp)
                     .width(180.dp)
@@ -98,8 +97,8 @@ fun BodyOptionsScreen(
             Spacer(modifier = Modifier.weight(10.0F))
             AppButton(
                 "\uD83D\uDDD1\uFE0F Eliminar cuenta",
-                colorResource(R.color.NegroKnowHUB),
-                colorResource(R.color.AmarilloKnowHUB),
+                tertiaryContainerLight,
+                secondaryContainerLight,
                 modifier = Modifier
                     .height(40.dp)
                     .width(180.dp)

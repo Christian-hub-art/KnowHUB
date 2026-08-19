@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -30,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
-import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 
 import com.example.knowhub.ui.utils.generarEstrellas
@@ -62,10 +61,10 @@ fun CajaReview(
             .fillMaxWidth()
             .border(
                 2.dp,
-                colorResource(R.color.NegroKnowHUB)
+                tertiaryContainerLight
             )
             .background(
-                colorResource(R.color.blancoKnowHUB)
+                primaryLight
             )
     ) {
 
@@ -77,7 +76,7 @@ fun CajaReview(
                 .fillMaxWidth()
                 .border(
                     2.dp,
-                    colorResource(R.color.NegroKnowHUB)
+                    tertiaryContainerLight
                 )
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -168,7 +167,7 @@ fun CajaReviewPreview(){
         "Angarita",
         "Es una muy buena clase.",
         5,
-        colorResource(id = R.color.AzulKnowHUB),
-        colorResource(id = R.color.blancoKnowHUB)
+        primaryContainerLight,
+        primaryLight
         )
 }
