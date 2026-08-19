@@ -1,5 +1,6 @@
 package com.example.knowhub.ui.screens.profile.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -19,10 +20,11 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
-import com.example.knowhub.ui.theme.*
+import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.utils.AppButton
 
 import com.example.knowhub.ui.utils.CuadroTexto
@@ -32,7 +34,7 @@ import com.example.knowhub.ui.utils.CuadroTexto
 fun CuadroInformaciónPersonal(
     modifier: Modifier = Modifier
 ) {
-    val colorSombra = tertiaryContainerLight
+    val colorSombra = colorResource(R.color.NegroKnowHUB)
 
     Box(
         modifier = modifier
@@ -46,10 +48,10 @@ fun CuadroInformaciónPersonal(
                     size = size
                 )
             }
-            .background(primaryLight)
+            .background(colorResource(R.color.blancoKnowHUB))
             .border(
                 2.dp,
-                tertiaryContainerLight
+                colorResource(R.color.NegroKnowHUB)
             )
             .height(320.dp)
             .width(360.dp)
@@ -63,8 +65,12 @@ fun CuadroInformaciónPersonal(
             // TÍTULO
             AppButton(
                 "👤 INFORMACIÓN PERSONAL",
-                primaryLight,
-                tertiaryContainerLight,
+                colorResource(R.color.blancoKnowHUB),
+                colorResource(R.color.NegroKnowHUB),
+                onClick = {
+                    Log.d("Profile Screen", "Profile button clicked")
+                    Log.d("Profile screen", "Información personal")
+                },
                 modifier = Modifier
                     .height(35.dp)
             )
@@ -81,7 +87,7 @@ fun CuadroInformaciónPersonal(
 
             CuadroTexto(
                 "Santiago Perez",
-                primaryLight,
+                colorResource(R.color.blancoKnowHUB),
                 alto = 40.dp,
                 ancho = 275.dp
             )
@@ -95,8 +101,13 @@ fun CuadroInformaciónPersonal(
 
                 AppButton(
                     "💾 GUARDAR CAMBIOS",
-                    tertiaryContainerLight,
-                    primaryLight,
+                    colorResource(R.color.NegroKnowHUB),
+                    colorResource(R.color.blancoKnowHUB),
+                    onClick = {
+                        Log.d("Profile Screen", "Profile button clicked")
+                        Log.d("Profile screen", "Guardar cambios")
+                    },
+
                     modifier = Modifier
                         .height(35.dp)
                         .width(150.dp)
@@ -104,8 +115,12 @@ fun CuadroInformaciónPersonal(
 
                 AppButton(
                     "X CANCELAR",
-                    tertiaryContainerLight,
-                    primaryLight,
+                    colorResource(R.color.NegroKnowHUB),
+                    colorResource(R.color.blancoKnowHUB),
+                    onClick = {
+                        Log.d("Profile Screen", "Profile button clicked")
+                        Log.d("Profile screen", "X Cancelar")
+                    },
                     modifier = Modifier
                         .height(35.dp)
                         .width(150.dp)
@@ -117,8 +132,12 @@ fun CuadroInformaciónPersonal(
             // CAMBIAR CONTRASEÑA
             AppButton(
                 "CAMBIAR CONTRASEÑA",
-                primaryLight,
-                primaryContainerLight,
+                colorResource(R.color.blancoKnowHUB),
+                colorResource(R.color.AzulKnowHUB),
+                onClick = {
+                    Log.d("Profile Screen", "Profile button clicked")
+                    Log.d("Profile screen", "Cmabiar contraeña")
+                },
                 modifier = Modifier
                     .height(35.dp)
                     .width(150.dp)
@@ -129,8 +148,12 @@ fun CuadroInformaciónPersonal(
             // CAMBIAR CORREO
             AppButton(
                 "CAMBIAR CORREO ELECTRÓNICO",
-                primaryLight,
-                primaryContainerLight,
+                colorResource(R.color.blancoKnowHUB),
+                colorResource(R.color.AzulKnowHUB),
+                onClick = {
+                    Log.d("Profile Screen", "Profile button clicked")
+                    Log.d("Profile screen", "Cambiar correo")
+                },
                 modifier = Modifier
                     .height(35.dp)
                     .width(200.dp)

@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsScreen
 import com.example.knowhub.ui.screens.login.LoginScreen
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KnowHUBTheme() {
                 Scaffold() {
-                    NotificatonsScreen(
+                    CreateReviewsScreen(
                         modifier = Modifier.padding(it)
                     )
                 }

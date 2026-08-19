@@ -1,24 +1,27 @@
 package com.example.knowhub.ui.screens.profile
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
-import com.example.knowhub.ui.theme.*
+import com.example.knowhub.ui.theme.KnowHUBTheme
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
@@ -41,6 +44,8 @@ fun BodyProfileScreen(
     modifier: Modifier = Modifier
 ){
     Column(
+        modifier=modifier
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BarraArriba(R.drawable.iconomenu,
@@ -50,8 +55,8 @@ fun BodyProfileScreen(
 
         AppButton(
             "Tu perfil",
-            primaryLight,
-            tertiaryContainerLight,
+            colorResource(R.color.blancoKnowHUB),
+            colorResource(R.color.NegroKnowHUB),
             modifier = Modifier
                 .height(40.dp)
                 .width(320.dp)
@@ -64,19 +69,23 @@ fun BodyProfileScreen(
             contentDescription = stringResource(R.string.imagen_perfil),
             modifier = Modifier
                 .background(
-                    primaryLight
+                    colorResource(R.color.blancoKnowHUB)
                 )
                 .border(
                     1.dp,
-                    tertiaryContainerLight
+                    colorResource(R.color.NegroKnowHUB)
                 )
         )
         Spacer(modifier = Modifier.weight(10.0F))
 
         AppButton(
             "📸 Subir Foto",
-            tertiaryContainerLight,
-            primaryLight,
+            colorResource(R.color.NegroKnowHUB),
+            colorResource(R.color.blancoKnowHUB),
+            onClick = {
+                Log.d("Profile Screen", "Profile button clicked")
+                Log.d("profile screen", "Subir foto")
+            },
             modifier = Modifier
                 .height(30.dp)
                 .width(180.dp)
@@ -89,8 +98,12 @@ fun BodyProfileScreen(
 
         Spacer(modifier = Modifier.weight(10.0F))
         AppButton("\uD83D\uDDD1\uFE0F Eliminar cuenta",
-            tertiaryContainerLight,
-            secondaryContainerLight,
+            colorResource(R.color.NegroKnowHUB),
+            colorResource(R.color.AmarilloKnowHUB),
+            onClick = {
+                Log.d("Profile Screen", "Profile button clicked")
+                Log.d("Profile screen", "Eliminar Cuenta")
+            },
             modifier = Modifier
                 .height(40.dp)
                 .width(180.dp)

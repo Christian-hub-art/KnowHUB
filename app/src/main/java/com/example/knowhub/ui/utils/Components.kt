@@ -19,6 +19,8 @@ import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,6 +44,8 @@ import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryLight
+import com.example.knowhub.ui.theme.tertiaryContainerLight
 
 
 @Composable
@@ -216,4 +220,36 @@ fun AppButtonBig(
             fontSize = 30.sp
         )
     }
+}
+
+@Composable
+fun FormLabel(text: String) {
+    Text(
+        text = text,
+        fontSize = 18.sp,
+        modifier = Modifier.padding(bottom = 4.dp)
+    )
+}
+
+@Composable
+fun FormTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color.White),
+        label = { Text("$placeholder") },
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedContainerColor = primaryLight,
+            focusedContainerColor = primaryLight,
+            focusedBorderColor = tertiaryContainerLight,
+            unfocusedBorderColor = tertiaryContainerLight
+        )
+    )
 }
