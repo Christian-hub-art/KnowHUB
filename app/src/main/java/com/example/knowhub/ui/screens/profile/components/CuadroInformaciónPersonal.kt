@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -29,10 +30,13 @@ import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 
 import com.example.knowhub.ui.utils.CuadroTexto
+import com.example.knowhub.ui.utils.FormTextField
 
 
 @Composable
 fun CuadroInformaciónPersonal(
+    nombre: String,
+    onNombreChange: (String) ->Unit,
     modifier: Modifier = Modifier
 ) {
     val colorSombra = colorResource(R.color.NegroKnowHUB)
@@ -82,11 +86,11 @@ fun CuadroInformaciónPersonal(
 
             Spacer(modifier = Modifier.height(6.dp))
 
-            CuadroTexto(
-                "Santiago Perez",
-                colorResource(R.color.blancoKnowHUB),
-                alto = 40.dp,
-                ancho = 275.dp
+            FormTextField(
+                value = nombre,
+                onValueChange = onNombreChange,
+                placeholder = "Santiago Perez",
+                modifier = Modifier.height(100.dp)
             )
 
             Spacer(modifier = Modifier.height(15.dp))

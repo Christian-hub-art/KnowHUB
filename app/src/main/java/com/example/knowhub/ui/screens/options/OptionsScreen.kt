@@ -93,7 +93,9 @@ fun BodyOptionsScreen(
 
             Spacer(modifier = Modifier.weight(10.0F))
 
-            CuadroInformaciónPersonal()
+          /*  CuadroInformaciónPersonal(
+
+            ) */
 
             Spacer(modifier = Modifier.weight(10.0F))
             AppButton(

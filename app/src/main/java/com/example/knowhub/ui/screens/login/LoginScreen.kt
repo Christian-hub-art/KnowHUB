@@ -36,7 +36,14 @@ fun LoginScreen(
         modifier = modifier
     ){
         BackgroundImage()
-        BodyLoginScreen()
+        var nombreOCorreo by remember{mutableStateOf("") }
+        var contrasena by remember { mutableStateOf("") }
+        BodyLoginScreen(
+            nombreOCorreo,
+            contrasena,
+            onCorreoOUsuarioChange = {nombreOCorreo = it},
+            onContrasenaChange = {contrasena= it}
+        )
     }
 }
 @Composable
@@ -47,6 +54,10 @@ fun LoginScreenPreview(){
 
 @Composable
 fun BodyLoginScreen(
+    correoOUsuario: String,
+    contrasena: String,
+    onCorreoOUsuarioChange: (String) ->Unit,
+    onContrasenaChange: (String) ->Unit,
     modifier: Modifier = Modifier
 ){
 
@@ -58,14 +69,11 @@ fun BodyLoginScreen(
         LoginMessage()
         Spacer(modifier = Modifier.weight(1.0F))
 
-        var nombreOCorreo by remember{mutableStateOf("") }
-        var contrasena by remember { mutableStateOf("") }
-
         TextosLogin(
-            nombreOCorreo,
+            correoOUsuario,
             contrasena,
-            onCorreoOUsuarioChange = {nombreOCorreo = it},
-            onContrasenaChange = {contrasena= it}
+            onCorreoOUsuarioChange = {onCorreoOUsuarioChange(it)},
+            onContrasenaChange = {onContrasenaChange(it)}
         )
         Spacer(modifier = Modifier.weight(0.5F))
         Text("¿Olvidaste tu contraseña?",
@@ -80,7 +88,7 @@ fun BodyLoginScreen(
             tertiaryContainerLight,
             onClick = {
                 Log.d("Login Screen", "Login button clicked")
-                Log.d("Login screen", "$nombreOCorreo")
+                Log.d("Login screen", "$correoOUsuario")
                 Log.d("Login screen", "$contrasena")
 
             },

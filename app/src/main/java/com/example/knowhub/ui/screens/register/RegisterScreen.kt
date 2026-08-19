@@ -40,7 +40,23 @@ fun RegisterScreen(
 ){
     Box(){
         BackgroundImage()
-        BodyRegisterScreen()
+        var nombre by remember{mutableStateOf("") }
+        var correoElectronico by remember { mutableStateOf("") }
+        var nombreUsuario  by remember { mutableStateOf("") }
+        var contrasena  by remember { mutableStateOf("") }
+        var confirmarContrasena  by remember { mutableStateOf("") }
+        BodyRegisterScreen(
+            nombre,
+            correoElectronico,
+            nombreUsuario,
+            contrasena,
+            confirmarContrasena,
+            onNombreChange ={nombre= it},
+            onCorreoElectronicoChange ={correoElectronico= it},
+            onNombreUsuarioChange={nombreUsuario= it},
+            onContrasenaChange={contrasena= it},
+            onConfirmarContrasenaChange={confirmarContrasena= it}
+        )
     }
 }
 
@@ -52,6 +68,16 @@ fun RegisterScreenPreview(){
 
 @Composable
 fun BodyRegisterScreen(
+    nombre: String,
+    correoElectronico: String,
+    nombreUsuario: String,
+    contrasena: String,
+    confirmarContrasena: String,
+    onNombreChange: (String) ->Unit,
+    onCorreoElectronicoChange: (String) ->Unit,
+    onNombreUsuarioChange: (String) ->Unit,
+    onContrasenaChange: (String) ->Unit,
+    onConfirmarContrasenaChange: (String) ->Unit,
     modifier: Modifier = Modifier
 ){
 
@@ -63,22 +89,18 @@ fun BodyRegisterScreen(
         SignUPMessage()
         Spacer(modifier = Modifier.weight(1.0f))
 
-        var nombre by remember{mutableStateOf("") }
-        var correoElectronico by remember { mutableStateOf("") }
-        var nombreUsuario  by remember { mutableStateOf("") }
-        var contrasena  by remember { mutableStateOf("") }
-        var confirmarContrasena  by remember { mutableStateOf("") }
+
 
         TextosField(nombre,
             correoElectronico,
             nombreUsuario,
             contrasena,
             confirmarContrasena,
-            onNombreChange ={nombre= it},
-            onCorreoElectronicoChange ={correoElectronico= it},
-            onNombreUsuarioChange={nombreUsuario= it},
-            onContrasenaChange={contrasena= it},
-            onConfirmarContrasenaChange={confirmarContrasena= it})
+            onNombreChange ={onNombreChange(it)},
+            onCorreoElectronicoChange ={onCorreoElectronicoChange(it)},
+            onNombreUsuarioChange={onNombreUsuarioChange(it)},
+            onContrasenaChange={onContrasenaChange(it)},
+            onConfirmarContrasenaChange={onConfirmarContrasenaChange(it)})
 
         Spacer(modifier = Modifier.weight(10.0F))
 

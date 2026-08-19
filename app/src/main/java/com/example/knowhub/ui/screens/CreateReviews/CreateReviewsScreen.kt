@@ -37,18 +37,36 @@ fun CreateReviewsScreen(
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         BackgroundImage()
-        BodyCreateReviewsScreen()
+        var clase by remember { mutableStateOf("") }
+        var tituloMateria by remember { mutableStateOf("") }
+        var nombreProfesor by remember { mutableStateOf("") }
+        var resena by remember { mutableStateOf("") }
+        BodyCreateReviewsScreen(
+            clase,
+            tituloMateria,
+            nombreProfesor,
+            resena,
+            onClaseChange = { clase = it },
+            onTituloMateriaChange = { tituloMateria = it },
+            onNombreProfesorChange = { nombreProfesor = it },
+            onResenaChange = { resena = it }
+        )
     }
 }
 
 @Composable
 fun BodyCreateReviewsScreen(
+    clase: String,
+    tituloMateria: String,
+    nombreProfesor: String,
+    resena: String,
+    onClaseChange: (String) -> Unit,
+    onTituloMateriaChange: (String) -> Unit,
+    onNombreProfesorChange: (String) -> Unit,
+    onResenaChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var clase by remember { mutableStateOf("") }
-    var tituloMateria by remember { mutableStateOf("") }
-    var nombreProfesor by remember { mutableStateOf("") }
-    var resena by remember { mutableStateOf("") }
+
 
     Column(
         modifier = modifier
@@ -79,10 +97,10 @@ fun BodyCreateReviewsScreen(
             tituloMateria,
             nombreProfesor,
             resena,
-            onClaseChange = { clase = it },
-            onTituloMateriaChange = { tituloMateria = it },
-            onNombreProfesorChange = { nombreProfesor = it },
-            onResenaChange = { resena = it })
+            onClaseChange = { onClaseChange(it) },
+            onTituloMateriaChange = { onTituloMateriaChange(it) },
+            onNombreProfesorChange = { onNombreProfesorChange(it) },
+            onResenaChange = { onResenaChange(it) })
 
         Spacer(modifier = Modifier.height(40.dp))
     }

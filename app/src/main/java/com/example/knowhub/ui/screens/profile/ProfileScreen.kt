@@ -12,6 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -35,13 +39,19 @@ fun ProfileScreen(
         modifier = modifier
     ) {
         BackgroundImage()
-        BodyProfileScreen()
+        var nombre by remember{mutableStateOf("") }
+        BodyProfileScreen(
+            nombre,
+            onNombreChange = {nombre=it}
+        )
 
     }
 }
 
 @Composable
 fun BodyProfileScreen(
+    nombre: String,
+    onNombreChange: (String) ->Unit,
     modifier: Modifier = Modifier
 ){
     Column(
@@ -95,7 +105,10 @@ fun BodyProfileScreen(
 
         Spacer(modifier = Modifier.weight(10.0F))
 
-        CuadroInformaciónPersonal()
+        CuadroInformaciónPersonal(
+            nombre,
+            onNombreChange = {onNombreChange(it)}
+        )
 
         Spacer(modifier = Modifier.weight(10.0F))
         AppButton("\uD83D\uDDD1\uFE0F Eliminar cuenta",
