@@ -23,6 +23,7 @@ import com.example.knowhub.R
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
 import com.example.knowhub.ui.theme.KnowHUBTheme
 import com.example.knowhub.ui.utils.AppButton
+import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
 
@@ -53,7 +54,7 @@ fun BodyProfileScreen(
 
         Spacer(modifier = Modifier.weight(17.0F))
 
-        AppButton(
+        AppLabel(
             "Tu perfil",
             colorResource(R.color.blancoKnowHUB),
             colorResource(R.color.NegroKnowHUB),

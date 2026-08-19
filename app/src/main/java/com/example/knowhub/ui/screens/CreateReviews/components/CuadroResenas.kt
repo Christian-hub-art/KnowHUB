@@ -30,6 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryContainerLight
+import com.example.knowhub.ui.theme.primaryLight
+import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.FormLabel
 import com.example.knowhub.ui.utils.FormTextField
@@ -48,13 +51,13 @@ fun CuadroResenas(
     modifier: Modifier = Modifier
 ) {
     // Cuadro de Reseña
-    val colorSombra = colorResource(R.color.NegroKnowHUB)
+    val colorSombra = tertiaryContainerLight
 
     Box(
         modifier = modifier
             .width(350.dp)
-            .background(Color.White)
-            .border(2.dp, Color.Black)
+            .background(primaryLight)
+            .border(2.dp, tertiaryContainerLight)
     ) {
         Column {
 
@@ -62,8 +65,8 @@ fun CuadroResenas(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(colorResource(id = R.color.AzulKnowHUB))
-                    .border(1.dp, Color.Black)
+                    .background(primaryContainerLight)
+                    .border(1.dp, tertiaryContainerLight)
                     .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -74,7 +77,7 @@ fun CuadroResenas(
                 ) {
                     Text(
                         text = "# CLASE: ",
-                        color = Color.White,
+                        color = primaryLight,
                         fontFamily = BangersFont,
                         fontSize = 20.sp
                     )
@@ -82,8 +85,8 @@ fun CuadroResenas(
                     Box(
                         modifier = Modifier
                             .width(80.dp)
-                            .background(Color.White)
-                            .border(1.dp, Color.Black)
+                            .background(primaryLight)
+                            .border(1.dp, tertiaryContainerLight)
                             .padding(horizontal = 4.dp)
                     ) {
                         BasicTextField(
@@ -95,7 +98,7 @@ fun CuadroResenas(
 
                 Text(
                     text = "15 NOV 2025",
-                    color = colorResource(R.color.blancoKnowHUB),
+                    color = primaryLight,
                     fontSize = 20.sp
                 )
             }
@@ -156,8 +159,8 @@ fun CuadroResenas(
 
                     AppButton(
                         textoButon = "X CANCELAR",
-                        colorTexto = Color.Black,
-                        colorBoton = Color.White,
+                        colorTexto = tertiaryContainerLight,
+                        colorBoton =primaryLight,
                         onClick = {
                             Log.d("CreateReview screen", "CreateReview button clicked")
                             Log.d("CreateReview screen", "Cancelar")
@@ -171,8 +174,8 @@ fun CuadroResenas(
 
                     AppButton(
                         textoButon = "PUBLICAR",
-                        colorTexto = colorResource(R.color.blancoKnowHUB),
-                        colorBoton = colorResource(id = R.color.AzulKnowHUB),
+                        colorTexto = primaryLight,
+                        colorBoton = primaryContainerLight,
                         onClick = {
                             Log.d("CreateReview screen", "CreateReview button clicked")
                             Log.d("CreateReview screen", "Publicar")

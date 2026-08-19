@@ -59,10 +59,10 @@ fun BodyCreateReviewsScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        AppButtonBig(
-            textoButon = "CREA UNA NUEVA RESEÑA",
-            colorTexto = colorResource(R.color.blancoKnowHUB),
-            colorBoton = colorResource(R.color.NegroKnowHUB),
+        AppLabelBig(
+            texto = "CREA UNA NUEVA RESEÑA",
+            colorTexto = primaryLight,
+            color = tertiaryContainerLight,
             modifier = Modifier
                 .width(350.dp)
                 .height(45.dp)

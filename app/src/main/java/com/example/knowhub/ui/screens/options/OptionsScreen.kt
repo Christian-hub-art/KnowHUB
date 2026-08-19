@@ -24,6 +24,7 @@ import com.example.knowhub.ui.screens.options.components.MenuOpciones
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
+import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
 
@@ -55,7 +56,7 @@ fun BodyOptionsScreen(
 
             Spacer(modifier = Modifier.weight(17.0F))
 
-            AppButton(
+            AppLabel(
                 "Tu perfil",
                 primaryLight,
                 tertiaryContainerLight,

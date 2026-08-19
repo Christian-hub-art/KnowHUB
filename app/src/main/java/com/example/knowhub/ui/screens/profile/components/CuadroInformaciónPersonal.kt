@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.utils.AppButton
+import com.example.knowhub.ui.utils.AppLabel
 
 import com.example.knowhub.ui.utils.CuadroTexto
 
@@ -63,14 +64,10 @@ fun CuadroInformaciónPersonal(
         ) {
 
             // TÍTULO
-            AppButton(
+            AppLabel(
                 "👤 INFORMACIÓN PERSONAL",
                 colorResource(R.color.blancoKnowHUB),
                 colorResource(R.color.NegroKnowHUB),
-                onClick = {
-                    Log.d("Profile Screen", "Profile button clicked")
-                    Log.d("Profile screen", "Información personal")
-                },
                 modifier = Modifier
                     .height(35.dp)
             )

@@ -86,7 +86,7 @@ fun AppButton(
         shape = RectangleShape,
         border = BorderStroke(
             2.dp,
-            colorResource(R.color.NegroKnowHUB)
+            tertiaryContainerLight
         ),
         modifier = modifier
     ) {
@@ -101,6 +101,61 @@ fun AppButton(
 }
 
 @Composable
+fun AppLabel(
+    texto: String,
+    colorTexto: Color? = null,
+    color: Color? = null,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .background(color ?: MaterialTheme.colorScheme.primary)
+            .border(
+                2.dp,
+                tertiaryContainerLight
+            )
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        Text(
+            text = texto,
+            color = colorTexto ?: Color.Unspecified,
+            textAlign = TextAlign.Center,
+            fontFamily = BangersFont,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun AppLabelBig(
+    texto: String,
+    colorTexto: Color? = null,
+    color: Color? = null,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .background(color ?: MaterialTheme.colorScheme.primary)
+            .border(
+                2.dp,
+                tertiaryContainerLight
+            )
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        Text(
+            text = texto,
+            color = colorTexto ?: Color.Unspecified,
+            textAlign = TextAlign.Center,
+            fontFamily = BangersFont,
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp
+        )
+    }
+}
+
+@Composable
 fun BarraArriba(
     idImagen: Int,
     texto: String
@@ -110,11 +165,11 @@ fun BarraArriba(
             .fillMaxWidth()
             .height(80.dp)
             .background(
-                colorResource(R.color.blancoKnowHUB)
+                primaryLight
             )
             .border(
                 width = 2.dp,
-                color = colorResource(R.color.NegroKnowHUB),
+                color = tertiaryContainerLight,
                 shape = RectangleShape
             )
     ) {
@@ -181,7 +236,7 @@ fun CuadroTexto(
             .background(fondoCuadro)
             .border(
                 2.dp,
-                colorResource(R.color.NegroKnowHUB)
+                tertiaryContainerLight
             ),
         contentAlignment = Alignment.Center
     ){
@@ -207,7 +262,7 @@ fun AppButtonBig(
         shape = RectangleShape,
         border = BorderStroke(
             2.dp,
-            colorResource(R.color.NegroKnowHUB)
+            tertiaryContainerLight
         ),
         modifier = modifier
     ) {

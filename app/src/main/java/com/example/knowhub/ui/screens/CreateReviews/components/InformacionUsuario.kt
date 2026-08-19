@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryLight
+import com.example.knowhub.ui.theme.tertiaryContainerLight
 
 @Composable
 fun InformaciónUsuario(
@@ -33,8 +35,8 @@ fun InformaciónUsuario(
     ) {
         Box(
             modifier = Modifier
-                .border(2.dp, Color.Black)
-                .background(color = colorResource(R.color.blancoKnowHUB))
+                .border(2.dp, tertiaryContainerLight)
+                .background(color = primaryLight)
                 .padding(4.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
