@@ -22,8 +22,4 @@
     <string name="escribe_tu_rese_a">¡Escribe tu reseña!</string>
     <string name="para_ti">Para ti</string>
     <string name="siguiendo">Siguiendo</string>
-    <string name="ya_tienes_cuenta_login">"¿Ya tienes cuenta? Login "</string>
-    <string name="registrarse">Registrarse</string>
-    <string name="correo_electr_nico_o_usuario">Correo electrónico o usuario</string>
-    <string name="iniciar_sesi_n">Iniciar Sesión</string>
 </resources>
