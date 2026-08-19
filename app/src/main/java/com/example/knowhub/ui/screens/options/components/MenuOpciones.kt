@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.options.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,7 +44,8 @@ fun MenuOpciones(
     ) {
         Spacer(modifier = Modifier.weight(0.4F))
         Row(modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { /* TODO */ },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -61,7 +63,8 @@ fun MenuOpciones(
         }
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { /* TODO */ },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -79,7 +82,8 @@ fun MenuOpciones(
         }
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { /* TODO */ },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -97,7 +101,8 @@ fun MenuOpciones(
         }
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { /* TODO */ },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -115,7 +120,8 @@ fun MenuOpciones(
         }
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { /* TODO */ },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -133,7 +139,8 @@ fun MenuOpciones(
         }
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { /* TODO */ },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -151,7 +158,8 @@ fun MenuOpciones(
         }
         Spacer(modifier = Modifier.weight(1F))
         Row(modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { /* TODO */ },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
