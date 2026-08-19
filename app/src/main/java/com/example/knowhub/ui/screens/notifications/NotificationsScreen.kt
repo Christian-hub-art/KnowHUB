@@ -48,8 +48,6 @@ fun BodyNotificationsScreen(
             modifier = modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            BarraArriba(R.drawable.iconomenu,
-                "")
             LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
 
                 item (){

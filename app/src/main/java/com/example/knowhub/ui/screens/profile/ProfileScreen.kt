@@ -59,8 +59,6 @@ fun BodyProfileScreen(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        BarraArriba(R.drawable.iconomenu,
-            "")
 
         Spacer(modifier = Modifier.weight(17.0F))
 
