@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
+import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.utils.AppButton
-import com.example.knowhub.ui.utils.ArvoFont
-import com.example.knowhub.ui.utils.BangersFont
+
 import com.example.knowhub.ui.utils.CuadroTexto
 
 

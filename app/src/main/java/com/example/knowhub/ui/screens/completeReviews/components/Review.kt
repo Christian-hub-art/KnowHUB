@@ -27,8 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
+import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.utils.AppButton
-import com.example.knowhub.ui.utils.BangersFont
+
 import com.example.knowhub.ui.utils.generarEstrellas
 
 

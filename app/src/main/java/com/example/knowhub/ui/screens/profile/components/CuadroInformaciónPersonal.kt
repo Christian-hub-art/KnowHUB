@@ -23,8 +23,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
+import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.utils.AppButton
-import com.example.knowhub.ui.utils.ArvoFont
+
 import com.example.knowhub.ui.utils.CuadroTexto
 
 

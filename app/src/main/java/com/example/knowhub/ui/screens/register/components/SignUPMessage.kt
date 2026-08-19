@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.knowhub.ui.utils.ArvoFont
+
 import com.example.knowhub.ui.utils.Message
 
 @Composable

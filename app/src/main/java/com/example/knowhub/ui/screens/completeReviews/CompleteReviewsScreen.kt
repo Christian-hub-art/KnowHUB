@@ -20,10 +20,10 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.completeReviews.components.CajaPrincipal
 import com.example.knowhub.ui.screens.completeReviews.components.Review
+import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppButtonBig
 import com.example.knowhub.ui.utils.BackgroundImage
-import com.example.knowhub.ui.utils.BangersFont
 import com.example.knowhub.ui.utils.BarraArriba
 
 @Composable

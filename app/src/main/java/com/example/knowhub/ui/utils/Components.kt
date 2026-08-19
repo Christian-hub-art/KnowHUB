@@ -18,6 +18,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,14 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
+import com.example.knowhub.ui.theme.ArvoFont
+import com.example.knowhub.ui.theme.BangersFont
 
-
-val BangersFont = FontFamily(
-    Font(R.font.bangers_regular)
-)
-val ArvoFont = FontFamily(
-    Font(R.font.arvo_regular)
-)
 
 @Composable
 fun BackgroundImage(){
@@ -73,14 +69,15 @@ fun LogoApp(
 @Composable
 fun AppButton(
     textoButon: String,
-    colorTexto: Color,
-    colorBoton: Color,
+    colorTexto: Color? =null,
+    colorBoton: Color? = null,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = {},
+        onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorBoton
+            containerColor = colorBoton ?: MaterialTheme.colorScheme.primary
         ),
         shape = RectangleShape,
         border = BorderStroke(
@@ -91,7 +88,7 @@ fun AppButton(
     ) {
         Text(
             text = textoButon,
-            color = colorTexto,
+            color = colorTexto ?: Color.Unspecified,
             textAlign = TextAlign.Center,
             fontFamily = BangersFont,
             fontWeight = FontWeight.Bold
