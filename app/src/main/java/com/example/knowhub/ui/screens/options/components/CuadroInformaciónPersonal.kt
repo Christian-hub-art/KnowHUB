@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
+import com.example.knowhub.ui.utils.AppLabel
 
 import com.example.knowhub.ui.utils.CuadroTexto
 
@@ -61,7 +62,7 @@ fun CuadroInformaciónPersonal(
         ) {
 
             // TÍTULO
-            AppButton(
+            AppLabel(
                 "👤 INFORMACIÓN PERSONAL",
                 primaryLight,
                 tertiaryContainerLight,

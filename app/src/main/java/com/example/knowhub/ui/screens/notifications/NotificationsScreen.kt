@@ -24,6 +24,7 @@ import com.example.knowhub.ui.screens.register.BodyRegisterScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
+import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
 
@@ -54,7 +55,7 @@ fun BodyNotificationsScreen(
                 item (){
                     Spacer(modifier = Modifier.height(35.dp))
 
-                    AppButton(
+                    AppLabel(
                         stringResource(R.string.notificaciones),
                         primaryLight,
                         tertiaryContainerLight,

@@ -25,6 +25,7 @@ import com.example.knowhub.R
 import com.example.knowhub.ui.screens.reviews.components.CajaReview
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
+import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
 
@@ -52,7 +53,7 @@ fun BodyReviewScreen(
         )
         Spacer(modifier = modifier.height(35.dp))
 
-        AppButton(
+        AppLabel(
             stringResource(R.string.tus_rese_as),
             primaryLight,
             tertiaryContainerLight,
@@ -64,16 +65,16 @@ fun BodyReviewScreen(
         Spacer(modifier = Modifier.height(10.dp))
         Row{
 
-            AppButton("Leo6767",
+            AppLabel("Leo6767",
                 tertiaryContainerLight,
                 primaryLight)
 
             Spacer(modifier = Modifier.width(20.dp))
 
-            AppButton("3" + " " + stringResource(R.string.rese_as),
+            AppLabel("3" + " " + stringResource(R.string.rese_as),
                 tertiaryContainerLight,
                 primaryLight)
-            Spacer(modifier = Modifier.width(120.dp))
+            Spacer(modifier = Modifier.width(150.dp))
 
         }
         Column(
