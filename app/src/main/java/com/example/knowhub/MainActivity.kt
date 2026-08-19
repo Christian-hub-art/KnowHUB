@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KnowHUBTheme() {
                 Scaffold() {
-                    LoginScreen(
+                    NotificatonsScreen(
                         modifier = Modifier.padding(it)
                     )
                 }

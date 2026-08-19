@@ -96,6 +96,7 @@ fun Review(
                 Row( modifier= Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    
                     Icon(
                         painter = painterResource(R.drawable.iconolike),
                         contentDescription = "Icono",
