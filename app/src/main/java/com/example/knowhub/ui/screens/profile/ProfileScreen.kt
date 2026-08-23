@@ -93,7 +93,7 @@ fun BodyProfileScreen(
             "📸 Subir Foto",
             colorResource(R.color.NegroKnowHUB),
             colorResource(R.color.blancoKnowHUB),
-            onClick = onClick,
+            onClick = {},
             modifier = Modifier
                 .height(30.dp)
                 .width(180.dp)
@@ -104,14 +104,15 @@ fun BodyProfileScreen(
 
         CuadroInformaciónPersonal(
             nombre,
-            onNombreChange = {onNombreChange(it)}
+            onNombreChange = {onNombreChange(it)},
+            onClick = onClick
         )
 
         Spacer(modifier = Modifier.weight(10.0F))
         AppButton("\uD83D\uDDD1\uFE0F Eliminar cuenta",
             colorResource(R.color.NegroKnowHUB),
             colorResource(R.color.AmarilloKnowHUB),
-            onClick = onClick,
+            onClick = {},
             modifier = Modifier
                 .height(40.dp)
                 .width(180.dp)

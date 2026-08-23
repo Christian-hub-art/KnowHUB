@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
 import com.example.knowhub.ui.screens.login.LoginScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
 
@@ -21,11 +22,41 @@ fun AppNavegation(
         modifier = modifier
     ) {
         composable(route = "start"){
-            LoginScreen()
+            LoginScreen(
+            )
         }
         composable(route = "register"){
-            RegisterScreen()
+            RegisterScreen(
+
+            )
         }
+        composable ( route = "completeReviews" ){
+            CompleteReviewsScreen(
+
+            )
+
+        }
+        composable ( route = "createReviews" ){
+            CompleteReviewsScreen(
+
+            )
+        }
+        composable ( route = "notifications" ){
+            CompleteReviewsScreen(
+
+            )
+        }
+        composable ( route = "profile" ){
+            CompleteReviewsScreen(
+
+            )
+        }
+        composable ( route = "reviews" ){
+            CompleteReviewsScreen(
+
+            )
+        }
+
     }
 
 }

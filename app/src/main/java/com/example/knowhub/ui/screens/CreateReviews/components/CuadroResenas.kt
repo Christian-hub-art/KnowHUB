@@ -162,7 +162,7 @@ fun CuadroResenas(
                         textoButon = "X CANCELAR",
                         colorTexto = tertiaryContainerLight,
                         colorBoton =primaryLight,
-                        onClick = onClick,
+                        onClick = {},
                         modifier = Modifier
                             .height(40.dp)
                             .width(120.dp)
@@ -174,7 +174,7 @@ fun CuadroResenas(
                         textoButon = "PUBLICAR",
                         colorTexto = primaryLight,
                         colorBoton = primaryContainerLight,
-                        onClick = onClick,
+                        onClick = {},
                         modifier = Modifier
                             .height(40.dp)
                             .width(120.dp)

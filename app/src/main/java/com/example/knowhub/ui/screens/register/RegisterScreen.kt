@@ -110,7 +110,7 @@ fun BodyRegisterScreen(
             "Registrars",
             primaryLight,
             tertiaryContainerLight,
-            onClick = onClick,
+            onClick = {},
                 modifier = modifier
                     .height(30.dp)
                     .width(280.dp)

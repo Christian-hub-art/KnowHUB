@@ -88,7 +88,7 @@ fun BodyLoginScreen(
             stringResource(R.string.inciar_sesi_n),
             primaryLight,
             tertiaryContainerLight,
-            onClick = onClick,
+            onClick = {},
             modifier = modifier
                 .height(30.dp)
                 .width(280.dp))
