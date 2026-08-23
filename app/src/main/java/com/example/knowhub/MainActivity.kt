@@ -31,46 +31,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KnowHUBTheme() {
-                Scaffold(
-                    topBar = {KnowhubTopAppBar()}
-                ) {
-
-                    CompleteReviewsScreen(
-                        modifier = Modifier.padding(it)
-                    )
-                }
-
+                KnowHUBApp()
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun KnowhubTopAppBar(){
-    TopAppBar(
-        title = {
-            //Logo alineado a la izquierda
-            Image(
-                painter = painterResource(R.drawable.logoknowhub),
-                contentDescription = "Logo KnowHUB",
-                modifier = Modifier
-                    .size(80.dp)
-                    .padding(start = 16.dp)
-            )
-        },
-        actions = {
-            IconButton(
-                onClick = { },
-                modifier = Modifier
-                    .padding(end = 16.dp)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.iconomenu),
-                    contentDescription = "Icono",
-                    modifier = Modifier.size(30.dp)
-                )
-            }
-        }
-    )
-}

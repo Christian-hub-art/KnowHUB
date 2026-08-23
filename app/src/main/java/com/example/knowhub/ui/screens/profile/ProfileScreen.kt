@@ -42,7 +42,8 @@ fun ProfileScreen(
         var nombre by remember{mutableStateOf("") }
         BodyProfileScreen(
             nombre,
-            onNombreChange = {nombre=it}
+            onNombreChange = {nombre=it},
+            onClick = {}
         )
 
     }
@@ -52,6 +53,7 @@ fun ProfileScreen(
 fun BodyProfileScreen(
     nombre: String,
     onNombreChange: (String) ->Unit,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ){
     Column(
@@ -91,10 +93,7 @@ fun BodyProfileScreen(
             "📸 Subir Foto",
             colorResource(R.color.NegroKnowHUB),
             colorResource(R.color.blancoKnowHUB),
-            onClick = {
-                Log.d("Profile Screen", "Profile button clicked")
-                Log.d("profile screen", "Subir foto")
-            },
+            onClick = onClick,
             modifier = Modifier
                 .height(30.dp)
                 .width(180.dp)
@@ -112,10 +111,7 @@ fun BodyProfileScreen(
         AppButton("\uD83D\uDDD1\uFE0F Eliminar cuenta",
             colorResource(R.color.NegroKnowHUB),
             colorResource(R.color.AmarilloKnowHUB),
-            onClick = {
-                Log.d("Profile Screen", "Profile button clicked")
-                Log.d("Profile screen", "Eliminar Cuenta")
-            },
+            onClick = onClick,
             modifier = Modifier
                 .height(40.dp)
                 .width(180.dp)

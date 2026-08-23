@@ -1,5 +1,6 @@
 package com.example.knowhub.ui.screens.CreateReviews
 
+import android.util.Log
 import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.theme.BangersFont
 import androidx.compose.foundation.background
@@ -49,7 +50,8 @@ fun CreateReviewsScreen(
             onClaseChange = { clase = it },
             onTituloMateriaChange = { tituloMateria = it },
             onNombreProfesorChange = { nombreProfesor = it },
-            onResenaChange = { resena = it }
+            onResenaChange = { resena = it },
+            onClick = {}
         )
     }
 }
@@ -64,6 +66,7 @@ fun BodyCreateReviewsScreen(
     onTituloMateriaChange: (String) -> Unit,
     onNombreProfesorChange: (String) -> Unit,
     onResenaChange: (String) -> Unit,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
 
@@ -99,7 +102,10 @@ fun BodyCreateReviewsScreen(
             onClaseChange = { onClaseChange(it) },
             onTituloMateriaChange = { onTituloMateriaChange(it) },
             onNombreProfesorChange = { onNombreProfesorChange(it) },
-            onResenaChange = { onResenaChange(it) })
+            onResenaChange = { onResenaChange(it) },
+            onClick = onClick
+        )
+
 
         Spacer(modifier = Modifier.height(40.dp))
     }

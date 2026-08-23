@@ -55,7 +55,8 @@ fun RegisterScreen(
             onCorreoElectronicoChange ={correoElectronico= it},
             onNombreUsuarioChange={nombreUsuario= it},
             onContrasenaChange={contrasena= it},
-            onConfirmarContrasenaChange={confirmarContrasena= it}
+            onConfirmarContrasenaChange={confirmarContrasena= it},
+            onClick = {}
         )
     }
 }
@@ -78,6 +79,7 @@ fun BodyRegisterScreen(
     onNombreUsuarioChange: (String) ->Unit,
     onContrasenaChange: (String) ->Unit,
     onConfirmarContrasenaChange: (String) ->Unit,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ){
 
@@ -108,14 +110,7 @@ fun BodyRegisterScreen(
             "Registrars",
             primaryLight,
             tertiaryContainerLight,
-            onClick = {
-                    Log.d("Register screen", "Register button clicked")
-                    Log.d("Register screen", "$nombre")
-                    Log.d("Register screen", "$correoElectronico")
-                    Log.d("Register screen", "$nombreUsuario")
-                    Log.d("Register screen", "$contrasena")
-                    Log.d("Register screen", "$confirmarContrasena")
-                    },
+            onClick = onClick,
                 modifier = modifier
                     .height(30.dp)
                     .width(280.dp)
