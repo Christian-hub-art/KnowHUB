@@ -46,11 +46,26 @@ fun AppNavegation(
     ) {
         composable(route = Screens.Start.route){
             LoginScreen(
+                inciarSesionButtonPressed = {
+                    navController.navigate(Screens.Inicio.route){
+                        popUpTo(0)
+                    }
+                },
+                registerButtonPressed = {
+                    navController.navigate(Screens.Register.route)
+                }
             )
         }
         composable(route = Screens.Register.route){
             RegisterScreen(
-
+                registrarseSesionButtonPressed = {
+                    navController.navigate(Screens.Inicio.route){
+                        popUpTo(0)
+                    }
+                },
+                loginButtonPressed = {
+                    navController.navigate(Screens.Start.route)
+                }
             )
         }
         composable(route = Screens.Options.route){
@@ -103,7 +118,11 @@ fun AppNavegation(
             ReviewScreen()
         }
         composable ( route = Screens.Inicio.route ){
-            InicioScreen()
+            InicioScreen(
+                onSeeAllClick = {
+                    navController.navigate(Screens.Busqueda.route)
+                }
+            )
         }
 
     }

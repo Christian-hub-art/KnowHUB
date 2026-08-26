@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +22,6 @@ import com.example.knowhub.R
 import com.example.knowhub.data.MateriaResumida
 import com.example.knowhub.ui.screens.inicio.components.CajaReseñas
 import com.example.knowhub.ui.theme.ArvoFont
-import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.onTertiaryContainerLight
 import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.theme.primaryLight
@@ -34,16 +32,20 @@ import com.example.knowhub.ui.utils.BackgroundImage
 
 @Composable
 fun InicioScreen(
+    onSeeAllClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
         BackgroundImage()
-        BodyInicioScreen()
+        BodyInicioScreen(
+            onSeeAllClick = onSeeAllClick
+        )
     }
 }
 
 @Composable
 fun BodyInicioScreen(
+    onSeeAllClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -102,7 +104,7 @@ fun BodyInicioScreen(
                 ),
                 colorTexto = primaryLight,
                 colorCaja = primaryContainerLight,
-                onSeeAllClick = { /* Navegación */ }
+                onSeeAllClick = { onSeeAllClick() }
             )}
         item {
             CajaReseñas(
@@ -129,7 +131,7 @@ fun BodyInicioScreen(
                 ),
                 colorTexto = tertiaryContainerLight,
                 colorCaja = secondaryContainerLight,
-                onSeeAllClick = { /* Navegación */ }
+                onSeeAllClick = { onSeeAllClick() }
             )}
         item{
             CajaReseñas(
@@ -156,7 +158,7 @@ fun BodyInicioScreen(
                 ),
                 colorTexto = primaryLight,
                 colorCaja = primaryContainerLight,
-                onSeeAllClick = { /* Navegación */ }
+                onSeeAllClick = { onSeeAllClick() }
             )
         }
         item {
@@ -184,7 +186,7 @@ fun BodyInicioScreen(
                 ),
                 colorTexto = tertiaryContainerLight,
                 colorCaja = secondaryContainerLight,
-                onSeeAllClick = { /* Navegación */ }
+                onSeeAllClick = { onSeeAllClick() }
             )
         }
         item {
@@ -212,7 +214,7 @@ fun BodyInicioScreen(
                 ),
                 colorTexto = primaryLight,
                 colorCaja = primaryContainerLight,
-                onSeeAllClick = { /* Navegación */ }
+                onSeeAllClick = { onSeeAllClick() }
             )
         }
         item{
@@ -240,7 +242,7 @@ fun BodyInicioScreen(
                 ),
                 colorTexto = tertiaryContainerLight,
                 colorCaja = secondaryContainerLight,
-                onSeeAllClick = { /* Navegación */ }
+                onSeeAllClick = { onSeeAllClick() }
             )}
     }
 }
@@ -248,5 +250,7 @@ fun BodyInicioScreen(
 @Composable
 @Preview(showSystemUi = true)
 fun InicioScreenPreview() {
-    InicioScreen()
+    InicioScreen(
+        onSeeAllClick = {}
+    )
 }

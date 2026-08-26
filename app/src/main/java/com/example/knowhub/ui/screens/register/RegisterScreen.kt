@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,8 @@ import com.example.knowhub.ui.utils.BackgroundImage
 
 @Composable
 fun RegisterScreen(
+    registrarseSesionButtonPressed: () -> Unit,
+    loginButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
     Box(){
@@ -56,7 +59,8 @@ fun RegisterScreen(
             onNombreUsuarioChange={nombreUsuario= it},
             onContrasenaChange={contrasena= it},
             onConfirmarContrasenaChange={confirmarContrasena= it},
-            onClick = {}
+            registrarseSesionButtonPressed = registrarseSesionButtonPressed,
+            loginButtonPressed = loginButtonPressed
         )
     }
 }
@@ -64,7 +68,10 @@ fun RegisterScreen(
 @Composable
 @Preview(showBackground = true)
 fun RegisterScreenPreview(){
-    RegisterScreen()
+    RegisterScreen(
+        registrarseSesionButtonPressed = {},
+        loginButtonPressed = {}
+    )
 }
 
 @Composable
@@ -79,7 +86,8 @@ fun BodyRegisterScreen(
     onNombreUsuarioChange: (String) ->Unit,
     onContrasenaChange: (String) ->Unit,
     onConfirmarContrasenaChange: (String) ->Unit,
-    onClick: () -> Unit = {},
+    registrarseSesionButtonPressed: () -> Unit,
+    loginButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
 
@@ -107,10 +115,12 @@ fun BodyRegisterScreen(
         Spacer(modifier = Modifier.weight(10.0F))
 
         AppButton(
-            "Registrars",
+            "Registrare",
             primaryLight,
             tertiaryContainerLight,
-            onClick = {},
+            onClick = {
+                registrarseSesionButtonPressed()
+            },
                 modifier = modifier
                     .height(30.dp)
                     .width(280.dp)
@@ -124,10 +134,19 @@ fun BodyRegisterScreen(
                 fontFamily = BangersFont)
 
         Spacer(modifier = Modifier.weight(10.0F))
-        Text(
-            "¿Ya tienes cuentas?  Login",
-            fontFamily = BangersFont
-        )
+
+
+        TextButton(
+            onClick = {
+                loginButtonPressed()
+            }
+        ) {
+            Text(
+                text = "¿Ya tienes cuentas?  Login",
+                fontFamily = BangersFont,
+                color = tertiaryContainerLight
+            )
+        }
 
         Spacer(modifier = Modifier.weight(1.0f))
 
