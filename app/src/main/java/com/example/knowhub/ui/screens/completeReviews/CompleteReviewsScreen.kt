@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
+import com.example.knowhub.data.local.localGeneralReviewProvider
 import com.example.knowhub.ui.screens.completeReviews.components.CajaPrincipal
 import com.example.knowhub.ui.screens.completeReviews.components.Review
 import com.example.knowhub.ui.theme.*
@@ -27,36 +28,34 @@ import com.example.knowhub.ui.utils.BarraArriba
 
 @Composable
 fun CompleteReviewsScreen(
+    generalReviewId: Int,
     modifier: Modifier = Modifier
 ){
     Box(
         modifier = modifier
     ){
         BackgroundImage()
-        BodyCompleteReviewsScreen()
+        BodyCompleteReviewsScreen(generalReviewId)
     }
 }
 
 @Composable
 fun BodyCompleteReviewsScreen(
+    generalReviewId: Int,
     modifier: Modifier = Modifier
 ){
+    val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
     ) {
         Spacer(modifier = modifier.height(35.dp))
+        if (generalReview != null){
         CajaPrincipal(
-            "15 Nov 2026",
-            "1342",
-            "Desarrollo Movil",
-            "Angarita",
-            4,
-            60,
-            listOf("#Integrales", "#Derivadas", "#Algebra"),
-            "Media",
+            generalReview,
             modifier = Modifier.width(350.dp)
         )
+            }
         Spacer(modifier = modifier.height(30.dp))
         Row() {
             Box(modifier = modifier
@@ -102,6 +101,7 @@ fun BodyCompleteReviewsScreen(
                 "Dana Trujillo",
                 4,
                 "Explica super y califica suave!!!",
+                7,
                 5
             )
             Spacer(modifier = modifier.height(20.dp))
@@ -110,7 +110,8 @@ fun BodyCompleteReviewsScreen(
                 "Sebastian Gaibor",
                 2,
                 "Materia pesada, es importante llevar la calculadora SIEMPRE",
-                30
+                30,
+                6
             )
         }
 
@@ -128,5 +129,5 @@ fun BodyCompleteReviewsScreen(
 @Composable
 @Preview(showBackground = true)
 fun CompleteReviewsScreenPreview(){
-    CompleteReviewsScreen()
+    CompleteReviewsScreen(5)
 }
