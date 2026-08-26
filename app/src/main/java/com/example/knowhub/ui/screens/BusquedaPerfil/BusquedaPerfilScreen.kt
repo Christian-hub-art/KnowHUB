@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -62,79 +64,84 @@ fun BodyBusquedaPerfilScrenn(
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
 
-        AppLabelBig(
-            "Laura",
-            colorTexto = primaryLight,
-            color = tertiaryContainerLight,
-            modifier = Modifier
-                .width(350.dp)
-                .height(45.dp)
-        )
+        item {
 
-        Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-        InformacionPerfil()
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Row(
-            modifier = modifier.width(320.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Filled.School,
-                contentDescription = "Icono graduado",
-                modifier = Modifier.size(40.dp)
+            AppLabelBig(
+                "Laura",
+                colorTexto = primaryLight,
+                color = tertiaryContainerLight,
+                modifier = Modifier
+                    .width(350.dp)
+                    .height(45.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                "Ingenieria de Sistemas",
-                fontFamily = BangersFont
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            InformacionPerfil()
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier.width(320.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Icon(
+                    imageVector = Icons.Filled.School,
+                    contentDescription = "Icono graduado",
+                    modifier = Modifier.size(40.dp)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    "Ingenieria de Sistemas",
+                    fontFamily = BangersFont
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                AppButton(
+                    "Seguir",
+                    colorBoton = primaryContainerLight,
+                    onClick = onClick
+                )
+            }
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            AppLabel(
+                "Reseñas Publicadas",
+                colorTexto = tertiaryContainerLight,
+                color = primaryLight,
+                modifier = Modifier.width(350.dp)
             )
-            Spacer(modifier = Modifier.weight(1f))
-            AppButton(
-                "Seguir",
-                colorBoton = primaryContainerLight,
-                onClick = onClick
-            )
+
+            Spacer(modifier = Modifier.height(20.dp))
         }
 
-        Spacer(modifier = Modifier.height(40.dp))
 
-        AppLabel(
-            "Reseñas Publicadas",
-            colorTexto = tertiaryContainerLight,
-            color = primaryLight,
-            modifier = Modifier
-                .width(350.dp)
-        )
+        items(localGeneralReviewProvider.generalReviews) { review ->
 
-        Spacer(modifier = Modifier.height(20.dp))
+            CajaBusqueda(
+                review,
+                {
+                    // TODO: acción al hacer click
+                },
+                modifier = Modifier.width(350.dp)
+            )
 
-        CajaBusqueda(
-            localGeneralReviewProvider.generalReviews[1],
-            {/*TODO*/},
-            modifier = Modifier.width(350.dp))
-        Spacer(modifier = Modifier.height(15.dp))
-
-        CajaBusqueda(
-            localGeneralReviewProvider.generalReviews[2],
-            {/*TODO*/},
-            modifier = Modifier.width(350.dp))
-
-
-
+            Spacer(modifier = Modifier.height(15.dp))
+        }
     }
 }
-
-
-
 
 
 @Composable
