@@ -84,7 +84,12 @@ fun AppNavegation(
         ){
             val generalReviewId = it.arguments?.getInt("generalReviewId") ?: 0
 
-            CompleteReviewsScreen(generalReviewId)
+            CompleteReviewsScreen(
+                generalReviewId,
+                escribirBottonPressed = {
+                    navController.navigate(Screens.CreateReviews.route)
+                }
+            )
         }
         composable ( route = Screens.CreateReviews.route ){
             CreateReviewsScreen()

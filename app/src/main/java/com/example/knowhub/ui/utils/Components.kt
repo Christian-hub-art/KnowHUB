@@ -271,7 +271,7 @@ fun AppButtonBig(
     modifier: Modifier = Modifier
 ) {
     Button(
-        onClick = {},
+        onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = colorBoton
         ),

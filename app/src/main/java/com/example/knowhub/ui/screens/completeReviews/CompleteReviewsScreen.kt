@@ -30,19 +30,22 @@ import com.example.knowhub.ui.utils.BarraArriba
 @Composable
 fun CompleteReviewsScreen(
     generalReviewId: Int,
+    escribirBottonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
     Box(
         modifier = modifier
     ){
         BackgroundImage()
-        BodyCompleteReviewsScreen(generalReviewId)
+        BodyCompleteReviewsScreen(generalReviewId,
+            escribirBottonPressed = escribirBottonPressed)
     }
 }
 
 @Composable
 fun BodyCompleteReviewsScreen(
     generalReviewId: Int,
+    escribirBottonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
     val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId }
@@ -127,6 +130,9 @@ fun BodyCompleteReviewsScreen(
                     stringResource(R.string.escribe_tu_rese_a),
                     secondaryContainerLight,
                     tertiaryContainerLight,
+                    onClick = {
+                        escribirBottonPressed()
+                              },
                     modifier = Modifier
                         .width(300.dp)
                 )
@@ -138,5 +144,6 @@ fun BodyCompleteReviewsScreen(
 @Composable
 @Preview(showBackground = true)
 fun CompleteReviewsScreenPreview(){
-    CompleteReviewsScreen(5)
+    CompleteReviewsScreen(5,
+        escribirBottonPressed = {})
 }
