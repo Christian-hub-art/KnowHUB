@@ -47,6 +47,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import com.example.knowhub.ui.theme.ArvoFont
@@ -327,20 +328,15 @@ fun FormTextField(
 
 @Composable
 fun CajaBusqueda(
-    fecha: String,
-    idMateria: String,
-    nombreMateria: String,
-    nombreProfesor: String,
-    estrellas: Int,
-    numeroResenas: Int,
-    tags: List<String>,
-    dificultad: String,
-    modifier: Modifier = Modifier
+    generalReview : GeneralReview,
+    generalReviewPressed: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .background(primaryLight)
             .border(2.dp, tertiaryContainerLight)
+            .clickable { generalReviewPressed (generalReview.id) },
     ) {
         Column {
             // Header Azul
@@ -353,16 +349,10 @@ fun CajaBusqueda(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "CLASE: $idMateria",
+                    text = "CLASE: ${generalReview.codigoAsignatura}",
                     color = primaryLight,
                     fontFamily = BangersFont,
                     fontSize = 24.sp
-                )
-                Text(
-                    text = fecha,
-                    color = primaryLight,
-                    fontFamily = BangersFont,
-                    fontSize = 20.sp
                 )
             }
 
@@ -374,7 +364,7 @@ fun CajaBusqueda(
             ) {
                 Column {
                     Text(
-                        text = nombreMateria,
+                        text = generalReview.nombreMateria,
                         fontFamily = BangersFont,
                         fontSize = 22.sp,
                         fontStyle = FontStyle.Italic,
@@ -387,7 +377,7 @@ fun CajaBusqueda(
                         Text(text = "👩‍🏫", fontSize = 16.sp)
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "Prof. $nombreProfesor",
+                            text = "Prof. ${generalReview.nombreProfesor}",
                             fontSize = 16.sp,
                             color = tertiaryContainerLight
                         )
@@ -396,14 +386,14 @@ fun CajaBusqueda(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = generarEstrellas(estrellas),
+                        text = generarEstrellas(generalReview.calificacionMedia),
                         fontSize = 20.sp
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "Basado en $numeroResenas reseñas",
+                        text = "Basado en ${generalReview.cantidadReviews} reseñas",
                         fontSize = 14.sp,
                         color = tertiaryContainerLight
                     )
@@ -411,7 +401,7 @@ fun CajaBusqueda(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        tags.forEach { tag ->
+                        generalReview.Hashtags.forEach { tag ->
                             Box(
                                 modifier = Modifier
                                     .background(primaryContainerLight)
@@ -442,7 +432,7 @@ fun CajaBusqueda(
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Text(
-                            text = dificultad.uppercase(),
+                            text = generalReview.dificultadMedia.uppercase(),
                             fontFamily = BangersFont,
                             fontSize = 12.sp,
                             color = tertiaryContainerLight,

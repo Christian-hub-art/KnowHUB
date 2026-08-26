@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -49,80 +50,88 @@ fun BodyCompleteReviewsScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
     ) {
-        Spacer(modifier = modifier.height(35.dp))
-        if (generalReview != null){
-        CajaPrincipal(
-            generalReview,
-            modifier = Modifier.width(350.dp)
-        )
+        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
+            item {
+
+                Spacer(modifier = modifier.height(35.dp))
+                if (generalReview != null) {
+                    CajaPrincipal(
+                        generalReview,
+                        modifier = Modifier.width(350.dp)
+                    )
+                }
+                Spacer(modifier = modifier.height(30.dp))
+                Row() {
+                    Box(
+                        modifier = modifier
+                            .background(tertiaryContainerLight)
+                            .height(2.5F.dp)
+                            .width(150.dp)
+                    ) {}
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = stringResource(R.string.rese_as),
+                        fontSize = 17.sp,
+                        fontFamily = BangersFont
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Box(
+                        modifier = modifier
+                            .background(tertiaryContainerLight)
+                            .height(2.5F.dp)
+                            .width(150.dp)
+                    ) {}
+                }
+                Spacer(modifier = modifier.height(20.dp))
+                Row(
+                    modifier = Modifier.width(350.dp)
+                ) {
+                    AppButton(
+                        stringResource(R.string.para_ti),
+                        primaryLight,
+                        primaryContainerLight,
+                        modifier = Modifier.height(40.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    AppButton(
+                        stringResource(R.string.siguiendo),
+                        tertiaryContainerLight,
+                        secondaryContainerLight,
+                        modifier = Modifier.height(40.dp)
+                    )
+                }
+                Spacer(modifier = modifier.height(20.dp))
+
+                Column(modifier = Modifier.width(350.dp)) {
+                    Review(
+                        "15 Nov 2026",
+                        "Dana Trujillo",
+                        4,
+                        "Explica super y califica suave!!!",
+                        7,
+                        5
+                    )
+                    Spacer(modifier = modifier.height(20.dp))
+                    Review(
+                        "20 Nov 2026",
+                        "Sebastian Gaibor",
+                        2,
+                        "Materia pesada, es importante llevar la calculadora SIEMPRE",
+                        30,
+                        6
+                    )
+                }
+
+                Spacer(modifier = modifier.height(100.dp))
+                AppButtonBig(
+                    stringResource(R.string.escribe_tu_rese_a),
+                    secondaryContainerLight,
+                    tertiaryContainerLight,
+                    modifier = Modifier
+                        .width(300.dp)
+                )
             }
-        Spacer(modifier = modifier.height(30.dp))
-        Row() {
-            Box(modifier = modifier
-                .background(tertiaryContainerLight)
-                .height(2.5F.dp)
-                .width(150.dp)
-            ) {}
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = stringResource(R.string.rese_as),
-                fontSize = 17.sp,
-                fontFamily = BangersFont
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Box(modifier = modifier
-                .background(tertiaryContainerLight)
-                .height(2.5F.dp)
-                .width(150.dp)
-            ) {}
         }
-        Spacer(modifier = modifier.height(20.dp))
-        Row(modifier = Modifier.width(350.dp)
-        ) {
-            AppButton(
-                stringResource(R.string.para_ti),
-                primaryLight,
-                primaryContainerLight,
-                modifier = Modifier.height(40.dp)
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            AppButton(
-                stringResource(R.string.siguiendo),
-                tertiaryContainerLight,
-                secondaryContainerLight,
-                modifier = Modifier.height(40.dp)
-            )
-        }
-        Spacer(modifier = modifier.height(20.dp))
-
-        Column(modifier= Modifier.width(350.dp)) {
-            Review(
-                "15 Nov 2026",
-                "Dana Trujillo",
-                4,
-                "Explica super y califica suave!!!",
-                7,
-                5
-            )
-            Spacer(modifier = modifier.height(20.dp))
-            Review(
-                "20 Nov 2026",
-                "Sebastian Gaibor",
-                2,
-                "Materia pesada, es importante llevar la calculadora SIEMPRE",
-                30,
-                6
-            )
-        }
-
-        Spacer(modifier = Modifier.weight(1f))
-        AppButtonBig(
-            stringResource(R.string.escribe_tu_rese_a),
-            secondaryContainerLight,
-            tertiaryContainerLight,
-            modifier = Modifier
-                .width(300.dp)
-        )
     }
 }
 
