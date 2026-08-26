@@ -37,6 +37,7 @@ import com.example.knowhub.ui.utils.FormTextField
 fun CuadroInformaciónPersonal(
     nombre: String,
     onNombreChange: (String) ->Unit,
+    onClick:() -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val colorSombra = colorResource(R.color.NegroKnowHUB)
@@ -104,10 +105,7 @@ fun CuadroInformaciónPersonal(
                     "💾 GUARDAR CAMBIOS",
                     colorResource(R.color.NegroKnowHUB),
                     colorResource(R.color.blancoKnowHUB),
-                    onClick = {
-                        Log.d("Profile Screen", "Profile button clicked")
-                        Log.d("Profile screen", "Guardar cambios")
-                    },
+                    onClick = {},
 
                     modifier = Modifier
                         .height(35.dp)
@@ -118,10 +116,7 @@ fun CuadroInformaciónPersonal(
                     "X CANCELAR",
                     colorResource(R.color.NegroKnowHUB),
                     colorResource(R.color.blancoKnowHUB),
-                    onClick = {
-                        Log.d("Profile Screen", "Profile button clicked")
-                        Log.d("Profile screen", "X Cancelar")
-                    },
+                    onClick = {},
                     modifier = Modifier
                         .height(35.dp)
                         .width(150.dp)
@@ -135,10 +130,7 @@ fun CuadroInformaciónPersonal(
                 "CAMBIAR CONTRASEÑA",
                 colorResource(R.color.blancoKnowHUB),
                 colorResource(R.color.AzulKnowHUB),
-                onClick = {
-                    Log.d("Profile Screen", "Profile button clicked")
-                    Log.d("Profile screen", "Cmabiar contraeña")
-                },
+                onClick = {},
                 modifier = Modifier
                     .height(35.dp)
                     .width(150.dp)
@@ -151,10 +143,7 @@ fun CuadroInformaciónPersonal(
                 "CAMBIAR CORREO ELECTRÓNICO",
                 colorResource(R.color.blancoKnowHUB),
                 colorResource(R.color.AzulKnowHUB),
-                onClick = {
-                    Log.d("Profile Screen", "Profile button clicked")
-                    Log.d("Profile screen", "Cambiar correo")
-                },
+                onClick = {},
                 modifier = Modifier
                     .height(35.dp)
                     .width(200.dp)

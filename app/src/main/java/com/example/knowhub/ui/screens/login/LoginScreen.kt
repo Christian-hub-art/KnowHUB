@@ -42,7 +42,8 @@ fun LoginScreen(
             nombreOCorreo,
             contrasena,
             onCorreoOUsuarioChange = {nombreOCorreo = it},
-            onContrasenaChange = {contrasena= it}
+            onContrasenaChange = {contrasena= it},
+            onClick = {}
         )
     }
 }
@@ -58,6 +59,7 @@ fun BodyLoginScreen(
     contrasena: String,
     onCorreoOUsuarioChange: (String) ->Unit,
     onContrasenaChange: (String) ->Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
 
@@ -86,12 +88,7 @@ fun BodyLoginScreen(
             stringResource(R.string.inciar_sesi_n),
             primaryLight,
             tertiaryContainerLight,
-            onClick = {
-                Log.d("Login Screen", "Login button clicked")
-                Log.d("Login screen", "$correoOUsuario")
-                Log.d("Login screen", "$contrasena")
-
-            },
+            onClick = {},
             modifier = modifier
                 .height(30.dp)
                 .width(280.dp))

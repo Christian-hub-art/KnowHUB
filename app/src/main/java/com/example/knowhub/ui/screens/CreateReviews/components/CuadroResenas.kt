@@ -48,6 +48,7 @@ fun CuadroResenas(
     onTituloMateriaChange: (String) -> Unit,
     onNombreProfesorChange: (String) -> Unit,
     onResenaChange: (String) -> Unit,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     // Cuadro de Reseña
@@ -161,10 +162,7 @@ fun CuadroResenas(
                         textoButon = "X CANCELAR",
                         colorTexto = tertiaryContainerLight,
                         colorBoton =primaryLight,
-                        onClick = {
-                            Log.d("CreateReview screen", "CreateReview button clicked")
-                            Log.d("CreateReview screen", "Cancelar")
-                        },
+                        onClick = {},
                         modifier = Modifier
                             .height(40.dp)
                             .width(120.dp)
@@ -176,14 +174,7 @@ fun CuadroResenas(
                         textoButon = "PUBLICAR",
                         colorTexto = primaryLight,
                         colorBoton = primaryContainerLight,
-                        onClick = {
-                            Log.d("CreateReview screen", "CreateReview button clicked")
-                            Log.d("CreateReview screen", "Publicar")
-                            Log.d("CreateReview screen", "$clase")
-                            Log.d("CreateReview screen", "$tituloMateria")
-                            Log.d("CreateReview screen", "$nombreProfesor")
-                            Log.d("CreateReview screen", "$resena")
-                        },
+                        onClick = {},
                         modifier = Modifier
                             .height(40.dp)
                             .width(120.dp)

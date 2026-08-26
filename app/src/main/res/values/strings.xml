@@ -24,4 +24,6 @@
     <string name="siguiendo">Siguiendo</string>
     <string name="inciar_sesi_n">Inciar sesión</string>
     <string name="correo_electr_nico_o_usuario">correo_electronico_usuario</string>
+    <string name="filtros_aplicados">Filtros Aplicados</string>
+    <string name="carrera_nom_materia_idmateria_nom_profesor">Carrera,Nom.materia,Idmateria,Nom.profesor</string>
 </resources>
