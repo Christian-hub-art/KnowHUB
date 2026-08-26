@@ -8,10 +8,30 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.knowhub.ui.screens.BusquedaFiltro.BusquedaScreen
+import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsScreen
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
+import com.example.knowhub.ui.screens.inicio.InicioScreen
 import com.example.knowhub.ui.screens.login.LoginScreen
+import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
+import com.example.knowhub.ui.screens.options.OptionsScreen
+import com.example.knowhub.ui.screens.profile.ProfileScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
+import com.example.knowhub.ui.screens.reviews.ReviewScreen
 
+sealed class Screens(val route: String) {
+    object Start : Screens("start")
+    object Register : Screens("register")
+    object Options : Screens("optionsScreens")
+    object Busqueda : Screens("busqueda")
+    object CompleteReviews : Screens("completeReviews/{generalReviewId}") {
+        fun createRoute(id: Int) = "completeReviews/$id"
+    }
+    object CreateReviews : Screens("createReviews")
+    object Notifications : Screens("notifications")
+    object Profile : Screens("profile")
+    object Reviews : Screens("reviews")
+    object Inicio : Screens("inicio")
+}
 
 @Composable
 fun AppNavegation(
@@ -21,43 +41,69 @@ fun AppNavegation(
 
     NavHost(
         navController = navController,
-        startDestination = "start",
+        startDestination = Screens.Start.route,
         modifier = modifier
     ) {
-        composable(route = "start"){
+        composable(route = Screens.Start.route){
             LoginScreen(
             )
         }
-        composable(route = "register"){
+        composable(route = Screens.Register.route){
             RegisterScreen(
 
             )
         }
-        composable ( route = "busqueda" ){
-            BusquedaScreen(
-                generalReviewPressed = { generalReviewId ->
-                    navController.navigate("completeReviews/$generalReviewId")
+        composable(route = Screens.Options.route){
+            OptionsScreen(
+                inicioButtonPressed = {
+                    navController.navigate(Screens.Inicio.route)
+                },
+                profileButtonPressed = {
+                    navController.navigate(Screens.Profile.route)
+                },
+                previewButtonPressed = {
+                    navController.navigate(Screens.Reviews.route)
+                },
+                notificationsButtonPressed = {
+                    navController.navigate(Screens.Notifications.route)
+                },
+                createReviewsButtonPressed = {
+                    navController.navigate(Screens.CreateReviews.route)
+                },
+                buscarButtonPressed = {
+                    navController.navigate(Screens.Busqueda.route)
                 }
             )
         }
-        composable ( route = "completeReviews/{generalReviewId}",
+
+        composable ( route = Screens.Busqueda.route ){
+            BusquedaScreen(
+                generalReviewPressed = { generalReviewId ->
+                    navController.navigate(Screens.CompleteReviews.createRoute(generalReviewId))
+                }
+            )
+        }
+        composable ( route = Screens.CompleteReviews.route,
             arguments = listOf(navArgument("generalReviewId"){type = NavType.IntType})
         ){
             val generalReviewId = it.arguments?.getInt("generalReviewId") ?: 0
 
             CompleteReviewsScreen(generalReviewId)
         }
-        composable ( route = "createReviews" ){
-
+        composable ( route = Screens.CreateReviews.route ){
+            CreateReviewsScreen()
         }
-        composable ( route = "notifications" ){
-
+        composable ( route = Screens.Notifications.route ){
+            NotificatonsScreen()
         }
-        composable ( route = "profile" ){
-
+        composable ( route = Screens.Profile.route ){
+            ProfileScreen()
         }
-        composable ( route = "reviews" ){
-
+        composable ( route = Screens.Reviews.route ){
+            ReviewScreen()
+        }
+        composable ( route = Screens.Inicio.route ){
+            InicioScreen()
         }
 
     }

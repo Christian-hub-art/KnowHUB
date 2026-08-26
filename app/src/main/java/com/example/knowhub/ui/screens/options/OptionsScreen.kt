@@ -30,19 +30,39 @@ import com.example.knowhub.ui.utils.BarraArriba
 
 @Composable
 fun OptionsScreen(
+    inicioButtonPressed: () -> Unit,
+    profileButtonPressed: () -> Unit,
+    previewButtonPressed: () -> Unit,
+    notificationsButtonPressed: () -> Unit,
+    createReviewsButtonPressed: () -> Unit,
+    buscarButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
     ) {
         BackgroundImage()
-        BodyOptionsScreen()
+        BodyOptionsScreen(
+            inicioButtonPressed = inicioButtonPressed,
+            profileButtonPressed = profileButtonPressed,
+            previewButtonPressed = previewButtonPressed,
+            notificationsButtonPressed = notificationsButtonPressed,
+            createReviewsButtonPressed = createReviewsButtonPressed,
+            buscarButtonPressed = buscarButtonPressed
+
+        )
 
     }
 }
 
 @Composable
 fun BodyOptionsScreen(
+    inicioButtonPressed: () -> Unit,
+    profileButtonPressed: () -> Unit,
+    previewButtonPressed: () -> Unit,
+    notificationsButtonPressed: () -> Unit,
+    createReviewsButtonPressed: () -> Unit,
+    buscarButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
     Box(modifier = modifier) {
@@ -108,7 +128,14 @@ fun BodyOptionsScreen(
         Row(modifier= Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuOpciones()
+            MenuOpciones(
+                inicioButtonPressed = inicioButtonPressed,
+                profileButtonPressed = profileButtonPressed,
+                previewButtonPressed = previewButtonPressed,
+                notificationsButtonPressed = notificationsButtonPressed,
+                createReviewsButtonPressed = createReviewsButtonPressed,
+                buscarButtonPressed = buscarButtonPressed
+            )
         }
     }
 }
@@ -119,6 +146,13 @@ fun BodyOptionsScreen(
 @Composable
 fun OptionsScreenPreview() {
     KnowHUBTheme {
-        OptionsScreen()
+        OptionsScreen(
+            inicioButtonPressed = {},
+            profileButtonPressed = {},
+            previewButtonPressed = {},
+            notificationsButtonPressed = {},
+            createReviewsButtonPressed = {},
+            buscarButtonPressed = {}
+        )
     }
 }

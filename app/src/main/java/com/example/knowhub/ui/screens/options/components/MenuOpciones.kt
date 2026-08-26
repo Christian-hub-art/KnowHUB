@@ -30,6 +30,12 @@ import com.example.knowhub.ui.theme.*
 
 @Composable
 fun MenuOpciones(
+    inicioButtonPressed: () -> Unit,
+    profileButtonPressed: () -> Unit,
+    previewButtonPressed: () -> Unit,
+    notificationsButtonPressed: () -> Unit,
+    createReviewsButtonPressed: () -> Unit,
+    buscarButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier
@@ -45,7 +51,7 @@ fun MenuOpciones(
         Spacer(modifier = Modifier.weight(0.4F))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ },
+            .clickable { inicioButtonPressed() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -64,7 +70,7 @@ fun MenuOpciones(
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ },
+            .clickable { profileButtonPressed() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -83,7 +89,7 @@ fun MenuOpciones(
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ },
+            .clickable { previewButtonPressed() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -102,7 +108,7 @@ fun MenuOpciones(
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ },
+            .clickable { notificationsButtonPressed() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -121,7 +127,7 @@ fun MenuOpciones(
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ },
+            .clickable { createReviewsButtonPressed() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -140,7 +146,7 @@ fun MenuOpciones(
         Spacer(modifier = Modifier.weight(0.1F))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ },
+            .clickable { buscarButtonPressed() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -177,5 +183,12 @@ fun MenuOpciones(
 @Composable
 @Preview
 fun MenuOpcionesPreview() {
-    MenuOpciones()
+    MenuOpciones(
+        inicioButtonPressed = {},
+        profileButtonPressed = {},
+        previewButtonPressed = {},
+        notificationsButtonPressed = {},
+        createReviewsButtonPressed = {},
+        buscarButtonPressed = {}
+    )
 }
