@@ -75,7 +75,7 @@ fun LogoApp(
     Image(
         painter = painterResource(R.drawable.logoknowhub),
         contentDescription = "Logo KnowHUB",
-        modifier = modifier.height(250.dp).width(250.dp)
+        modifier = modifier.height(210.dp).width(250.dp)
 
     )
 }

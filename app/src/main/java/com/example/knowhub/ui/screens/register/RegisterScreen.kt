@@ -99,8 +99,6 @@ fun BodyRegisterScreen(
         SignUPMessage()
         Spacer(modifier = Modifier.weight(1.0f))
 
-
-
         TextosField(nombre,
             correoElectronico,
             nombreUsuario,
@@ -112,10 +110,10 @@ fun BodyRegisterScreen(
             onContrasenaChange={onContrasenaChange(it)},
             onConfirmarContrasenaChange={onConfirmarContrasenaChange(it)})
 
-        Spacer(modifier = Modifier.weight(10.0F))
+        Spacer(modifier = Modifier.weight(5.0F))
 
         AppButton(
-            "Registrare",
+            "Registrarse",
             primaryLight,
             tertiaryContainerLight,
             onClick = {
@@ -133,7 +131,7 @@ fun BodyRegisterScreen(
             Text("Las contraseñas no coinciden",
                 fontFamily = BangersFont)
 
-        Spacer(modifier = Modifier.weight(10.0F))
+        Spacer(modifier = Modifier.weight(5.0F))
 
 
         TextButton(
