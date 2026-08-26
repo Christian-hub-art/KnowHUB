@@ -73,6 +73,8 @@ fun Materia(
             fontWeight = FontWeight.Bold,
             fontFamily = ArvoFont
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
