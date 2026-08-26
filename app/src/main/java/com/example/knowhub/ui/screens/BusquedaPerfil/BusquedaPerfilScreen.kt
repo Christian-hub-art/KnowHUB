@@ -35,6 +35,7 @@ import com.example.knowhub.ui.utils.BackgroundImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.Icon
+import com.example.knowhub.data.local.localGeneralReviewProvider
 import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.CajaBusqueda
@@ -117,26 +118,14 @@ fun BodyBusquedaPerfilScrenn(
         Spacer(modifier = Modifier.height(20.dp))
 
         CajaBusqueda(
-            "15 Nov 2026",
-            "1342",
-            "Desarrollo Movil",
-            "Angarita",
-            4,
-            60,
-            listOf("#Integrales", "#Derivadas", "#Algebra"),
-            "Media",
+            localGeneralReviewProvider.generalReviews[1],
+            {/*TODO*/},
             modifier = Modifier.width(350.dp))
         Spacer(modifier = Modifier.height(15.dp))
 
         CajaBusqueda(
-            "15 Nov 2026",
-            "1342",
-            "Desarrollo Movil",
-            "Angarita",
-            4,
-            60,
-            listOf("#Integrales", "#Derivadas", "#Algebra"),
-            "Media",
+            localGeneralReviewProvider.generalReviews[2],
+            {/*TODO*/},
             modifier = Modifier.width(350.dp))
 
 
