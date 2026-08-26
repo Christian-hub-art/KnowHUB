@@ -3,38 +3,90 @@ package com.example.knowhub
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.knowhub.ui.Navegation.AppNavegation
+import com.example.knowhub.ui.Navegation.Screens
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
+import com.example.knowhub.ui.screens.options.components.MenuOpciones
+import kotlinx.coroutines.launch
 
 @Composable
 fun KnowHUBApp (){
+    val navController = rememberNavController()
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-    Scaffold(
-        topBar = {KnowhubTopAppBar()}
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            MenuOpciones(
+                inicioButtonPressed = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screens.Inicio.route)
+                },
+                profileButtonPressed = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screens.Profile.route)
+                },
+                previewButtonPressed = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screens.Reviews.route)
+                },
+                notificationsButtonPressed = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screens.Notifications.route)
+                },
+                createReviewsButtonPressed = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screens.CreateReviews.route)
+                },
+                buscarButtonPressed = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screens.Busqueda.route)
+                },
+                cerrarSesionButtonPressed = {
+                    scope.launch { drawerState.close() }
+                    navController.navigate(Screens.Start.route)
+                }
+            )
+        }
     ) {
-        val navController = rememberNavController()
-        AppNavegation(
-            navController = navController,
-            modifier = Modifier.padding(it)
-        )
+        Scaffold(
+            topBar = {
+                KnowhubTopAppBar(
+                    onMenuClick = {
+                        scope.launch { drawerState.open() }
+                    }
+                )
+            }
+        ) {
+            AppNavegation(
+                navController = navController,
+                modifier = Modifier.padding(it)
+            )
+        }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun KnowhubTopAppBar(){
+fun KnowhubTopAppBar(
+    onMenuClick: () -> Unit
+){
     TopAppBar(
         title = {
             //Logo alineado a la izquierda
@@ -48,7 +100,7 @@ fun KnowhubTopAppBar(){
         },
         actions = {
             IconButton(
-                onClick = { },
+                onClick = onMenuClick,
                 modifier = Modifier
                     .padding(end = 16.dp)
             ) {

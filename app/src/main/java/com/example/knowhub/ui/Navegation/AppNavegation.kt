@@ -69,26 +69,7 @@ fun AppNavegation(
             )
         }
         composable(route = Screens.Options.route){
-            OptionsScreen(
-                inicioButtonPressed = {
-                    navController.navigate(Screens.Inicio.route)
-                },
-                profileButtonPressed = {
-                    navController.navigate(Screens.Profile.route)
-                },
-                previewButtonPressed = {
-                    navController.navigate(Screens.Reviews.route)
-                },
-                notificationsButtonPressed = {
-                    navController.navigate(Screens.Notifications.route)
-                },
-                createReviewsButtonPressed = {
-                    navController.navigate(Screens.CreateReviews.route)
-                },
-                buscarButtonPressed = {
-                    navController.navigate(Screens.Busqueda.route)
-                }
-            )
+            OptionsScreen()
         }
 
         composable ( route = Screens.Busqueda.route ){

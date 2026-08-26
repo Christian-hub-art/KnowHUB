@@ -36,6 +36,7 @@ fun MenuOpciones(
     notificationsButtonPressed: () -> Unit,
     createReviewsButtonPressed: () -> Unit,
     buscarButtonPressed: () -> Unit,
+    cerrarSesionButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier
@@ -165,7 +166,7 @@ fun MenuOpciones(
         Spacer(modifier = Modifier.weight(1F))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ },
+            .clickable { cerrarSesionButtonPressed() },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
@@ -189,6 +190,7 @@ fun MenuOpcionesPreview() {
         previewButtonPressed = {},
         notificationsButtonPressed = {},
         createReviewsButtonPressed = {},
-        buscarButtonPressed = {}
+        buscarButtonPressed = {},
+        cerrarSesionButtonPressed = {}
     )
 }

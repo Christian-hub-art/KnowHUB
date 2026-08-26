@@ -4,13 +4,12 @@ package com.example.knowhub.ui.screens.options
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,57 +19,34 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
-import com.example.knowhub.ui.screens.options.components.MenuOpciones
-import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
-import com.example.knowhub.ui.utils.BarraArriba
 
 @Composable
 fun OptionsScreen(
-    inicioButtonPressed: () -> Unit,
-    profileButtonPressed: () -> Unit,
-    previewButtonPressed: () -> Unit,
-    notificationsButtonPressed: () -> Unit,
-    createReviewsButtonPressed: () -> Unit,
-    buscarButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
     ) {
         BackgroundImage()
-        BodyOptionsScreen(
-            inicioButtonPressed = inicioButtonPressed,
-            profileButtonPressed = profileButtonPressed,
-            previewButtonPressed = previewButtonPressed,
-            notificationsButtonPressed = notificationsButtonPressed,
-            createReviewsButtonPressed = createReviewsButtonPressed,
-            buscarButtonPressed = buscarButtonPressed
-
-        )
-
+        BodyOptionsScreen()
     }
 }
 
 @Composable
 fun BodyOptionsScreen(
-    inicioButtonPressed: () -> Unit,
-    profileButtonPressed: () -> Unit,
-    previewButtonPressed: () -> Unit,
-    notificationsButtonPressed: () -> Unit,
-    createReviewsButtonPressed: () -> Unit,
-    buscarButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
     Box(modifier = modifier) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
         ) {
 
-            Spacer(modifier = Modifier.weight(17.0F))
+            Spacer(modifier = Modifier.height(35.dp)) // Ajustado para que no choque con la TopBar si es necesario
 
             AppLabel(
                 "Tu perfil",
@@ -81,21 +57,17 @@ fun BodyOptionsScreen(
                     .width(320.dp)
             )
 
-            Spacer(modifier = Modifier.weight(10.0F))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Image(
                 painter = painterResource(R.drawable.perfil),
                 contentDescription = stringResource(R.string.imagen_perfil),
                 modifier = Modifier
-                    .background(
-                        primaryLight
-                    )
-                    .border(
-                        1.dp,
-                        tertiaryContainerLight
-                    )
+                    .background(primaryLight)
+                    .border(1.dp, tertiaryContainerLight)
+                    .size(150.dp) // Añadido tamaño explícito para que se vea mejor
             )
-            Spacer(modifier = Modifier.weight(10.0F))
+            Spacer(modifier = Modifier.height(20.dp))
 
             AppButton(
                 "📸 Subir Foto",
@@ -104,16 +76,13 @@ fun BodyOptionsScreen(
                 modifier = Modifier
                     .height(30.dp)
                     .width(180.dp)
-
             )
 
-            Spacer(modifier = Modifier.weight(10.0F))
+            Spacer(modifier = Modifier.height(20.dp))
 
-          /*  CuadroInformaciónPersonal(
+            /*  CuadroInformaciónPersonal() */
 
-            ) */
-
-            Spacer(modifier = Modifier.weight(10.0F))
+            Spacer(modifier = Modifier.height(20.dp))
             AppButton(
                 "\uD83D\uDDD1\uFE0F Eliminar cuenta",
                 tertiaryContainerLight,
@@ -122,37 +91,14 @@ fun BodyOptionsScreen(
                     .height(40.dp)
                     .width(180.dp)
             )
-
-            Spacer(modifier = Modifier.weight(20.0F))
-        }
-        Row(modifier= Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            MenuOpciones(
-                inicioButtonPressed = inicioButtonPressed,
-                profileButtonPressed = profileButtonPressed,
-                previewButtonPressed = previewButtonPressed,
-                notificationsButtonPressed = notificationsButtonPressed,
-                createReviewsButtonPressed = createReviewsButtonPressed,
-                buscarButtonPressed = buscarButtonPressed
-            )
         }
     }
 }
-
-
 
 @Preview
 @Composable
 fun OptionsScreenPreview() {
     KnowHUBTheme {
-        OptionsScreen(
-            inicioButtonPressed = {},
-            profileButtonPressed = {},
-            previewButtonPressed = {},
-            notificationsButtonPressed = {},
-            createReviewsButtonPressed = {},
-            buscarButtonPressed = {}
-        )
+        OptionsScreen()
     }
 }
