@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -89,68 +90,76 @@ fun BodyRegisterScreen(
     registrarseSesionButtonPressed: () -> Unit,
     loginButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
 
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LogoApp()
-        SignUPMessage()
-        Spacer(modifier = Modifier.weight(1.0f))
+        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
+            item {
+                LogoApp()
+                SignUPMessage()
+                Spacer(modifier = Modifier.weight(1.0f))
 
-        TextosField(nombre,
-            correoElectronico,
-            nombreUsuario,
-            contrasena,
-            confirmarContrasena,
-            onNombreChange ={onNombreChange(it)},
-            onCorreoElectronicoChange ={onCorreoElectronicoChange(it)},
-            onNombreUsuarioChange={onNombreUsuarioChange(it)},
-            onContrasenaChange={onContrasenaChange(it)},
-            onConfirmarContrasenaChange={onConfirmarContrasenaChange(it)})
+                TextosField(
+                    nombre,
+                    correoElectronico,
+                    nombreUsuario,
+                    contrasena,
+                    confirmarContrasena,
+                    onNombreChange = { onNombreChange(it) },
+                    onCorreoElectronicoChange = { onCorreoElectronicoChange(it) },
+                    onNombreUsuarioChange = { onNombreUsuarioChange(it) },
+                    onContrasenaChange = { onContrasenaChange(it) },
+                    onConfirmarContrasenaChange = { onConfirmarContrasenaChange(it) })
 
-        Spacer(modifier = Modifier.weight(5.0F))
+                Spacer(modifier = Modifier.height(10.dp))
 
-        AppButton(
-            "Registrarse",
-            primaryLight,
-            tertiaryContainerLight,
-            onClick = {
-                registrarseSesionButtonPressed()
-            },
-                modifier = modifier
-                    .height(30.dp)
-                    .width(280.dp)
-        )
+                AppButton(
+                    "Registrarse",
+                    primaryLight,
+                    tertiaryContainerLight,
+                    onClick = {
+                        registrarseSesionButtonPressed()
+                    },
+                    modifier = modifier
+                        .height(30.dp)
+                        .width(280.dp)
+                )
 
-        if (contrasena.length < 6)
-            Text("La contraseña debe tener al menos 6 carcateres",
-                fontFamily = BangersFont)
-        if(contrasena != confirmarContrasena)
-            Text("Las contraseñas no coinciden",
-                fontFamily = BangersFont)
+                if (contrasena.length < 6)
+                    Text(
+                        "La contraseña debe tener al menos 6 carcateres",
+                        fontFamily = BangersFont
+                    )
+                if (contrasena != confirmarContrasena)
+                    Text(
+                        "Las contraseñas no coinciden",
+                        fontFamily = BangersFont
+                    )
 
-        Spacer(modifier = Modifier.weight(5.0F))
+                Spacer(modifier = Modifier.weight(5.0F))
 
 
-        TextButton(
-            onClick = {
-                loginButtonPressed()
+                TextButton(
+                    onClick = {
+                        loginButtonPressed()
+                    }
+                ) {
+                    Text(
+                        text = "¿Ya tienes cuentas?  Login",
+                        fontFamily = BangersFont,
+                        color = tertiaryContainerLight
+                    )
+                }
+
+                Spacer(modifier = Modifier.weight(1.0f))
+
             }
-        ) {
-            Text(
-                text = "¿Ya tienes cuentas?  Login",
-                fontFamily = BangersFont,
-                color = tertiaryContainerLight
-            )
         }
-
-        Spacer(modifier = Modifier.weight(1.0f))
-
     }
 }
-
 
 
 

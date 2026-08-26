@@ -39,7 +39,7 @@ fun CajaReseñas(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(190.dp)
+            .height(220.dp)
             .padding(horizontal = 16.dp)
             .drawBehind {
                 drawRect(
