@@ -42,6 +42,7 @@ fun Review(
     Calificacion: Int,
     Reseña: String,
     Likes: Int,
+    cantidadComentarios: Int,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -96,25 +97,44 @@ fun Review(
 
                 Spacer(modifier = Modifier.height(20.dp))
                 Row( modifier= Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    
-                    IconButton(
-                        onClick = { /* Acción de Like */ },
-                        modifier = Modifier.size(30.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.iconolike),
-                            contentDescription = "Icono",
-                            modifier = Modifier.fillMaxSize()
+                    Row(verticalAlignment = Alignment.CenterVertically,) {
+                        IconButton(
+                            onClick = { /* Acción de Like */ },
+                            modifier = Modifier.size(30.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.iconolike),
+                                contentDescription = "Icono",
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "( "+ Likes + " )",
+                            fontSize = 17.sp,
+                            fontFamily = BangersFont
                         )
                     }
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "( "+ Likes + " )",
-                        fontSize = 17.sp,
-                        fontFamily = BangersFont
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically,) {
+                        IconButton(
+                            onClick = { /* Acción de Like */ },
+                            modifier = Modifier.size(30.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.iconocomentario),
+                                contentDescription = "Icono",
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "( " + cantidadComentarios + " )",
+                            fontSize = 17.sp,
+                            fontFamily = BangersFont
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(6.dp))
             }
@@ -131,6 +151,7 @@ fun ReviewPreview(){
         "Dana Trujillo",
         4,
         "Explica super y califica suave!!!",
+        5,
         5
     )
 }

@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
+import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
@@ -31,14 +32,7 @@ import com.example.knowhub.ui.utils.generarEstrellas
 
 @Composable
 fun CajaPrincipal(
-    Fecha: String,
-    Codigo: String,
-    Materia: String,
-    Profesor: String,
-    Calificacion: Int,
-    CantidadReviews: Int,
-    Hashtags: List<String>,
-    Dificultad: String,
+    generalReview: GeneralReview,
     modifier: Modifier = Modifier
 ) {
     val colorCaja= primaryContainerLight
@@ -80,13 +74,7 @@ fun CajaPrincipal(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = Codigo,
-                color = colorTexto,
-                fontFamily = BangersFont
-            )
-
-            Text(
-                text = Fecha,
+                text = ""+generalReview.codigoAsignatura+"",
                 color = colorTexto,
                 fontFamily = BangersFont
             )
@@ -98,7 +86,7 @@ fun CajaPrincipal(
 
 
             Text(
-                text = Materia,
+                text = generalReview.nombreMateria,
                 fontSize = 17.sp,
                 fontFamily = BangersFont
             )
@@ -107,14 +95,14 @@ fun CajaPrincipal(
 
 
             Text(
-                text = "👨‍🏫 $Profesor",
+                text = "👨‍🏫 ${generalReview.nombreProfesor}",
                 fontSize = 13.sp,
                 fontFamily = FontFamily.Monospace
             )
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            val estrellas= generarEstrellas(Calificacion)
+            val estrellas= generarEstrellas(generalReview.calificacionMedia)
             Text(
                 text = estrellas,
                 fontSize = 18.sp
@@ -124,7 +112,7 @@ fun CajaPrincipal(
 
 
             Text(
-                text = "Basado en $CantidadReviews reseñas",
+                text = "Basado en ${generalReview.cantidadReviews} reseñas",
                 fontSize = 13.sp,
                 fontFamily = FontFamily.Monospace
             )
@@ -134,7 +122,7 @@ fun CajaPrincipal(
             Row(
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Hashtags.forEach {
+                generalReview.Hashtags.forEach {
                     AppLabel(
                         it,
                         tertiaryContainerLight,
@@ -150,7 +138,7 @@ fun CajaPrincipal(
                 horizontalArrangement = Arrangement.End
             ){
                 AppLabel(
-                    "$Dificultad dificultad",
+                    "${generalReview.dificultadMedia} dificultad",
                     tertiaryContainerLight,
                     primaryLight,
                     modifier = Modifier.height(40.dp)
@@ -164,14 +152,14 @@ fun CajaPrincipal(
 @Composable
 @Preview
 fun CajaPrincipalPreview(){
-    CajaPrincipal(
-        "15 Nov 2026",
-        "1342",
-        "Desarrollo Movil",
-        "Angarita",
-        4,
-        60,
-        listOf("#Integrales", "#Derivadas", "#Algebra"),
-        "Media"
+    GeneralReview(
+        5,
+        "Cálculo Vectorial",
+        "Alexander Caviedes",
+        8808,
+        200,
+        5,
+        "Media",
+        listOf("#Integrales", "#Derivadas"),
     )
 }

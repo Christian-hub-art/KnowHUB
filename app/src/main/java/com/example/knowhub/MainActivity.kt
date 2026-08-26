@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                     topBar = {KnowhubTopAppBar()}
                 ) {
 
-                    CompleteReviewsScreen(
+                    NotificatonsScreen(
                         modifier = Modifier.padding(it)
                     )
                 }
