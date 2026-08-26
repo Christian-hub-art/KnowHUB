@@ -21,7 +21,7 @@ fun AppNavegation(
 
     NavHost(
         navController = navController,
-        startDestination = "busqueda",
+        startDestination = "start",
         modifier = modifier
     ) {
         composable(route = "start"){
