@@ -1,8 +1,7 @@
-package com.example.knowhub.ui.screens.completeReviews.components
+package com.example.knowhub.ui.screens.completeSpecificReview.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,8 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,41 +27,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.data.Review
-import com.example.knowhub.ui.theme.*
-import com.example.knowhub.ui.utils.AppButton
-
+import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryLight
+import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
 
 
 @Composable
 fun Review(
     review: Review,
-    reviewPressed: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        Row() {
-            Column( ) {
-                Text(
-                    text = review.nombreEstudiante,
-                    fontSize = 17.sp,
-                    fontFamily = BangersFont
-                )
-                Text(
-                    text = review.fechaPublicacion,
-                    fontSize = 15.sp,
-                    fontFamily = BangersFont
-                )
-            }
-            Spacer(modifier = Modifier.width(20.dp))
-
-            val estrellas= generarEstrellas(review.calificacion)
+        Row(modifier = Modifier.padding(10.dp)
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(
-                text = estrellas,
-                fontSize = 18.sp
+                text = "👨‍🏫 " + review.nombreProfesor,
+                fontSize = 17.sp,
+                fontFamily = BangersFont
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+            Text(
+                text = review.nombreAsignatura,
+                fontSize = 17.sp,
+                fontFamily = BangersFont
             )
         }
-        Spacer(modifier = Modifier.height(6.dp))
+
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -77,8 +68,28 @@ fun Review(
                     tertiaryContainerLight ,
                     shape = RoundedCornerShape(16.dp)
                 )
-                .clickable { reviewPressed (review.id)}
         ) {
+            Row(modifier = Modifier.padding(10.dp)) {
+                Column() {
+                    Text(
+                        text = review.nombreEstudiante,
+                        fontSize = 17.sp,
+                        fontFamily = BangersFont
+                    )
+                    Text(
+                        text = review.fechaPublicacion,
+                        fontSize = 15.sp,
+                        fontFamily = BangersFont
+                    )
+                }
+                Spacer(modifier = Modifier.width(20.dp))
+
+                val estrellas= generarEstrellas(review.calificacion)
+                Text(
+                    text = estrellas,
+                    fontSize = 18.sp
+                )
+            }
 
             Column(
                 modifier = Modifier.padding(10.dp)
