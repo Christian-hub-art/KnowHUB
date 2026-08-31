@@ -1,4 +1,4 @@
-package com.example.knowhub.ui.screens.completeReviews
+package com.example.knowhub.ui.screens.completeSpecificReview
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,41 +20,39 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.data.local.localGeneralReviewProvider
 import com.example.knowhub.data.local.localReviewProvider
-import com.example.knowhub.ui.screens.completeReviews.components.CajaPrincipal
-import com.example.knowhub.ui.screens.completeReviews.components.Review
-import com.example.knowhub.ui.theme.*
+import com.example.knowhub.ui.screens.completeReviews.BodyCompleteReviewsScreen
+import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
+import com.example.knowhub.ui.screens.completeSpecificReview.components.Comment
+import com.example.knowhub.ui.screens.completeSpecificReview.components.Review
+import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryContainerLight
+import com.example.knowhub.ui.theme.primaryLight
+import com.example.knowhub.ui.theme.secondaryContainerLight
+import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppButtonBig
 import com.example.knowhub.ui.utils.BackgroundImage
-import com.example.knowhub.ui.utils.BarraArriba
-import com.example.knowhub.ui.utils.CajaBusqueda
 
 @Composable
-fun CompleteReviewsScreen(
-    generalReviewId: Int,
-    reviewPressed: (Int) -> Unit,
-    escribirBottonPressed: () -> Unit,
+fun CompleteSpecificReviewScreen(
+    ReviewId: Int,
     modifier: Modifier = Modifier
 ){
     Box(
         modifier = modifier
     ){
         BackgroundImage()
-        BodyCompleteReviewsScreen(generalReviewId,
-            reviewPressed = reviewPressed,
-            escribirBottonPressed = escribirBottonPressed)
+        BodyCompleteSpecificReviewScreen(ReviewId)
     }
+
 }
 
 @Composable
-fun BodyCompleteReviewsScreen(
-    generalReviewId: Int,
-    reviewPressed: (Int) -> Unit,
-    escribirBottonPressed: () -> Unit,
+fun BodyCompleteSpecificReviewScreen(
+    ReviewId: Int,
     modifier: Modifier = Modifier
 ){
-    val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId }
-    val allReviews = localReviewProvider.Reviews
+    val review = localReviewProvider.Reviews.find { it.id == ReviewId }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
@@ -63,10 +61,10 @@ fun BodyCompleteReviewsScreen(
             item {
 
                 Spacer(modifier = modifier.height(35.dp))
-                if (generalReview != null) {
-                    CajaPrincipal(
-                        generalReview,
-                        modifier = Modifier.width(350.dp)
+                if (review != null) {
+                    Review(
+                        review,
+                        modifier.width(350.dp)
                     )
                 }
                 Spacer(modifier = modifier.height(30.dp))
@@ -92,45 +90,32 @@ fun BodyCompleteReviewsScreen(
                     ) {}
                 }
                 Spacer(modifier = modifier.height(20.dp))
-                Row(
-                    modifier = Modifier.width(350.dp)
-                ) {
-                    AppButton(
-                        stringResource(R.string.para_ti),
-                        primaryLight,
-                        primaryContainerLight,
-                        modifier = Modifier.height(40.dp)
+
+                Column(modifier = Modifier.width(350.dp)) {
+                    Comment(
+                        "30 Nov 2026",
+                        "Sebastian Gaibor",
+                        "Materia pesada, es importante llevar la calculadora SIEMPRE",
+                        30,
+                        2
                     )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    AppButton(
-                        stringResource(R.string.siguiendo),
-                        tertiaryContainerLight,
-                        secondaryContainerLight,
-                        modifier = Modifier.height(40.dp)
+                    Spacer(modifier = modifier.height(20.dp))
+                    Comment(
+                        "1 Dic 2026",
+                        "Andrés Cano",
+                        "Yo no la pude pasar a la primera :(",
+                        1,
+                        0
+                    )
+                    Spacer(modifier = modifier.height(20.dp))
+                    Comment(
+                        "19 Dic 2026",
+                        "Dana Trujillo",
+                        "A mi tambie me parecio muy bien profesor",
+                        15,
+                        5
                     )
                 }
-                Spacer(modifier = modifier.height(20.dp))
-            }
-            items(allReviews.size) { index ->
-                Review(
-                    allReviews[index],
-                    reviewPressed = reviewPressed,
-                    modifier = Modifier.width(350.dp)
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-            }
-
-            item{
-                AppButtonBig(
-                    stringResource(R.string.escribe_tu_rese_a),
-                    secondaryContainerLight,
-                    tertiaryContainerLight,
-                    onClick = {
-                        escribirBottonPressed()
-                    },
-                    modifier = Modifier
-                        .width(300.dp)
-                )
             }
         }
     }
@@ -138,8 +123,6 @@ fun BodyCompleteReviewsScreen(
 
 @Composable
 @Preview(showBackground = true)
-fun CompleteReviewsScreenPreview(){
-    CompleteReviewsScreen(5,
-        reviewPressed = {},
-        escribirBottonPressed = {})
+fun CompleteSpecificReviewScreenPreview(){
+    CompleteSpecificReviewScreen(5)
 }
