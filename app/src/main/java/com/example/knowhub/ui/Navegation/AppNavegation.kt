@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.example.knowhub.ui.screens.BusquedaFiltro.BusquedaScreen
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsScreen
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
+import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificReviewScreen
 import com.example.knowhub.ui.screens.inicio.InicioScreen
 import com.example.knowhub.ui.screens.login.LoginScreen
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
@@ -38,8 +39,11 @@ sealed class Screens(val route: String) {
     object Profile : Screens("profile")
     object Reviews : Screens("reviews")
     object Inicio : Screens("inicio")
-
     object BusquePerfil : Screens("busquedaPerfil")
+
+    object CompleteSpecificReview : Screens("completeSpecificReviews/{reviewId}") {
+        fun createRoute(id: Int) = "completeSpecificReviews/$id"
+    }
 }
 
 @Composable
@@ -106,8 +110,11 @@ fun AppNavegation(
         ){
             val generalReviewId = it.arguments?.getInt("generalReviewId") ?: 0
 
-            CompleteReviewsScreen(
+           CompleteReviewsScreen(
                 generalReviewId,
+               reviewPressed = { reviewId ->
+                   navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
+               },
                 escribirBottonPressed = {
                     navController.navigate(Screens.CreateReviews.route)
                 }
@@ -132,6 +139,13 @@ fun AppNavegation(
                 }
             )
         }
+        composable ( route = Screens.CompleteSpecificReview.route,
+            arguments = listOf(navArgument("reviewId"){type = NavType.IntType})
+        ){
+            val reviewId = it.arguments?.getInt("reviewId") ?: 0
+            CompleteSpecificReviewScreen(reviewId)
+        }
+
         composable(route = Screens.BusquePerfil.route){
             BusquedaPerfilScreen(
 
