@@ -12,11 +12,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.knowhub.ui.Navegation.AppNavegation
 import com.example.knowhub.ui.Navegation.Screens
@@ -29,56 +31,88 @@ fun KnowHUBApp (){
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            MenuOpciones(
-                inicioButtonPressed = {
-                    scope.launch { drawerState.close() }
-                    navController.navigate(Screens.Inicio.route)
-                },
-                profileButtonPressed = {
-                    scope.launch { drawerState.close() }
-                    navController.navigate(Screens.Profile.route)
-                },
-                previewButtonPressed = {
-                    scope.launch { drawerState.close() }
-                    navController.navigate(Screens.Reviews.route)
-                },
-                notificationsButtonPressed = {
-                    scope.launch { drawerState.close() }
-                    navController.navigate(Screens.Notifications.route)
-                },
-                createReviewsButtonPressed = {
-                    scope.launch { drawerState.close() }
-                    navController.navigate(Screens.CreateReviews.route)
-                },
-                buscarButtonPressed = {
-                    scope.launch { drawerState.close() }
-                    navController.navigate(Screens.Busqueda.route)
-                },
-                cerrarSesionButtonPressed = {
-                    scope.launch { drawerState.close() }
-                    navController.navigate(Screens.Start.route)
-                }
-            )
-        }
-    ) {
-        Scaffold(
-            topBar = {
-                KnowhubTopAppBar(
-                    onMenuClick = {
-                        scope.launch { drawerState.open() }
+    val showTopBar = currentRoute in listOf(
+        Screens.Inicio.route,
+        Screens.Profile.route,
+        Screens.Reviews.route,
+        Screens.Notifications.route,
+        Screens.CreateReviews.route,
+        Screens.Busqueda.route,
+        Screens.CompleteReviews.route,
+        Screens.BusquePerfil.route
+    )
+
+    val showDrawer = currentRoute !in listOf(
+        Screens.Start.route,
+        Screens.Register.route
+    )
+
+
+    if (showDrawer) {
+
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
+                MenuOpciones(
+                    inicioButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.Inicio.route)
+                    },
+                    profileButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.Profile.route)
+                    },
+                    previewButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.Reviews.route)
+                    },
+                    notificationsButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.Notifications.route)
+                    },
+                    createReviewsButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.CreateReviews.route)
+                    },
+                    buscarButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.Busqueda.route)
+                    },
+                    cerrarSesionButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.Start.route)
                     }
                 )
             }
         ) {
-            AppNavegation(
-                navController = navController,
-                modifier = Modifier.padding(it)
-            )
+            Scaffold(
+                topBar = {
+                    if (showTopBar) {
+                        KnowhubTopAppBar(
+                            onMenuClick = {
+                                scope.launch {
+                                    drawerState.open()
+                                }
+                            }
+                        )
+                    }
+                }
+            ) {
+                AppNavegation(
+                    navController = navController,
+                    modifier = Modifier.padding(it)
+                )
+            }
         }
+
+    } else {
+
+        AppNavegation(
+            navController = navController
+        )
     }
 }
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.login.components.LoginMessage
 import com.example.knowhub.ui.screens.login.components.TextosLogin
+import com.example.knowhub.ui.screens.register.RegisterViewModel
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
@@ -31,23 +34,24 @@ import com.example.knowhub.ui.utils.LogoApp
 
 @Composable
 fun LoginScreen(
-    registerButtonPressed: () -> Unit,
-    inciarSesionButtonPressed: () -> Unit,
+    loginViewModel: LoginViewModel = LoginViewModel(),
     modifier: Modifier = Modifier
 ){
+    val state by loginViewModel.uiState.collectAsState()
     Box(
         modifier = modifier
     ){
         BackgroundImage()
-        var nombreOCorreo by remember{mutableStateOf("") }
-        var contrasena by remember { mutableStateOf("") }
         BodyLoginScreen(
-            nombreOCorreo,
-            contrasena,
-            onCorreoOUsuarioChange = {nombreOCorreo = it},
-            onContrasenaChange = {contrasena= it},
-            inciarSesionButtonPressed = inciarSesionButtonPressed,
-            registerButtonPressed = registerButtonPressed
+            state.nombreOCorreo,
+            state.contrasena,
+            state.mostrarMensajeError,
+            state.errorMessage,
+            onCorreoOUsuarioChange = {loginViewModel.updateNombreOCorreo(it)},
+            onContrasenaChange = {loginViewModel.updateContrasena(it)},
+            inciarSesionButtonPressed = {loginViewModel.inciarSesionButtonPressed()},
+            registerButtonPressed = {loginViewModel.registerButtonPressed()},
+            continuarButtonPressed = {loginViewModel.continuarButtonPressed()}
         )
     }
 }
@@ -55,8 +59,7 @@ fun LoginScreen(
 @Preview(showBackground = true)
 fun LoginScreenPreview(){
     LoginScreen(
-        inciarSesionButtonPressed = { },
-        registerButtonPressed = { }
+        loginViewModel = viewModel()
     )
 
 }
@@ -65,10 +68,13 @@ fun LoginScreenPreview(){
 fun BodyLoginScreen(
     correoOUsuario: String,
     contrasena: String,
+    mostrarMensajeError: Boolean,
+    errorMessage: String,
     onCorreoOUsuarioChange: (String) ->Unit,
     onContrasenaChange: (String) ->Unit,
     inciarSesionButtonPressed: () -> Unit,
     registerButtonPressed: () -> Unit,
+    continuarButtonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
 
@@ -76,6 +82,7 @@ fun BodyLoginScreen(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.weight(10F))
         LogoApp()
         LoginMessage()
         Spacer(modifier = Modifier.weight(1.0F))
@@ -103,6 +110,11 @@ fun BodyLoginScreen(
             modifier = modifier
                 .height(30.dp)
                 .width(280.dp))
+
+        if(mostrarMensajeError){
+            Text(errorMessage)
+        }
+
         Spacer(modifier = Modifier.weight(0.5F))
         TextButton(
             onClick = {
@@ -116,8 +128,17 @@ fun BodyLoginScreen(
             )
         }
         Spacer(modifier = Modifier.weight(10.0F))
-        Text("Continuar sin registro",
-            fontFamily = BangersFont)
+        TextButton(
+            onClick = {
+                continuarButtonPressed()
+            }
+        ) {
+            Text(
+                text = "Continuar sin registro",
+                fontFamily = BangersFont,
+                color = tertiaryContainerLight
+            )
+        }
         Spacer(modifier = Modifier.weight(1.0F))
 
     }

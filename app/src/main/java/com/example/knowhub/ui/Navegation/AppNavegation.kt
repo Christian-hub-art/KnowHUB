@@ -2,6 +2,8 @@ package com.example.knowhub.ui.Navegation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,7 +18,12 @@ import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.screens.options.OptionsScreen
 import com.example.knowhub.ui.screens.profile.ProfileScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
+import com.example.knowhub.ui.screens.register.RegisterViewModel
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
+import com.example.knowhub.ui.screens.login.LoginViewModel
 
 sealed class Screens(val route: String) {
     object Start : Screens("start")
@@ -31,6 +38,8 @@ sealed class Screens(val route: String) {
     object Profile : Screens("profile")
     object Reviews : Screens("reviews")
     object Inicio : Screens("inicio")
+
+    object BusquePerfil : Screens("busquedaPerfil")
 }
 
 @Composable
@@ -45,29 +54,42 @@ fun AppNavegation(
         modifier = modifier
     ) {
         composable(route = Screens.Start.route){
+            val loginViewModel: LoginViewModel = viewModel()
+            val state by loginViewModel.uiState.collectAsState()
+            if(state.navigateInicio){
+                navController.navigate(Screens.Inicio.route){
+                    popUpTo(0)
+                }
+            }
+            if(state.navigateRegister){
+                navController.navigate(Screens.Register.route)
+            }
+            if(state.navigateContinuar){
+                navController.navigate(Screens.Inicio.route){
+                    popUpTo(0)
+                }
+            }
             LoginScreen(
-                inciarSesionButtonPressed = {
-                    navController.navigate(Screens.Inicio.route){
-                        popUpTo(0)
-                    }
-                },
-                registerButtonPressed = {
-                    navController.navigate(Screens.Register.route)
-                }
+               loginViewModel = loginViewModel
             )
         }
-        composable(route = Screens.Register.route){
+
+        composable(route = Screens.Register.route) {
+            val registerViewModel: RegisterViewModel = viewModel()
+            val state by registerViewModel.uiState.collectAsState()
+            if (state.navigateInicio) {
+                navController.navigate(Screens.Inicio.route) {
+                    popUpTo(0)
+                }
+            }
+            if(state.navigateLogin){
+                navController.navigate(Screens.Start.route)
+            }
             RegisterScreen(
-                registrarseSesionButtonPressed = {
-                    navController.navigate(Screens.Inicio.route){
-                        popUpTo(0)
-                    }
-                },
-                loginButtonPressed = {
-                    navController.navigate(Screens.Start.route)
-                }
+                registerViewModel = registerViewModel
             )
         }
+
         composable(route = Screens.Options.route){
             OptionsScreen()
         }
@@ -108,6 +130,11 @@ fun AppNavegation(
                 onSeeAllClick = {
                     navController.navigate(Screens.Busqueda.route)
                 }
+            )
+        }
+        composable(route = Screens.BusquePerfil.route){
+            BusquedaPerfilScreen(
+
             )
         }
 

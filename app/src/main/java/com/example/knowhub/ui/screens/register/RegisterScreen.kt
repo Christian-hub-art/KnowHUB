@@ -1,67 +1,57 @@
 package com.example.knowhub.ui.screens.register
 
-import android.util.Log
-import android.widget.Space
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.knowhub.R
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.ui.screens.register.components.SignUPMessage
 import com.example.knowhub.ui.screens.register.components.TextosField
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.LogoApp
-import com.example.knowhub.ui.utils.BackgroundImage
 
 @Composable
 fun RegisterScreen(
-    registrarseSesionButtonPressed: () -> Unit,
-    loginButtonPressed: () -> Unit,
+    registerViewModel: RegisterViewModel = RegisterViewModel(),
     modifier: Modifier = Modifier
 ){
-    Box(){
+    val state by registerViewModel.uiState.collectAsState()
+
+    Box(
+        modifier = modifier
+    ){
         BackgroundImage()
-        var nombre by remember{mutableStateOf("") }
-        var correoElectronico by remember { mutableStateOf("") }
-        var nombreUsuario  by remember { mutableStateOf("") }
-        var contrasena  by remember { mutableStateOf("") }
-        var confirmarContrasena  by remember { mutableStateOf("") }
         BodyRegisterScreen(
-            nombre,
-            correoElectronico,
-            nombreUsuario,
-            contrasena,
-            confirmarContrasena,
-            onNombreChange ={nombre= it},
-            onCorreoElectronicoChange ={correoElectronico= it},
-            onNombreUsuarioChange={nombreUsuario= it},
-            onContrasenaChange={contrasena= it},
-            onConfirmarContrasenaChange={confirmarContrasena= it},
-            registrarseSesionButtonPressed = registrarseSesionButtonPressed,
-            loginButtonPressed = loginButtonPressed
+            state.nombre,
+            state.correoElectronico,
+            state.nombreUsuario,
+            state.contrasena,
+            state.confirmarContrasena,
+            onNombreChange ={registerViewModel.updateNombre(it)},
+            onCorreoElectronicoChange ={registerViewModel.updateCorreoElectronico(it)},
+            onNombreUsuarioChange ={registerViewModel.updateNombreUsuario(it)},
+            onContrasenaChange ={registerViewModel.updateContrasena(it)},
+            onConfirmarContrasenaChange ={registerViewModel.updateConfirmarContrasena(it)},
+            registrarseSesionButtonPressed = {registerViewModel.registrarseSesionButtonPressed()},
+            loginButtonPressed = {registerViewModel.loginButtonPressed()},
+            state.mostrarMensajeError,
+            state.errorMessage
+
         )
     }
 }
@@ -70,8 +60,7 @@ fun RegisterScreen(
 @Preview(showBackground = true)
 fun RegisterScreenPreview(){
     RegisterScreen(
-        registrarseSesionButtonPressed = {},
-        loginButtonPressed = {}
+        registerViewModel = viewModel()
     )
 }
 
@@ -82,13 +71,15 @@ fun BodyRegisterScreen(
     nombreUsuario: String,
     contrasena: String,
     confirmarContrasena: String,
-    onNombreChange: (String) ->Unit,
-    onCorreoElectronicoChange: (String) ->Unit,
-    onNombreUsuarioChange: (String) ->Unit,
-    onContrasenaChange: (String) ->Unit,
-    onConfirmarContrasenaChange: (String) ->Unit,
+    onNombreChange: (String) -> Unit,
+    onCorreoElectronicoChange: (String) -> Unit,
+    onNombreUsuarioChange: (String) -> Unit,
+    onContrasenaChange: (String) -> Unit,
+    onConfirmarContrasenaChange: (String) -> Unit,
     registrarseSesionButtonPressed: () -> Unit,
     loginButtonPressed: () -> Unit,
+    mostrarMensajeError: Boolean,
+    errorMessage: String,
     modifier: Modifier = Modifier
 ) {
 
@@ -96,8 +87,15 @@ fun BodyRegisterScreen(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 90.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
             item {
+
                 LogoApp()
                 SignUPMessage()
                 Spacer(modifier = Modifier.weight(1.0f))
@@ -121,22 +119,16 @@ fun BodyRegisterScreen(
                     primaryLight,
                     tertiaryContainerLight,
                     onClick = {
-                        registrarseSesionButtonPressed()
+                       registrarseSesionButtonPressed()
                     },
                     modifier = modifier
                         .height(30.dp)
                         .width(280.dp)
                 )
 
-                if (contrasena.length < 6)
+                if (mostrarMensajeError)
                     Text(
-                        "La contraseña debe tener al menos 6 carcateres",
-                        fontFamily = BangersFont
-                    )
-                if (contrasena != confirmarContrasena)
-                    Text(
-                        "Las contraseñas no coinciden",
-                        fontFamily = BangersFont
+                        errorMessage
                     )
 
                 Spacer(modifier = Modifier.weight(5.0F))

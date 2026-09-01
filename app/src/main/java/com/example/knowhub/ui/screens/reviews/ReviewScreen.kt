@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -73,43 +74,45 @@ fun BodyReviewScreen(
             Spacer(modifier = Modifier.width(150.dp))
 
         }
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .width(325.dp)
         ) {
-            Spacer(modifier = Modifier.height(10.dp))
-            CajaReview(
-                "15 Nov 2026",
-                "1342",
-                "Desarrollo Movil",
-                "Angarita",
-                "Es una muy buena clase.",
-                5,
-                primaryContainerLight,
-                primaryLight
-            )
-            Spacer(modifier = Modifier.height(15.dp))
-            CajaReview(
-                "15 Nov 2026",
-                "1342",
-                "Desarrollo Movil",
-                "Angarita",
-                "Es una muy buena clase.",
-                2,
-                secondaryContainerLight,
-                tertiaryContainerLight
-            )
-            Spacer(modifier = Modifier.height(15.dp))
-            CajaReview(
-                "15 Nov 2026",
-                "1342",
-                "Desarrollo Movil",
-                "Angarita",
-                "Es una muy buena clase.",
-                1,
-                primaryContainerLight,
-                primaryLight
-            )
+            item {
+                Spacer(modifier = Modifier.height(10.dp))
+                CajaReview(
+                    "15 Nov 2026",
+                    "1342",
+                    "Desarrollo Movil",
+                    "Angarita",
+                    "Es una muy buena clase.",
+                    5,
+                    primaryContainerLight,
+                    primaryLight
+                )
+                Spacer(modifier = Modifier.height(15.dp))
+                CajaReview(
+                    "15 Nov 2026",
+                    "1342",
+                    "Desarrollo Movil",
+                    "Angarita",
+                    "Es una muy buena clase.",
+                    2,
+                    secondaryContainerLight,
+                    tertiaryContainerLight
+                )
+                Spacer(modifier = Modifier.height(15.dp))
+                CajaReview(
+                    "15 Nov 2026",
+                    "1342",
+                    "Desarrollo Movil",
+                    "Angarita",
+                    "Es una muy buena clase.",
+                    1,
+                    primaryContainerLight,
+                    primaryLight
+                )
+            }
         }
     }
 }

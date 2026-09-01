@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -37,7 +38,10 @@ import com.example.knowhub.ui.utils.FormTextField
 fun CuadroInformaciónPersonal(
     nombre: String,
     onNombreChange: (String) ->Unit,
-    onClick:() -> Unit = {},
+    guardarBottonPressed: () -> Unit = {},
+    cancelarBottonPressed: () -> Unit = {},
+    cambiarcontraseñaBottonPressed: () -> Unit = {},
+    cambiarCorreoBottonPressed: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val colorSombra = colorResource(R.color.NegroKnowHUB)
@@ -63,19 +67,21 @@ fun CuadroInformaciónPersonal(
             .width(360.dp)
     ) {
 
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(18.dp)
         ) {
 
             // TÍTULO
-            AppLabel(
-                "👤 INFORMACIÓN PERSONAL",
-                colorResource(R.color.blancoKnowHUB),
-                colorResource(R.color.NegroKnowHUB),
-                modifier = Modifier
-                    .height(35.dp)
-            )
+            item {
+                AppLabel(
+                    "👤 INFORMACIÓN PERSONAL",
+                    colorResource(R.color.blancoKnowHUB),
+                    colorResource(R.color.NegroKnowHUB),
+                    modifier = Modifier
+                        .height(35.dp)
+                )
+
 
             Spacer(modifier = Modifier.height(15.dp))
 
@@ -105,7 +111,9 @@ fun CuadroInformaciónPersonal(
                     "💾 GUARDAR CAMBIOS",
                     colorResource(R.color.NegroKnowHUB),
                     colorResource(R.color.blancoKnowHUB),
-                    onClick = {},
+                    onClick = {
+                        guardarBottonPressed()
+                    },
 
                     modifier = Modifier
                         .height(35.dp)
@@ -116,7 +124,9 @@ fun CuadroInformaciónPersonal(
                     "X CANCELAR",
                     colorResource(R.color.NegroKnowHUB),
                     colorResource(R.color.blancoKnowHUB),
-                    onClick = {},
+                    onClick = {
+                        cancelarBottonPressed()
+                    },
                     modifier = Modifier
                         .height(35.dp)
                         .width(150.dp)
@@ -130,10 +140,12 @@ fun CuadroInformaciónPersonal(
                 "CAMBIAR CONTRASEÑA",
                 colorResource(R.color.blancoKnowHUB),
                 colorResource(R.color.AzulKnowHUB),
-                onClick = {},
+                onClick = {
+                    cambiarcontraseñaBottonPressed()
+                },
                 modifier = Modifier
                     .height(35.dp)
-                    .width(150.dp)
+                    .width(330.dp)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -143,11 +155,17 @@ fun CuadroInformaciónPersonal(
                 "CAMBIAR CORREO ELECTRÓNICO",
                 colorResource(R.color.blancoKnowHUB),
                 colorResource(R.color.AzulKnowHUB),
-                onClick = {},
+                onClick = {
+                    cambiarCorreoBottonPressed()
+                },
                 modifier = Modifier
                     .height(35.dp)
-                    .width(200.dp)
+                    .width(330.dp)
             )
+
+            }
         }
+
     }
+
 }
