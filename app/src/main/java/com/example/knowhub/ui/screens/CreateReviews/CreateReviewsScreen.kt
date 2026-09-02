@@ -1,56 +1,43 @@
 package com.example.knowhub.ui.screens.CreateReviews
 
-import android.util.Log
-import com.example.knowhub.ui.theme.ArvoFont
-import com.example.knowhub.ui.theme.BangersFont
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.knowhub.R
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.ui.screens.CreateReviews.components.CuadroResenas
-
 import com.example.knowhub.ui.screens.CreateReviews.components.InformaciónUsuario
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
-import com.example.knowhub.ui.utils.*
+import com.example.knowhub.ui.utils.AppLabelBig
+import com.example.knowhub.ui.utils.BackgroundImage
 
 @Composable
 fun CreateReviewsScreen(
+    createReviewsViewModel: CreateReviewsViewModel,
     modifier: Modifier = Modifier
 ) {
+    val state by createReviewsViewModel.uiState.collectAsState()
     Box(modifier = modifier.fillMaxSize()) {
         BackgroundImage()
-        var clase by remember { mutableStateOf("") }
-        var tituloMateria by remember { mutableStateOf("") }
-        var nombreProfesor by remember { mutableStateOf("") }
-        var resena by remember { mutableStateOf("") }
         BodyCreateReviewsScreen(
-            clase,
-            tituloMateria,
-            nombreProfesor,
-            resena,
-            onClaseChange = { clase = it },
-            onTituloMateriaChange = { tituloMateria = it },
-            onNombreProfesorChange = { nombreProfesor = it },
-            onResenaChange = { resena = it },
+            clase = state.clase,
+            tituloMateria = state.tituloMateria,
+            nombreProfesor = state.nombreProfesor,
+            resena = state.resena,
+            onClaseChange = { createReviewsViewModel.updateClase(it) },
+            onTituloMateriaChange = { createReviewsViewModel.updateTituloMateria(it) },
+            onNombreProfesorChange = { createReviewsViewModel.updateNombreProfesor(it) },
+            onResenaChange = { createReviewsViewModel.updateResena(it) },
             onClick = {}
         )
     }
@@ -66,17 +53,13 @@ fun BodyCreateReviewsScreen(
     onTituloMateriaChange: (String) -> Unit,
     onNombreProfesorChange: (String) -> Unit,
     onResenaChange: (String) -> Unit,
-    onClick: () -> Unit = {},
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-
     Column(
-        modifier = modifier
-            .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Spacer(modifier = Modifier.height(20.dp))
 
         AppLabelBig(
@@ -95,33 +78,26 @@ fun BodyCreateReviewsScreen(
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        CuadroResenas(clase,
-            tituloMateria,
-            nombreProfesor,
-            resena,
-            onClaseChange = { onClaseChange(it) },
-            onTituloMateriaChange = { onTituloMateriaChange(it) },
-            onNombreProfesorChange = { onNombreProfesorChange(it) },
-            onResenaChange = { onResenaChange(it) },
+        CuadroResenas(
+            clase = clase,
+            tituloMateria = tituloMateria,
+            nombreProfesor = nombreProfesor,
+            resena = resena,
+            onClaseChange = onClaseChange,
+            onTituloMateriaChange = onTituloMateriaChange,
+            onNombreProfesorChange = onNombreProfesorChange,
+            onResenaChange = onResenaChange,
             onClick = onClick
         )
-
 
         Spacer(modifier = Modifier.height(40.dp))
     }
 }
 
-
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun CreateReviewsPreview() {
-    CreateReviewsScreen()
+    CreateReviewsScreen(
+        createReviewsViewModel = viewModel()
+    )
 }
-
-
-
-
-

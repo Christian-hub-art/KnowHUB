@@ -2,7 +2,6 @@ package com.example.knowhub.ui.Navegation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -24,6 +23,10 @@ import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
+import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsViewModel
+import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsViewModel
+import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificReviewViewModel
+import com.example.knowhub.ui.screens.inicio.InicioViewModel
 import com.example.knowhub.ui.screens.login.LoginViewModel
 
 sealed class Screens(val route: String) {
@@ -109,9 +112,11 @@ fun AppNavegation(
             arguments = listOf(navArgument("generalReviewId"){type = NavType.IntType})
         ){
             val generalReviewId = it.arguments?.getInt("generalReviewId") ?: 0
+            val viewModel: CompleteReviewsViewModel = viewModel()
 
            CompleteReviewsScreen(
-                generalReviewId,
+                generalReviewId = generalReviewId,
+                completeReviewsViewModel = viewModel,
                reviewPressed = { reviewId ->
                    navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
                },
@@ -121,7 +126,10 @@ fun AppNavegation(
             )
         }
         composable ( route = Screens.CreateReviews.route ){
-            CreateReviewsScreen()
+            val viewModel: CreateReviewsViewModel = viewModel()
+            CreateReviewsScreen(
+                createReviewsViewModel = viewModel
+            )
         }
         composable ( route = Screens.Notifications.route ){
             NotificatonsScreen()
@@ -133,7 +141,9 @@ fun AppNavegation(
             ReviewScreen()
         }
         composable ( route = Screens.Inicio.route ){
+            val viewModel: InicioViewModel = viewModel()
             InicioScreen(
+                inicioViewModel = viewModel,
                 onSeeAllClick = {
                     navController.navigate(Screens.Busqueda.route)
                 }
@@ -143,7 +153,11 @@ fun AppNavegation(
             arguments = listOf(navArgument("reviewId"){type = NavType.IntType})
         ){
             val reviewId = it.arguments?.getInt("reviewId") ?: 0
-            CompleteSpecificReviewScreen(reviewId)
+            val viewModel: CompleteSpecificReviewViewModel = viewModel()
+            CompleteSpecificReviewScreen(
+                reviewId = reviewId,
+                completeSpecificReviewViewModel = viewModel
+            )
         }
 
         composable(route = Screens.BusquePerfil.route){

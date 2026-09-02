@@ -10,15 +10,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
+import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.MateriaResumida
 import com.example.knowhub.ui.screens.inicio.components.CajaReseñas
 import com.example.knowhub.ui.theme.ArvoFont
@@ -32,12 +37,15 @@ import com.example.knowhub.ui.utils.BackgroundImage
 
 @Composable
 fun InicioScreen(
+    inicioViewModel: InicioViewModel,
     onSeeAllClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val state by inicioViewModel.uiState.collectAsState()
     Box(modifier = modifier) {
         BackgroundImage()
         BodyInicioScreen(
+            allGeneralReviews = state.allGeneralReviews,
             onSeeAllClick = onSeeAllClick
         )
     }
@@ -45,9 +53,31 @@ fun InicioScreen(
 
 @Composable
 fun BodyInicioScreen(
+    allGeneralReviews: List<GeneralReview>,
     onSeeAllClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // 1. Extraer palabras significativas y agrupar materias
+    val stopWords = setOf("a", "de", "la", "en", "el", "los", "las", "y", "o", "con", "por", "para", "un", "una", "i", "ii", "iii")
+
+    val wordsToMaterias = mutableMapOf<String, MutableList<GeneralReview>>()
+
+    allGeneralReviews.forEach { review ->
+        val words = review.nombreMateria.split(" ")
+            .map { it.lowercase().filter { c -> c.isLetterOrDigit() } }
+            .filter { it.isNotEmpty() && it !in stopWords }
+
+        words.forEach { word ->
+            wordsToMaterias.getOrPut(word) { mutableListOf() }.add(review)
+        }
+    }
+
+    // 2. Filtrar palabras que aparecen en al menos 2 materias y ordenar alfabéticamente por la palabra clave
+    val dynamicCategories = wordsToMaterias.filter { it.value.size >= 2 }
+        .mapKeys { it.key.uppercase() }
+        .toList()
+        .sortedBy { it.first }
+
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,171 +109,29 @@ fun BodyInicioScreen(
                 )
             }
         }
-        item {
+
+        // 3. Crear una CajaReseñas por cada categoría dinámica
+        itemsIndexed(
+            items = dynamicCategories,
+            key = { _, categoria -> categoria.first }
+        ) { index, (category, materias) ->
+            val isEven = index % 2 == 0
             CajaReseñas(
-                temaGeneral = "CÁLCULO",
-                materias = listOf(
+                temaGeneral = category,
+                materias = materias.distinctBy { it.id }.map { review ->
                     MateriaResumida(
-                        calificacion = 5,
-                        nombreMateria = "Cálculo I",
-                        profesor = "Angarita",
-                        numeroResenas = 14
-                    ),
-                    MateriaResumida(
-                        calificacion = 4,
-                        nombreMateria = "Cálculo II",
-                        profesor = "Prof. Vega",
-                        numeroResenas = 8
-                    ),
-                    MateriaResumida(
-                        calificacion = 3,
-                        nombreMateria = "Ecuaciones",
-                        profesor = "Dra. Gómez",
-                        numeroResenas = 5
+                        calificacion = review.calificacionMedia,
+                        nombreMateria = review.nombreMateria,
+                        profesor = review.nombreProfesor,
+                        numeroResenas = review.cantidadReviews
                     )
-                ),
-                colorTexto = primaryLight,
-                colorCaja = primaryContainerLight,
-                onSeeAllClick = { onSeeAllClick() }
-            )}
-        item {
-            CajaReseñas(
-                temaGeneral = "PROGRAMACIÓN",
-                materias = listOf(
-                    MateriaResumida(
-                        calificacion = 5,
-                        nombreMateria = "Desarrollo Móvil",
-                        profesor = "Angarita",
-                        numeroResenas = 18
-                    ),
-                    MateriaResumida(
-                        calificacion = 4,
-                        nombreMateria = "Estructura Datos",
-                        profesor = "Ing. Ruiz",
-                        numeroResenas = 11
-                    ),
-                    MateriaResumida(
-                        calificacion = 5,
-                        nombreMateria = "Programación I",
-                        profesor = "Lic. Hoyos",
-                        numeroResenas = 22
-                    )
-                ),
-                colorTexto = tertiaryContainerLight,
-                colorCaja = secondaryContainerLight,
-                onSeeAllClick = { onSeeAllClick() }
-            )}
-        item{
-            CajaReseñas(
-                temaGeneral = "IDIOMAS",
-                materias = listOf(
-                    MateriaResumida(
-                        calificacion = 3,
-                        nombreMateria = "Portugués",
-                        profesor = "Torres",
-                        numeroResenas = 18
-                    ),
-                    MateriaResumida(
-                        calificacion = 4,
-                        nombreMateria = "Inglés Avanzado",
-                        profesor = "Ing. Ruiz",
-                        numeroResenas = 11
-                    ),
-                    MateriaResumida(
-                        calificacion = 1,
-                        nombreMateria = "Francés 3",
-                        profesor = "Lic. Camilo",
-                        numeroResenas = 22
-                    )
-                ),
-                colorTexto = primaryLight,
-                colorCaja = primaryContainerLight,
-                onSeeAllClick = { onSeeAllClick() }
+                },
+                colorTexto = if (isEven) primaryLight else tertiaryContainerLight,
+                colorCaja = if (isEven) primaryContainerLight else secondaryContainerLight,
+                onSeeAllClick = onSeeAllClick,
+                modifier = Modifier.height(240.dp)
             )
         }
-        item {
-            CajaReseñas(
-                temaGeneral = "CÁLCULO",
-                materias = listOf(
-                    MateriaResumida(
-                        calificacion = 5,
-                        nombreMateria = "Cálculo I",
-                        profesor = "Angarita",
-                        numeroResenas = 14
-                    ),
-                    MateriaResumida(
-                        calificacion = 4,
-                        nombreMateria = "Cálculo II",
-                        profesor = "Prof. Vega",
-                        numeroResenas = 8
-                    ),
-                    MateriaResumida(
-                        calificacion = 3,
-                        nombreMateria = "Ecuaciones",
-                        profesor = "Dra. Gómez",
-                        numeroResenas = 5
-                    )
-                ),
-                colorTexto = tertiaryContainerLight,
-                colorCaja = secondaryContainerLight,
-                onSeeAllClick = { onSeeAllClick() }
-            )
-        }
-        item {
-            CajaReseñas(
-                temaGeneral = "PROGRAMACIÓN",
-                materias = listOf(
-                    MateriaResumida(
-                        calificacion = 5,
-                        nombreMateria = "Desarrollo Móvil",
-                        profesor = "Angarita",
-                        numeroResenas = 18
-                    ),
-                    MateriaResumida(
-                        calificacion = 4,
-                        nombreMateria = "Estructura Datos",
-                        profesor = "Ing. Ruiz",
-                        numeroResenas = 11
-                    ),
-                    MateriaResumida(
-                        calificacion = 5,
-                        nombreMateria = "Programación I",
-                        profesor = "Lic. Hoyos",
-                        numeroResenas = 22
-                    )
-                ),
-                colorTexto = primaryLight,
-                colorCaja = primaryContainerLight,
-                onSeeAllClick = { onSeeAllClick() }
-            )
-        }
-        item{
-            CajaReseñas(
-                temaGeneral = "IDIOMAS",
-                materias = listOf(
-                    MateriaResumida(
-                        calificacion = 3,
-                        nombreMateria = "Portugués",
-                        profesor = "Torres",
-                        numeroResenas = 18
-                    ),
-                    MateriaResumida(
-                        calificacion = 4,
-                        nombreMateria = "Inglés Avanzado",
-                        profesor = "Ing. Ruiz",
-                        numeroResenas = 11
-                    ),
-                    MateriaResumida(
-                        calificacion = 1,
-                        nombreMateria = "Francés 3",
-                        profesor = "Lic. Camilo",
-                        numeroResenas = 22
-                    )
-                ),
-                colorTexto = tertiaryContainerLight,
-                colorCaja = secondaryContainerLight,
-                onSeeAllClick = { onSeeAllClick() }
-            )}
     }
 }
 
@@ -251,6 +139,7 @@ fun BodyInicioScreen(
 @Preview(showSystemUi = true)
 fun InicioScreenPreview() {
     InicioScreen(
+        inicioViewModel = viewModel(),
         onSeeAllClick = {}
     )
 }
