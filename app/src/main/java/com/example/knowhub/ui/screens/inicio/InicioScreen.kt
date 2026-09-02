@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
-import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.MateriaResumida
 import com.example.knowhub.ui.screens.inicio.components.CajaReseñas
 import com.example.knowhub.ui.theme.ArvoFont
@@ -40,13 +39,13 @@ import com.example.knowhub.ui.utils.BackgroundImage
 fun InicioScreen(
     inicioViewModel: InicioViewModel,
     onSeeAllClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val state by inicioViewModel.uiState.collectAsState()
     Box(modifier = modifier) {
         BackgroundImage()
         BodyInicioScreen(
-            allGeneralReviews = state.allGeneralReviews,
+            categories = state.categories,
             onSeeAllClick = onSeeAllClick
         )
     }
@@ -54,31 +53,10 @@ fun InicioScreen(
 
 @Composable
 fun BodyInicioScreen(
-    allGeneralReviews: List<GeneralReview>,
+    categories: List<Pair<String, List<MateriaResumida>>>,
     onSeeAllClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    // 1. Extraer palabras significativas y agrupar materias
-    val stopWords = setOf("a", "de", "la", "en", "el", "los", "las", "y", "o", "con", "por", "para", "un", "una", "i", "ii", "iii")
-
-    val wordsToMaterias = mutableMapOf<String, MutableList<GeneralReview>>()
-
-    allGeneralReviews.forEach { review ->
-        val words = review.nombreMateria.split(" ")
-            .map { it.lowercase().filter { c -> c.isLetterOrDigit() } }
-            .filter { it.isNotEmpty() && it !in stopWords }
-
-        words.forEach { word ->
-            wordsToMaterias.getOrPut(word) { mutableListOf() }.add(review)
-        }
-    }
-
-    // 2. Filtrar palabras que aparecen en al menos 2 materias y ordenar alfabéticamente por la palabra clave
-    val dynamicCategories = wordsToMaterias.filter { it.value.size >= 2 }
-        .mapKeys { it.key.uppercase() }
-        .toList()
-        .sortedBy { it.first }
-
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -111,22 +89,20 @@ fun BodyInicioScreen(
             }
         }
 
-        // 3. Crear una CajaReseñas por cada categoría dinámica
+        // Crear una CajaReseñas por cada categoría
         itemsIndexed(
-            items = dynamicCategories,
+            items = categories,
+            // cada item de va a distinguir por su nombre de categoria
             key = { _, categoria -> categoria.first }
-        ) { index, (category, materias) ->
-            val isEven = index % 2 == 0
+        )
+        /* index es la posicion del item actual en la lista de items
+        *  category: "calculo" materias= [Calculo I,Calculo II]  */
+        { index, (category, materias) ->
+            val isEven = (index % 2 == 0)
             CajaReseñas(
                 temaGeneral = category,
-                materias = materias.distinctBy { it.id }.map { review ->
-                    MateriaResumida(
-                        calificacion = review.calificacionMedia,
-                        nombreMateria = review.nombreMateria,
-                        profesor = review.nombreProfesor,
-                        numeroResenas = review.cantidadReviews
-                    )
-                },
+                materias = materias,
+                // isEven se usa para alternar los colores de las CajasReseñas (azul/amarillo)
                 colorTexto = if (isEven) primaryLight else tertiaryContainerLight,
                 colorCaja = if (isEven) primaryContainerLight else secondaryContainerLight,
                 onSeeAllClick = onSeeAllClick,
