@@ -94,7 +94,7 @@ fun BodyLoginScreen(
             onContrasenaChange = {onContrasenaChange(it)}
         )
         Spacer(modifier = Modifier.weight(0.5F))
-        Text("¿Olvidaste tu contraseña?",
+        Text(stringResource(R.string.olvidaste_contrasena),
             fontFamily = BangersFont)
         Spacer(modifier = Modifier.weight(5.0F))
 
@@ -122,7 +122,7 @@ fun BodyLoginScreen(
             }
         ) {
             Text(
-                text = "¿No tienes cuenta? Regístrate",
+                text = stringResource(R.string.no_tienes_cuenta_registrate),
                 fontFamily = BangersFont,
                 color = tertiaryContainerLight
             )
@@ -134,7 +134,7 @@ fun BodyLoginScreen(
             }
         ) {
             Text(
-                text = "Continuar sin registro",
+                text = stringResource(R.string.continuar_sin_registro),
                 fontFamily = BangersFont,
                 color = tertiaryContainerLight
             )

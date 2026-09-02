@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -93,7 +94,7 @@ fun BodyInicioScreen(
                 Spacer(modifier = Modifier.height(15.dp))
 
                 AppLabel(
-                    "Bienvenido",
+                    stringResource(R.string.bienvenido),
                     colorResource(R.color.blancoKnowHUB),
                     colorResource(R.color.NegroKnowHUB),
                     modifier = Modifier.height(35.dp)
@@ -102,7 +103,7 @@ fun BodyInicioScreen(
                 Spacer(modifier = Modifier.height(15.dp))
 
                 Text(
-                    text = "Explora materias y descubre reseñas de otros estudiantes:",
+                    text = stringResource(R.string.explora_materias),
                     color = onTertiaryContainerLight,
                     fontWeight = FontWeight.Bold,
                     fontFamily = ArvoFont

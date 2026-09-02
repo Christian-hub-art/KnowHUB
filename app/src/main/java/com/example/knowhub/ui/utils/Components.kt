@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -62,7 +63,7 @@ import com.example.knowhub.ui.theme.tertiaryContainerLight
 fun BackgroundImage(){
     Image(
         painter = painterResource(R.drawable.fondoknowhub),
-        contentDescription = "Fondo KnowHUB",
+        contentDescription = stringResource(R.string.fondo_knowhub),
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.Crop
     )
@@ -74,7 +75,7 @@ fun LogoApp(
 ){
     Image(
         painter = painterResource(R.drawable.logoknowhub),
-        contentDescription = "Logo KnowHUB",
+        contentDescription = stringResource(R.string.logo_knowhub),
         modifier = modifier.height(210.dp).width(250.dp)
 
     )
@@ -349,7 +350,7 @@ fun CajaBusqueda(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "CLASE: ${generalReview.codigoAsignatura}",
+                    text = stringResource(R.string.codigo_clase_label, generalReview.codigoAsignatura),
                     color = primaryLight,
                     fontFamily = BangersFont,
                     fontSize = 24.sp
@@ -377,7 +378,7 @@ fun CajaBusqueda(
                         Text(text = "👩‍🏫", fontSize = 16.sp)
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "Prof. ${generalReview.nombreProfesor}",
+                            text = stringResource(R.string.prof_label, generalReview.nombreProfesor),
                             fontSize = 16.sp,
                             color = tertiaryContainerLight
                         )
@@ -393,7 +394,7 @@ fun CajaBusqueda(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "Basado en ${generalReview.cantidadReviews} reseñas",
+                        text = stringResource(R.string.basado_en_resenas, generalReview.cantidadReviews),
                         fontSize = 14.sp,
                         color = tertiaryContainerLight
                     )
@@ -445,7 +446,7 @@ fun CajaBusqueda(
                             .padding(horizontal = 4.dp, vertical = 2.dp)
                     ) {
                         Text(
-                            text = "DIFICULTAD",
+                            text = stringResource(R.string.dificultad),
                             fontFamily = BangersFont,
                             fontSize = 10.sp,
                             color = tertiaryContainerLight,
@@ -465,7 +466,7 @@ fun CajaBusqueda(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "VER RESEÑAS COMPLETAS",
+                    text = stringResource(R.string.ver_resenas_completas),
                     color = primaryLight,
                     fontFamily = BangersFont,
                     fontSize = 20.sp

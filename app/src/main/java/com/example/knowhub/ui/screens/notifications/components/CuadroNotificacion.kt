@@ -32,10 +32,7 @@ import com.example.knowhub.data.local.LocalNotificacionProvider
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
-
 import com.example.knowhub.ui.utils.CuadroTexto
-
-
 
 @Composable
 fun CuadroNotificacion(

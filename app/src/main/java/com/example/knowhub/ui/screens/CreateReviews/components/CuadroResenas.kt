@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -77,7 +78,7 @@ fun CuadroResenas(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "# CLASE: ",
+                        text = stringResource(R.string.clase_header),
                         color = primaryLight,
                         fontFamily = BangersFont,
                         fontSize = 20.sp
@@ -109,38 +110,38 @@ fun CuadroResenas(
                 modifier = Modifier.padding(16.dp)
             ) {
 
-                FormLabel(text = "TITULO DE LA MATERIA:")
+                FormLabel(text = stringResource(R.string.titulo_materia_label))
 
                 FormTextField(
                     value = tituloMateria,
                     onValueChange = onTituloMateriaChange,
-                    placeholder = "ESCOGE LA MATERIA..."
+                    placeholder = stringResource(R.string.escoge_materia_placeholder)
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                FormLabel(text = "NOMBRE DEL PROFESOR:")
+                FormLabel(text = stringResource(R.string.nombre_profesor_label))
 
                 FormTextField(
                     value = nombreProfesor,
                     onValueChange = onNombreProfesorChange,
-                    placeholder = "ESCRIBE EL NOMBRE DEL PROFESOR..."
+                    placeholder = stringResource(R.string.escribe_nombre_profesor_placeholder)
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                FormLabel(text = "TU RESEÑA")
+                FormLabel(text = stringResource(R.string.tu_resena_label))
 
                 FormTextField(
                     value = resena,
                     onValueChange = onResenaChange,
-                    placeholder = "ESCRIBE AQUÍ TU RESEÑA...",
+                    placeholder = stringResource(R.string.escribe_aqui_resena_placeholder),
                     modifier = Modifier.height(100.dp)
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                FormLabel(text = "TU CALIFICACIÓN")
+                FormLabel(text = stringResource(R.string.tu_calificacion_label))
 
                 Row {
                     val estrellas= generarEstrellas(4)
@@ -159,7 +160,7 @@ fun CuadroResenas(
                 ) {
 
                     AppButton(
-                        textoButon = "X CANCELAR",
+                        textoButon = stringResource(R.string.cancelar_con_x),
                         colorTexto = tertiaryContainerLight,
                         colorBoton =primaryLight,
                         onClick = {},
@@ -171,7 +172,7 @@ fun CuadroResenas(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     AppButton(
-                        textoButon = "PUBLICAR",
+                        textoButon = stringResource(R.string.publicar),
                         colorTexto = primaryLight,
                         colorBoton = primaryContainerLight,
                         onClick = {},

@@ -1,66 +1,62 @@
 package com.example.knowhub.ui.screens.BusquedaPerfil
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.knowhub.R
-import com.example.knowhub.ui.screens.BusquedaPerfil.Components.InformacionPerfil
-import com.example.knowhub.ui.screens.BusquedaPerfil.Components.MiniCuadroInformacion
-import com.example.knowhub.ui.theme.BangersFont
-import com.example.knowhub.ui.theme.primaryLight
-import com.example.knowhub.ui.theme.tertiaryContainerLight
-import com.example.knowhub.ui.theme.tertiaryLight
-import com.example.knowhub.ui.utils.AppLabel
-import com.example.knowhub.ui.utils.AppLabelBig
-import com.example.knowhub.ui.utils.BackgroundImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.knowhub.R
+import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.local.localGeneralReviewProvider
+import com.example.knowhub.ui.screens.BusquedaPerfil.Components.InformacionPerfil
+import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryContainerLight
+import com.example.knowhub.ui.theme.primaryLight
+import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
+import com.example.knowhub.ui.utils.AppLabel
+import com.example.knowhub.ui.utils.AppLabelBig
+import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.CajaBusqueda
 
 @Composable
 fun BusquedaPerfilScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: BusquedaPerfilViewModel = viewModel()
 ){
+    val uiState by viewModel.uiState.collectAsState()
 
     Box(
-        modifier=modifier
+        modifier = modifier
     ){
         BackgroundImage()
         BodyBusquedaPerfilScrenn(
+            reviews = uiState.reviews,
             onClick = {}
         )
     }
-
-
 }
 
 @Composable
 fun BodyBusquedaPerfilScrenn(
+    reviews: List<GeneralReview> = localGeneralReviewProvider.generalReviews,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -74,7 +70,7 @@ fun BodyBusquedaPerfilScrenn(
             Spacer(modifier = Modifier.height(20.dp))
 
             AppLabelBig(
-                "Laura",
+                stringResource(R.string.laura),
                 colorTexto = primaryLight,
                 color = tertiaryContainerLight,
                 modifier = Modifier
@@ -118,7 +114,7 @@ fun BodyBusquedaPerfilScrenn(
             Spacer(modifier = Modifier.height(40.dp))
 
             AppLabel(
-                "Reseñas Publicadas",
+                stringResource(R.string.rese_as_publicadas),
                 colorTexto = tertiaryContainerLight,
                 color = primaryLight,
                 modifier = Modifier.width(350.dp)
@@ -128,7 +124,7 @@ fun BodyBusquedaPerfilScrenn(
         }
 
 
-        items(localGeneralReviewProvider.generalReviews) { review ->
+        items(reviews) { review ->
 
             CajaBusqueda(
                 review,
@@ -142,7 +138,6 @@ fun BodyBusquedaPerfilScrenn(
         }
     }
 }
-
 
 @Composable
 @Preview

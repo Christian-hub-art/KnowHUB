@@ -49,7 +49,7 @@ fun BodyOptionsScreen(
             Spacer(modifier = Modifier.height(35.dp)) // Ajustado para que no choque con la TopBar si es necesario
 
             AppLabel(
-                "Tu perfil",
+                stringResource(R.string.perfil),
                 primaryLight,
                 tertiaryContainerLight,
                 modifier = Modifier
@@ -70,7 +70,7 @@ fun BodyOptionsScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             AppButton(
-                "📸 Subir Foto",
+                stringResource(R.string.subir_foto),
                 tertiaryContainerLight,
                 primaryLight,
                 modifier = Modifier
@@ -84,7 +84,7 @@ fun BodyOptionsScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
             AppButton(
-                "\uD83D\uDDD1\uFE0F Eliminar cuenta",
+                stringResource(R.string.eliminar_cuenta),
                 tertiaryContainerLight,
                 secondaryContainerLight,
                 modifier = Modifier

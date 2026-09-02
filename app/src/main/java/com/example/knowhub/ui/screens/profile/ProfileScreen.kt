@@ -86,7 +86,7 @@ fun BodyProfileScreen(
         Spacer(modifier = Modifier.weight(17.0F))
 
         AppLabel(
-            "Tu perfil",
+            stringResource(R.string.perfil),
             colorResource(R.color.blancoKnowHUB),
             colorResource(R.color.NegroKnowHUB),
             modifier = Modifier
@@ -111,7 +111,7 @@ fun BodyProfileScreen(
         Spacer(modifier = Modifier.weight(10.0F))
 
         AppButton(
-            "📸 Subir Foto",
+            stringResource(R.string.subir_foto),
             colorResource(R.color.NegroKnowHUB),
             colorResource(R.color.blancoKnowHUB),
             onClick = {
@@ -141,7 +141,7 @@ fun BodyProfileScreen(
         }
 
         Spacer(modifier = Modifier.weight(10.0F))
-        AppButton("\uD83D\uDDD1\uFE0F Eliminar cuenta",
+        AppButton(stringResource(R.string.eliminar_cuenta),
             colorResource(R.color.NegroKnowHUB),
             colorResource(R.color.AmarilloKnowHUB),
             onClick = {

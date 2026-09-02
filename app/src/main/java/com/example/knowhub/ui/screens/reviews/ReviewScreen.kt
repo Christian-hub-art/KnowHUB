@@ -6,49 +6,52 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
+import com.example.knowhub.data.Review
+import com.example.knowhub.data.local.localReviewProvider
 import com.example.knowhub.ui.screens.reviews.components.CajaReview
 import com.example.knowhub.ui.theme.*
-import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
-import com.example.knowhub.ui.utils.BarraArriba
 
 @Composable
 fun ReviewScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ReviewViewModel = viewModel()
 ) {
-    Box(modifier=modifier) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    Box(modifier = modifier) {
         BackgroundImage()
-        BodyReviewScreen()
+        BodyReviewScreen(
+            usuario = uiState.usuario,
+            reviews = uiState.reviews
+        )
     }
 }
 
 @Composable
 fun BodyReviewScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    usuario: String = "Leo6767",
+    reviews: List<Review> = localReviewProvider.Reviews
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
-        Spacer(modifier = modifier.height(35.dp))
+        Spacer(modifier = Modifier.height(35.dp))
 
         AppLabel(
             stringResource(R.string.tus_rese_as),
@@ -60,64 +63,50 @@ fun BodyReviewScreen(
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-        Row{
-
-            AppLabel("Leo6767",
+        Row {
+            AppLabel(
+                usuario,
                 tertiaryContainerLight,
-                primaryLight)
+                primaryLight
+            )
 
             Spacer(modifier = Modifier.width(20.dp))
 
-            AppLabel("3" + " " + stringResource(R.string.rese_as),
+            AppLabel(
+                stringResource(R.string.num_resenas_label, reviews.size),
                 tertiaryContainerLight,
-                primaryLight)
+                primaryLight
+            )
             Spacer(modifier = Modifier.width(150.dp))
-
         }
+
         LazyColumn(
-            modifier = Modifier
-                .width(325.dp)
+            modifier = Modifier.width(325.dp)
         ) {
             item {
                 Spacer(modifier = Modifier.height(10.dp))
+            }
+            items(reviews.size) { index ->
+                val review = reviews[index]
+
+                val colorCaja = if (index % 2 == 0) primaryContainerLight else secondaryContainerLight
+                val colorTexto = if (index % 2 == 0) primaryLight else tertiaryContainerLight
+
                 CajaReview(
-                    "15 Nov 2026",
-                    "1342",
-                    "Desarrollo Movil",
-                    "Angarita",
-                    "Es una muy buena clase.",
-                    5,
-                    primaryContainerLight,
-                    primaryLight
+                    Fecha = review.fechaPublicacion,
+                    Codigo = review.id.toString(),
+                    Materia = review.nombreAsignatura,
+                    Profesor = review.nombreProfesor,
+                    Reseña = review.descripcion,
+                    Calificacion = review.calificacion,
+                    colorCaja = colorCaja,
+                    colorTexto = colorTexto
                 )
                 Spacer(modifier = Modifier.height(15.dp))
-                CajaReview(
-                    "15 Nov 2026",
-                    "1342",
-                    "Desarrollo Movil",
-                    "Angarita",
-                    "Es una muy buena clase.",
-                    2,
-                    secondaryContainerLight,
-                    tertiaryContainerLight
-                )
-                Spacer(modifier = Modifier.height(15.dp))
-                CajaReview(
-                    "15 Nov 2026",
-                    "1342",
-                    "Desarrollo Movil",
-                    "Angarita",
-                    "Es una muy buena clase.",
-                    1,
-                    primaryContainerLight,
-                    primaryLight
-                )
             }
         }
     }
 }
-
-
 
 @Composable
 @Preview

@@ -63,7 +63,7 @@ fun BodyCreateReviewsScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         AppLabelBig(
-            texto = "CREA UNA NUEVA RESEÑA",
+            texto = stringResource(R.string.crea_nueva_resena),
             colorTexto = primaryLight,
             color = tertiaryContainerLight,
             modifier = Modifier
