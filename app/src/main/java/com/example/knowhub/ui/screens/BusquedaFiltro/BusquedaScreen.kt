@@ -34,6 +34,8 @@ import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.CajaBusqueda
+//Pantalla principal de búsqueda y filtrado de reseñas generales.
+// Conecta la UI con el ViewModel para seguir el patrón de arquitectura MVVM.
 
 @Composable
 fun BusquedaScreen(
@@ -41,12 +43,15 @@ fun BusquedaScreen(
     modifier: Modifier = Modifier,
     viewModel: BusquedaViewModel = viewModel()
 ){
+    // Subscripción reactiva al estado expuesto por el ViewModel
     val uiState by viewModel.uiState.collectAsState()
 
     Box(
         modifier = modifier
     ){
+        // Fondo decorativo reutilizable de la aplicación
         BackgroundImage()
+        // Contenido principal de la pantalla desacoplado de la lógica de negocio
         BodyBusquedaScreen(
             filtro = uiState.filtro,
             reviews = uiState.reviews,
@@ -55,7 +60,7 @@ fun BusquedaScreen(
         )
     }
 }
-
+//Composable que define la estructura visual y los elementos interactivos de la pantalla de búsqueda.
 @Composable
 fun BodyBusquedaScreen(
     filtro: String,
@@ -67,12 +72,12 @@ fun BodyBusquedaScreen(
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    ) { // Lista de desplazamiento vertical optimizada para mostrar los elementos
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
 
             item() {
                 Spacer(modifier = Modifier.height(35.dp))
-
+                // Contenedor del campo de entrada y el ícono de búsqueda
                 Row(
                     modifier = Modifier
                         .width(325.dp)
@@ -119,6 +124,7 @@ fun BodyBusquedaScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
             }
+            // Renderizado dinámico de la lista de reseñas
             items(reviews.size) { index ->
                 CajaBusqueda(
                     reviews[index],

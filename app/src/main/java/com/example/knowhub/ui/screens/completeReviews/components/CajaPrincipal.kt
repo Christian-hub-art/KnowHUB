@@ -29,7 +29,7 @@ import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 
 import com.example.knowhub.ui.utils.generarEstrellas
-
+//Tarjeta principal que resume los datos generales de la materia, profesor y calificaciones.
 @Composable
 fun CajaPrincipal(
     generalReview: GeneralReview,
@@ -60,7 +60,7 @@ fun CajaPrincipal(
             )
     ) {
 
-
+        // Encabezado con el código de la asignatura
         Row(
             modifier = Modifier
 
@@ -79,7 +79,7 @@ fun CajaPrincipal(
                 fontFamily = BangersFont
             )
         }
-
+        // Detalles de la asignatura y métricas de reseñas
         Column(
             modifier = Modifier.padding(10.dp)
         ) {
@@ -101,7 +101,7 @@ fun CajaPrincipal(
             )
 
             Spacer(modifier = Modifier.height(5.dp))
-
+            // Renderizado de calificación en estrellas
             val estrellas= generarEstrellas(generalReview.calificacionMedia)
             Text(
                 text = estrellas,
@@ -133,7 +133,7 @@ fun CajaPrincipal(
                 }
             }
             Spacer(modifier = Modifier.height(6.dp))
-            Row(
+            Row(// Etiqueta de dificultad
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ){

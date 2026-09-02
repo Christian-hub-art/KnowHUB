@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +23,7 @@ import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
+import com.example.knowhub.R
 
 @Composable
 fun Materia(
@@ -67,7 +69,7 @@ fun Materia(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = "$numeroResenas reseñas",
+            text = stringResource(R.string.numero_resenas, numeroResenas),
             color = tertiaryContainerLight,
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,

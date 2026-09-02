@@ -38,7 +38,7 @@ import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.FormLabel
 import com.example.knowhub.ui.utils.FormTextField
 import com.example.knowhub.ui.utils.generarEstrellas
-
+//Formulario en tarjeta para la creación de una nueva reseña de asignatura y profesor.
 @Composable
 fun CuadroResenas(
     clase: String,
@@ -99,7 +99,7 @@ fun CuadroResenas(
                 }
 
                 Text(
-                    text = "15 NOV 2025",
+                    text = stringResource(R.string.fecha_default),
                     color = primaryLight,
                     fontSize = 20.sp
                 )

@@ -22,7 +22,8 @@ import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.AppLabelBig
 import com.example.knowhub.ui.utils.BackgroundImage
-
+import com.example.knowhub.R
+//pantalla principal para la creación y publicación de una nueva reseña.
 @Composable
 fun CreateReviewsScreen(
     createReviewsViewModel: CreateReviewsViewModel,
@@ -44,7 +45,7 @@ fun CreateReviewsScreen(
         )
     }
 }
-
+//Estructura de contenido de la pantalla de creación de reseñas.
 @Composable
 fun BodyCreateReviewsScreen(
     clase: String,

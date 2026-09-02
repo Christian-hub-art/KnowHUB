@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.*
 
-
+//Menú lateral de navegación con las opciones principales de la aplicación.
 @Composable
 fun MenuOpciones(
     inicioButtonPressed: () -> Unit,
@@ -57,7 +57,7 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.casa),
-                contentDescription = "Icono",
+                contentDescription = stringResource(R.string.inicio),
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
@@ -76,7 +76,7 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.inciotarea),
-                contentDescription = "Icono",
+                contentDescription = stringResource(R.string.perfil),
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
@@ -95,7 +95,7 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.libro),
-                contentDescription = "Icono",
+                contentDescription = stringResource(R.string.rese_a),
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
@@ -114,7 +114,7 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.notificacion),
-                contentDescription = "Icono",
+                contentDescription = stringResource(R.string.notificaci_n),
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
@@ -133,7 +133,7 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.mas),
-                contentDescription = "Icono",
+                contentDescription = stringResource(R.string.crear_resena),
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))
@@ -152,7 +152,7 @@ fun MenuOpciones(
         ) {
             Icon(
                 painter = painterResource(R.drawable.buscar),
-                contentDescription = "Icono",
+                contentDescription =stringResource(R.string.imagen_buscar),
                 modifier = Modifier.size(30.dp)
             )
             Spacer(modifier = Modifier.width(5.dp))

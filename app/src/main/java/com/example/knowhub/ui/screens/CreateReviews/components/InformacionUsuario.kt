@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,7 +24,7 @@ import com.example.knowhub.R
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
-
+//Componente que despliega la insignia con la información del usuario autenticado en la pantalla de creación de reseñas.
 @Composable
 fun InformaciónUsuario(
     modifier: Modifier= Modifier
@@ -47,7 +48,7 @@ fun InformaciónUsuario(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "LEO6767",
+                    text = stringResource(R.string.laura),
                     fontFamily = BangersFont,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,

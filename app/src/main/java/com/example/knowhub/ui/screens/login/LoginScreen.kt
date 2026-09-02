@@ -31,7 +31,7 @@ import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.LogoApp
 
-
+//Pantalla principal de autenticación / inicio de sesión de la aplicación.
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel = LoginViewModel(),
@@ -63,7 +63,7 @@ fun LoginScreenPreview(){
     )
 
 }
-
+//Disposición del contenido visual y componentes del formulario de la pantalla de inicio de sesión
 @Composable
 fun BodyLoginScreen(
     correoOUsuario: String,

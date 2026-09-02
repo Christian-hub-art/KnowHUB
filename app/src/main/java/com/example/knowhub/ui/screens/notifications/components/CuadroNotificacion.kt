@@ -33,7 +33,7 @@ import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.CuadroTexto
-
+//Componente que representa la tarjeta individual de una notificación.
 @Composable
 fun CuadroNotificacion(
     infoNotificacion: Notificacion,

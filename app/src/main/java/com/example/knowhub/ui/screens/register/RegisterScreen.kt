@@ -26,7 +26,7 @@ import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.LogoApp
-
+//Pantalla de registro de nuevos usuarios en la aplicación.
 @Composable
 fun RegisterScreen(
     registerViewModel: RegisterViewModel = RegisterViewModel(),
@@ -65,7 +65,7 @@ fun RegisterScreenPreview(){
         registerViewModel = viewModel()
     )
 }
-
+//Maquetación y estructura del contenido para la pantalla de registro.
 @Composable
 fun BodyRegisterScreen(
     nombre: String,

@@ -24,7 +24,7 @@ import com.example.knowhub.ui.screens.reviews.components.CajaReview
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
-
+//Pantalla que despliega el historial de reseñas publicadas por el usuario.
 @Composable
 fun ReviewScreen(
     modifier: Modifier = Modifier,
@@ -40,7 +40,7 @@ fun ReviewScreen(
         )
     }
 }
-
+//Maquetación principal y renderizado de la lista diferida de reseñas.
 @Composable
 fun BodyReviewScreen(
     modifier: Modifier = Modifier,

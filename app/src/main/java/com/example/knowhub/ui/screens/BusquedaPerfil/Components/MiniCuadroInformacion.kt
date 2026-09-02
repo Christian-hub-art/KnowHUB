@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.ui.theme.BangersFont
-
+//Componente individual que muestra una métrica numérica y su respectiva etiqueta descriptiva
 @Composable
 fun MiniCuadroInformacion(
     tipo: String,
@@ -27,7 +27,7 @@ fun MiniCuadroInformacion(
             fontFamily = BangersFont,
             fontSize = 22.sp
         )
-
+        // Etiqueta descriptiva de la métrica
         Text(
             text = tipo,
             fontFamily = BangersFont,

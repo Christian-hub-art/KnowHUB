@@ -34,7 +34,7 @@ import com.example.knowhub.ui.theme.secondaryContainerLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
-
+//Pantalla de inicio de la aplicación que despliega las categorías dinámicas de materias.
 @Composable
 fun InicioScreen(
     inicioViewModel: InicioViewModel,
@@ -50,7 +50,7 @@ fun InicioScreen(
         )
     }
 }
-
+//Estructura y procesamiento de contenido para la pantalla de inicio.
 @Composable
 fun BodyInicioScreen(
     categories: List<Pair<String, List<MateriaResumida>>>,

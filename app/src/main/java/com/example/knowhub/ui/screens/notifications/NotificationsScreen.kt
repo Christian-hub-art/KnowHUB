@@ -31,7 +31,7 @@ import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
-
+//Pantalla principal que muestra el listado de notificaciones recibidas por el usuario.
 @Composable
 fun NotificatonsScreen(
     modifier: Modifier = Modifier,
@@ -44,7 +44,7 @@ fun NotificatonsScreen(
         BodyNotificationsScreen(notifications = uiState.notifications)
     }
 }
-
+//Disposición del contenido visual y lista de elementos para las notificaciones.
 @Composable
 fun BodyNotificationsScreen(
     modifier: Modifier = Modifier,

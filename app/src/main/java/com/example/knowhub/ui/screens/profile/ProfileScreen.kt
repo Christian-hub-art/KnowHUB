@@ -34,7 +34,7 @@ import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.BarraArriba
-
+//Pantalla principal del perfil de usuario con opciones de actualización e información personal.
 @Composable
 fun ProfileScreen(
     profileViewModel: ProfileViewModel = ProfileViewModel(),
@@ -62,7 +62,7 @@ fun ProfileScreen(
 
     }
 }
-
+//Contenido principal y maquetación de la pantalla de perfil.
 @Composable
 fun BodyProfileScreen(
     nombre: String,

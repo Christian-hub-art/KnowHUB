@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-
+//Estado de la pantalla de inicio de sesión.
 data class LoginState(
     val nombreOCorreo: String = "",
     val contrasena: String = "",

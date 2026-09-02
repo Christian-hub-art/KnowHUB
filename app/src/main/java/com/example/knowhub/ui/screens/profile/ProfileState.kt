@@ -1,5 +1,5 @@
 package com.example.knowhub.ui.screens.profile
-
+//Representa el estado de la interfaz de usuario para la pantalla de Perfil.
 data class ProfileState(
     val nombre: String = "",
     val errorMessageGuardar: String = "",

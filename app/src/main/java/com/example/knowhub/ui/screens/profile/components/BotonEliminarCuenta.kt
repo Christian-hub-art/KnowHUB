@@ -11,7 +11,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.*
-
+//Botón de acción para proceder con la eliminación de la cuenta de usuario.
 @Composable
 fun BotonEliminarCuenta(
     modifier: Modifier = Modifier

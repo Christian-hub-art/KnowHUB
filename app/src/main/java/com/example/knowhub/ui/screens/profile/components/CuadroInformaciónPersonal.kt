@@ -34,7 +34,7 @@ import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.CuadroTexto
 import com.example.knowhub.ui.utils.FormTextField
 
-
+//Tarjeta interactiva para la edición de los datos de información personal del usuario.
 @Composable
 fun CuadroInformaciónPersonal(
     nombre: String,

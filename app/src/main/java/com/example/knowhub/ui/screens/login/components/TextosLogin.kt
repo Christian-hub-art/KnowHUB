@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.*
-
+//Componente que agrupa los campos de entrada de texto para el inicio de sesión
 
 @Composable
 fun TextosLogin(

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
+//ViewModel encargado de la gestión de datos y estado para la pantalla de Reseñas.
 class ReviewViewModel : ViewModel() {
 
     // Encapsulamiento: Mutable privado, Inmutable expuesto

@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
@@ -28,7 +29,7 @@ import com.example.knowhub.ui.utils.AppLabel
 
 import com.example.knowhub.ui.utils.CuadroTexto
 
-
+//Tarjeta de edición y gestión de la información personal del usuario.
 @Composable
 fun CuadroInformaciónPersonal(
     modifier: Modifier = Modifier
@@ -63,7 +64,7 @@ fun CuadroInformaciónPersonal(
 
             // TÍTULO
             AppLabel(
-                "👤 INFORMACIÓN PERSONAL",
+                stringResource(R.string.informacion_personal_titulo),
                 primaryLight,
                 tertiaryContainerLight,
                 modifier = Modifier
@@ -74,7 +75,7 @@ fun CuadroInformaciónPersonal(
 
             // NOMBRE DE USUARIO
             Text(
-                "Nombre de usuario",
+                stringResource(R.string.nombre_usuario_label),
                 fontFamily = ArvoFont
             )
 
@@ -95,7 +96,7 @@ fun CuadroInformaciónPersonal(
             ) {
 
                 AppButton(
-                    "💾 GUARDAR CAMBIOS",
+                    stringResource(R.string.guardar_cambios),
                     tertiaryContainerLight,
                     primaryLight,
                     modifier = Modifier
