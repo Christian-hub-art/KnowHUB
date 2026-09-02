@@ -32,13 +32,13 @@ import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
 
-
+//Componente que muestra la tarjeta detallada de una reseña específica incluyendo el profesor y la asignatura.
 @Composable
 fun Review(
     review: Review,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier) {// Encabezado superior con información de profesor y asignatura
         Row(modifier = Modifier.padding(10.dp)
             .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -55,7 +55,7 @@ fun Review(
                 fontFamily = BangersFont
             )
         }
-
+        // Tarjeta contenedora de la reseña
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -68,7 +68,7 @@ fun Review(
                     tertiaryContainerLight ,
                     shape = RoundedCornerShape(16.dp)
                 )
-        ) {
+        ) {// Fila con datos del autor y calificación
             Row(modifier = Modifier.padding(10.dp)) {
                 Column() {
                     Text(
@@ -90,7 +90,7 @@ fun Review(
                     fontSize = 18.sp
                 )
             }
-
+            // Cuerpo descriptivo y contadores de interacción
             Column(
                 modifier = Modifier.padding(10.dp)
             ) {
@@ -107,7 +107,7 @@ fun Review(
                 Spacer(modifier = Modifier.height(20.dp))
                 Row( modifier= Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ) {
+                ) {// Botón de Me gusta
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
                             onClick = { /* Acción de Like */ },
@@ -125,7 +125,7 @@ fun Review(
                             fontSize = 17.sp,
                             fontFamily = BangersFont
                         )
-                    }
+                    }// Botón de Comentarios
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
                             onClick = { /* Acción de Like */ },

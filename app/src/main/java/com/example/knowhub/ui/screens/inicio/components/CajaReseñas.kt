@@ -26,7 +26,7 @@ import com.example.knowhub.data.MateriaResumida
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
-
+//Componente contenedor en forma de caja que despliega una lista horizontal de materias resumidas bajo una categoría o tema general específico.
 @Composable
 fun CajaReseñas(
     temaGeneral: String,

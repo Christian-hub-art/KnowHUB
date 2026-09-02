@@ -22,7 +22,7 @@ import com.example.knowhub.R
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryLight
 
-
+//Sección de encabezado que muestra la imagen de perfil del usuario y sus estadísticas
 @Composable
 fun InformacionPerfil(
     modifier: Modifier = Modifier
@@ -31,7 +31,7 @@ fun InformacionPerfil(
         modifier = modifier.width(350.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
+        // Marco contenedor de la foto de perfil
         Box(
             modifier = Modifier
                 .size(85.dp)
@@ -50,7 +50,7 @@ fun InformacionPerfil(
         }
 
         Spacer(modifier = Modifier.width(8.dp))
-
+        // Bloque con las métricas del usuario
         CuadrosInformacionPerfil(
             seguidos = 48,
             materiasResenadas = 32,

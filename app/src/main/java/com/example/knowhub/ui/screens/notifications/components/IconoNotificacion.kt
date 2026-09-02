@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.*
-
+//Componente que renderiza el icono distintivo para un tipo específico de notificación
 @Composable
 fun IconoNotificacion(
     idIcono: Int,

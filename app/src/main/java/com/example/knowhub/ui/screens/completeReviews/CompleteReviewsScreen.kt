@@ -28,7 +28,7 @@ import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppButtonBig
 import com.example.knowhub.ui.utils.BackgroundImage
-
+//Pantalla que despliega el detalle completo de una reseña general y sus comentarios asociados
 @Composable
 fun CompleteReviewsScreen(
     generalReviewId: Int,
@@ -52,7 +52,7 @@ fun CompleteReviewsScreen(
         )
     }
 }
-
+//Estructura de la interfaz para la vista de reseñas completas.
 @Composable
 fun BodyCompleteReviewsScreen(
     generalReviewId: Int,
@@ -101,7 +101,7 @@ fun BodyCompleteReviewsScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier.width(350.dp)
-                ) {
+                ) {// Filtros de navegación
                     AppButton(
                         stringResource(R.string.para_ti),
                         primaryLight,
@@ -118,7 +118,7 @@ fun BodyCompleteReviewsScreen(
                 }
                 Spacer(modifier = Modifier.height(20.dp))
             }
-
+            // Listado de reseñas
             items(allReviews.size) { index ->
                 ReviewComponent(
                     allReviews[index],
@@ -127,7 +127,7 @@ fun BodyCompleteReviewsScreen(
                 )
                 Spacer(modifier = Modifier.height(20.dp))
             }
-
+            // Botón para agregar una nueva reseña
             item{
                 AppButtonBig(
                     stringResource(R.string.escribe_tu_rese_a),

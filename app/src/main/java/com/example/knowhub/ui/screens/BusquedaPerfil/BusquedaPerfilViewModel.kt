@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
+//ViewModel que administra la carga de datos y el estado de la pantalla de perfil.
 class BusquedaPerfilViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(BusquedaPerfilState())
@@ -15,7 +15,7 @@ class BusquedaPerfilViewModel : ViewModel() {
     init {
         loadReviews()
     }
-
+//Carga las reseñas publicadas desde la fuente de datos local.
     private fun loadReviews() {
         val lista = localGeneralReviewProvider.generalReviews
 

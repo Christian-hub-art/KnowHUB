@@ -71,4 +71,14 @@
     <string name="cambiar_contrasena">CAMBIAR CONTRASEÑA</string>
     <string name="cambiar_correo">CAMBIAR CORREO ELECTRÓNICO</string>
     <string name="num_resenas_label">%1$d Reseñas</string>
+    <string name="seguidos">seguidos</string>
+    <string name="materias_resenadas">Materias\nreseñadas</string>
+    <string name="seguidores">Seguidores</string>
+    <string name="ingenieria_sistemas">Ingeniería de Sistemas</string>
+    <string name="btn_seguir">Seguir</string>
+    <string name="icono_graduado">Icono graduado</string>
+    <string name="fecha_default">15 NOV 2025</string>
+    <string name="numero_resenas">%1$d reseñas</string>
+    <string name="nombre_usuario_label">Nombre de usuario</string>
+    <string name="informacion_personal_titulo">👤 INFORMACIÓN PERSONAL</string>
 </resources>

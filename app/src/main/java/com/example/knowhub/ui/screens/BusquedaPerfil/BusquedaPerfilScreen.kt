@@ -35,7 +35,10 @@ import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.AppLabelBig
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.CajaBusqueda
-
+/**
+ * Pantalla del perfil buscado.
+ * Conecta el estado del ViewModel con la interfaz gráfica.
+ */
 @Composable
 fun BusquedaPerfilScreen(
     modifier: Modifier = Modifier,
@@ -53,7 +56,7 @@ fun BusquedaPerfilScreen(
         )
     }
 }
-
+//Contenido principal de la pantalla de perfil y sus reseñas asociadas.
 @Composable
 fun BodyBusquedaPerfilScrenn(
     reviews: List<GeneralReview> = localGeneralReviewProvider.generalReviews,
@@ -68,7 +71,7 @@ fun BodyBusquedaPerfilScrenn(
         item {
 
             Spacer(modifier = Modifier.height(20.dp))
-
+            // Nombre del perfil del usuario
             AppLabelBig(
                 stringResource(R.string.laura),
                 colorTexto = primaryLight,
@@ -79,11 +82,11 @@ fun BodyBusquedaPerfilScrenn(
             )
 
             Spacer(modifier = Modifier.height(40.dp))
-
+            // Componente con imagen y estadísticas del perfil
             InformacionPerfil()
 
             Spacer(modifier = Modifier.height(20.dp))
-
+            // Fila con la carrera, ícono y botón de seguimiento
             Row(
                 modifier = Modifier.width(320.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -91,28 +94,28 @@ fun BodyBusquedaPerfilScrenn(
 
                 Icon(
                     imageVector = Icons.Filled.School,
-                    contentDescription = "Icono graduado",
+                    contentDescription = stringResource(R.string.icono_graduado),
                     modifier = Modifier.size(40.dp)
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    "Ingenieria de Sistemas",
+                    stringResource(R.string.ingenieria_sistemas),
                     fontFamily = BangersFont
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 AppButton(
-                    "Seguir",
+                    stringResource(R.string.btn_seguir),
                     colorBoton = primaryContainerLight,
                     onClick = onClick
                 )
             }
 
             Spacer(modifier = Modifier.height(40.dp))
-
+            // Encabezado de la lista de reseñas
             AppLabel(
                 stringResource(R.string.rese_as_publicadas),
                 colorTexto = tertiaryContainerLight,
@@ -123,7 +126,7 @@ fun BodyBusquedaPerfilScrenn(
             Spacer(modifier = Modifier.height(20.dp))
         }
 
-
+        // Listado dinámico de las reseñas publicadas por el perfil
         items(reviews) { review ->
 
             CajaBusqueda(

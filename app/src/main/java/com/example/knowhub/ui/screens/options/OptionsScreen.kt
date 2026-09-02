@@ -23,7 +23,7 @@ import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
-
+//Pantalla principal de opciones de usuario y configuración del perfil.
 @Composable
 fun OptionsScreen(
     modifier: Modifier = Modifier
@@ -35,7 +35,7 @@ fun OptionsScreen(
         BodyOptionsScreen()
     }
 }
-
+//Contenido del cuerpo de la pantalla de opciones.
 @Composable
 fun BodyOptionsScreen(
     modifier: Modifier = Modifier

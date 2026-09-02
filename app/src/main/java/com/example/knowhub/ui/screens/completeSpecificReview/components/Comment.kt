@@ -30,7 +30,7 @@ import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
 
-
+//Componente que muestra un comentario individual realizado dentro de una reseña específica.
 @Composable
 fun Comment(
     Fecha: String,
@@ -53,7 +53,7 @@ fun Comment(
                     tertiaryContainerLight ,
                     shape = RoundedCornerShape(16.dp)
                 )
-        ) {
+        ) {// Encabezado con el nombre del estudiante y fecha
             Row(modifier = Modifier.padding(10.dp)
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -71,7 +71,7 @@ fun Comment(
             )
 
             }
-
+            // Cuerpo del comentario y métricas de interacción
             Column(
                 modifier = Modifier.padding(10.dp)
             ) {
@@ -88,7 +88,7 @@ fun Comment(
                 Spacer(modifier = Modifier.height(20.dp))
                 Row( modifier= Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ) {
+                ) {// Reacción: Me gusta
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
                             onClick = { /* Acción de Like */ },
@@ -106,7 +106,7 @@ fun Comment(
                             fontSize = 17.sp,
                             fontFamily = BangersFont
                         )
-                    }
+                    } // Reacción: Respuestas / Comentarios
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
                             onClick = { /* Acción de Like */ },

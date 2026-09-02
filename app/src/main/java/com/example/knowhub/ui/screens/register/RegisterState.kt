@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.knowhub.data.Usuario
-
+//Representa el estado de la interfaz de usuario para la pantalla de Registro.
 data class RegisterState(
     val nombre: String = "",
     val correoElectronico: String = "",
