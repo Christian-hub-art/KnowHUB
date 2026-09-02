@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
+import com.example.knowhub.data.Comment as CommentData
 import com.example.knowhub.data.local.localReviewProvider
 import com.example.knowhub.ui.screens.completeSpecificReview.components.Comment
 import com.example.knowhub.ui.screens.completeSpecificReview.components.Review as ReviewComponent
@@ -33,6 +36,8 @@ fun CompleteSpecificReviewScreen(
     completeSpecificReviewViewModel: CompleteSpecificReviewViewModel,
     modifier: Modifier = Modifier
 ){
+    val state by completeSpecificReviewViewModel.uiState.collectAsState()
+
     LaunchedEffect(reviewId) {
         completeSpecificReviewViewModel.loadData(reviewId)
     }
@@ -41,7 +46,10 @@ fun CompleteSpecificReviewScreen(
         modifier = modifier
     ){
         BackgroundImage()
-        BodyCompleteSpecificReviewScreen(reviewId)
+        BodyCompleteSpecificReviewScreen(
+            reviewId = reviewId,
+            comments = state.comments
+        )
     }
 
 }
@@ -49,6 +57,7 @@ fun CompleteSpecificReviewScreen(
 @Composable
 fun BodyCompleteSpecificReviewScreen(
     reviewId: Int,
+    comments: List<CommentData>,
     modifier: Modifier = Modifier
 ){
     val review = localReviewProvider.Reviews.find { it.id == reviewId }
@@ -67,7 +76,7 @@ fun BodyCompleteSpecificReviewScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(30.dp))
-                Row() {
+                Row {
                     Box(
                         modifier = Modifier
                             .background(tertiaryContainerLight)
@@ -91,29 +100,16 @@ fun BodyCompleteSpecificReviewScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Column(modifier = Modifier.width(350.dp)) {
-                    Comment(
-                        "30 Nov 2026",
-                        "Sebastian Gaibor",
-                        "Materia pesada, es importante llevar la calculadora SIEMPRE",
-                        30,
-                        2
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Comment(
-                        "1 Dic 2026",
-                        "Andrés Cano",
-                        "Yo no la pude pasar a la primera :(",
-                        1,
-                        0
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Comment(
-                        "19 Dic 2026",
-                        "Dana Trujillo",
-                        "A mi tambie me parecio muy bien profesor",
-                        15,
-                        5
-                    )
+                    comments.forEach { comment ->
+                        Comment(
+                            Fecha = comment.fecha,
+                            Estudiante = comment.estudiante,
+                            Comentario = comment.comentario,
+                            Likes = comment.likes,
+                            cantidadComentarios = comment.cantidadComentarios
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
                 }
             }
         }
