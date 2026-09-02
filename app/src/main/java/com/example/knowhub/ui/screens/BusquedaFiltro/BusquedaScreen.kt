@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,27 +15,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
-import com.example.knowhub.data.local.LocalNotificacionProvider
+import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.local.localGeneralReviewProvider
 import com.example.knowhub.ui.screens.BusquedaFiltro.Components.BarraFiltro
-import com.example.knowhub.ui.screens.notifications.components.CuadroNotificacion
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
-import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.CajaBusqueda
 
@@ -44,23 +39,22 @@ import com.example.knowhub.ui.utils.CajaBusqueda
 fun BusquedaScreen(
     generalReviewPressed: (Int) -> Unit,
     modifier: Modifier = Modifier,
-
+    viewModel: BusquedaViewModel = viewModel()
 ){
-    var filtro by remember{mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsState()
 
     Box(
         modifier = modifier
     ){
         BackgroundImage()
         BodyBusquedaScreen(
-            filtro  ,
-            onFiltroChange = {filtro = it},
+            filtro = uiState.filtro,
+            reviews = uiState.reviews,
+            onFiltroChange = { viewModel.onFiltroChange(it) },
             generalReviewPressed = generalReviewPressed
         )
     }
-
 }
-
 
 @Composable
 fun BodyBusquedaScreen(
@@ -68,9 +62,8 @@ fun BodyBusquedaScreen(
     onFiltroChange: (String) -> Unit,
     generalReviewPressed: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    reviews: List<GeneralReview> = localGeneralReviewProvider.generalReviews
 ){
-
-    val allGeneralReviews = localGeneralReviewProvider.generalReviews
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -126,23 +119,20 @@ fun BodyBusquedaScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
             }
-            items(allGeneralReviews.size) { index ->
+            items(reviews.size) { index ->
                 CajaBusqueda(
-                    allGeneralReviews[index],
+                    reviews[index],
                     generalReviewPressed = generalReviewPressed,
                     modifier = Modifier.width(350.dp)
                 )
                 Spacer(modifier = Modifier.height(15.dp))
             }
         }
-
     }
 }
-
 
 @Composable
 @Preview
 fun BusquedaScreenPreview(){
     BusquedaScreen(generalReviewPressed = {})
 }
-
