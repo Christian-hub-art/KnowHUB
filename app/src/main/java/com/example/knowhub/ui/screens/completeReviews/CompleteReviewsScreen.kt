@@ -11,38 +11,45 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.data.local.localGeneralReviewProvider
 import com.example.knowhub.data.local.localReviewProvider
 import com.example.knowhub.ui.screens.completeReviews.components.CajaPrincipal
-import com.example.knowhub.ui.screens.completeReviews.components.Review
+import com.example.knowhub.ui.screens.completeReviews.components.Review as ReviewComponent
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppButtonBig
 import com.example.knowhub.ui.utils.BackgroundImage
-import com.example.knowhub.ui.utils.BarraArriba
-import com.example.knowhub.ui.utils.CajaBusqueda
 
 @Composable
 fun CompleteReviewsScreen(
     generalReviewId: Int,
+    completeReviewsViewModel: CompleteReviewsViewModel,
     reviewPressed: (Int) -> Unit,
     escribirBottonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
+    LaunchedEffect(generalReviewId) {
+        completeReviewsViewModel.loadData(generalReviewId)
+    }
+
     Box(
         modifier = modifier
     ){
         BackgroundImage()
-        BodyCompleteReviewsScreen(generalReviewId,
+        BodyCompleteReviewsScreen(
+            generalReviewId = generalReviewId,
             reviewPressed = reviewPressed,
-            escribirBottonPressed = escribirBottonPressed)
+            escribirBottonPressed = escribirBottonPressed
+        )
     }
 }
 
@@ -62,19 +69,19 @@ fun BodyCompleteReviewsScreen(
         LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
             item {
 
-                Spacer(modifier = modifier.height(35.dp))
+                Spacer(modifier = Modifier.height(35.dp))
                 if (generalReview != null) {
                     CajaPrincipal(
                         generalReview,
                         modifier = Modifier.width(350.dp)
                     )
                 }
-                Spacer(modifier = modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(30.dp))
                 Row() {
                     Box(
-                        modifier = modifier
+                        modifier = Modifier
                             .background(tertiaryContainerLight)
-                            .height(2.5F.dp)
+                            .height(2.5.dp)
                             .width(150.dp)
                     ) {}
                     Spacer(modifier = Modifier.width(10.dp))
@@ -85,13 +92,13 @@ fun BodyCompleteReviewsScreen(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Box(
-                        modifier = modifier
+                        modifier = Modifier
                             .background(tertiaryContainerLight)
-                            .height(2.5F.dp)
+                            .height(2.5.dp)
                             .width(150.dp)
                     ) {}
                 }
-                Spacer(modifier = modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier.width(350.dp)
                 ) {
@@ -109,10 +116,11 @@ fun BodyCompleteReviewsScreen(
                         modifier = Modifier.height(40.dp)
                     )
                 }
-                Spacer(modifier = modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(20.dp))
             }
+
             items(allReviews.size) { index ->
-                Review(
+                ReviewComponent(
                     allReviews[index],
                     reviewPressed = reviewPressed,
                     modifier = Modifier.width(350.dp)
@@ -139,7 +147,10 @@ fun BodyCompleteReviewsScreen(
 @Composable
 @Preview(showBackground = true)
 fun CompleteReviewsScreenPreview(){
-    CompleteReviewsScreen(5,
+    CompleteReviewsScreen(
+        generalReviewId = 5,
+        completeReviewsViewModel = viewModel(),
         reviewPressed = {},
-        escribirBottonPressed = {})
+        escribirBottonPressed = {}
+    )
 }

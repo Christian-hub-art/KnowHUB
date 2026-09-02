@@ -1,9 +1,6 @@
 package com.example.knowhub.data.local
 
 import com.example.knowhub.data.GeneralReview
-import com.example.knowhub.data.Notificacion
-import kotlin.Int
-import kotlin.String
 
 object localGeneralReviewProvider {
 
@@ -58,6 +55,75 @@ object localGeneralReviewProvider {
             "Media",
             listOf("#Integrales", "#Derivadas"),
         ),
-
+        GeneralReview(
+            6,
+            "Cálculo Integral",
+            "Marta Lucía",
+            8809,
+            150,
+            4,
+            "Alta",
+            listOf("#Integrales"),
+        ),
+        GeneralReview(
+            7,
+            "Cálculo Diferencial",
+            "Ricardo Reyes",
+            8810,
+            120,
+            5,
+            "Media",
+            listOf("#Derivadas"),
+        ),
+        GeneralReview(
+            8,
+            "Física Mecánica",
+            "Juan Pablo",
+            7701,
+            80,
+            3,
+            "Alta",
+            listOf("#Física"),
+        ),
+        GeneralReview(
+            9,
+            "Física Electromagnetismo",
+            "Sandra Milena",
+            7702,
+            60,
+            4,
+            "Alta",
+            listOf("#Física"),
+        ),
+        GeneralReview(
+            10,
+            "Programación Web",
+            "Carlos Mario",
+            5656,
+            45,
+            5,
+            "Baja",
+            listOf("#Programación"),
+        ),
+        GeneralReview(
+            11,
+            "Inglés I",
+            "Teacher Sarah",
+            2201,
+            300,
+            5,
+            "Baja",
+            listOf("#Idiomas"),
+        ),
+        GeneralReview(
+            12,
+            "Inglés II",
+            "Teacher John",
+            2202,
+            250,
+            4,
+            "Baja",
+            listOf("#Idiomas"),
+        )
     )
 }
