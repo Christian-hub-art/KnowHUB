@@ -74,7 +74,7 @@ fun CajaPrincipal(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = ""+generalReview.codigoAsignatura+"",
+                text = generalReview.codigoAsignatura.toString(),
                 color = colorTexto,
                 fontFamily = BangersFont
             )
@@ -95,7 +95,7 @@ fun CajaPrincipal(
 
 
             Text(
-                text = "👨‍🏫 ${generalReview.nombreProfesor}",
+                text = stringResource(R.string.prof_emoji_label, generalReview.nombreProfesor),
                 fontSize = 13.sp,
                 fontFamily = FontFamily.Monospace
             )
@@ -112,7 +112,7 @@ fun CajaPrincipal(
 
 
             Text(
-                text = "Basado en ${generalReview.cantidadReviews} reseñas",
+                text = stringResource(R.string.basado_en_resenas, generalReview.cantidadReviews),
                 fontSize = 13.sp,
                 fontFamily = FontFamily.Monospace
             )
@@ -138,7 +138,7 @@ fun CajaPrincipal(
                 horizontalArrangement = Arrangement.End
             ){
                 AppLabel(
-                    "${generalReview.dificultadMedia} dificultad",
+                    stringResource(R.string.dificultad_label, generalReview.dificultadMedia),
                     tertiaryContainerLight,
                     primaryLight,
                     modifier = Modifier.height(40.dp)

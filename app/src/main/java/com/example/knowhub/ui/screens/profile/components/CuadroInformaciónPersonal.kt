@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
@@ -75,7 +76,7 @@ fun CuadroInformaciónPersonal(
             // TÍTULO
             item {
                 AppLabel(
-                    "👤 INFORMACIÓN PERSONAL",
+                    stringResource(R.string.informacion_personal_header),
                     colorResource(R.color.blancoKnowHUB),
                     colorResource(R.color.NegroKnowHUB),
                     modifier = Modifier
@@ -87,7 +88,7 @@ fun CuadroInformaciónPersonal(
 
             // NOMBRE DE USUARIO
             Text(
-                "Nombre de usuario",
+                stringResource(R.string.nombre_de_usuario),
                 fontFamily = ArvoFont
             )
 
@@ -108,7 +109,7 @@ fun CuadroInformaciónPersonal(
             ) {
 
                 AppButton(
-                    "💾 GUARDAR CAMBIOS",
+                    stringResource(R.string.guardar_cambios),
                     colorResource(R.color.NegroKnowHUB),
                     colorResource(R.color.blancoKnowHUB),
                     onClick = {
@@ -121,7 +122,7 @@ fun CuadroInformaciónPersonal(
                 )
 
                 AppButton(
-                    "X CANCELAR",
+                    stringResource(R.string.cancelar_con_x),
                     colorResource(R.color.NegroKnowHUB),
                     colorResource(R.color.blancoKnowHUB),
                     onClick = {
@@ -137,7 +138,7 @@ fun CuadroInformaciónPersonal(
 
             // CAMBIAR CONTRASEÑA
             AppButton(
-                "CAMBIAR CONTRASEÑA",
+                stringResource(R.string.cambiar_contrasena),
                 colorResource(R.color.blancoKnowHUB),
                 colorResource(R.color.AzulKnowHUB),
                 onClick = {
@@ -152,7 +153,7 @@ fun CuadroInformaciónPersonal(
 
             // CAMBIAR CORREO
             AppButton(
-                "CAMBIAR CORREO ELECTRÓNICO",
+                stringResource(R.string.cambiar_correo),
                 colorResource(R.color.blancoKnowHUB),
                 colorResource(R.color.AzulKnowHUB),
                 onClick = {

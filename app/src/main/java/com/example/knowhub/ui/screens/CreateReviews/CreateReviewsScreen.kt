@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,7 +81,7 @@ fun BodyCreateReviewsScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         AppLabelBig(
-            texto = "CREA UNA NUEVA RESEÑA",
+            texto = stringResource(R.string.crea_nueva_resena),
             colorTexto = primaryLight,
             color = tertiaryContainerLight,
             modifier = Modifier

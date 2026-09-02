@@ -15,9 +15,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.knowhub.R
 import com.example.knowhub.ui.screens.register.components.SignUPMessage
 import com.example.knowhub.ui.screens.register.components.TextosField
 import com.example.knowhub.ui.theme.*
@@ -115,7 +117,7 @@ fun BodyRegisterScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 AppButton(
-                    "Registrarse",
+                    stringResource(R.string.registrarse),
                     primaryLight,
                     tertiaryContainerLight,
                     onClick = {
@@ -140,7 +142,7 @@ fun BodyRegisterScreen(
                     }
                 ) {
                     Text(
-                        text = "¿Ya tienes cuentas?  Login",
+                        text = stringResource(R.string.ya_tienes_cuenta_login),
                         fontFamily = BangersFont,
                         color = tertiaryContainerLight
                     )

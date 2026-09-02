@@ -68,7 +68,7 @@ fun BodyReviewScreen(
 
             Spacer(modifier = Modifier.width(20.dp))
 
-            AppLabel("3" + " " + stringResource(R.string.rese_as),
+            AppLabel(stringResource(R.string.num_resenas_label, 3),
                 tertiaryContainerLight,
                 primaryLight)
             Spacer(modifier = Modifier.width(150.dp))

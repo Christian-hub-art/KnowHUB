@@ -62,7 +62,7 @@ fun MenuOpciones(
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                "Explorar",
+                stringResource(R.string.explorar),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,
@@ -81,7 +81,7 @@ fun MenuOpciones(
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                "Tu perfil",
+                stringResource(R.string.perfil),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,
@@ -138,7 +138,7 @@ fun MenuOpciones(
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                "Crear reseña",
+                stringResource(R.string.crear_resena),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,
@@ -157,7 +157,7 @@ fun MenuOpciones(
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
-                "Buscar",
+                stringResource(R.string.buscar),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,
@@ -171,7 +171,7 @@ fun MenuOpciones(
             horizontalArrangement = Arrangement.End
         ) {
             Text(
-                "Cerrar sesión",
+                stringResource(R.string.cerrar_sesion),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,

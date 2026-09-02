@@ -37,6 +37,7 @@ import com.example.knowhub.ui.utils.BackgroundImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.Icon
+import androidx.compose.ui.res.stringResource
 import com.example.knowhub.data.local.localGeneralReviewProvider
 import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
@@ -74,7 +75,7 @@ fun BodyBusquedaPerfilScrenn(
             Spacer(modifier = Modifier.height(20.dp))
 
             AppLabelBig(
-                "Laura",
+                stringResource(R.string.laura),
                 colorTexto = primaryLight,
                 color = tertiaryContainerLight,
                 modifier = Modifier
@@ -118,7 +119,7 @@ fun BodyBusquedaPerfilScrenn(
             Spacer(modifier = Modifier.height(40.dp))
 
             AppLabel(
-                "Reseñas Publicadas",
+                stringResource(R.string.rese_as_publicadas),
                 colorTexto = tertiaryContainerLight,
                 color = primaryLight,
                 modifier = Modifier.width(350.dp)
