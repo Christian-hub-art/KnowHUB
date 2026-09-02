@@ -23,17 +23,19 @@ fun BarraFiltro(
     TextField(
         value = filtro,
         onValueChange = onFiltroChange,
-        label = { Text(
-            stringResource(R.string.carrera_nom_materia_idmateria_nom_profesor),
-            fontSize = 11.sp)
-                },
+        label = {
+            Text(
+                stringResource(R.string.carrera_nom_materia_idmateria_nom_profesor),
+                fontSize = 11.sp
+            )
+        },
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedContainerColor = primaryLight,
             focusedContainerColor = primaryLight,
             focusedBorderColor = tertiaryContainerLight,
             unfocusedBorderColor = tertiaryContainerLight
         ),
-        modifier = Modifier
+        modifier = modifier
             .height(30.dp)
             .width(280.dp)
     )
