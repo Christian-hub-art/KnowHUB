@@ -89,6 +89,7 @@ fun CajaReseñas(
                     nombreMateria = materia.nombreMateria,
                     profesor = materia.profesor,
                     numeroResenas = materia.numeroResenas,
+                    Modifier.height(175.dp)
                 )
             }
         }
