@@ -25,12 +25,14 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsViewModel
+import com.example.knowhub.ui.screens.Splash.SplashScreen
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsViewModel
 import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificReviewViewModel
 import com.example.knowhub.ui.screens.inicio.InicioViewModel
 import com.example.knowhub.ui.screens.login.LoginViewModel
 
 sealed class Screens(val route: String) {
+    object Splash : Screens("splash")
     object Start : Screens("start")
     object Register : Screens("register")
     object Options : Screens("optionsScreens")
@@ -58,7 +60,7 @@ fun AppNavegation(
 
     NavHost(
         navController = navController,
-        startDestination = Screens.Start.route,
+        startDestination = Screens.Splash.route,
         modifier = modifier
     ) {
         composable(route = Screens.Start.route){
@@ -81,7 +83,21 @@ fun AppNavegation(
                loginViewModel = loginViewModel
             )
         }
-
+        composable (route = Screens.Splash.route){
+            SplashScreen(
+                navigateToHome = {
+                    navController.navigate(Screens.Inicio.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
+                navigateToStart = {
+                    navController.navigate(Screens.Start.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
+                splashViewModel = hiltViewModel()
+            )
+        }
         composable(route = Screens.Register.route) {
             val registerViewModel: RegisterViewModel = hiltViewModel()
             val state by registerViewModel.uiState.collectAsState()
