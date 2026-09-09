@@ -4,11 +4,14 @@ import androidx.lifecycle.ViewModel
 import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.MateriaResumida
 import com.example.knowhub.data.local.localGeneralReviewProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 //ViewModel encargado de la lógica de negocio y carga inicial de reseñas generales
-class InicioViewModel : ViewModel() {
+@HiltViewModel
+class InicioViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow(InicioState())
     val uiState: StateFlow<InicioState> = _uiState
 

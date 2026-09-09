@@ -3,11 +3,14 @@ package com.example.knowhub.ui.screens.completeSpecificReview
 import androidx.lifecycle.ViewModel
 import com.example.knowhub.data.local.localCommentProvider
 import com.example.knowhub.data.local.localReviewProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class CompleteSpecificReviewViewModel : ViewModel() {
+@HiltViewModel
+class CompleteSpecificReviewViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow(CompleteSpecificReviewState())
     val uiState: StateFlow<CompleteSpecificReviewState> = _uiState
 

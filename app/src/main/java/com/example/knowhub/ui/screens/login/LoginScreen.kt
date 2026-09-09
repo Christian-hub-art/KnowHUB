@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.login.components.LoginMessage
@@ -34,7 +35,7 @@ import com.example.knowhub.ui.utils.LogoApp
 //Pantalla principal de autenticación / inicio de sesión de la aplicación.
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel = LoginViewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ){
     val state by loginViewModel.uiState.collectAsState()

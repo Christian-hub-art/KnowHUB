@@ -2,12 +2,15 @@ package com.example.knowhub.ui.screens.reviews
 
 import androidx.lifecycle.ViewModel
 import com.example.knowhub.data.local.localReviewProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 //ViewModel encargado de la gestión de datos y estado para la pantalla de Reseñas.
-class ReviewViewModel : ViewModel() {
+@HiltViewModel
+class ReviewViewModel @Inject constructor() : ViewModel() {
 
     // Encapsulamiento: Mutable privado, Inmutable expuesto
     private val _uiState = MutableStateFlow(ReviewState())

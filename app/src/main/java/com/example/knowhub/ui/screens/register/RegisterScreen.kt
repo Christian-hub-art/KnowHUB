@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.register.components.SignUPMessage
@@ -29,7 +30,7 @@ import com.example.knowhub.ui.utils.LogoApp
 //Pantalla de registro de nuevos usuarios en la aplicación.
 @Composable
 fun RegisterScreen(
-    registerViewModel: RegisterViewModel = RegisterViewModel(),
+    registerViewModel: RegisterViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ){
     val state by registerViewModel.uiState.collectAsState()

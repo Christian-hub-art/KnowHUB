@@ -2,11 +2,14 @@ package com.example.knowhub.ui.screens.profile
 
 import androidx.lifecycle.ViewModel
 import com.example.knowhub.ui.screens.login.LoginState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 //ViewModel encargado de gestionar la lógica de negocio y el estado del perfil de usuario.
-class ProfileViewModel : ViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState())
     val uiState: StateFlow<ProfileState> = _uiState
     //Actualiza el valor del nombre de usuario ingresado en la interfaz.

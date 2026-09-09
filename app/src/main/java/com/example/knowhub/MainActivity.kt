@@ -24,7 +24,9 @@ import com.example.knowhub.ui.screens.login.LoginScreen
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.theme.KnowHUBTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

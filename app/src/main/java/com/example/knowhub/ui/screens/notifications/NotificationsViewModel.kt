@@ -2,12 +2,15 @@ package com.example.knowhub.ui.screens.notifications
 
 import androidx.lifecycle.ViewModel
 import com.example.knowhub.data.local.LocalNotificacionProvider
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 //ViewModel encargado de la lógica de negocio y gestión de notificaciones.
-class NotificationsViewModel : ViewModel() {
+@HiltViewModel
+class NotificationsViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(NotificationsState())
     val uiState: StateFlow<NotificationsState> = _uiState.asStateFlow()

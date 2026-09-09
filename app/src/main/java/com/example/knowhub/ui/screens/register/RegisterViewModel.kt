@@ -5,12 +5,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.knowhub.data.repository.AuthRepository
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.io.DataInput
 //viewModel encargado de manejar la lógica de negocio y validación de formularios para la pantalla de Registro.
-class RegisterViewModel: ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState
@@ -46,7 +55,29 @@ class RegisterViewModel: ViewModel() {
                 _uiState.update { it.copy(mostrarMensajeError = true, errorMessage = "Las contraseñas no coinciden")
                 }
             }else{
-                _uiState.update { it.copy(navigateInicio = true) }
+                viewModelScope.launch {
+                    try {
+                        authRepository.signUp(
+                            _uiState.value.correoElectronico,
+                            _uiState.value.contrasena
+                        )
+                        _uiState.update { it.copy(navigateInicio = true) }
+                    } catch (e: FirebaseAuthUserCollisionException) {
+                        _uiState.update {
+                            it.copy(
+                                mostrarMensajeError = true,
+                                errorMessage = "El correo ya se encuentra registrado"
+                            )
+                        }
+                    } catch (e: Exception) {
+                        _uiState.update {
+                            it.copy(
+                                mostrarMensajeError = true,
+                                errorMessage = e.message ?: "Error al registrar"
+                            )
+                        }
+                    }
+                }
             }
         }
     }

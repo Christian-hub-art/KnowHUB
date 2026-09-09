@@ -3,12 +3,16 @@ package com.example.knowhub.ui.screens.BusquedaFiltro
 import androidx.lifecycle.ViewModel
 import com.example.knowhub.data.local.localGeneralReviewProvider
 import com.example.knowhub.ui.screens.busquedaFiltro.BusquedaState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 //ViewModel encargado de gestionar la lógica de negocio y el estado de la pantalla de búsqueda.
-class BusquedaViewModel : ViewModel() {
+
+@HiltViewModel
+class BusquedaViewModel @Inject constructor(): ViewModel() {
 
     // Encapsulamiento: Mutable privado, Inmutable expuesto
     private val _uiState = MutableStateFlow(BusquedaState())

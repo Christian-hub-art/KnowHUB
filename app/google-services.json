@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "361208671211",
+    "project_id": "knowhub-32373",
+    "storage_bucket": "knowhub-32373.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361208671211:android:69fdf7f7ff7b5361c887ae",
+        "android_client_info": {
+          "package_name": "com.example.knowhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7g8JRlCg83nWi9Vror0M-NYNGjVf_EbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

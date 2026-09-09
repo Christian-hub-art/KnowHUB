@@ -22,6 +22,7 @@ import com.example.knowhub.ui.screens.register.RegisterViewModel
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsViewModel
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsViewModel
@@ -61,7 +62,7 @@ fun AppNavegation(
         modifier = modifier
     ) {
         composable(route = Screens.Start.route){
-            val loginViewModel: LoginViewModel = viewModel()
+            val loginViewModel: LoginViewModel = hiltViewModel()
             val state by loginViewModel.uiState.collectAsState()
             if(state.navigateInicio){
                 navController.navigate(Screens.Inicio.route){
@@ -82,7 +83,7 @@ fun AppNavegation(
         }
 
         composable(route = Screens.Register.route) {
-            val registerViewModel: RegisterViewModel = viewModel()
+            val registerViewModel: RegisterViewModel = hiltViewModel()
             val state by registerViewModel.uiState.collectAsState()
             if (state.navigateInicio) {
                 navController.navigate(Screens.Inicio.route) {
@@ -112,7 +113,7 @@ fun AppNavegation(
             arguments = listOf(navArgument("generalReviewId"){type = NavType.IntType})
         ){
             val generalReviewId = it.arguments?.getInt("generalReviewId") ?: 0
-            val viewModel: CompleteReviewsViewModel = viewModel()
+            val viewModel: CompleteReviewsViewModel = hiltViewModel()
 
            CompleteReviewsScreen(
                 generalReviewId = generalReviewId,
@@ -126,7 +127,7 @@ fun AppNavegation(
             )
         }
         composable ( route = Screens.CreateReviews.route ){
-            val viewModel: CreateReviewsViewModel = viewModel()
+            val viewModel: CreateReviewsViewModel = hiltViewModel()
             CreateReviewsScreen(
                 createReviewsViewModel = viewModel
             )
@@ -141,7 +142,7 @@ fun AppNavegation(
             ReviewScreen()
         }
         composable ( route = Screens.Inicio.route ){
-            val viewModel: InicioViewModel = viewModel()
+            val viewModel: InicioViewModel = hiltViewModel()
             InicioScreen(
                 inicioViewModel = viewModel,
                 onSeeAllClick = {
@@ -153,7 +154,7 @@ fun AppNavegation(
             arguments = listOf(navArgument("reviewId"){type = NavType.IntType})
         ){
             val reviewId = it.arguments?.getInt("reviewId") ?: 0
-            val viewModel: CompleteSpecificReviewViewModel = viewModel()
+            val viewModel: CompleteSpecificReviewViewModel = hiltViewModel()
             CompleteSpecificReviewScreen(
                 reviewId = reviewId,
                 completeSpecificReviewViewModel = viewModel
