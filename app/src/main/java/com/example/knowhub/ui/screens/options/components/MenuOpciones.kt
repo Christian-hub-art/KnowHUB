@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.*
 
@@ -37,7 +38,8 @@ fun MenuOpciones(
     createReviewsButtonPressed: () -> Unit,
     buscarButtonPressed: () -> Unit,
     cerrarSesionButtonPressed: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    optionsViewModel: OptionsViewModel = hiltViewModel()
 ) {
     Column(modifier = modifier
         .fillMaxHeight()
@@ -166,7 +168,10 @@ fun MenuOpciones(
         Spacer(modifier = Modifier.weight(1F))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .clickable { cerrarSesionButtonPressed() },
+            .clickable {
+                optionsViewModel.logOut()
+                cerrarSesionButtonPressed()
+            },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {

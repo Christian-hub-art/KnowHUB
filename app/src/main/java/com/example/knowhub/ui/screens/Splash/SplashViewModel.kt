@@ -1,7 +1,6 @@
 package com.example.knowhub.ui.screens.Splash
 import androidx.lifecycle.ViewModel
 import com.example.knowhub.data.repository.AuthRepository
-import com.example.knowhub.ui.functions.Utils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

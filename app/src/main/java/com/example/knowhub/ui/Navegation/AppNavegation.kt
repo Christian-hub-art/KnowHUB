@@ -15,7 +15,6 @@ import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificRev
 import com.example.knowhub.ui.screens.inicio.InicioScreen
 import com.example.knowhub.ui.screens.login.LoginScreen
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
-import com.example.knowhub.ui.screens.options.OptionsScreen
 import com.example.knowhub.ui.screens.profile.ProfileScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.register.RegisterViewModel
@@ -35,7 +34,6 @@ sealed class Screens(val route: String) {
     object Splash : Screens("splash")
     object Start : Screens("start")
     object Register : Screens("register")
-    object Options : Screens("optionsScreens")
     object Busqueda : Screens("busqueda")
     object CompleteReviews : Screens("completeReviews/{generalReviewId}") {
         fun createRoute(id: Int) = "completeReviews/$id"
@@ -112,10 +110,6 @@ fun AppNavegation(
             RegisterScreen(
                 registerViewModel = registerViewModel
             )
-        }
-
-        composable(route = Screens.Options.route){
-            OptionsScreen()
         }
 
         composable ( route = Screens.Busqueda.route ){
