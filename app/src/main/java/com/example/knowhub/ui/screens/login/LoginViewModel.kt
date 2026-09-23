@@ -3,7 +3,6 @@ package com.example.knowhub.ui.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.repository.AuthRepository
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,24 +32,17 @@ class LoginViewModel @Inject constructor(
             _uiState.update { it.copy(mostrarMensajeError = true, errorMessage = "Todos los campos son obligatorios") }
         }else{
             viewModelScope.launch {
-                try {
-                    authRepository.sigIn(
-                        _uiState.value.nombreOCorreo,
-                        _uiState.value.contrasena
-                    )
-                    _uiState.update { it.copy(navigateInicio = true) }
-                } catch (e: FirebaseAuthInvalidCredentialsException) {
+                val result = authRepository.signIn(
+                    _uiState.value.nombreOCorreo,
+                    _uiState.value.contrasena
+                )
+                if (result.isSuccess) {
+                    _uiState.update { it.copy(navigateInicio = true, mostrarMensajeError = false) }
+                } else {
                     _uiState.update {
                         it.copy(
                             mostrarMensajeError = true,
-                            errorMessage = "Correo o contraseña incorrectos"
-                        )
-                    }
-                } catch (e: Exception) {
-                    _uiState.update {
-                        it.copy(
-                            mostrarMensajeError = true,
-                            errorMessage = e.message ?: "Error al iniciar sesión"
+                            errorMessage = result.exceptionOrNull()?.message ?: "Error al iniciar sesión"
                         )
                     }
                 }
