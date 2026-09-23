@@ -17,9 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,28 +29,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.fontResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.knowhub.data.GeneralReview
-import com.example.knowhub.ui.screens.register.RegisterScreen
-import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryContainerLight
@@ -480,4 +477,25 @@ fun CajaBusqueda(
             }
         }
     }
+}
+
+@Composable
+fun ProfileAsyncImage(
+    profileImage: String?,
+    size: Int,
+    modifier: Modifier = Modifier
+){
+
+    AsyncImage(
+        contentDescription = "User Image",
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(profileImage)
+            .crossfade(true)
+            .build(),
+        error = painterResource(id = R.drawable.perfil),
+        placeholder = painterResource(R.drawable.loading_image),
+        contentScale = ContentScale.Crop,
+        modifier = modifier.size(size.dp).clip(CircleShape)
+
+    )
 }

@@ -34,7 +34,7 @@ class LoginViewModel @Inject constructor(
         }else{
             viewModelScope.launch {
                 try {
-                    authRepository.sigIn(
+                    authRepository.signIn(
                         _uiState.value.nombreOCorreo,
                         _uiState.value.contrasena
                     )

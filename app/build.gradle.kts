@@ -59,12 +59,18 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.compose.runtime.livedata)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+
     
     implementation(libs.androidx.compose.material.icons.extended)
 
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.compose.navigation)
     ksp(libs.dagger.kapt)
+
+    // coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("com.google.firebase:firebase-storage-ktx")
 
 // Firebase
     implementation(platform(libs.firebase.bom))

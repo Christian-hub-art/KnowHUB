@@ -1,10 +1,6 @@
 package com.example.knowhub.ui.screens.profile
 
 
-import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,48 +11,47 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
-import com.example.knowhub.ui.screens.login.LoginViewModel
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
-import com.example.knowhub.ui.theme.KnowHUBTheme
+import com.example.knowhub.ui.screens.profile.components.PickImageButton
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
-import com.example.knowhub.ui.utils.BarraArriba
+import com.example.knowhub.ui.utils.ProfileAsyncImage
+
 //Pantalla principal del perfil de usuario con opciones de actualización e información personal.
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel = ProfileViewModel(),
+    viewModel: ProfileViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    val state by profileViewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsState()
     Box(
         modifier = modifier
     ) {
         BackgroundImage()
 
         BodyProfileScreen(
+            viewModel,
             state.nombre,
             state.errorMessageGuardar,
             state.mostrarMensajeErrorGuardar,
-            onNombreChange = {profileViewModel.updateNombre(it)},
-            guardarBottonPressed = {profileViewModel.guardarBottonPressed()},
-            cancelarBottonPressed = {profileViewModel.cancelarBottonPressed()},
-            subirfotoBottonPressed = {profileViewModel.subirfotoBottonPressed()},
-            eliminarcuentaBottonPressed = {profileViewModel.eliminarcuentaBottonPressed()},
-            cambiarcontraseñaBottonPressed = {profileViewModel.cambiarcontraseñaBottonPressed()},
-            cambiarCorreoBottonPressed = {profileViewModel.cambiairCorreoBottonPressed()}
+            state.profileImageUrl,
+            onNombreChange = {viewModel.updateNombre(it)},
+            guardarBottonPressed = {viewModel.guardarBottonPressed()},
+            cancelarBottonPressed = {viewModel.cancelarBottonPressed()},
+            eliminarcuentaBottonPressed = {viewModel.eliminarcuentaBottonPressed()},
+            cambiarcontraseñaBottonPressed = {viewModel.cambiarcontraseñaBottonPressed()},
+            cambiarCorreoBottonPressed = {viewModel.cambiairCorreoBottonPressed()}
 
         )
 
@@ -65,14 +60,15 @@ fun ProfileScreen(
 //Contenido principal y maquetación de la pantalla de perfil.
 @Composable
 fun BodyProfileScreen(
+    profileViewModel: ProfileViewModel,
     nombre: String,
     errorMessageGuardar: String,
     mostrarMensajeErrorGuardar: Boolean,
-    onNombreChange: (String) ->Unit,
+    profileImage: String?,
+    onNombreChange: (String) -> Unit,
     guardarBottonPressed: () -> Unit = {},
     cancelarBottonPressed: () -> Unit = {},
-    subirfotoBottonPressed: () -> Unit = {},
-    eliminarcuentaBottonPressed: () ->Unit = {},
+    eliminarcuentaBottonPressed: () -> Unit = {},
     cambiarcontraseñaBottonPressed: () -> Unit = {},
     cambiarCorreoBottonPressed: () -> Unit = {},
     modifier: Modifier = Modifier
@@ -96,31 +92,17 @@ fun BodyProfileScreen(
 
         Spacer(modifier = Modifier.weight(10.0F))
 
-        Image(
-            painter = painterResource(R.drawable.perfil),
-            contentDescription = stringResource(R.string.imagen_perfil),
-            modifier = Modifier
-                .background(
-                    colorResource(R.color.blancoKnowHUB)
-                )
-                .border(
-                    1.dp,
-                    colorResource(R.color.NegroKnowHUB)
-                )
+        ProfileAsyncImage(
+            profileImage = profileImage,
+            size = 200
         )
+
         Spacer(modifier = Modifier.weight(10.0F))
 
-        AppButton(
-            stringResource(R.string.subir_foto),
-            colorResource(R.color.NegroKnowHUB),
-            colorResource(R.color.blancoKnowHUB),
-            onClick = {
-                subirfotoBottonPressed()
-            },
-            modifier = Modifier
-                .height(30.dp)
-                .width(180.dp)
-
+        PickImageButton(
+            action = {
+                profileViewModel.uploadImageToFirebase(it)
+            }
         )
 
         Spacer(modifier = Modifier.weight(10.0F))
@@ -158,11 +140,13 @@ fun BodyProfileScreen(
 
 
 
+
+
 @Preview
 @Composable
 fun ProfileScreenPreview() {
         ProfileScreen(
-            profileViewModel = viewModel()
+            viewModel = viewModel()
         )
 
 }

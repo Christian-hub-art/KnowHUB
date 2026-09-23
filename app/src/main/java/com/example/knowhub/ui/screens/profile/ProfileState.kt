@@ -1,7 +1,11 @@
 package com.example.knowhub.ui.screens.profile
+
+import android.net.Uri
+
 //Representa el estado de la interfaz de usuario para la pantalla de Perfil.
 data class ProfileState(
     val nombre: String = "",
+    val profileImageUrl: String? = null,
     val errorMessageGuardar: String = "",
     val mostrarMensajeErrorGuardar: Boolean = false,
     val errorMessageCancelar: String = "",
