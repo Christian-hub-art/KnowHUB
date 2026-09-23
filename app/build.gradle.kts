@@ -70,6 +70,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
+    implementation("com.google.firebase:firebase-storage")
+    implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
 

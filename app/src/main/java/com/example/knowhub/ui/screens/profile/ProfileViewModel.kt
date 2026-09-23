@@ -1,46 +1,51 @@
 package com.example.knowhub.ui.screens.profile
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.example.knowhub.ui.screens.login.LoginState
+import androidx.lifecycle.viewModelScope
+import com.example.knowhub.data.repository.StorageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-//ViewModel encargado de gestionar la lógica de negocio y el estado del perfil de usuario.
+import kotlinx.coroutines.launch
+
 @HiltViewModel
-class ProfileViewModel @Inject constructor() : ViewModel() {
+class ProfileViewModel @Inject constructor(
+    private val storageRepository: StorageRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState())
     val uiState: StateFlow<ProfileState> = _uiState
-    //Actualiza el valor del nombre de usuario ingresado en la interfaz.
-    fun updateNombre (input: String){
-        _uiState.update { it.copy( nombre =  input) }
+
+    fun updateNombre(input: String) {
+        _uiState.update { it.copy(nombre = input) }
     }
-    //Valida y procesa la acción de guardar los cambios del perfil.
-    fun guardarBottonPressed () {
-        if (_uiState.value.nombre.isNullOrEmpty()
-        ) {
+
+    fun guardarBottonPressed() {
+        if (_uiState.value.nombre.isNullOrEmpty()) {
             _uiState.update { it.copy(mostrarMensajeErrorGuardar = true, errorMessageGuardar = "No ha puesto un nombre nuevo") }
         }
-
-    }//Cancela las ediciones realizadas y restablece los valores
-    fun cancelarBottonPressed() {
-
-    }//Gestiona el evento de subir una nueva foto de perfil.
-    fun subirfotoBottonPressed (){
-
-    }//Gestiona el evento de eliminación de la cuenta de usuario.
-    fun eliminarcuentaBottonPressed () {
-
-    }//Gestiona el flujo de cambio de contraseña.
-    fun cambiarcontraseñaBottonPressed (){
-
-    }// Gestiona el flujo de cambio de correo electrónico.
-    fun cambiairCorreoBottonPressed (){
-
     }
 
+    fun cancelarBottonPressed() {
+    }
 
+    fun eliminarcuentaBottonPressed() = Unit
+    fun cambiarcontraseñaBottonPressed() = Unit
+    fun cambiairCorreoBottonPressed() = Unit
 
-
+    fun subirfotoBottonPressed(imageUri: Uri) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(mostrarMensajeErrorFoto = false) }
+            val result = storageRepository.uploadProfileImage(imageUri)
+            _uiState.update {
+                it.copy(
+                    profileImageUrl = result.getOrNull() ?: it.profileImageUrl,
+                    mostrarMensajeErrorFoto = result.isFailure,
+                    errorMessageFoto = result.exceptionOrNull()?.localizedMessage ?: "Error al subir la imagen"
+                )
+            }
+        }
+    }
 }

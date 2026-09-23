@@ -1,8 +1,7 @@
 package com.example.knowhub.data.injection
 
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,6 +11,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class FirebaseHiltModule {
+
     @Provides
-    fun auth(): FirebaseAuth = Firebase.auth
+    @Singleton
+    fun auth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun storage(): FirebaseStorage = FirebaseStorage.getInstance()
 }

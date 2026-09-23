@@ -1,10 +1,9 @@
 package com.example.knowhub.ui.screens.profile
 
 
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,32 +14,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.R
-import com.example.knowhub.ui.screens.login.LoginViewModel
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
-import com.example.knowhub.ui.theme.KnowHUBTheme
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
-import com.example.knowhub.ui.utils.BarraArriba
 //Pantalla principal del perfil de usuario con opciones de actualización e información personal.
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel = ProfileViewModel(),
+
+    viewModel: ProfileViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    val state by profileViewModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsState()
     Box(
         modifier = modifier
     ) {
@@ -50,13 +43,12 @@ fun ProfileScreen(
             state.nombre,
             state.errorMessageGuardar,
             state.mostrarMensajeErrorGuardar,
-            onNombreChange = {profileViewModel.updateNombre(it)},
-            guardarBottonPressed = {profileViewModel.guardarBottonPressed()},
-            cancelarBottonPressed = {profileViewModel.cancelarBottonPressed()},
-            subirfotoBottonPressed = {profileViewModel.subirfotoBottonPressed()},
-            eliminarcuentaBottonPressed = {profileViewModel.eliminarcuentaBottonPressed()},
-            cambiarcontraseñaBottonPressed = {profileViewModel.cambiarcontraseñaBottonPressed()},
-            cambiarCorreoBottonPressed = {profileViewModel.cambiairCorreoBottonPressed()}
+            onNombreChange = viewModel::updateNombre,
+            guardarBottonPressed = viewModel::guardarBottonPressed,
+            cancelarBottonPressed = viewModel::cancelarBottonPressed,
+            eliminarcuentaBottonPressed = viewModel::eliminarcuentaBottonPressed,
+            cambiarcontraseñaBottonPressed = viewModel::cambiarcontraseñaBottonPressed,
+            cambiarCorreoBottonPressed = viewModel::cambiairCorreoBottonPressed
 
         )
 
@@ -154,15 +146,4 @@ fun BodyProfileScreen(
 
         Spacer(modifier = Modifier.weight(20.0F))
     }
-}
-
-
-
-@Preview
-@Composable
-fun ProfileScreenPreview() {
-        ProfileScreen(
-            profileViewModel = viewModel()
-        )
-
 }
