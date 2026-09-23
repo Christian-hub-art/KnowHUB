@@ -41,39 +41,49 @@ class RegisterViewModel @Inject constructor(
         _uiState.update { it.copy( confirmarContrasena =  input) }
     }
     //Valida la información del formulario e inicia el registro si los campos son correctos.
-    fun registrarseSesionButtonPressed () {
+    fun registrarseSesionButtonPressed() {
         if (_uiState.value.nombre.isNullOrEmpty() ||
             _uiState.value.correoElectronico.isNullOrEmpty() ||
             _uiState.value.nombreUsuario.isNullOrEmpty() ||
             _uiState.value.contrasena.isNullOrEmpty() ||
             _uiState.value.confirmarContrasena.isNullOrEmpty()
         ) {
-           _uiState.update { it.copy(mostrarMensajeError = true, errorMessage = "Todos los campos son obligatorios") }
-        }else{
+            _uiState.update {
+                it.copy(
+                    mostrarMensajeError = true,
+                    errorMessage = "Todos los campos son obligatorios"
+                )
+            }
+        } else {
             if (_uiState.value.contrasena !=
-                _uiState.value.confirmarContrasena) {
-                _uiState.update { it.copy(mostrarMensajeError = true, errorMessage = "Las contraseñas no coinciden")
+                _uiState.value.confirmarContrasena
+            ) {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeError = true,
+                        errorMessage = "Las contraseñas no coinciden"
+                    )
                 }
-            }else{
+            } else {
                 viewModelScope.launch {
-                    try {
-                        authRepository.signUp(
-                            _uiState.value.correoElectronico,
-                            _uiState.value.contrasena
-                        )
-                        _uiState.update { it.copy(navigateInicio = true) }
-                    } catch (e: FirebaseAuthUserCollisionException) {
+                    val result = authRepository.signUp(
+                        _uiState.value.correoElectronico,
+                        _uiState.value.contrasena
+                    )
+
+                    if (result.isSuccess) {
                         _uiState.update {
                             it.copy(
-                                mostrarMensajeError = true,
-                                errorMessage = "El correo ya se encuentra registrado"
+                                navigateInicio = true,
+                                mostrarMensajeError = false
                             )
                         }
-                    } catch (e: Exception) {
+                    } else {
                         _uiState.update {
                             it.copy(
                                 mostrarMensajeError = true,
-                                errorMessage = e.message ?: "Error al registrar"
+                                errorMessage = result.exceptionOrNull()?.message
+                                    ?: "Error al registrar usuario"
                             )
                         }
                     }

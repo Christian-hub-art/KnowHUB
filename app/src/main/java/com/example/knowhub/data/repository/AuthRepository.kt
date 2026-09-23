@@ -3,6 +3,8 @@ package com.example.knowhub.data.repository
 import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import jakarta.inject.Inject
 
@@ -24,10 +26,15 @@ class AuthRepository @Inject constructor(
         }
     }
 
-    suspend fun signUp(correoElectronico: String, contrasena: String): Result<Unit> {
+    suspend fun signUp(
+        correoElectronico: String,
+        contrasena: String
+    ): Result<Unit> {
         return try {
             authRemoteDataSource.signUp(correoElectronico, contrasena)
             Result.success(Unit)
+        } catch (e: FirebaseAuthUserCollisionException) {
+            Result.failure(Exception("El correo ya se encuentra registrado"))
         } catch (e: Exception) {
             Result.failure(Exception("Error al registrar usuario"))
         }
