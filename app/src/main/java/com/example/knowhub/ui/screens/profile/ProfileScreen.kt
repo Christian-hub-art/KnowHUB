@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +47,10 @@ fun ProfileScreen(
             state.errorMessageGuardar,
             state.mostrarMensajeErrorGuardar,
             state.profileImageUrl,
+            state.errorMessageFoto,
+            state.mostrarMensajeErrorFoto,
+            state.fotoActualizada,
+            state.estaSubiendoFoto,
             onNombreChange = {viewModel.updateNombre(it)},
             guardarBottonPressed = {viewModel.guardarBottonPressed()},
             cancelarBottonPressed = {viewModel.cancelarBottonPressed()},
@@ -65,6 +70,10 @@ fun BodyProfileScreen(
     errorMessageGuardar: String,
     mostrarMensajeErrorGuardar: Boolean,
     profileImage: String?,
+    errorMessageFoto: String = "",
+    mostrarMensajeErrorFoto: Boolean = false,
+    fotoActualizada: Boolean = false,
+    estaSubiendoFoto: Boolean = false,
     onNombreChange: (String) -> Unit,
     guardarBottonPressed: () -> Unit = {},
     cancelarBottonPressed: () -> Unit = {},
@@ -104,6 +113,16 @@ fun BodyProfileScreen(
                 profileViewModel.uploadImageToFirebase(it)
             }
         )
+
+        if (estaSubiendoFoto) {
+            Text(stringResource(R.string.subiendo_foto))
+        }
+        if (mostrarMensajeErrorFoto) {
+            Text(
+                text = errorMessageFoto,
+                color = if (fotoActualizada) Color(0xFF2E7D32) else Color.Red
+            )
+        }
 
         Spacer(modifier = Modifier.weight(10.0F))
 

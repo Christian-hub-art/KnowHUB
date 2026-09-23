@@ -36,6 +36,7 @@
     <string name="registrarse">Registrarse</string>
     <string name="ya_tienes_cuenta_login">¿Ya tienes cuenta? Login</string>
     <string name="subir_foto">📸 Subir Foto</string>
+    <string name="subiendo_foto">Subiendo foto…</string>
     <string name="eliminar_cuenta">🗑️ Eliminar cuenta</string>
     <string name="explorar">Explorar</string>
     <string name="crear_resena">Crear reseña</string>

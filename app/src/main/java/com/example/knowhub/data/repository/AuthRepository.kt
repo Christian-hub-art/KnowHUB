@@ -9,7 +9,8 @@ import jakarta.inject.Inject
 class AuthRepository @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource
 ) {
-    val currentUser: FirebaseUser? = authRemoteDataSource.currentUser
+    val currentUser: FirebaseUser?
+        get() = authRemoteDataSource.currentUser
 
     suspend fun signIn(correoElectronico: String, contrasena: String): Result<Unit> {
         return try {
@@ -38,5 +39,13 @@ class AuthRepository @Inject constructor(
 
     suspend fun updateProfileImage(photoUrl: String) {
         authRemoteDataSource.updateProfileImage(photoUrl)
+    }
+
+    suspend fun refreshProfileImage(): Result<String?> = try {
+        Result.success(authRemoteDataSource.refreshProfileImage())
+    } catch (e: FirebaseAuthInvalidUserException) {
+        Result.failure(Exception("La sesión ya no es válida. Inicia sesión nuevamente."))
+    } catch (e: Exception) {
+        Result.failure(Exception("No se pudo cargar la foto de perfil."))
     }
 }

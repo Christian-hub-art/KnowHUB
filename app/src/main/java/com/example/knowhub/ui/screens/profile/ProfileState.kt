@@ -13,5 +13,7 @@ data class ProfileState(
     val errorMessageCambiar: String = "",
     val mostrarMensajeErrorCambiar: Boolean = false,
     val errorMessageFoto: String = "",
-    val mostrarMensajeErrorFoto: Boolean = false
+    val mostrarMensajeErrorFoto: Boolean = false,
+    val estaSubiendoFoto: Boolean = false,
+    val fotoActualizada: Boolean = false
 )

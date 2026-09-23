@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.repository.AuthRepository
 import com.example.knowhub.data.repository.StorageRepository
-import com.example.knowhub.ui.screens.login.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +23,28 @@ class ProfileViewModel @Inject constructor(
     ))
 
     val uiState: StateFlow<ProfileState> = _uiState
+
+    init {
+        cargarFotoDePerfil()
+    }
+
+    private fun cargarFotoDePerfil() {
+        viewModelScope.launch {
+            authRepository.refreshProfileImage().fold(
+                onSuccess = { url ->
+                    if (!url.isNullOrBlank()) {
+                        _uiState.update { it.copy(profileImageUrl = url) }
+                    }
+                },
+                onFailure = { error ->
+                    _uiState.update {
+                        it.copy(errorMessageFoto = error.message ?: "No se pudo cargar la foto de perfil.",
+                            mostrarMensajeErrorFoto = true, fotoActualizada = false)
+                    }
+                }
+            )
+        }
+    }
     //Actualiza el valor del nombre de usuario ingresado en la interfaz.
     fun updateNombre (input: String){
         _uiState.update { it.copy( nombre =  input) }
@@ -52,12 +73,25 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun uploadImageToFirebase(uri: Uri){
+        _uiState.update { it.copy(errorMessageFoto = "", mostrarMensajeErrorFoto = false, estaSubiendoFoto = true) }
         viewModelScope.launch {
             val result = storageRepository.uploadProfileImage(uri)
-            if(result.isSuccess){
-                _uiState.update { it.copy(profileImageUrl = result.getOrNull()) }
-            }
-
+            result.fold(
+                onSuccess = { url ->
+                    _uiState.update {
+                        it.copy(profileImageUrl = url, estaSubiendoFoto = false,
+                            errorMessageFoto = "Foto de perfil actualizada.",
+                            mostrarMensajeErrorFoto = true, fotoActualizada = true)
+                    }
+                },
+                onFailure = { error ->
+                    _uiState.update {
+                        it.copy(estaSubiendoFoto = false,
+                            errorMessageFoto = error.message ?: "No se pudo actualizar la foto de perfil.",
+                            mostrarMensajeErrorFoto = true, fotoActualizada = false)
+                    }
+                }
+            )
         }
     }
 

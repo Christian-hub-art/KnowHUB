@@ -10,7 +10,8 @@ import kotlinx.coroutines.tasks.await
 class AuthRemoteDataSource @Inject constructor(
     private val auth: FirebaseAuth){
 
-    val currentUser: FirebaseUser? = auth.currentUser
+    val currentUser: FirebaseUser?
+        get() = auth.currentUser
 
     suspend fun signIn(correoElectronico: String, contrasena: String) {
         auth.signInWithEmailAndPassword(correoElectronico, contrasena).await()
@@ -26,11 +27,18 @@ class AuthRemoteDataSource @Inject constructor(
 
     suspend fun updateProfileImage(photoUrl: String): Unit {
         val uri = Uri.parse(photoUrl)
-        currentUser?.updateProfile(
+        val user = auth.currentUser ?: throw IllegalStateException("No hay una sesión iniciada.")
+        user.updateProfile(
             UserProfileChangeRequest.Builder()
                 .setPhotoUri(uri)
                 .build()
-        )?.await()
+        ).await()
+    }
+
+    suspend fun refreshProfileImage(): String? {
+        val user = auth.currentUser ?: return null
+        user.reload().await()
+        return auth.currentUser?.photoUrl?.toString()
     }
 
 
