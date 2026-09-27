@@ -42,7 +42,7 @@ class LoginViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             mostrarMensajeError = true,
-                            errorMessage = result.exceptionOrNull()?.message ?: "Error al iniciar sesión"
+                            errorMessage = result.exceptionOrNull()?.message ?: ""
                         )
                     }
                 }

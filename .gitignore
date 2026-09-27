@@ -1,15 +1,47 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# =========================================================================
+# Android & Gradle Build Artifacts
+# =========================================================================
+/build/
+/*/build/
+.gradle/
+.kotlin/
+.externalNativeBuild/
+.cxx/
+/captures/
+
+# Built binaries & APKs
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# =========================================================================
+# Local Configurations & Private Keys
+# =========================================================================
 local.properties
+*.jks
+*.keystore
+*.pepk
+
+# =========================================================================
+# Android Studio / IntelliJ IDEA Files
+# =========================================================================
+*.iml
+.idea/
+!.idea/codeStyles/
+!.idea/vcs.xml
+
+# =========================================================================
+# OS & Miscellaneous Temporary Files
+# =========================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.log
+*.swp
+*~

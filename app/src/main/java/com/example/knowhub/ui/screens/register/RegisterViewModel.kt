@@ -83,7 +83,7 @@ class RegisterViewModel @Inject constructor(
                             it.copy(
                                 mostrarMensajeError = true,
                                 errorMessage = result.exceptionOrNull()?.message
-                                    ?: "Error al registrar usuario"
+                                    ?: ""
                             )
                         }
                     }
