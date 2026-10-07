@@ -1,34 +1,34 @@
 package com.example.knowhub.ui.Navegation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.knowhub.ui.screens.BusquedaFiltro.BusquedaScreen
+import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsScreen
+import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsViewModel
+import com.example.knowhub.ui.screens.Splash.SplashScreen
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
+import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsViewModel
 import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificReviewScreen
+import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificReviewViewModel
 import com.example.knowhub.ui.screens.inicio.InicioScreen
+import com.example.knowhub.ui.screens.inicio.InicioViewModel
 import com.example.knowhub.ui.screens.login.LoginScreen
+import com.example.knowhub.ui.screens.login.LoginViewModel
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.screens.profile.ProfileScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.register.RegisterViewModel
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
-import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsViewModel
-import com.example.knowhub.ui.screens.Splash.SplashScreen
-import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsViewModel
-import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificReviewViewModel
-import com.example.knowhub.ui.screens.inicio.InicioViewModel
-import com.example.knowhub.ui.screens.login.LoginViewModel
+import com.example.knowhub.ui.screens.reviews.ReviewViewModel
 
 sealed class Screens(val route: String) {
     object Splash : Screens("splash")
@@ -38,7 +38,9 @@ sealed class Screens(val route: String) {
     object CompleteReviews : Screens("completeReviews/{generalReviewId}") {
         fun createRoute(id: Int) = "completeReviews/$id"
     }
-    object CreateReviews : Screens("createReviews")
+    object CreateReviews : Screens("createReviews") {
+        fun createRouteModify(reviewId: String) = "createReviews/$reviewId"
+    }
     object Notifications : Screens("notifications")
     object Profile : Screens("profile")
     object Reviews : Screens("reviews")
@@ -136,10 +138,31 @@ fun AppNavegation(
                 }
             )
         }
-        composable ( route = Screens.CreateReviews.route ){
+        composable(route = Screens.CreateReviews.route) {
             val viewModel: CreateReviewsViewModel = hiltViewModel()
             CreateReviewsScreen(
-                createReviewsViewModel = viewModel
+                createReviewsViewModel = viewModel,
+                onBack = {
+                    navController.navigate(Screens.Inicio.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(
+            route = "createReviews/{reviewId}",
+            arguments = listOf(navArgument("reviewId") { type = NavType.StringType })
+        ) {
+            val reviewId = it.arguments?.getString("reviewId") ?: ""
+            val viewModel: CreateReviewsViewModel = hiltViewModel()
+            CreateReviewsScreen(
+                reviewId = reviewId,
+                createReviewsViewModel = viewModel,
+                onBack = {
+                    navController.navigate(Screens.Inicio.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
         composable ( route = Screens.Notifications.route ){
@@ -149,7 +172,13 @@ fun AppNavegation(
             ProfileScreen()
         }
         composable ( route = Screens.Reviews.route ){
-            ReviewScreen()
+            val viewModel: ReviewViewModel = hiltViewModel()
+            ReviewScreen(
+                viewModel = viewModel,
+                onEditClick = { reviewId ->
+                    navController.navigate(Screens.CreateReviews.createRouteModify(reviewId))
+                }
+            )
         }
         composable ( route = Screens.Inicio.route ){
             val viewModel: InicioViewModel = hiltViewModel()

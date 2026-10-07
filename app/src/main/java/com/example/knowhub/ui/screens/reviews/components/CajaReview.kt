@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,7 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
-import com.example.knowhub.ui.theme.*
+import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryContainerLight
+import com.example.knowhub.ui.theme.primaryLight
+import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.generarEstrellas
 
@@ -36,6 +40,8 @@ fun CajaReview(
     Calificacion: Int,
     colorCaja: Color,
     colorTexto: Color,
+    onEditClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -95,7 +101,7 @@ fun CajaReview(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "👨‍🏫 $Profesor",
+                text = stringResource(R.string.prof_emoji_label, Profesor),
                 fontSize = 13.sp,
                 fontFamily = FontFamily.Monospace
             )
@@ -130,9 +136,20 @@ fun CajaReview(
                 horizontalArrangement = Arrangement.End
             ) {
                 AppButton(
-                    stringResource(R.string.lapizEditar),
-                    colorTexto,
-                    colorCaja,
+                    textoButon = stringResource(R.string.icono_caneca),
+                    colorTexto = tertiaryContainerLight,
+                    colorBoton = primaryLight,
+                    onClick = onDeleteClick,
+                    modifier = Modifier.height(40.dp)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                AppButton(
+                    textoButon = stringResource(R.string.lapizEditar),
+                    colorTexto = colorTexto,
+                    colorBoton = colorCaja,
+                    onClick = onEditClick,
                     modifier = Modifier.height(40.dp)
                 )
             }
