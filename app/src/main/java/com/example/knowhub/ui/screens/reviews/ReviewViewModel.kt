@@ -58,6 +58,9 @@ class ReviewViewModel @Inject constructor(
                         errorMessage = exception.message ?: "Error al eliminar reseña"
                     )
                 }
+            }
+        }
+    }
     fun getUserReviews(userId: String) {
         viewModelScope.launch {
 
