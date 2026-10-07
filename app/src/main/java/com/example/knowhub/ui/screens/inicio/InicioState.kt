@@ -1,10 +1,10 @@
 package com.example.knowhub.ui.screens.inicio
 
-import com.example.knowhub.data.GeneralReview
+import com.example.knowhub.data.Asignatura
 import com.example.knowhub.data.MateriaResumida
 
 data class InicioState(
-    val allGeneralReviews: List<GeneralReview> = emptyList(),
+    val asignaturas: List<Asignatura> = emptyList(),
     val categories: List<Pair<String, List<MateriaResumida>>> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
