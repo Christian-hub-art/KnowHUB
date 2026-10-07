@@ -1,42 +1,55 @@
 package com.example.knowhub.ui.screens.BusquedaFiltro
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.knowhub.data.local.localGeneralReviewProvider
-import com.example.knowhub.ui.screens.busquedaFiltro.BusquedaState
+import androidx.lifecycle.viewModelScope
+import com.example.knowhub.data.repository.CatalogRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-//ViewModel encargado de gestionar la lógica de negocio y el estado de la pantalla de búsqueda.
+import kotlinx.coroutines.launch
 
 @HiltViewModel
-class BusquedaViewModel @Inject constructor(): ViewModel() {
+class BusquedaViewModel @Inject constructor(
+    private val repository: CatalogRepository,
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
-    // Encapsulamiento: Mutable privado, Inmutable expuesto
-    private val _uiState = MutableStateFlow(BusquedaState())
-    val uiState: StateFlow<BusquedaState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(BusquedaState(isLoading = true))
+    val uiState: StateFlow<BusquedaState> = _uiState
 
-    init {// Carga inicial de las reseñas al instanciar el ViewModel
-        loadGeneralReviews()
+    init {
+        val semestre: String = savedStateHandle.get<String>("semestre") ?: ""
+        _uiState.update { it.copy(semestreSeleccionado = semestre) }
+        loadData()
     }
 
-    private fun loadGeneralReviews() {
-        val lista = localGeneralReviewProvider.generalReviews
+    fun loadData() = viewModelScope.launch {
+        _uiState.update { it.copy(isLoading = true, error = null) }
 
-        _uiState.update { currentState ->
-            currentState.copy(
-                reviews = lista,
-                isLoading = false
-            )
-        }
+        repository.asignaturas().fold(
+            onSuccess = { materias ->
+                _uiState.update {
+                    it.copy(
+                        reviews = materias,
+                        isLoading = false
+                    )
+                }
+            },
+            onFailure = { error ->
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = "No se pudo cargar el catálogo: ${error.message}"
+                    )
+                }
+            }
+        )
     }
 
-    // Función de evento para actualizar el texto de búsqueda
     fun onFiltroChange(nuevoFiltro: String) {
-        _uiState.update { currentState ->
-            currentState.copy(filtro = nuevoFiltro)
-        }
+        _uiState.update { it.copy(filtro = nuevoFiltro) }
     }
 }

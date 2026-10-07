@@ -3,7 +3,7 @@ package com.example.knowhub.data
 import java.util.Date
 
 data class Like(
-    val idLike: Int,
+    val idLike: String,
     val fecha: Date,
 
     // Relación * a 1 con Usuario
@@ -15,3 +15,4 @@ data class Like(
     // Relación * a 1 con Comentario (opcional)
     val comentario: Comentario? = null
 )
+

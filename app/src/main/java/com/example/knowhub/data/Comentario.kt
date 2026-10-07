@@ -3,7 +3,7 @@ package com.example.knowhub.data
 import java.util.Date
 
 data class Comentario(
-    val idComentario: Int,
+    val idComentario: String,
     val fechaPublicacion: Date,
     val descripcion: String,
 
@@ -20,3 +20,4 @@ data class Comentario(
     val comentarioPadre: Comentario? = null,
     val respuestas: List<Comentario> = emptyList()
 )
+

@@ -327,7 +327,7 @@ fun FormTextField(
 @Composable
 fun CajaBusqueda(
     generalReview : GeneralReview,
-    generalReviewPressed: (Int) -> Unit,
+    generalReviewPressed: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(

@@ -1,72 +1,43 @@
 package com.example.knowhub.ui.screens.inicio
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.MateriaResumida
-import com.example.knowhub.data.local.localGeneralReviewProvider
+import com.example.knowhub.data.repository.CatalogRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-//ViewModel encargado de la lógica de negocio y carga inicial de reseñas generales
+import kotlinx.coroutines.launch
+
 @HiltViewModel
-class InicioViewModel @Inject constructor() : ViewModel() {
-    private val _uiState = MutableStateFlow(InicioState())
+class InicioViewModel @Inject constructor(private val repository: CatalogRepository) : ViewModel() {
+    private val _uiState = MutableStateFlow(InicioState(isLoading = true))
     val uiState: StateFlow<InicioState> = _uiState
+    init { loadMaterias() }
 
-    init {
-        loadMaterias()
-    }
-    //Carga la lista inicial de reseñas generales desde el proveedor local de datos.
-    fun loadMaterias() {
-        val allMaterias = localGeneralReviewProvider.generalReviews
-        val categories = processCategories(allMaterias)
-        _uiState.update {
-            it.copy(
-                allGeneralReviews = allMaterias,
-                categories = categories
-            )
-        }
-    }
-
-    fun processCategories(allGeneralReviews: List<GeneralReview>): List<Pair<String, List<MateriaResumida>>> {
-        // Conjunto de palabras no significativas
-        val stopWords = setOf("a", "de", "la", "en", "el", "los", "las", "y", "o", "con", "por", "para", "un", "una", "i", "ii", "iii")
-
-        // Map "calculo" -> [Calculo I, Calculo II]
-        val wordsToMaterias = mutableMapOf<String, MutableList<GeneralReview>>()
-
-        allGeneralReviews.forEach { review ->
-            // Toma el nombre de la materia y lo separa por espacios: Calculo I -> ["calculo", "I"]
-            val words = review.nombreMateria.split(" ")
-                // Elimina los caracteres que no sean letras o numeros válidos
-                .map { it.lowercase().filter { c -> c.isLetterOrDigit() } }
-                // Descartar palabras vacias o no significativas
-                .filter { it.isNotEmpty() && it !in stopWords }
-
-            /* Cada palabra nueva se guarda en el map como "calculo" -> emptyList()
-               el review se guarda en la categoria que corresponda  */
-            words.forEach { word ->
-                wordsToMaterias.getOrPut(word) { mutableListOf() }.add(review)
-            }
-        }
-
-        // Descartar categorias que aparecen en menos de 2 materias
-
-        // El Map wordsToMaterias se covierte en un List<Pair<String, List<MateriaResumida>>> y se retorna
-        return wordsToMaterias.filter { it.value.size >= 2 }
-            .map { (word, reviews) ->
-                word.uppercase() to reviews.distinctBy { it.id }.map { review ->
-                    MateriaResumida(
-                        calificacion = review.calificacionMedia,
-                        nombreMateria = review.nombreMateria,
-                        profesor = review.nombreProfesor,
-                        numeroResenas = review.cantidadReviews
-                    )
+    fun loadMaterias() = viewModelScope.launch {
+        _uiState.update { it.copy(isLoading = true, error = null) }
+        repository.asignaturas().fold(
+            onSuccess = { materias ->
+                _uiState.update {
+                    it.copy(allGeneralReviews = materias, categories = categories(materias), isLoading = false)
+                }
+            },
+            onFailure = { error ->
+                _uiState.update {
+                    it.copy(isLoading = false, error = "No se pudo cargar el catálogo: ${error.message}")
                 }
             }
-            //ordenar categorias alfabeticamente
-            .sortedBy { it.first }
+        )
     }
+
+    private fun categories(items: List<GeneralReview>): List<Pair<String, List<MateriaResumida>>> =
+        items.groupBy { it.dificultadMedia }.toSortedMap().map { (semester, materias) ->
+            semester to materias.map { MateriaResumida(it.id, it.calificacionMedia, it.nombreMateria, it.nombreProfesor, it.cantidadReviews) }
+        }
 }
+
+

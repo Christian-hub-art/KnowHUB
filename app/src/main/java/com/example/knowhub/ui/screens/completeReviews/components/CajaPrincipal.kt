@@ -74,7 +74,7 @@ fun CajaPrincipal(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = generalReview.codigoAsignatura.toString(),
+                text = generalReview.codigoAsignatura,
                 color = colorTexto,
                 fontFamily = BangersFont
             )
@@ -152,14 +152,19 @@ fun CajaPrincipal(
 @Composable
 @Preview
 fun CajaPrincipalPreview(){
-    GeneralReview(
-        5,
+    GeneralReview("5",
         "Cálculo Vectorial",
         "Alexander Caviedes",
-        8808,
+        "8808",
         200,
         5,
         "Media",
         listOf("#Integrales", "#Derivadas"),
     )
 }
+
+
+
+
+
+
