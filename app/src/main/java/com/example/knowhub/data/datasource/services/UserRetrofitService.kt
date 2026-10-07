@@ -1,6 +1,8 @@
 package com.example.knowhub.data.datasource.services
 
 import com.example.knowhub.data.Usuario
+import com.example.knowhub.data.dtos.ReviewDto
+import com.example.knowhub.data.dtos.UserProfileDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -14,7 +16,7 @@ interface UserRetrofitService {
     suspend fun getUsuario(): List<Usuario>
 
     @GET("usuario/{id}")
-    suspend fun getUsuarioById(@Path("id") id: String): Usuario
+    suspend fun getUsuarioById(@Path("id") id: String): UserProfileDto
 
     @POST("usuario")
     suspend fun createUsuario(@Body usuario: Usuario)
@@ -24,4 +26,8 @@ interface UserRetrofitService {
 
     @DELETE("usuario/{id}")
     suspend fun deleteUsuario(@Path("id") id: String)
+
+    @GET("users/{userId}/reviews")
+    suspend fun getReviewByUser(@Path("userId") userId: String): List<ReviewDto>
+
 }

@@ -5,8 +5,6 @@ import com.example.knowhub.data.dto.ReviewDto
 import com.example.knowhub.data.Comment
 import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.Review
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 fun AsignaturaDto.toUiModel(reviews: List<ReviewDto>) = GeneralReview(
     id = idAsignatura.toString(),

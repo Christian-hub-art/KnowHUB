@@ -9,29 +9,27 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.knowhub.R
-import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.data.Usuario
 import com.example.knowhub.ui.theme.primaryLight
 
-//Sección de encabezado que muestra la imagen de perfil del usuario y sus estadísticas
 @Composable
 fun InformacionPerfil(
+    user: Usuario,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier.width(350.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Marco contenedor de la foto de perfil
         Box(
             modifier = Modifier
                 .size(85.dp)
@@ -42,21 +40,21 @@ fun InformacionPerfil(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.perfil),
-                contentDescription = "Foto Perfil",
-                modifier = Modifier.size(65.dp)
+            AsyncImage(
+                model = user.foto,
+                contentDescription = "Foto de perfil",
+                modifier = Modifier.size(65.dp),
+                contentScale = ContentScale.Crop
             )
         }
 
         Spacer(modifier = Modifier.width(8.dp))
-        // Bloque con las métricas del usuario
+
         CuadrosInformacionPerfil(
-            seguidos = 48,
-            materiasResenadas = 32,
-            seguidores = 126,
-            modifier = Modifier
-                .weight(1f)
+            seguidos = user.siguiendo.toIntOrNull() ?: 0,
+            materiasResenadas = user.likes.toIntOrNull() ?: 0,
+            seguidores = user.seguidores.toIntOrNull() ?: 0,
+            modifier = Modifier.weight(1f)
         )
     }
 }

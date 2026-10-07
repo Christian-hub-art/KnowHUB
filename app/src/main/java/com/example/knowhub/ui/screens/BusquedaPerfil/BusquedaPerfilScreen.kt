@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.School
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,10 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
-import com.example.knowhub.data.GeneralReview
-import com.example.knowhub.data.local.localGeneralReviewProvider
+import com.example.knowhub.data.Review
 import com.example.knowhub.ui.screens.BusquedaPerfil.Components.InformacionPerfil
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryContainerLight
@@ -35,31 +34,42 @@ import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.AppLabelBig
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.CajaBusqueda
+
 /**
  * Pantalla del perfil buscado.
  * Conecta el estado del ViewModel con la interfaz gráfica.
  */
 @Composable
 fun BusquedaPerfilScreen(
-    modifier: Modifier = Modifier,
-    viewModel: BusquedaPerfilViewModel = viewModel()
-){
-    val uiState by viewModel.uiState.collectAsState()
+    userId: String,
+    busquedaPerfilViewModel: BusquedaPerfilViewModel,
+    modifier: Modifier = Modifier
+) {
+    val uiState by busquedaPerfilViewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        busquedaPerfilViewModel.getUserReviews(userId)
+        busquedaPerfilViewModel.getUserProfile(userId)
+    }
 
     Box(
         modifier = modifier
-    ){
+    ) {
         BackgroundImage()
+
         BodyBusquedaPerfilScrenn(
             reviews = uiState.reviews,
             onClick = {}
         )
     }
 }
-//Contenido principal de la pantalla de perfil y sus reseñas asociadas.
+
+/**
+ * Contenido principal de la pantalla de perfil y sus reseñas asociadas.
+ */
 @Composable
 fun BodyBusquedaPerfilScrenn(
-    reviews: List<GeneralReview> = localGeneralReviewProvider.generalReviews,
+    reviews: List<Review> = emptyList(),
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -71,6 +81,7 @@ fun BodyBusquedaPerfilScrenn(
         item {
 
             Spacer(modifier = Modifier.height(20.dp))
+
             // Nombre del perfil del usuario
             AppLabelBig(
                 stringResource(R.string.laura),
@@ -82,10 +93,12 @@ fun BodyBusquedaPerfilScrenn(
             )
 
             Spacer(modifier = Modifier.height(40.dp))
+
             // Componente con imagen y estadísticas del perfil
             InformacionPerfil()
 
             Spacer(modifier = Modifier.height(20.dp))
+
             // Fila con la carrera, ícono y botón de seguimiento
             Row(
                 modifier = Modifier.width(320.dp),
@@ -115,6 +128,7 @@ fun BodyBusquedaPerfilScrenn(
             }
 
             Spacer(modifier = Modifier.height(40.dp))
+
             // Encabezado de la lista de reseñas
             AppLabel(
                 stringResource(R.string.rese_as_publicadas),
@@ -142,8 +156,8 @@ fun BodyBusquedaPerfilScrenn(
     }
 }
 
-@Composable
 @Preview
-fun BusquedaPerfilScreenReview(){
-    BusquedaPerfilScreen()
+@Composable
+fun BusquedaPerfilScreenReview() {
+    BodyBusquedaPerfilScrenn()
 }
