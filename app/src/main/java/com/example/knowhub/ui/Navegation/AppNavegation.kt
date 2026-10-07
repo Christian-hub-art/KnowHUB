@@ -29,6 +29,7 @@ import com.example.knowhub.ui.screens.profile.ProfileScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.register.RegisterViewModel
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
+import com.example.knowhub.ui.screens.reviews.ReviewViewModel
 
 sealed class Screens(val route: String) {
     object Splash : Screens("splash")
@@ -43,7 +44,9 @@ sealed class Screens(val route: String) {
     object CompleteReviews : Screens("completeReviews/{generalReviewId}") {
         fun createRoute(id: String) = "completeReviews/$id"
     }
-    object CreateReviews : Screens("createReviews")
+    object CreateReviews : Screens("createReviews") {
+        fun createRouteModify(reviewId: String) = "createReviews/$reviewId"
+    }
     object Notifications : Screens("notifications")
     object Profile : Screens("profile")
     object Reviews : Screens("reviews")
@@ -154,11 +157,31 @@ fun AppNavegation(
                 }
             )
         }
-
-        composable ( route = Screens.CreateReviews.route ){
+        composable(route = Screens.CreateReviews.route) {
             val viewModel: CreateReviewsViewModel = hiltViewModel()
             CreateReviewsScreen(
-                createReviewsViewModel = viewModel
+                createReviewsViewModel = viewModel,
+                onBack = {
+                    navController.navigate(Screens.Inicio.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(
+            route = "createReviews/{reviewId}",
+            arguments = listOf(navArgument("reviewId") { type = NavType.StringType })
+        ) {
+            val reviewId = it.arguments?.getString("reviewId") ?: ""
+            val viewModel: CreateReviewsViewModel = hiltViewModel()
+            CreateReviewsScreen(
+                reviewId = reviewId,
+                createReviewsViewModel = viewModel,
+                onBack = {
+                    navController.navigate(Screens.Inicio.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
 
@@ -171,7 +194,13 @@ fun AppNavegation(
         }
 
         composable ( route = Screens.Reviews.route ){
-            ReviewScreen()
+            val viewModel: ReviewViewModel = hiltViewModel()
+            ReviewScreen(
+                viewModel = viewModel,
+                onEditClick = { reviewId ->
+                    navController.navigate(Screens.CreateReviews.createRouteModify(reviewId))
+                }
+            )
         }
 
         composable ( route = Screens.Inicio.route ){
