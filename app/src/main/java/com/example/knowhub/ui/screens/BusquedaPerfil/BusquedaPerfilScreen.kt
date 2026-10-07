@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.knowhub.R
 import com.example.knowhub.data.Review
+import com.example.knowhub.data.Usuario
 import com.example.knowhub.ui.screens.BusquedaPerfil.Components.InformacionPerfil
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryContainerLight
@@ -58,6 +59,7 @@ fun BusquedaPerfilScreen(
         BackgroundImage()
 
         BodyBusquedaPerfilScrenn(
+            user = uiState.user,
             reviews = uiState.reviews,
             onClick = {}
         )
@@ -69,6 +71,16 @@ fun BusquedaPerfilScreen(
  */
 @Composable
 fun BodyBusquedaPerfilScrenn(
+    user: Usuario = Usuario(
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ),
     reviews: List<Review> = emptyList(),
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
@@ -84,7 +96,7 @@ fun BodyBusquedaPerfilScrenn(
 
             // Nombre del perfil del usuario
             AppLabelBig(
-                stringResource(R.string.laura),
+                user.nombreUsuario,
                 colorTexto = primaryLight,
                 color = tertiaryContainerLight,
                 modifier = Modifier
@@ -95,7 +107,9 @@ fun BodyBusquedaPerfilScrenn(
             Spacer(modifier = Modifier.height(40.dp))
 
             // Componente con imagen y estadísticas del perfil
-            InformacionPerfil()
+            InformacionPerfil(
+                user = user
+            )
 
             Spacer(modifier = Modifier.height(20.dp))
 

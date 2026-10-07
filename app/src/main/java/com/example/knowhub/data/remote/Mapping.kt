@@ -17,17 +17,22 @@ fun AsignaturaDto.toUiModel(reviews: List<ReviewDto>) = GeneralReview(
     Hashtags = listOf("${numCreditos.toInt()} créditos")
 )
 
-fun ReviewDto.toReview(commentCount: Int = 0) = Review(
-    id = idReview.toString(),
-    nombreEstudiante = usuario?.nomUsuario ?: "Usuario $idUsuario",
-    nombreProfesor = "Docente $idDocente",
-    nombreAsignatura = asignatura?.nomAsignatura.orEmpty(),
-    descripcion = descripcion,
-    fechaPublicacion = createdAt?.let { it.substringBefore('T') } ?: "",
-    calificacion = calificacion ?: 0,
-    likes = numMegusta,
-    cantidadComentarios = commentCount
-)
+fun ReviewDto.toReview(commentCount: Int = 0): Review {
+    return Review(
+        id = idReview.toString(),
+        idAsignatura = idAsignatura.toString(),
+        idUsuario = idUsuario.toString(),
+        nombreEstudiante = usuario?.nomUsuario ?: "Usuario $idUsuario",
+        nombreProfesor = "Docente $idDocente",
+        nombreAsignatura = asignatura?.nomAsignatura.orEmpty(),
+        descripcion = descripcion,
+        fechaPublicacion = createdAt?.substringBefore('T') ?: "",
+        calificacion = (calificacion ?: 0).toString(),
+        likes = numMegusta.toString(),
+        cantidadComentarios = commentCount.toString(),
+        parentReviewId = idReviewPadre?.toString() ?: ""
+    )
+}
 
 fun ReviewDto.toComment(replyCount: Int = 0) = Comment(
     id = idReview.toString(),

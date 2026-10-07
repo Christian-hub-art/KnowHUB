@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.knowhub.ui.screens.BusquedaFiltro.BusquedaScreen
 import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
+import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilViewModel
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsScreen
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsViewModel
 import com.example.knowhub.ui.screens.Splash.SplashScreen
@@ -195,8 +196,14 @@ fun AppNavegation(
             )
         }
 
-        composable(route = Screens.BusquePerfil.route){
-            BusquedaPerfilScreen()
+        composable(route = Screens.BusquePerfil.route) {
+
+            val busquedaPerfilViewModel: BusquedaPerfilViewModel = hiltViewModel()
+
+            BusquedaPerfilScreen(
+                userId = "1",
+                busquedaPerfilViewModel = busquedaPerfilViewModel
+            )
         }
     }
 }

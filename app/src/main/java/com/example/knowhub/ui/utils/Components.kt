@@ -469,3 +469,99 @@ fun ProfileAsyncImage(
 
     )
 }
+
+
+@Composable
+fun CajaGeneralBusqueda(
+    generalReview: GeneralReview,
+    generalReviewPressed: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .background(primaryLight)
+            .border(
+                2.dp,
+                tertiaryContainerLight
+            )
+            .clickable {
+                generalReviewPressed(generalReview.id)
+            }
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(tertiaryContainerLight)
+                    .padding(
+                        horizontal = 12.dp,
+                        vertical = 6.dp
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = generalReview.codigoAsignatura,
+                    color = primaryLight,
+                    fontFamily = BangersFont,
+                    fontSize = 24.sp
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+            ) {
+                Text(
+                    text = generalReview.nombreMateria,
+                    fontFamily = BangersFont,
+                    fontSize = 22.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = "👩‍🏫 ${generalReview.nombreProfesor}",
+                    fontSize = 16.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "⭐ ${generalReview.calificacionMedia}/5",
+                    fontSize = 18.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Reseñas: ${generalReview.cantidadReviews}",
+                    fontSize = 14.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Dificultad: ${generalReview.dificultadMedia}",
+                    fontSize = 14.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                if (generalReview.Hashtags.isNotEmpty()) {
+                    Text(
+                        text = generalReview.Hashtags.joinToString(" "),
+                        fontSize = 14.sp,
+                        color = tertiaryContainerLight
+                    )
+                }
+            }
+        }
+    }
+}

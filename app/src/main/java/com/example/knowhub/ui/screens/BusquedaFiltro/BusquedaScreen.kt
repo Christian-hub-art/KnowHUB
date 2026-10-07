@@ -1,6 +1,8 @@
 package com.example.knowhub.ui.screens.BusquedaFiltro
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +36,7 @@ import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.CajaBusqueda
+import com.example.knowhub.ui.utils.CajaGeneralBusqueda
 
 @Composable
 fun BusquedaScreen(
@@ -149,9 +152,9 @@ fun BodyBusquedaScreen(
             }
 
             if (!isLoading && error == null) {
-                items(reviews.size) { index ->
-                    CajaBusqueda(
-                        generalReview = reviews[index],
+                items(reviews) { review ->
+                    CajaGeneralBusqueda(
+                        generalReview = review,
                         generalReviewPressed = generalReviewPressed,
                         modifier = Modifier.width(350.dp)
                     )
@@ -162,6 +165,8 @@ fun BodyBusquedaScreen(
         }
     }
 }
+
+
 
 @Composable
 @Preview

@@ -58,11 +58,11 @@ fun Review(
             }
             Spacer(modifier = Modifier.width(20.dp))
 
-            val estrellas= generarEstrellas(review.calificacion)
-            Text(
+            /*val estrellas= generarEstrellas(review.calificacion)*/
+            /*Text(
                 text = estrellas,
                 fontSize = 18.sp
-            )
+            )*/
         }
         Spacer(modifier = Modifier.height(6.dp))
         Column(// Tarjeta contenedora con la descripción y botones de interacción
