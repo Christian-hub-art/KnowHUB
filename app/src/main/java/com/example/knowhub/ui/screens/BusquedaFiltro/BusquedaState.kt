@@ -1,24 +1,22 @@
 package com.example.knowhub.ui.screens.BusquedaFiltro
 
-import com.example.knowhub.data.GeneralReview
+import com.example.knowhub.data.Asignatura
 
 data class BusquedaState(
     val semestreSeleccionado: String = "",
     val filtro: String = "",
-    val reviews: List<GeneralReview> = emptyList(),
+    val asignaturas: List<Asignatura> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 ) {
-    val reviewsFiltradas: List<GeneralReview>
-        get() = reviews.filter { review ->
-            // Filtra primero por semestre si viene un semestre asignado
+    val asignaturasFiltradas: List<Asignatura>
+        get() = asignaturas.filter { materia ->
             val coincideSemestre = semestreSeleccionado.isBlank() ||
-                    review.dificultadMedia.equals(semestreSeleccionado, ignoreCase = true)
+                    materia.semestre.equals(semestreSeleccionado, ignoreCase = true)
 
-            // Filtra adicionalmente si el usuario escribe algo en la barra de texto
             val coincideTexto = filtro.isBlank() ||
-                    review.nombreMateria.contains(filtro, ignoreCase = true) ||
-                    review.nombreProfesor.contains(filtro, ignoreCase = true)
+                    materia.nombre.contains(filtro, ignoreCase = true) ||
+                    materia.descripcion.contains(filtro, ignoreCase = true)
 
             coincideSemestre && coincideTexto
         }
