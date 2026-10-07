@@ -21,7 +21,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.knowhub.ui.Navegation.AppNavegation
 import com.example.knowhub.ui.Navegation.Screens
-import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
 import com.example.knowhub.ui.screens.options.components.MenuOpciones
 import kotlinx.coroutines.launch
 
@@ -79,6 +78,12 @@ fun KnowHUBApp (){
                     buscarButtonPressed = {
                         scope.launch { drawerState.close() }
                         navController.navigate(Screens.Busqueda.route)
+                    },
+                    BusquedaPerfilButtonPressed = {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                        navController.navigate(Screens.BusquePerfil.route)
                     },
                     cerrarSesionButtonPressed = {
                         scope.launch { drawerState.close() }

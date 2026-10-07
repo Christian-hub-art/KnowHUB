@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,7 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.*
 
-//Menú lateral de navegación con las opciones principales de la aplicación.
+// Menú lateral de navegación con las opciones principales de la aplicación.
 @Composable
 fun MenuOpciones(
     inicioButtonPressed: () -> Unit,
@@ -38,25 +37,33 @@ fun MenuOpciones(
     notificationsButtonPressed: () -> Unit,
     createReviewsButtonPressed: () -> Unit,
     buscarButtonPressed: () -> Unit,
+    BusquedaPerfilButtonPressed: () -> Unit,
     cerrarSesionButtonPressed: () -> Unit,
     modifier: Modifier = Modifier,
     optionsViewModel: OptionsViewModel = hiltViewModel()
 ) {
-    Column(modifier = modifier
-        .fillMaxHeight()
-        .width(250.dp)
-        .background(primaryLight)
-        .border(
-            4.dp,
-            secondaryLight
-        )
-        .navigationBarsPadding()
-        .padding(15.dp)
+    Column(
+        modifier = modifier
+            .fillMaxHeight()
+            .width(250.dp)
+            .background(primaryLight)
+            .border(
+                4.dp,
+                secondaryLight
+            )
+            .navigationBarsPadding()
+            .padding(15.dp)
     ) {
+
         Spacer(modifier = Modifier.weight(0.4F))
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .clickable { inicioButtonPressed() },
+
+        // INICIO
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    inicioButtonPressed()
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -64,18 +71,26 @@ fun MenuOpciones(
                 contentDescription = stringResource(R.string.inicio),
                 modifier = Modifier.size(30.dp)
             )
+
             Spacer(modifier = Modifier.width(5.dp))
+
             Text(
                 stringResource(R.string.explorar),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = ArvoFont,
+                fontFamily = ArvoFont
             )
         }
+
         Spacer(modifier = Modifier.weight(0.1F))
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .clickable { profileButtonPressed() },
+
+        // PERFIL
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    profileButtonPressed()
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -83,18 +98,26 @@ fun MenuOpciones(
                 contentDescription = stringResource(R.string.perfil),
                 modifier = Modifier.size(30.dp)
             )
+
             Spacer(modifier = Modifier.width(5.dp))
+
             Text(
                 stringResource(R.string.perfil),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = ArvoFont,
+                fontFamily = ArvoFont
             )
         }
+
         Spacer(modifier = Modifier.weight(0.1F))
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .clickable { previewButtonPressed() },
+
+        // TUS RESEÑAS
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    previewButtonPressed()
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -102,18 +125,26 @@ fun MenuOpciones(
                 contentDescription = stringResource(R.string.rese_a),
                 modifier = Modifier.size(30.dp)
             )
+
             Spacer(modifier = Modifier.width(5.dp))
+
             Text(
                 stringResource(R.string.tus_rese_as),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = ArvoFont,
+                fontFamily = ArvoFont
             )
         }
+
         Spacer(modifier = Modifier.weight(0.1F))
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .clickable { notificationsButtonPressed() },
+
+        // NOTIFICACIONES
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    notificationsButtonPressed()
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -121,18 +152,26 @@ fun MenuOpciones(
                 contentDescription = stringResource(R.string.notificaci_n),
                 modifier = Modifier.size(30.dp)
             )
+
             Spacer(modifier = Modifier.width(5.dp))
+
             Text(
                 stringResource(R.string.notificaciones),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = ArvoFont,
+                fontFamily = ArvoFont
             )
         }
+
         Spacer(modifier = Modifier.weight(0.1F))
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .clickable { createReviewsButtonPressed() },
+
+        // CREAR RESEÑA
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    createReviewsButtonPressed()
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -140,40 +179,81 @@ fun MenuOpciones(
                 contentDescription = stringResource(R.string.crear_resena),
                 modifier = Modifier.size(30.dp)
             )
+
             Spacer(modifier = Modifier.width(5.dp))
+
             Text(
                 stringResource(R.string.crear_resena),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = ArvoFont,
+                fontFamily = ArvoFont
             )
         }
+
         Spacer(modifier = Modifier.weight(0.1F))
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .clickable { buscarButtonPressed() },
+
+        // BUSCAR
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    buscarButtonPressed()
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = painterResource(R.drawable.buscar),
-                contentDescription =stringResource(R.string.imagen_buscar),
+                contentDescription = stringResource(R.string.imagen_buscar),
                 modifier = Modifier.size(30.dp)
             )
+
             Spacer(modifier = Modifier.width(5.dp))
+
             Text(
                 stringResource(R.string.buscar),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = ArvoFont,
+                fontFamily = ArvoFont
             )
         }
+
+        Spacer(modifier = Modifier.weight(0.1F))
+
+        // BUSCAR PERFIL
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    BusquedaPerfilButtonPressed()
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.buscar),
+                contentDescription = stringResource(R.string.imagen_buscar),
+                modifier = Modifier.size(30.dp)
+            )
+
+            Spacer(modifier = Modifier.width(5.dp))
+
+            Text(
+                "Buscar perfil",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = ArvoFont
+            )
+        }
+
         Spacer(modifier = Modifier.weight(1F))
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                optionsViewModel.logOut()
-                cerrarSesionButtonPressed()
-            },
+
+        // CERRAR SESIÓN
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    optionsViewModel.logOut()
+                    cerrarSesionButtonPressed()
+                },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
@@ -181,11 +261,10 @@ fun MenuOpciones(
                 stringResource(R.string.cerrar_sesion),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = ArvoFont,
+                fontFamily = ArvoFont
             )
         }
     }
-
 }
 
 @Composable
@@ -198,6 +277,7 @@ fun MenuOpcionesPreview() {
         notificationsButtonPressed = {},
         createReviewsButtonPressed = {},
         buscarButtonPressed = {},
+        BusquedaPerfilButtonPressed = {},
         cerrarSesionButtonPressed = {}
     )
 }
