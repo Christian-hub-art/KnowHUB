@@ -34,6 +34,7 @@ fun CajaReseñas(
     colorTexto: Color,
     colorCaja: Color,
     onSeeAllClick: () -> Unit,
+    onMateriaClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -89,6 +90,7 @@ fun CajaReseñas(
                     nombreMateria = materia.nombreMateria,
                     profesor = materia.profesor,
                     numeroResenas = materia.numeroResenas,
+                    onClick = { onMateriaClick(materia.id) },
                     Modifier.height(175.dp)
                 )
             }
@@ -108,4 +110,7 @@ fun CajaReseñasPreview() {
         )
     )
 }
+
+
+
 

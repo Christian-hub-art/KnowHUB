@@ -1,4 +1,4 @@
-package com.example.knowhub.data.datasource.impl.retrofit
+package com.example.knowhub.data.datasource.impl
 
 import com.example.knowhub.data.datasource.ReviewRemoteDataSource
 import com.example.knowhub.data.datasource.services.ReviewRetrofitService

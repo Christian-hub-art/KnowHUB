@@ -1,7 +1,7 @@
 package com.example.knowhub.data.injection
 
 import com.example.knowhub.data.datasource.ReviewRemoteDataSource
-import com.example.knowhub.data.datasource.impl.retrofit.ReviewRetrofitDataSourceImpl
+import com.example.knowhub.data.datasource.impl.ReviewRetrofitDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

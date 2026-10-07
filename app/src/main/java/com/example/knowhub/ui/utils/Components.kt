@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.Dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.knowhub.data.GeneralReview
+import com.example.knowhub.data.Review
 import com.example.knowhub.ui.theme.ArvoFont
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryContainerLight
@@ -323,21 +324,23 @@ fun FormTextField(
     )
 }
 
-
 @Composable
 fun CajaBusqueda(
-    generalReview : GeneralReview,
-    generalReviewPressed: (Int) -> Unit,
+    review: Review,
+    reviewPressed: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .background(primaryLight)
             .border(2.dp, tertiaryContainerLight)
-            .clickable { generalReviewPressed (generalReview.id) },
+            .clickable {
+                reviewPressed(review.id)
+            },
     ) {
         Column {
-            // Header Azul
+
+            // Header
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -347,7 +350,10 @@ fun CajaBusqueda(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(R.string.codigo_clase_label, generalReview.codigoAsignatura),
+                    text = stringResource(
+                        R.string.codigo_clase_label,
+                        review.idAsignatura
+                    ),
                     color = primaryLight,
                     fontFamily = BangersFont,
                     fontSize = 24.sp
@@ -361,8 +367,9 @@ fun CajaBusqueda(
                     .padding(12.dp)
             ) {
                 Column {
+
                     Text(
-                        text = generalReview.nombreMateria,
+                        text = review.nombreAsignatura,
                         fontFamily = BangersFont,
                         fontSize = 22.sp,
                         fontStyle = FontStyle.Italic,
@@ -371,11 +378,21 @@ fun CajaBusqueda(
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "👩‍🏫", fontSize = 16.sp)
-                        Spacer(modifier = Modifier.width(4.dp))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(
-                            text = stringResource(R.string.prof_label, generalReview.nombreProfesor),
+                            text = "👩‍🏫",
+                            fontSize = 16.sp
+                        )
+
+                        Spacer(modifier = Modifier.width(4.dp))
+
+                        Text(
+                            text = stringResource(
+                                R.string.prof_label,
+                                review.nombreProfesor
+                            ),
                             fontSize = 16.sp,
                             color = tertiaryContainerLight
                         )
@@ -384,72 +401,30 @@ fun CajaBusqueda(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = generarEstrellas(generalReview.calificacionMedia),
+                        text = generarEstrellas(
+                            review.calificacion.toIntOrNull() ?: 0
+                        ),
                         fontSize = 20.sp
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = stringResource(R.string.basado_en_resenas, generalReview.cantidadReviews),
+                        text = stringResource(
+                            R.string.basado_en_resenas,
+                            review.cantidadComentarios
+                        ),
                         fontSize = 14.sp,
                         color = tertiaryContainerLight
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        generalReview.Hashtags.forEach { tag ->
-                            Box(
-                                modifier = Modifier
-                                    .background(primaryContainerLight)
-                                    .border(1.dp, tertiaryContainerLight)
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(
-                                    text = tag.uppercase(),
-                                    color = primaryLight,
-                                    fontFamily = BangersFont,
-                                    fontSize = 12.sp
-                                )
-                            }
-                        }
-                    }
-                }
-
-                // Dificultad (Bottom Right)
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .border(2.dp, tertiaryContainerLight),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .background(secondaryContainerLight) // Amarillo
-                            .padding(horizontal = 8.dp, vertical = 2.dp)
-                    ) {
-                        Text(
-                            text = generalReview.dificultadMedia.uppercase(),
-                            fontFamily = BangersFont,
-                            fontSize = 12.sp,
-                            color = tertiaryContainerLight,
-                            fontStyle = FontStyle.Italic
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .background(primaryLight)
-                            .padding(horizontal = 4.dp, vertical = 2.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.dificultad),
-                            fontFamily = BangersFont,
-                            fontSize = 10.sp,
-                            color = tertiaryContainerLight,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                    Text(
+                        text = review.descripcion,
+                        fontSize = 15.sp,
+                        color = tertiaryContainerLight
+                    )
                 }
             }
 
@@ -468,16 +443,11 @@ fun CajaBusqueda(
                     fontFamily = BangersFont,
                     fontSize = 20.sp
                 )
-                /*Icon(
-                    painter = painterResource(id = R.drawable.), // Asumiendo que existe
-                    contentDescription = null,
-                    tint = primaryLight,
-                    modifier = Modifier.size(24.dp)
-                )*/
             }
         }
     }
 }
+
 
 @Composable
 fun ProfileAsyncImage(
@@ -498,4 +468,100 @@ fun ProfileAsyncImage(
         modifier = modifier.size(size.dp).clip(CircleShape)
 
     )
+}
+
+
+@Composable
+fun CajaGeneralBusqueda(
+    generalReview: GeneralReview,
+    generalReviewPressed: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .background(primaryLight)
+            .border(
+                2.dp,
+                tertiaryContainerLight
+            )
+            .clickable {
+                generalReviewPressed(generalReview.id)
+            }
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(tertiaryContainerLight)
+                    .padding(
+                        horizontal = 12.dp,
+                        vertical = 6.dp
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = generalReview.codigoAsignatura,
+                    color = primaryLight,
+                    fontFamily = BangersFont,
+                    fontSize = 24.sp
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+            ) {
+                Text(
+                    text = generalReview.nombreMateria,
+                    fontFamily = BangersFont,
+                    fontSize = 22.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = "👩‍🏫 ${generalReview.nombreProfesor}",
+                    fontSize = 16.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "⭐ ${generalReview.calificacionMedia}/5",
+                    fontSize = 18.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Reseñas: ${generalReview.cantidadReviews}",
+                    fontSize = 14.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Dificultad: ${generalReview.dificultadMedia}",
+                    fontSize = 14.sp,
+                    color = tertiaryContainerLight
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                if (generalReview.Hashtags.isNotEmpty()) {
+                    Text(
+                        text = generalReview.Hashtags.joinToString(" "),
+                        fontSize = 14.sp,
+                        color = tertiaryContainerLight
+                    )
+                }
+            }
+        }
+    }
 }

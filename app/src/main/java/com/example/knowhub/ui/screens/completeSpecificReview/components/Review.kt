@@ -84,11 +84,11 @@ fun Review(
                 }
                 Spacer(modifier = Modifier.width(20.dp))
 
-                val estrellas= generarEstrellas(review.calificacion)
+                /*  val estrellas= generarEstrellas(review.calificacion)
                 Text(
                     text = estrellas,
                     fontSize = 18.sp
-                )
+                )*/
             }
             // Cuerpo descriptivo y contadores de interacción
             Column(
