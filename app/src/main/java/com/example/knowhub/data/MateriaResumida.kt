@@ -1,8 +1,11 @@
 package com.example.knowhub.data
 
-class MateriaResumida (
+data class MateriaResumida(
+    val id: String = "",
     val calificacion: Int,
     val nombreMateria: String,
     val profesor: String,
     val numeroResenas: Int
 )
+
+

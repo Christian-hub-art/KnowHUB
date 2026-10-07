@@ -39,7 +39,7 @@ import com.example.knowhub.ui.utils.generarEstrellas
 @Composable
 fun Review(
     review: Review,
-    reviewPressed: (Int) -> Unit,
+    reviewPressed: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {// Cabecera con datos del estudiante, fecha y calificación

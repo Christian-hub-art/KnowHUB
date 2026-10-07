@@ -5,8 +5,7 @@ import com.example.knowhub.data.Review
 object localReviewProvider {
 
     val Reviews = listOf(
-        Review(
-            1,
+        Review("1",
             "Dana Trujillo",
             "Yesid Lemus",
             "Ecuaciones diferenciales",
@@ -16,8 +15,7 @@ object localReviewProvider {
             5,
             10
         ),
-        Review(
-            2,
+        Review("2",
             "Santiago Moreno",
             "Laura Gómez",
             "Cálculo diferencial",
@@ -27,8 +25,7 @@ object localReviewProvider {
             2,
             9
         ),
-        Review(
-            3,
+        Review("3",
             "Valentina Rojas",
             "Andrés Cárdenas",
             "Programación",
@@ -38,8 +35,7 @@ object localReviewProvider {
             4,
             8
         ),
-        Review(
-            4,
+        Review("4",
             "Mateo Vargas",
             "Camila Torres",
             "Álgebra lineal",
@@ -49,8 +45,7 @@ object localReviewProvider {
             5,
             10
         ),
-        Review(
-            5,
+        Review("5",
             "Mariana Pérez",
             "Felipe Ramírez",
             "Física mecánica",

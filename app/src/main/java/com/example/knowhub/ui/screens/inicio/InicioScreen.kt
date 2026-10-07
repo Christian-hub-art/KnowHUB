@@ -34,11 +34,15 @@ import com.example.knowhub.ui.theme.secondaryContainerLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
+
 //Pantalla de inicio de la aplicación que despliega las categorías dinámicas de materias.
 @Composable
 fun InicioScreen(
     inicioViewModel: InicioViewModel,
-    onSeeAllClick: () -> Unit,
+    onSeeAllClick: (String) -> Unit, // <-- Se cambia para recibir la categoría/semestre (String)
+    onMateriaClick: (String) -> Unit,
+    isLoading: Boolean = false,
+    error: String? = null,
     modifier: Modifier = Modifier,
 ) {
     val state by inicioViewModel.uiState.collectAsState()
@@ -46,15 +50,22 @@ fun InicioScreen(
         BackgroundImage()
         BodyInicioScreen(
             categories = state.categories,
-            onSeeAllClick = onSeeAllClick
+            isLoading = state.isLoading,
+            error = state.error,
+            onSeeAllClick = onSeeAllClick,
+            onMateriaClick = onMateriaClick
         )
     }
 }
+
 //Estructura y procesamiento de contenido para la pantalla de inicio.
 @Composable
 fun BodyInicioScreen(
     categories: List<Pair<String, List<MateriaResumida>>>,
-    onSeeAllClick: () -> Unit,
+    onSeeAllClick: (String) -> Unit, // <-- Se cambia para recibir la categoría/semestre (String)
+    onMateriaClick: (String) -> Unit,
+    isLoading: Boolean = false,
+    error: String? = null,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -89,23 +100,22 @@ fun BodyInicioScreen(
             }
         }
 
+        if (isLoading) item { Text("Cargando asignaturas…", modifier = Modifier.padding(20.dp)) }
+        error?.let { message -> item { Text(message, modifier = Modifier.padding(20.dp), color = primaryLight) } }
+
         // Crear una CajaReseñas por cada categoría
         itemsIndexed(
             items = categories,
-            // cada item de va a distinguir por su nombre de categoria
             key = { _, categoria -> categoria.first }
-        )
-        /* index es la posicion del item actual en la lista de items
-        *  category: "calculo" materias= [Calculo I,Calculo II]  */
-        { index, (category, materias) ->
+        ) { index, (category, materias) ->
             val isEven = (index % 2 == 0)
             CajaReseñas(
                 temaGeneral = category,
                 materias = materias,
-                // isEven se usa para alternar los colores de las CajasReseñas (azul/amarillo)
                 colorTexto = if (isEven) primaryLight else tertiaryContainerLight,
                 colorCaja = if (isEven) primaryContainerLight else secondaryContainerLight,
-                onSeeAllClick = onSeeAllClick,
+                onSeeAllClick = { onSeeAllClick(category) }, // <-- Se envía la categoría específica seleccionada
+                onMateriaClick = onMateriaClick,
                 modifier = Modifier.height(240.dp)
             )
         }
@@ -117,6 +127,7 @@ fun BodyInicioScreen(
 fun InicioScreenPreview() {
     InicioScreen(
         inicioViewModel = viewModel(),
-        onSeeAllClick = {}
+        onSeeAllClick = {},
+        onMateriaClick = {}
     )
 }

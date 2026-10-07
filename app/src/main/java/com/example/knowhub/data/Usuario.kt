@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 
 data class Usuario(
     val nombreUsuario: String,
-    val idUsuario: Int,
+    val idUsuario: String,
     val correo: String,
     val contrasena: String,
     @DrawableRes val foto: Int,
@@ -15,3 +15,4 @@ data class Usuario(
     val siguiendo: MutableList<Usuario> = mutableListOf(),
     val seguidores: MutableList<Usuario> = mutableListOf()
 )
+

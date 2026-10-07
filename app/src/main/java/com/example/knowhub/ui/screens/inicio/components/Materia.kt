@@ -1,5 +1,6 @@
 package com.example.knowhub.ui.screens.inicio.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -31,11 +32,13 @@ fun Materia(
     nombreMateria: String,
     profesor: String,
     numeroResenas: Int,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .width(180.dp)
+            .clickable(onClick = onClick)
             .drawBehind {
                 drawRect(
                     color = Color.Black,
@@ -90,3 +93,8 @@ fun MateriaPreview() {
         numeroResenas = 18,
     )
 }
+
+
+
+
+
