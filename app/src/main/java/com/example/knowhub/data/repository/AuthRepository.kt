@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
-import jakarta.inject.Inject
+import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource

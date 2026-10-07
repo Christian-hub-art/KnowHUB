@@ -10,6 +10,20 @@ data class UserDto(
 ) {
     constructor() : this("", "", "", null)
 }
+data class AsignaturaRelacionDto(
+    val idAsignatura: String = "",
+    val nomAsignatura: String = ""
+)
+data class AsignaturaDto(
+    val idAsignatura: Int = 0,
+    val nomAsignatura: String = "",
+    val semestreActual: String = "",
+    val estado: String? = null,
+    val descripcion: String? = null,
+    val numCreditos: Double = 0.0,
+    val idUniversidad: Int = 0,
+    val idCarrera: Int = 0
+)
 
 data class ReviewDto(
     val id: String = "",
@@ -24,7 +38,8 @@ data class ReviewDto(
     val likes: Int = 0,
     val cantidadComentarios: Int = 0,
     val parentReviewId: String? = null,
-    val user: UserDto? = null
+    val user: UserDto? = null,
+    val asignatura: AsignaturaRelacionDto? = null
 ) {
     constructor() : this("", "", "", "", "", "", "", "", 0, 0, 0, null, null)
 }
@@ -42,3 +57,5 @@ fun ReviewDto.toReview(): Review {
         cantidadComentarios = cantidadComentarios
     )
 }
+
+

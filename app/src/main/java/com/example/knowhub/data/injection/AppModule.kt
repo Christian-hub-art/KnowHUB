@@ -1,8 +1,5 @@
 package com.example.knowhub.data.injection
 
-import com.example.knowhub.data.datasource.CatalogRemoteDataSource
-import com.example.knowhub.data.datasource.impl.CatalogRemoteDataSourceImpl
-import com.example.knowhub.data.datasource.services.KnowHubApi
 import com.example.knowhub.data.datasource.services.AsignaturaRetrofitService
 import com.example.knowhub.data.datasource.services.ReviewRetrofitService
 import com.example.knowhub.data.datasource.services.UserRetrofitService

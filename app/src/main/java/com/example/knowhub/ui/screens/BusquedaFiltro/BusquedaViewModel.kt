@@ -3,7 +3,7 @@ package com.example.knowhub.ui.screens.BusquedaFiltro
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.knowhub.data.repository.CatalogRepository
+import com.example.knowhub.data.datasource.services.AsignaturaRetrofitService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class BusquedaViewModel @Inject constructor(
-    private val repository: CatalogRepository,
+    private val asignaturaService: AsignaturaRetrofitService,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -29,24 +29,22 @@ class BusquedaViewModel @Inject constructor(
     fun loadData() = viewModelScope.launch {
         _uiState.update { it.copy(isLoading = true, error = null) }
 
-        repository.asignaturas().fold(
-            onSuccess = { materias ->
-                _uiState.update {
-                    it.copy(
-                        reviews = materias,
-                        isLoading = false
-                    )
-                }
-            },
-            onFailure = { error ->
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        error = "No se pudo cargar el catálogo: ${error.message}"
-                    )
-                }
+        try {
+            val materias = asignaturaService.getAsignatura()
+            _uiState.update {
+                it.copy(
+                    asignaturas = materias,
+                    isLoading = false
+                )
             }
-        )
+        } catch (e: Exception) {
+            _uiState.update {
+                it.copy(
+                    isLoading = false,
+                    error = "No se pudo cargar el catálogo: ${e.message}"
+                )
+            }
+        }
     }
 
     fun onFiltroChange(nuevoFiltro: String) {
