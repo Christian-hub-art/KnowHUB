@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.R
@@ -31,6 +30,7 @@ import com.example.knowhub.ui.utils.BackgroundImage
 // Pantalla que despliega el historial de reseñas publicadas por el usuario.
 @Composable
 fun ReviewScreen(
+    onEditClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: ReviewViewModel = hiltViewModel()
 ) {
@@ -42,19 +42,23 @@ fun ReviewScreen(
         BackgroundImage()
 
         BodyReviewScreen(
-            usuario = uiState.usuario,
-            reviews = uiState.reviews
+            usuario = uiState.usuario.ifBlank { stringResource(R.string.usuario_default) },
+            reviews = uiState.reviews,
+            onEditClick = onEditClick,
+            onDeleteClick = { reviewId -> viewModel.deleteReview(reviewId) }
         )
     }
 }
-
 // Maquetación principal y renderizado de la lista de reseñas.
 @Composable
 fun BodyReviewScreen(
     modifier: Modifier = Modifier,
-    usuario: String = "",
-    reviews: List<Review> = emptyList()
+    usuario: String = stringResource(R.string.laura),
+    reviews: List<Review> = localReviewProvider.Reviews,
+    onEditClick: (String) -> Unit = {},
+    onDeleteClick: (String) -> Unit = {}
 ) {
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
@@ -127,17 +131,13 @@ fun BodyReviewScreen(
                     Reseña = review.descripcion,
                     Calificacion = review.calificacion.toIntOrNull() ?: 0,
                     colorCaja = colorCaja,
-                    colorTexto = colorTexto
+                    colorTexto = colorTexto,
+                    onEditClick = { onEditClick(review.id.toString()) },
+                    onDeleteClick = { onDeleteClick(review.id.toString()) }
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ReviewScreenPreview() {
-    BodyReviewScreen()
 }

@@ -81,4 +81,8 @@
     <string name="numero_resenas">%1$d reseñas</string>
     <string name="nombre_usuario_label">Nombre de usuario</string>
     <string name="informacion_personal_titulo">👤 INFORMACIÓN PERSONAL</string>
+    <string name="editar_resena_title">EDITAR RESEÑA</string>
+    <string name="guardar_btn">GUARDAR</string>
+    <string name="icono_caneca">🗑️</string>
+    <string name="usuario_default">Usuario</string>
 </resources>

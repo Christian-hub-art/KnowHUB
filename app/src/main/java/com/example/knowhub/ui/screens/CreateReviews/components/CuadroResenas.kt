@@ -1,6 +1,5 @@
 package com.example.knowhub.ui.screens.CreateReviews.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,18 +14,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
@@ -38,7 +28,7 @@ import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.FormLabel
 import com.example.knowhub.ui.utils.FormTextField
 import com.example.knowhub.ui.utils.generarEstrellas
-//Formulario en tarjeta para la creación de una nueva reseña de asignatura y profesor.
+
 @Composable
 fun CuadroResenas(
     clase: String,
@@ -50,11 +40,10 @@ fun CuadroResenas(
     onNombreProfesorChange: (String) -> Unit,
     onResenaChange: (String) -> Unit,
     onClick: () -> Unit = {},
+    onCancelarClick: () -> Unit = {},
+    botonTexto: String = stringResource(R.string.publicar),
     modifier: Modifier = Modifier
 ) {
-    // Cuadro de Reseña
-    val colorSombra = tertiaryContainerLight
-
     Box(
         modifier = modifier
             .width(350.dp)
@@ -144,7 +133,7 @@ fun CuadroResenas(
                 FormLabel(text = stringResource(R.string.tu_calificacion_label))
 
                 Row {
-                    val estrellas= generarEstrellas(4)
+                    val estrellas = generarEstrellas(4)
                     Text(
                         text = estrellas,
                         fontSize = 18.sp
@@ -162,8 +151,8 @@ fun CuadroResenas(
                     AppButton(
                         textoButon = stringResource(R.string.cancelar_con_x),
                         colorTexto = tertiaryContainerLight,
-                        colorBoton =primaryLight,
-                        onClick = {},
+                        colorBoton = primaryLight,
+                        onClick = onCancelarClick,
                         modifier = Modifier
                             .height(40.dp)
                             .width(120.dp)
@@ -172,10 +161,10 @@ fun CuadroResenas(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     AppButton(
-                        textoButon = stringResource(R.string.publicar),
+                        textoButon = botonTexto,
                         colorTexto = primaryLight,
                         colorBoton = primaryContainerLight,
-                        onClick = {},
+                        onClick = onClick,
                         modifier = Modifier
                             .height(40.dp)
                             .width(120.dp)
