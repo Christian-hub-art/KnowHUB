@@ -2,8 +2,9 @@ package com.example.knowhub.data.datasource.impl
 
 import com.example.knowhub.data.datasource.CatalogRemoteDataSource
 import com.example.knowhub.data.datasource.services.KnowHubApi
-import com.example.knowhub.data.dto.AsignaturaDto
-import com.example.knowhub.data.dto.ReviewDto
+import com.example.knowhub.data.dtos.AsignaturaDto
+import com.example.knowhub.data.dtos.ReviewDto
+
 import javax.inject.Inject
 
 class CatalogRemoteDataSourceImpl @Inject constructor(

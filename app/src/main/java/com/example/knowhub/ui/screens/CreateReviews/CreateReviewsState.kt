@@ -5,7 +5,7 @@ data class CreateReviewsState(
     val tituloMateria: String = "",
     val nombreProfesor: String = "",
     val resena: String = "",
-    val calificacion: Int = 5,
+    val calificacion: String = "5",
     val navigateBack: Boolean = false,
     val error: String? = null
 )
