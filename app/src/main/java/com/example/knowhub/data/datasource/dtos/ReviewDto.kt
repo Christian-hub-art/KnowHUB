@@ -46,6 +46,7 @@ fun ReviewDto.toReview(): Review {
         calificacion = calificacion,
         likes = likes,
         cantidadComentarios = cantidadComentarios,
-        clase = clase
+        clase = clase,
+        fotoAutor = user.profileImage
     )
 }

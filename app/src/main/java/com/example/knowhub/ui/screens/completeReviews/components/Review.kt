@@ -34,6 +34,7 @@ import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 
 import com.example.knowhub.ui.utils.generarEstrellas
+import com.example.knowhub.ui.utils.ProfileAsyncImage
 //Componente que muestra el detalle de una reseña individual con sus métricas e interacciones
 
 @Composable
@@ -43,7 +44,12 @@ fun Review(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {// Cabecera con datos del estudiante, fecha y calificación
-        Row() {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            ProfileAsyncImage(
+                profileImage = review.fotoAutor,
+                size = 40
+            )
+            Spacer(modifier = Modifier.width(10.dp))
             Column( ) {
                 Text(
                     text = review.nombreEstudiante,

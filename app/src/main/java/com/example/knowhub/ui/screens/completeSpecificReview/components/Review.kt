@@ -31,6 +31,7 @@ import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
+import com.example.knowhub.ui.utils.ProfileAsyncImage
 
 //Componente que muestra la tarjeta detallada de una reseña específica incluyendo el profesor y la asignatura.
 @Composable
@@ -69,7 +70,15 @@ fun Review(
                     shape = RoundedCornerShape(16.dp)
                 )
         ) {// Fila con datos del autor y calificación
-            Row(modifier = Modifier.padding(10.dp)) {
+            Row(
+                modifier = Modifier.padding(10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ProfileAsyncImage(
+                    profileImage = review.fotoAutor,
+                    size = 40
+                )
+                Spacer(modifier = Modifier.width(10.dp))
                 Column() {
                     Text(
                         text = review.nombreEstudiante,

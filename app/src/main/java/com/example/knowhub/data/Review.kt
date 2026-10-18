@@ -13,4 +13,5 @@ data class Review(
     val likes: Int,
     val cantidadComentarios: Int,
     val clase: String = "",
+    val fotoAutor: String? = null,
 )
