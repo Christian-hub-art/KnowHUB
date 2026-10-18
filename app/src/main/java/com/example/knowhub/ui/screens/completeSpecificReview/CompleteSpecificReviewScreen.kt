@@ -27,8 +27,12 @@ import com.example.knowhub.data.Review
 import com.example.knowhub.ui.screens.completeSpecificReview.components.Comment
 import com.example.knowhub.ui.screens.completeSpecificReview.components.Review as ReviewComponent
 import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryContainerLight
+import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
+import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
+import com.example.knowhub.ui.utils.FormTextField
 
 @Composable
 fun CompleteSpecificReviewScreen(
@@ -50,7 +54,12 @@ fun CompleteSpecificReviewScreen(
             review = state.review,
             comments = state.comments,
             errorMessage = state.errorMessage,
-            mostrarMensajeError = state.mostrarMensajeError
+            mostrarMensajeError = state.mostrarMensajeError,
+            nuevoComentario = state.nuevoComentario,
+            errorMessageComentario = state.errorMessageComentario,
+            mostrarMensajeErrorComentario = state.mostrarMensajeErrorComentario,
+            onNuevoComentarioChange = { completeSpecificReviewViewModel.updateNuevoComentario(it) },
+            responderButtonPressed = { completeSpecificReviewViewModel.responderButtonPressed(reviewId) }
         )
     }
 
@@ -62,6 +71,11 @@ fun BodyCompleteSpecificReviewScreen(
     comments: List<CommentData>,
     errorMessage: String = "",
     mostrarMensajeError: Boolean = false,
+    nuevoComentario: String = "",
+    errorMessageComentario: String = "",
+    mostrarMensajeErrorComentario: Boolean = false,
+    onNuevoComentarioChange: (String) -> Unit = {},
+    responderButtonPressed: () -> Unit = {},
     modifier: Modifier = Modifier
 ){
     Column(
@@ -80,6 +94,32 @@ fun BodyCompleteSpecificReviewScreen(
                         review,
                         Modifier.width(350.dp)
                     )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                    // Campo para responder a la reseña
+                    Column(
+                        modifier = Modifier.width(350.dp),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        FormTextField(
+                            value = nuevoComentario,
+                            onValueChange = onNuevoComentarioChange,
+                            placeholder = stringResource(R.string.escribe_tu_respuesta)
+                        )
+                        if (mostrarMensajeErrorComentario) {
+                            Text(errorMessageComentario)
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                        AppButton(
+                            stringResource(R.string.responder),
+                            primaryLight,
+                            primaryContainerLight,
+                            onClick = responderButtonPressed,
+                            modifier = Modifier
+                                .height(40.dp)
+                                .width(150.dp)
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(30.dp))
                 Row {

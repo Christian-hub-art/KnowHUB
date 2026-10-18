@@ -82,4 +82,6 @@
     <string name="nombre_usuario_label">Nombre de usuario</string>
     <string name="informacion_personal_titulo">👤 INFORMACIÓN PERSONAL</string>
     <string name="escribir_titulo_de_la_materia">ESCRIBIR TITULO DE LA MATERIA</string>
+    <string name="escribe_tu_respuesta">ESCRIBE TU RESPUESTA</string>
+    <string name="responder">RESPONDER</string>
 </resources>
