@@ -1,4 +1,4 @@
-package com.example.knowhub.data.injection
+package com.example.knowhub.data.datasource.injection
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth

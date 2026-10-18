@@ -1,4 +1,4 @@
-package com.example.knowhub.data.repository
+package com.example.knowhub.data.datasource.repository
 
 import android.net.Uri
 import com.example.knowhub.data.datasource.AuthRemoteDataSource

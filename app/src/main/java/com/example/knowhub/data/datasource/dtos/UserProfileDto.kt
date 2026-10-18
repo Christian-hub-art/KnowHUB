@@ -1,10 +1,11 @@
-package com.example.knowhub.data.dtos
+package com.example.knowhub.data.datasource.dtos
 
 import com.example.knowhub.data.Comentario
 import com.example.knowhub.data.Like
 import com.example.knowhub.data.Notificacion
 import com.example.knowhub.data.Review
 import com.example.knowhub.data.Usuario
+
 
 data class UserProfileDto(
     val name: String = "",

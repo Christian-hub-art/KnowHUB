@@ -1,10 +1,9 @@
-package com.example.knowhub.data.repository
+package com.example.knowhub.data.datasource.repository
 
 import android.util.Log
-import com.example.knowhub.data.Services.UserRemoteDataSource
-import com.example.knowhub.data.dtos.RegisterUserDto
-import com.example.knowhub.data.dtos.UserProfileDto
-import com.example.knowhub.data.impl.firestore.UserFirestoreDataSourceImpl
+import com.example.knowhub.data.datasource.dtos.RegisterUserDto
+import com.example.knowhub.data.datasource.dtos.UserProfileDto
+import com.example.knowhub.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(

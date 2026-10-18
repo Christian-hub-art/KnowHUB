@@ -2,7 +2,7 @@ package com.example.knowhub.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.knowhub.data.repository.AuthRepository
+import com.example.knowhub.data.datasource.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

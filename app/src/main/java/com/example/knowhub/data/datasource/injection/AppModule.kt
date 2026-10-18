@@ -1,4 +1,4 @@
-package com.example.knowhub.data.injection
+package com.example.knowhub.data.datasource.injection
 
 import dagger.Module
 import dagger.Provides

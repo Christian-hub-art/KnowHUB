@@ -1,4 +1,4 @@
-package com.example.knowhub.data.repository
+package com.example.knowhub.data.datasource.repository
 
 import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException

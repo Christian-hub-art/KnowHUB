@@ -2,8 +2,8 @@ package com.example.knowhub.ui.screens.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.knowhub.data.repository.AuthRepository
-import com.example.knowhub.data.repository.UserRepository
+import com.example.knowhub.data.datasource.repository.AuthRepository
+import com.example.knowhub.data.datasource.repository.UserRepository
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

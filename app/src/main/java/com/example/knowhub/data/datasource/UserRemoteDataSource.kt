@@ -1,7 +1,7 @@
-package com.example.knowhub.data.Services
+package com.example.knowhub.data.datasource
 
-import com.example.knowhub.data.dtos.RegisterUserDto
-import com.example.knowhub.data.dtos.UserProfileDto
+import com.example.knowhub.data.datasource.dtos.RegisterUserDto
+import com.example.knowhub.data.datasource.dtos.UserProfileDto
 
 interface UserRemoteDataSource {
 

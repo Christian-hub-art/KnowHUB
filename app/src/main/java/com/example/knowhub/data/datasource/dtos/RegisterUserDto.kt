@@ -1,4 +1,4 @@
-package com.example.knowhub.data.dtos
+package com.example.knowhub.data.datasource.dtos
 
 data class RegisterUserDto(
     val name: String,

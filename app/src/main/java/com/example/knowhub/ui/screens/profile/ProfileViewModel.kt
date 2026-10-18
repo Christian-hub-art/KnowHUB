@@ -3,10 +3,9 @@ package com.example.knowhub.ui.screens.profile
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.knowhub.data.repository.AuthRepository
-import com.example.knowhub.data.repository.StorageRepository
-import com.example.knowhub.data.repository.UserRepository
-import com.example.knowhub.ui.screens.login.LoginState
+import com.example.knowhub.data.datasource.repository.AuthRepository
+import com.example.knowhub.data.datasource.repository.StorageRepository
+import com.example.knowhub.data.datasource.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
