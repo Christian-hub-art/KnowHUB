@@ -45,14 +45,10 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         id: String,
         review: CreateReviewDto
     ) {
-        TODO("Not yet implemented")
+        db.collection("reviews").document(id).set(review).await()
     }
 
     override suspend fun deleteReview(id: String) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getReviewComments(id: String): List<ReviewDto> {
         TODO("Not yet implemented")
     }
 

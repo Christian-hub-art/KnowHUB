@@ -36,20 +36,14 @@ fun InformacionPerfil(
         modifier = modifier.width(350.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Marco contenedor de la foto de perfil
         Box(
             modifier = Modifier
-                .size(85.dp)
-                .background(primaryLight)
-                .border(
-                    width = 2.dp,
-                    color = Color.Black
-                ),
+                .size(85.dp),
             contentAlignment = Alignment.Center
         ) {
             ProfileAsyncImage(
                 profileImage = fotoPerfil,
-                size = 75
+                size = 85
             )
         }
 

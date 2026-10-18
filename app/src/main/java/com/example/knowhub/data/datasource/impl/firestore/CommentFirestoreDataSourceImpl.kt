@@ -14,7 +14,6 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
 
     override suspend fun createComment(comment: CreateCommentDto) {
         db.collection("comments").add(comment).await()
-        // Mantiene actualizado el contador de respuestas de la reseña
         db.collection("reviews").document(comment.reviewId)
             .update("cantidadComentarios", FieldValue.increment(1)).await()
     }
