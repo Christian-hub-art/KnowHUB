@@ -86,6 +86,8 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
 
+    implementation("com.google.firebase:firebase-firestore")
+
     implementation(libs.navigation.runtime.ktx)
 
     testImplementation(libs.junit)

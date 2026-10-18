@@ -1,24 +1,22 @@
 package com.example.knowhub.ui.screens.register
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.repository.AuthRepository
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.example.knowhub.data.repository.UserRepository
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.DataInput
+
 //viewModel encargado de manejar la lógica de negocio y validación de formularios para la pantalla de Registro.
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterState())
@@ -72,6 +70,16 @@ class RegisterViewModel @Inject constructor(
                     )
 
                     if (result.isSuccess) {
+
+
+                        val userId = authRepository.currentUser?.uid ?: throw Exception("No se pudo obtener el usuario actual")
+                        userRepository.registerUser(
+                            name = _uiState.value.nombre,
+                            userName = _uiState.value.nombreUsuario,
+                            userId = userId
+                        )
+
+
                         _uiState.update {
                             it.copy(
                                 navigateInicio = true,

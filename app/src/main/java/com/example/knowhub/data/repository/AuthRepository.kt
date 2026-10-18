@@ -11,7 +11,8 @@ import jakarta.inject.Inject
 class AuthRepository @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource
 ) {
-    val currentUser: FirebaseUser? = authRemoteDataSource.currentUser
+    val currentUser: FirebaseUser?
+        get() = authRemoteDataSource.currentUser
 
     suspend fun signIn(correoElectronico: String, contrasena: String): Result<Unit> {
         return try {

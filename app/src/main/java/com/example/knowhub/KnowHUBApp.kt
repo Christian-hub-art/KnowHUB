@@ -23,6 +23,7 @@ import com.example.knowhub.ui.Navegation.AppNavegation
 import com.example.knowhub.ui.Navegation.Screens
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
 import com.example.knowhub.ui.screens.options.components.MenuOpciones
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 @Composable
@@ -32,6 +33,9 @@ fun KnowHUBApp (){
     val scope = rememberCoroutineScope()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    val userId: String  = currentUser?.uid ?: ""
 
     val showTopBar = currentRoute in listOf(
         Screens.Inicio.route,
@@ -124,7 +128,7 @@ fun KnowhubTopAppBar(
 ){
     TopAppBar(
         title = {
-            //Logo alineado a la izquierda
+
             Image(
                 painter = painterResource(R.drawable.logoknowhub),
                 contentDescription = "Logo KnowHUB",
