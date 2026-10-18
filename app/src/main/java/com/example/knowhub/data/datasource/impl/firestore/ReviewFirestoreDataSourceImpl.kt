@@ -1,8 +1,8 @@
 package com.example.knowhub.data.datasource.impl.firestore
 
-import com.example.knowhub.data.ReviewRemoteDataSource
-import com.example.knowhub.data.dtos.CreateReviewDto
-import com.example.knowhub.data.dtos.ReviewDto
+import com.example.knowhub.data.datasource.ReviewRemoteDataSource
+import com.example.knowhub.data.datasource.dtos.CreateReviewDto
+import com.example.knowhub.data.datasource.dtos.ReviewDto
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await

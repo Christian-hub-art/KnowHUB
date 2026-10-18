@@ -50,6 +50,7 @@ fun CuadroResenas(
     onNombreProfesorChange: (String) -> Unit,
     onResenaChange: (String) -> Unit,
     onClick: () -> Unit = {},
+    onCancelarClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     // Cuadro de Reseña
@@ -163,7 +164,7 @@ fun CuadroResenas(
                         textoButon = stringResource(R.string.cancelar_con_x),
                         colorTexto = tertiaryContainerLight,
                         colorBoton =primaryLight,
-                        onClick = {},
+                        onClick = onCancelarClick,
                         modifier = Modifier
                             .height(40.dp)
                             .width(120.dp)
@@ -175,7 +176,7 @@ fun CuadroResenas(
                         textoButon = stringResource(R.string.publicar),
                         colorTexto = primaryLight,
                         colorBoton = primaryContainerLight,
-                        onClick = {},
+                        onClick = onClick,
                         modifier = Modifier
                             .height(40.dp)
                             .width(120.dp)

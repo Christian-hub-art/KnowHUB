@@ -27,6 +27,7 @@ import com.example.knowhub.ui.theme.tertiaryContainerLight
 //Componente que despliega la insignia con la información del usuario autenticado en la pantalla de creación de reseñas.
 @Composable
 fun InformaciónUsuario(
+    userName: String,
     modifier: Modifier= Modifier
 ){
     Row(
@@ -48,7 +49,7 @@ fun InformaciónUsuario(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = stringResource(R.string.laura),
+                    text = userName,
                     fontFamily = BangersFont,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,

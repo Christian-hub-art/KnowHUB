@@ -1,4 +1,4 @@
-package com.example.knowhub.data.dtos
+package com.example.knowhub.data.datasource.dtos
 
 // Datos del autor copiados dentro de la reseña
 data class ReviewUserDto(

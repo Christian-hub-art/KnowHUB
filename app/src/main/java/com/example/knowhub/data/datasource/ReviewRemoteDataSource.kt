@@ -1,7 +1,7 @@
-package com.example.knowhub.data
+package com.example.knowhub.data.datasource
 
-import com.example.knowhub.data.dtos.CreateReviewDto
-import com.example.knowhub.data.dtos.ReviewDto
+import com.example.knowhub.data.datasource.dtos.CreateReviewDto
+import com.example.knowhub.data.datasource.dtos.ReviewDto
 import kotlinx.coroutines.flow.Flow
 
 

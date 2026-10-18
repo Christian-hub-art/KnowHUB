@@ -20,6 +20,7 @@ import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.register.RegisterViewModel
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
@@ -138,6 +139,12 @@ fun AppNavegation(
         }
         composable ( route = Screens.CreateReviews.route ){
             val viewModel: CreateReviewsViewModel = hiltViewModel()
+            val state by viewModel.uiState.collectAsState()
+            LaunchedEffect(state.navigateBack) {
+                if (state.navigateBack) {
+                    navController.popBackStack()
+                }
+            }
             CreateReviewsScreen(
                 createReviewsViewModel = viewModel
             )

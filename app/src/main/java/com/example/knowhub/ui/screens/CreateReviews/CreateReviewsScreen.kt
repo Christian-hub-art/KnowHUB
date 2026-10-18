@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -36,11 +37,15 @@ fun CreateReviewsScreen(
             tituloMateria = state.tituloMateria,
             nombreProfesor = state.nombreProfesor,
             resena = state.resena,
+            userName = state.userName,
+            errorMessage = state.errorMessage,
+            mostrarMensajeError = state.mostrarMensajeError,
             onClaseChange = { createReviewsViewModel.updateClase(it) },
             onTituloMateriaChange = { createReviewsViewModel.updateTituloMateria(it) },
             onNombreProfesorChange = { createReviewsViewModel.updateNombreProfesor(it) },
             onResenaChange = { createReviewsViewModel.updateResena(it) },
-            onClick = {}
+            onClick = { createReviewsViewModel.publicarButtonPressed() },
+            onCancelarClick = { createReviewsViewModel.cancelarButtonPressed() }
         )
     }
 }
@@ -51,11 +56,15 @@ fun BodyCreateReviewsScreen(
     tituloMateria: String,
     nombreProfesor: String,
     resena: String,
+    userName: String,
+    errorMessage: String,
+    mostrarMensajeError: Boolean,
     onClaseChange: (String) -> Unit,
     onTituloMateriaChange: (String) -> Unit,
     onNombreProfesorChange: (String) -> Unit,
     onResenaChange: (String) -> Unit,
     onClick: () -> Unit,
+    onCancelarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -76,7 +85,7 @@ fun BodyCreateReviewsScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         // Usuario Info
-        InformaciónUsuario()
+        InformaciónUsuario(userName = userName)
 
         Spacer(modifier = Modifier.height(15.dp))
 
@@ -89,8 +98,14 @@ fun BodyCreateReviewsScreen(
             onTituloMateriaChange = onTituloMateriaChange,
             onNombreProfesorChange = onNombreProfesorChange,
             onResenaChange = onResenaChange,
-            onClick = onClick
+            onClick = onClick,
+            onCancelarClick = onCancelarClick
         )
+
+        if (mostrarMensajeError) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(errorMessage)
+        }
 
         Spacer(modifier = Modifier.height(40.dp))
     }

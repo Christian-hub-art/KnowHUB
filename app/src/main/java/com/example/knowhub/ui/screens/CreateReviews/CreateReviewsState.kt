@@ -4,5 +4,10 @@ data class CreateReviewsState(
     val clase: String = "",
     val tituloMateria: String = "",
     val nombreProfesor: String = "",
-    val resena: String = ""
+    val resena: String = "",
+    val userName: String = "",
+    val isLoading: Boolean = false,
+    val errorMessage: String = "",
+    val mostrarMensajeError: Boolean = false,
+    val navigateBack: Boolean = false
 )

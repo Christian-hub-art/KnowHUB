@@ -1,12 +1,12 @@
-package com.example.knowhub.data.repository
+package com.example.knowhub.data.datasource.repository
 
 import android.util.Log
 import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.impl.firestore.ReviewFirestoreDataSourceImpl
 import com.example.knowhub.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
-import com.example.knowhub.data.dtos.CreateReviewDto
-import com.example.knowhub.data.dtos.ReviewDto
-import com.example.knowhub.data.dtos.ReviewUserDto
+import com.example.knowhub.data.datasource.dtos.CreateReviewDto
+import com.example.knowhub.data.datasource.dtos.ReviewDto
+import com.example.knowhub.data.datasource.dtos.ReviewUserDto
 import javax.inject.Inject
 
 class ReviewRepository @Inject constructor(
