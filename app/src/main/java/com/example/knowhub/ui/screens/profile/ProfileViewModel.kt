@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.repository.AuthRepository
 import com.example.knowhub.data.repository.StorageRepository
+import com.example.knowhub.data.repository.UserRepository
 import com.example.knowhub.ui.screens.login.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,13 +18,43 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val storageRepository: StorageRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState(
-        profileImageUrl = authRepository.currentUser?.photoUrl?.toString() ?: ""
+        profileImageUrl = authRepository.currentUser?.photoUrl?.toString()
     ))
 
     val uiState: StateFlow<ProfileState> = _uiState
+
+    init {
+        getUser()
+    }
+
+    //Obtiene de Firestore la información del usuario autenticado.
+    fun getUser() {
+        val userId = authRepository.currentUser?.uid
+        if (userId == null) {
+            _uiState.update { it.copy(mostrarMensajeErrorCarga = true, errorMessageCarga = "No hay un usuario autenticado") }
+            return
+        }
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, mostrarMensajeErrorCarga = false) }
+            val result = userRepository.getUserById(userId)
+            if (result.isSuccess) {
+                val user = result.getOrNull()
+                _uiState.update { it.copy(nombre = user?.userName ?: "", isLoading = false) }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        mostrarMensajeErrorCarga = true,
+                        errorMessageCarga = result.exceptionOrNull()?.message ?: "No se pudo obtener el usuario"
+                    )
+                }
+            }
+        }
+    }
     //Actualiza el valor del nombre de usuario ingresado en la interfaz.
     fun updateNombre (input: String){
         _uiState.update { it.copy( nombre =  input) }

@@ -7,6 +7,8 @@ import com.example.knowhub.data.Review
 import com.example.knowhub.data.Usuario
 
 data class UserProfileDto(
+    val name: String = "",
+    val userName: String = "",
     val nombreUsuario: String = "",
     val idUsuario: Int = 0,
     val correo: String = "",

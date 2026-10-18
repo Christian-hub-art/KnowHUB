@@ -97,7 +97,7 @@ fun CuadroInformaciónPersonal(
             FormTextField(
                 value = nombre,
                 onValueChange = onNombreChange,
-                placeholder = "Santiago Perez",
+                placeholder = stringResource(R.string.nombre_de_usuario),
                 modifier = Modifier.height(100.dp)
             )
 

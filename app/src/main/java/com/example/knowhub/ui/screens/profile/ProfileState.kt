@@ -6,6 +6,9 @@ import android.net.Uri
 data class ProfileState(
     val nombre: String = "",
     val profileImageUrl: String? = null,
+    val isLoading: Boolean = false,
+    val errorMessageCarga: String = "",
+    val mostrarMensajeErrorCarga: Boolean = false,
     val errorMessageGuardar: String = "",
     val mostrarMensajeErrorGuardar: Boolean = false,
     val errorMessageCancelar: String = "",
