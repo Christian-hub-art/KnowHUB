@@ -41,23 +41,7 @@ fun Review(
     modifier: Modifier = Modifier,
     autorPressed: (String) -> Unit = {}
 ) {
-    Column(modifier = modifier) {// Encabezado superior con información de profesor y asignatura
-        Row(modifier = Modifier.padding(10.dp)
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "👨‍🏫 " + review.nombreProfesor,
-                fontSize = 17.sp,
-                fontFamily = BangersFont
-            )
-            Spacer(modifier = Modifier.width(20.dp))
-            Text(
-                text = review.nombreAsignatura,
-                fontSize = 17.sp,
-                fontFamily = BangersFont
-            )
-        }
+    Column(modifier = modifier) {
         // Tarjeta contenedora de la reseña
         Column(
             modifier = modifier
@@ -103,6 +87,33 @@ fun Review(
                     fontSize = 18.sp
                 )
             }
+            // Materia, código de clase y profesor
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = review.nombreAsignatura,
+                    fontSize = 17.sp,
+                    fontFamily = BangersFont
+                )
+                if (review.clase.isNotBlank()) {
+                    Text(
+                        text = review.clase,
+                        fontSize = 15.sp,
+                        fontFamily = BangersFont
+                    )
+                }
+            }
+            Text(
+                text = "👨‍🏫 " + review.nombreProfesor,
+                fontSize = 15.sp,
+                fontFamily = BangersFont,
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
             // Cuerpo descriptivo y contadores de interacción
             Column(
                 modifier = Modifier.padding(10.dp)
