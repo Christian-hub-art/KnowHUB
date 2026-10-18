@@ -27,7 +27,42 @@ class CommentRepository @Inject constructor(
         }
     }
 
-    suspend fun createComment(reviewId: String, userId: String, comentario: String): Result<Unit> {
+    suspend fun getCommentById(id: String): Result<Comment> {
+        return try {
+            Result.success(commentRemoteDataSource.getCommentById(id).toComment())
+        } catch (e: Exception) {
+            Log.d("TAG", "getCommentById: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getReplies(commentId: String): Result<List<Comment>> {
+        return try {
+            val replies = commentRemoteDataSource.getReplies(commentId)
+            Result.success(replies.map { it.toComment() })
+        } catch (e: Exception) {
+            Log.d("TAG", "getReplies: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun deleteComment(id: String): Result<Unit> {
+        return try {
+            commentRemoteDataSource.deleteComment(id)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("TAG", "deleteComment: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    // parentCommentId = null responde a la reseña; con id responde a otro comentario
+    suspend fun createComment(
+        reviewId: String,
+        userId: String,
+        comentario: String,
+        parentCommentId: String? = null
+    ): Result<Unit> {
         return try {
             // Desnormalización: copiamos los datos del autor dentro de la respuesta
             val user = userRemoteDataSource.getUserById(userId)
@@ -39,6 +74,7 @@ class CommentRepository @Inject constructor(
 
             val createCommentDto = CreateCommentDto(
                 reviewId = reviewId,
+                parentCommentId = parentCommentId,
                 userId = userId,
                 comentario = comentario,
                 fecha = fecha,

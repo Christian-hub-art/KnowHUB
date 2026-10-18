@@ -3,6 +3,7 @@ package com.example.knowhub.data.datasource.repository
 import android.util.Log
 import com.example.knowhub.data.Review
 import com.example.knowhub.data.datasource.AuthRemoteDataSource
+import com.example.knowhub.data.datasource.impl.firestore.CommentFirestoreDataSourceImpl
 import com.example.knowhub.data.datasource.impl.firestore.ReviewFirestoreDataSourceImpl
 import com.example.knowhub.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
 import com.example.knowhub.data.datasource.dtos.CreateReviewDto
@@ -14,7 +15,8 @@ import javax.inject.Inject
 class ReviewRepository @Inject constructor(
     private val reviewRemoteDataSource: ReviewFirestoreDataSourceImpl,
     private val userRemoteDataSource: UserFirestoreDataSourceImpl,
-    private val authRemoteDataSource: AuthRemoteDataSource
+    private val authRemoteDataSource: AuthRemoteDataSource,
+    private val commentRemoteDataSource: CommentFirestoreDataSourceImpl
 ) {
 
     suspend fun getReviews(): Result<List<Review>> {
@@ -100,6 +102,18 @@ class ReviewRepository @Inject constructor(
             Result.success(Unit)
         } catch (e: Exception) {
             Log.d("TAG", "updateReview: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    // Borra la reseña y todos sus comentarios
+    suspend fun deleteReview(reviewId: String): Result<Unit> {
+        return try {
+            commentRemoteDataSource.deleteCommentsByReview(reviewId)
+            reviewRemoteDataSource.deleteReview(reviewId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("TAG", "deleteReview: ${e.message}")
             Result.failure(e)
         }
     }

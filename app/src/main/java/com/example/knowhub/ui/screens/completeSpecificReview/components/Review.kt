@@ -39,7 +39,9 @@ import com.example.knowhub.ui.utils.ProfileAsyncImage
 fun Review(
     review: Review,
     modifier: Modifier = Modifier,
-    autorPressed: (String) -> Unit = {}
+    autorPressed: (String) -> Unit = {},
+    mostrarEliminar: Boolean = false,
+    onEliminarClick: () -> Unit = {}
 ) {
     Column(modifier = modifier) {
         // Tarjeta contenedora de la reseña
@@ -166,6 +168,14 @@ fun Review(
                             text = "( " + review.cantidadComentarios + " )",
                             fontSize = 17.sp,
                             fontFamily = BangersFont
+                        )
+                    }
+                    // Eliminar (solo el autor)
+                    if (mostrarEliminar) {
+                        Text(
+                            text = "🗑",
+                            fontSize = 22.sp,
+                            modifier = Modifier.clickable { onEliminarClick() }
                         )
                     }
                 }

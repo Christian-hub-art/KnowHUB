@@ -57,7 +57,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteReview(id: String) {
-        TODO("Not yet implemented")
+        db.collection("reviews").document(id).delete().await()
     }
 
     override suspend fun sendOrDeleteLike(reviewId: String, userId: String) {

@@ -12,6 +12,8 @@ import com.example.knowhub.ui.screens.BusquedaFiltro.BusquedaScreen
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsScreen
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
 import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificReviewScreen
+import com.example.knowhub.ui.screens.commentDetail.CommentDetailScreen
+import com.example.knowhub.ui.screens.commentDetail.CommentDetailViewModel
 import com.example.knowhub.ui.screens.inicio.InicioScreen
 import com.example.knowhub.ui.screens.login.LoginScreen
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
@@ -40,6 +42,9 @@ sealed class Screens(val route: String) {
         fun createRoute(id: Int) = "completeReviews/$id"
     }
     object CreateReviews : Screens("createReviews")
+    object CommentDetail : Screens("commentDetail/{commentId}") {
+        fun createRoute(commentId: String) = "commentDetail/$commentId"
+    }
     object EditReview : Screens("createReviews/{reviewId}") {
         fun createRoute(reviewId: String) = "createReviews/$reviewId"
     }
@@ -204,11 +209,39 @@ fun AppNavegation(
         ){
             val reviewId = it.arguments?.getString("reviewId") ?: ""
             val viewModel: CompleteSpecificReviewViewModel = hiltViewModel()
+            val state by viewModel.uiState.collectAsState()
+            LaunchedEffect(state.navigateBack) {
+                if (state.navigateBack) {
+                    navController.popBackStack()
+                }
+            }
             CompleteSpecificReviewScreen(
                 reviewId = reviewId,
                 completeSpecificReviewViewModel = viewModel,
                 autorPressed = { userId ->
                     navController.navigate(Screens.BusquePerfil.createRoute(userId))
+                },
+                commentPressed = { commentId ->
+                    navController.navigate(Screens.CommentDetail.createRoute(commentId))
+                }
+            )
+        }
+        composable ( route = Screens.CommentDetail.route,
+            arguments = listOf(navArgument("commentId"){type = NavType.StringType})
+        ){
+            val commentId = it.arguments?.getString("commentId") ?: ""
+            val viewModel: CommentDetailViewModel = hiltViewModel()
+            val state by viewModel.uiState.collectAsState()
+            LaunchedEffect(state.navigateBack) {
+                if (state.navigateBack) {
+                    navController.popBackStack()
+                }
+            }
+            CommentDetailScreen(
+                commentId = commentId,
+                commentDetailViewModel = viewModel,
+                commentPressed = { replyId ->
+                    navController.navigate(Screens.CommentDetail.createRoute(replyId))
                 }
             )
         }

@@ -14,14 +14,72 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
 
     override suspend fun createComment(comment: CreateCommentDto) {
         db.collection("comments").add(comment).await()
-        db.collection("reviews").document(comment.reviewId)
-            .update("cantidadComentarios", FieldValue.increment(1)).await()
+        // Suma 1 al contador de quien recibe la respuesta: otro comentario o la reseña
+        if (comment.parentCommentId != null) {
+            db.collection("comments").document(comment.parentCommentId)
+                .update("cantidadComentarios", FieldValue.increment(1)).await()
+        } else {
+            db.collection("reviews").document(comment.reviewId)
+                .update("cantidadComentarios", FieldValue.increment(1)).await()
+        }
     }
 
+    // Respuestas directas a la reseña. Se filtra en código porque los comentarios
+    // antiguos no tienen el campo parentCommentId y Firestore no los encontraría con == null.
     override suspend fun getCommentsByReview(reviewId: String): List<CommentDto> {
         val snapshot = db.collection("comments").whereEqualTo("reviewId", reviewId).get().await()
         return snapshot.documents.mapNotNull { doc ->
             doc.toObject(CommentDto::class.java)?.copy(id = doc.id)
+        }.filter { it.parentCommentId == null }
+    }
+
+    override suspend fun getCommentById(id: String): CommentDto {
+        val doc = db.collection("comments").document(id).get().await()
+        return doc.toObject(CommentDto::class.java)?.copy(id = doc.id)
+            ?: throw Exception("Comentario no encontrado")
+    }
+
+    // Respuestas directas a un comentario (equivale a getTweetReplies del profesor)
+    override suspend fun getReplies(commentId: String): List<CommentDto> {
+        val snapshot = db.collection("comments").whereEqualTo("parentCommentId", commentId).get().await()
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(CommentDto::class.java)?.copy(id = doc.id)
+        }
+    }
+
+    // Borra el comentario con todo su hilo y resta 1 al contador de su padre
+    override suspend fun deleteComment(id: String) {
+        val comment = getCommentById(id)
+        deleteThread(id)
+        if (comment.parentCommentId != null) {
+            val parentRef = db.collection("comments").document(comment.parentCommentId)
+            if (parentRef.get().await().exists()) {
+                parentRef.update("cantidadComentarios", FieldValue.increment(-1)).await()
+            }
+        } else {
+            val reviewRef = db.collection("reviews").document(comment.reviewId)
+            if (reviewRef.get().await().exists()) {
+                reviewRef.update("cantidadComentarios", FieldValue.increment(-1)).await()
+            }
+        }
+    }
+
+    // Igual que deleteTweet del profesor: borra las respuestas de forma recursiva
+    private suspend fun deleteThread(id: String) {
+        val replies = db.collection("comments").whereEqualTo("parentCommentId", id).get().await()
+        for (doc in replies.documents) {
+            deleteThread(doc.id)
+        }
+        db.collection("comments").document(id).delete().await()
+    }
+
+    // Borra todos los comentarios de una reseña, incluidas las respuestas a respuestas
+    override suspend fun deleteCommentsByReview(reviewId: String) {
+        val snapshot = db.collection("comments").whereEqualTo("reviewId", reviewId).get().await()
+        snapshot.documents.chunked(400).forEach { docs ->
+            val batch = db.batch()
+            docs.forEach { batch.delete(it.reference) }
+            batch.commit().await()
         }
     }
 }

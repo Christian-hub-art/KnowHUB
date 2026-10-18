@@ -47,7 +47,8 @@ fun ReviewScreen(
             errorMessage = uiState.errorMessage,
             mostrarMensajeError = uiState.mostrarMensajeError,
             reviewPressed = reviewPressed,
-            editarPressed = editarPressed
+            editarPressed = editarPressed,
+            eliminarPressed = { viewModel.deleteReview(it) }
         )
     }
 }
@@ -60,7 +61,8 @@ fun BodyReviewScreen(
     errorMessage: String = "",
     mostrarMensajeError: Boolean = false,
     reviewPressed: (String) -> Unit = {},
-    editarPressed: (String) -> Unit = {}
+    editarPressed: (String) -> Unit = {},
+    eliminarPressed: (String) -> Unit = {}
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -122,7 +124,8 @@ fun BodyReviewScreen(
                     colorCaja = colorCaja,
                     colorTexto = colorTexto,
                     onClick = { reviewPressed(review.id) },
-                    onEditarClick = { editarPressed(review.id) }
+                    onEditarClick = { editarPressed(review.id) },
+                    onEliminarClick = { eliminarPressed(review.id) }
                 )
                 Spacer(modifier = Modifier.height(15.dp))
             }

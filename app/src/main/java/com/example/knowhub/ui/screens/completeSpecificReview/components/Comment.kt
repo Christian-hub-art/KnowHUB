@@ -1,6 +1,7 @@
 package com.example.knowhub.ui.screens.completeSpecificReview.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,12 +39,16 @@ fun Comment(
     Comentario: String,
     Likes: Int,
     cantidadComentarios: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    mostrarEliminar: Boolean = false,
+    onEliminarClick: () -> Unit = {}
 ) {
     Column(modifier = modifier) {
         Column(
             modifier = modifier
                 .fillMaxWidth()
+                .clickable { onClick() }
                 .clip(RoundedCornerShape(16.dp))
                 .background(
                     primaryLight
@@ -64,11 +69,21 @@ fun Comment(
                 fontSize = 17.sp,
                 fontFamily = BangersFont
             )
-            Text(
-                text = Fecha,
-                fontSize = 17.sp,
-                fontFamily = BangersFont
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = Fecha,
+                    fontSize = 17.sp,
+                    fontFamily = BangersFont
+                )
+                if (mostrarEliminar) {
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = "🗑",
+                        fontSize = 20.sp,
+                        modifier = Modifier.clickable { onEliminarClick() }
+                    )
+                }
+            }
 
             }
             // Cuerpo del comentario y métricas de interacción
@@ -109,7 +124,7 @@ fun Comment(
                     } // Reacción: Respuestas / Comentarios
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
-                            onClick = { /* Acción de Like */ },
+                            onClick = onClick,
                             modifier = Modifier.size(30.dp)
                         ) {
                             Icon(

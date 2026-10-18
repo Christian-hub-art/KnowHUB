@@ -39,7 +39,8 @@ fun CompleteSpecificReviewScreen(
     reviewId: String,
     completeSpecificReviewViewModel: CompleteSpecificReviewViewModel,
     modifier: Modifier = Modifier,
-    autorPressed: (String) -> Unit = {}
+    autorPressed: (String) -> Unit = {},
+    commentPressed: (String) -> Unit = {}
 ){
     val state by completeSpecificReviewViewModel.uiState.collectAsState()
 
@@ -61,7 +62,11 @@ fun CompleteSpecificReviewScreen(
             mostrarMensajeErrorComentario = state.mostrarMensajeErrorComentario,
             onNuevoComentarioChange = { completeSpecificReviewViewModel.updateNuevoComentario(it) },
             responderButtonPressed = { completeSpecificReviewViewModel.responderButtonPressed(reviewId) },
-            autorPressed = autorPressed
+            autorPressed = autorPressed,
+            currentUserId = state.currentUserId,
+            commentPressed = commentPressed,
+            eliminarReviewPressed = { completeSpecificReviewViewModel.deleteReview(reviewId) },
+            eliminarCommentPressed = { commentId -> completeSpecificReviewViewModel.deleteComment(commentId, reviewId) }
         )
     }
 
@@ -79,7 +84,11 @@ fun BodyCompleteSpecificReviewScreen(
     onNuevoComentarioChange: (String) -> Unit = {},
     responderButtonPressed: () -> Unit = {},
     modifier: Modifier = Modifier,
-    autorPressed: (String) -> Unit = {}
+    autorPressed: (String) -> Unit = {},
+    currentUserId: String = "",
+    commentPressed: (String) -> Unit = {},
+    eliminarReviewPressed: () -> Unit = {},
+    eliminarCommentPressed: (String) -> Unit = {}
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -96,7 +105,9 @@ fun BodyCompleteSpecificReviewScreen(
                     ReviewComponent(
                         review,
                         Modifier.width(350.dp),
-                        autorPressed = autorPressed
+                        autorPressed = autorPressed,
+                        mostrarEliminar = review.userId.isNotEmpty() && review.userId == currentUserId,
+                        onEliminarClick = eliminarReviewPressed
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -135,7 +146,7 @@ fun BodyCompleteSpecificReviewScreen(
                     ) {}
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = stringResource(R.string.rese_as),
+                        text = stringResource(R.string.respuestas),
                         fontSize = 17.sp,
                         fontFamily = BangersFont
                     )
@@ -156,7 +167,10 @@ fun BodyCompleteSpecificReviewScreen(
                             Estudiante = comment.estudiante,
                             Comentario = comment.comentario,
                             Likes = comment.likes,
-                            cantidadComentarios = comment.cantidadComentarios
+                            cantidadComentarios = comment.cantidadComentarios,
+                            onClick = { commentPressed(comment.id) },
+                            mostrarEliminar = comment.userId.isNotEmpty() && comment.userId == currentUserId,
+                            onEliminarClick = { eliminarCommentPressed(comment.id) }
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                     }

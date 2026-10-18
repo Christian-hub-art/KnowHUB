@@ -86,4 +86,6 @@
     <string name="responder">RESPONDER</string>
     <string name="editar_resena">EDITAR RESEÑA</string>
     <string name="guardar">GUARDAR</string>
+    <string name="eliminar_resena">🗑 Eliminar</string>
+    <string name="respuestas">RESPUESTAS</string>
 </resources>

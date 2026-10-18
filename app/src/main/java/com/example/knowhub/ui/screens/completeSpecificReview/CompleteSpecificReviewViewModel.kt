@@ -21,6 +21,44 @@ class CompleteSpecificReviewViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CompleteSpecificReviewState())
     val uiState: StateFlow<CompleteSpecificReviewState> = _uiState
 
+    init {
+        _uiState.update { it.copy(currentUserId = authRepository.currentUser?.uid ?: "") }
+    }
+
+    //Borra la reseña con todos sus comentarios y vuelve atrás.
+    fun deleteReview(reviewId: String) {
+        viewModelScope.launch {
+            val result = reviewRepository.deleteReview(reviewId)
+            if (result.isSuccess) {
+                _uiState.update { it.copy(navigateBack = true) }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeError = true,
+                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudo eliminar la reseña"
+                    )
+                }
+            }
+        }
+    }
+
+    //Borra un comentario con todo su hilo y recarga la reseña.
+    fun deleteComment(commentId: String, reviewId: String) {
+        viewModelScope.launch {
+            val result = commentRepository.deleteComment(commentId)
+            if (result.isSuccess) {
+                loadData(reviewId)
+            } else {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeErrorComentario = true,
+                        errorMessageComentario = result.exceptionOrNull()?.message ?: "No se pudo eliminar el comentario"
+                    )
+                }
+            }
+        }
+    }
+
     //Carga la reseña y sus respuestas desde Firestore.
     fun loadData(reviewId: String) {
         getReviewById(reviewId)

@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.reviews.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,7 +40,8 @@ fun CajaReview(
     colorTexto: Color,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
-    onEditarClick: () -> Unit = {}
+    onEditarClick: () -> Unit = {},
+    onEliminarClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -133,6 +135,14 @@ fun CajaReview(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
+                AppButton(
+                    stringResource(R.string.eliminar_resena),
+                    colorTexto,
+                    colorCaja,
+                    onClick = onEliminarClick,
+                    modifier = Modifier.height(40.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
                 AppButton(
                     stringResource(R.string.lapizEditar),
                     colorTexto,
