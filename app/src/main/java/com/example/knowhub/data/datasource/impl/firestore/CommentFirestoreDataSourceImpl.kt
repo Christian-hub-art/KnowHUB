@@ -14,7 +14,6 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
 
     override suspend fun createComment(comment: CreateCommentDto) {
         db.collection("comments").add(comment).await()
-        // Suma 1 al contador de quien recibe la respuesta: otro comentario o la reseña
         if (comment.parentCommentId != null) {
             db.collection("comments").document(comment.parentCommentId)
                 .update("cantidadComentarios", FieldValue.increment(1)).await()
@@ -39,7 +38,6 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
             ?: throw Exception("Comentario no encontrado")
     }
 
-    // Respuestas directas a un comentario (equivale a getTweetReplies del profesor)
     override suspend fun getReplies(commentId: String): List<CommentDto> {
         val snapshot = db.collection("comments").whereEqualTo("parentCommentId", commentId).get().await()
         return snapshot.documents.mapNotNull { doc ->
@@ -47,7 +45,6 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
         }
     }
 
-    // Borra el comentario con todo su hilo y resta 1 al contador de su padre
     override suspend fun deleteComment(id: String) {
         val comment = getCommentById(id)
         deleteThread(id)
@@ -65,7 +62,6 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
         }
     }
 
-    // Igual que deleteTweet del profesor: borra el comentario y luego sus respuestas de forma recursiva
     private suspend fun deleteThread(id: String) {
         db.collection("comments").document(id).delete().await()
 
@@ -75,8 +71,6 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
         }
     }
 
-    // Como deleteTweet del profesor: busca las respuestas directas de la reseña
-    // y borra cada una con todo su hilo de forma recursiva
     override suspend fun deleteCommentsByReview(reviewId: String) {
         val replies = getCommentsByReview(reviewId)
         for (reply in replies) {

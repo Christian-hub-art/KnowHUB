@@ -25,7 +25,6 @@ class CompleteSpecificReviewViewModel @Inject constructor(
         _uiState.update { it.copy(currentUserId = authRepository.currentUser?.uid ?: "") }
     }
 
-    //Borra la reseña con todos sus comentarios y vuelve atrás.
     fun deleteReview(reviewId: String) {
         viewModelScope.launch {
             val result = reviewRepository.deleteReview(reviewId)
@@ -42,7 +41,6 @@ class CompleteSpecificReviewViewModel @Inject constructor(
         }
     }
 
-    //Borra un comentario con todo su hilo y recarga la reseña.
     fun deleteComment(commentId: String, reviewId: String) {
         viewModelScope.launch {
             val result = commentRepository.deleteComment(commentId)
@@ -59,13 +57,11 @@ class CompleteSpecificReviewViewModel @Inject constructor(
         }
     }
 
-    //Carga la reseña y sus respuestas desde Firestore.
     fun loadData(reviewId: String) {
         getReviewById(reviewId)
         getComments(reviewId)
     }
 
-    //Obtiene la reseña usando el id del documento.
     fun getReviewById(reviewId: String) {
         viewModelScope.launch {
             val result = reviewRepository.getReviewById(reviewId)
@@ -82,7 +78,6 @@ class CompleteSpecificReviewViewModel @Inject constructor(
         }
     }
 
-    //Obtiene las respuestas de la reseña (equivale a getTweetRespose del profesor).
     fun getComments(reviewId: String) {
         viewModelScope.launch {
             val result = commentRepository.getCommentsByReview(reviewId)
@@ -92,12 +87,10 @@ class CompleteSpecificReviewViewModel @Inject constructor(
         }
     }
 
-    //Actualiza el texto de la respuesta que se está escribiendo.
     fun updateNuevoComentario(input: String) {
         _uiState.update { it.copy(nuevoComentario = input, mostrarMensajeErrorComentario = false) }
     }
 
-    //Publica la respuesta y recarga la reseña y sus respuestas.
     fun responderButtonPressed(reviewId: String) {
         val texto = _uiState.value.nuevoComentario
         if (texto.isBlank()) {

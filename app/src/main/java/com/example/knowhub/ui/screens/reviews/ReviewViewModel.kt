@@ -24,7 +24,6 @@ class ReviewViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ReviewState())
     val uiState: StateFlow<ReviewState> = _uiState.asStateFlow()
 
-    //Borra la reseña y la quita de la lista (como deleteTweet del profesor).
     fun deleteReview(reviewId: String) {
         viewModelScope.launch {
             val result = reviewRepository.deleteReview(reviewId)
@@ -41,7 +40,6 @@ class ReviewViewModel @Inject constructor(
         }
     }
 
-    //Carga desde Firestore las reseñas publicadas por el usuario autenticado.
     fun loadReviews() {
         val userId = authRepository.currentUser?.uid
         if (userId == null) {

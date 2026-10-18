@@ -33,7 +33,6 @@ fun CreateReviewsScreen(
 ) {
     val state by createReviewsViewModel.uiState.collectAsState()
 
-    // Modo edición: carga la reseña para llenar el formulario
     LaunchedEffect(reviewId) {
         if (reviewId != null) {
             createReviewsViewModel.loadReview(reviewId)

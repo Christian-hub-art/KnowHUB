@@ -111,7 +111,6 @@ fun BodyCompleteSpecificReviewScreen(
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
-                    // Campo para responder a la reseña
                     Column(
                         modifier = Modifier.width(350.dp),
                         horizontalAlignment = Alignment.End

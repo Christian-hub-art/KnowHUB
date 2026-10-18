@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-//ViewModel del detalle de un comentario (equivale a TweetDetailViewModel cuando se abre una respuesta).
 @HiltViewModel
 class CommentDetailViewModel @Inject constructor(
     private val commentRepository: CommentRepository,
@@ -24,7 +23,6 @@ class CommentDetailViewModel @Inject constructor(
         _uiState.update { it.copy(currentUserId = authRepository.currentUser?.uid ?: "") }
     }
 
-    //Carga el comentario y sus respuestas directas.
     fun loadData(commentId: String) {
         viewModelScope.launch {
             val result = commentRepository.getCommentById(commentId)
@@ -51,7 +49,6 @@ class CommentDetailViewModel @Inject constructor(
         _uiState.update { it.copy(nuevoComentario = input, mostrarMensajeErrorComentario = false) }
     }
 
-    //Publica una respuesta a este comentario.
     fun responderButtonPressed(commentId: String) {
         val texto = _uiState.value.nuevoComentario
         val comment = _uiState.value.comment ?: return
@@ -89,7 +86,6 @@ class CommentDetailViewModel @Inject constructor(
         }
     }
 
-    //Borra un comentario con su hilo. Si es el comentario abierto, vuelve atrás.
     fun deleteComment(idToDelete: String, shownCommentId: String) {
         viewModelScope.launch {
             val result = commentRepository.deleteComment(idToDelete)

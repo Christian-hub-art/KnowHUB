@@ -30,7 +30,6 @@ class ProfileViewModel @Inject constructor(
         getUser()
     }
 
-    //Obtiene de Firestore la información del usuario autenticado.
     fun getUser() {
         val userId = authRepository.currentUser?.uid
         if (userId == null) {

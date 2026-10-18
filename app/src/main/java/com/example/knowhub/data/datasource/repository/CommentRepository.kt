@@ -56,7 +56,6 @@ class CommentRepository @Inject constructor(
         }
     }
 
-    // parentCommentId = null responde a la reseña; con id responde a otro comentario
     suspend fun createComment(
         reviewId: String,
         userId: String,

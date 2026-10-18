@@ -89,7 +89,6 @@ fun Review(
                     fontSize = 18.sp
                 )
             }
-            // Materia, código de clase y profesor
             Row(
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
@@ -170,7 +169,6 @@ fun Review(
                             fontFamily = BangersFont
                         )
                     }
-                    // Eliminar (solo el autor)
                     if (mostrarEliminar) {
                         Text(
                             text = "🗑",

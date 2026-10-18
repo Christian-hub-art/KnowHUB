@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface ReviewRemoteDataSource {
-    // Crear y leer
     suspend fun createReview(review: CreateReviewDto): Unit
     suspend fun getAllReviews(): List<ReviewDto>
     suspend fun getReviewsByUser(userId: String): List<ReviewDto>
@@ -16,7 +15,6 @@ interface ReviewRemoteDataSource {
     suspend fun updateReview(id: String, review: CreateReviewDto): Unit
     suspend fun deleteReview(id: String): Unit
 
-    // Likes y escucha en tiempo real
     suspend fun sendOrDeleteLike(reviewId: String, userId: String): Unit
     fun listenAllReviews(): Flow<List<ReviewDto>>
 

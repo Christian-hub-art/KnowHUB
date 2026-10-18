@@ -44,7 +44,6 @@ fun BusquedaPerfilScreen(
 ){
     val uiState by viewModel.uiState.collectAsState()
 
-    // Igual que el profesor en UserProfileScreen: el id llega por la ruta
     LaunchedEffect(userId) {
         viewModel.getUserProfile(userId)
         viewModel.getUserReviews(userId)
@@ -101,7 +100,6 @@ fun BodyBusquedaPerfilScrenn(
             }
 
             Spacer(modifier = Modifier.height(40.dp))
-            // Foto y estadísticas del perfil
             InformacionPerfil(
                 fotoPerfil = fotoPerfil,
                 seguidos = 0,
@@ -110,7 +108,6 @@ fun BodyBusquedaPerfilScrenn(
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-            // Botón de seguimiento
             Row(
                 modifier = Modifier.width(320.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -136,7 +133,6 @@ fun BodyBusquedaPerfilScrenn(
             Spacer(modifier = Modifier.height(20.dp))
         }
 
-        // Reseñas publicadas por este usuario
         items(reviews) { review ->
 
             ReviewComponent(

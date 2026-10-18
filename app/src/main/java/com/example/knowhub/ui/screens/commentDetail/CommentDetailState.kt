@@ -2,7 +2,6 @@ package com.example.knowhub.ui.screens.commentDetail
 
 import com.example.knowhub.data.Comment
 
-//Estado de la pantalla que muestra un comentario y sus respuestas.
 data class CommentDetailState(
     val comment: Comment? = null,
     val replies: List<Comment> = emptyList(),

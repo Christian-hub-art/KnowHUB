@@ -37,7 +37,6 @@ class CreateReviewsViewModel @Inject constructor(
     }
 
 
-    //Carga una reseña existente para editarla (equivale a getTweetById del profesor).
     fun loadReview(reviewId: String) {
         if (_uiState.value.reviewId == reviewId) return
         viewModelScope.launch {
@@ -86,7 +85,6 @@ class CreateReviewsViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
-            // Si hay reviewId se edita; si no, se crea (como createTweet del profesor)
             val result = if (state.reviewId != null) {
                 reviewRepository.updateReview(
                     reviewId = state.reviewId,
@@ -118,7 +116,6 @@ class CreateReviewsViewModel @Inject constructor(
         }
     }
 
-    //Cancela la creación y vuelve a la pantalla anterior.
     fun cancelarButtonPressed() {
         _uiState.update { it.copy(navigateBack = true) }
     }

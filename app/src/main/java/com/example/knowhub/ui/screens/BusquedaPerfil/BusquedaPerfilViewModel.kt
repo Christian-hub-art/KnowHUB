@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-//ViewModel que carga el perfil de otro usuario y sus reseñas (equivale a UserProfileViewModel del profesor).
 @HiltViewModel
 class BusquedaPerfilViewModel @Inject constructor(
     private val userRepository: UserRepository,
@@ -22,7 +21,6 @@ class BusquedaPerfilViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(BusquedaPerfilState())
     val uiState: StateFlow<BusquedaPerfilState> = _uiState.asStateFlow()
 
-    //Obtiene los datos del usuario desde Firestore.
     fun getUserProfile(userId: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
@@ -48,7 +46,6 @@ class BusquedaPerfilViewModel @Inject constructor(
         }
     }
 
-    //Obtiene las reseñas publicadas por el usuario.
     fun getUserReviews(userId: String) {
         viewModelScope.launch {
             val result = reviewRepository.getReviewsByUser(userId)

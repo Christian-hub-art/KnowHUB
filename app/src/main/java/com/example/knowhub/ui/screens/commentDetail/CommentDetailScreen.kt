@@ -30,7 +30,6 @@ import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.FormTextField
 
-//Detalle de un comentario con sus respuestas. Tocar una respuesta abre su propio detalle (hilo).
 @Composable
 fun CommentDetailScreen(
     commentId: String,
@@ -57,7 +56,6 @@ fun CommentDetailScreen(
                 }
                 val comment = state.comment
                 if (comment != null) {
-                    // Comentario principal
                     Comment(
                         Fecha = comment.fecha,
                         Estudiante = comment.estudiante,
@@ -70,7 +68,6 @@ fun CommentDetailScreen(
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
-                    // Campo para responder a este comentario
                     Column(
                         modifier = Modifier.width(350.dp),
                         horizontalAlignment = Alignment.End
@@ -97,7 +94,6 @@ fun CommentDetailScreen(
                 }
 
                 Spacer(modifier = Modifier.height(30.dp))
-                // Separador "RESPUESTAS"
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
@@ -122,7 +118,6 @@ fun CommentDetailScreen(
                 Spacer(modifier = Modifier.height(20.dp))
             }
 
-            // Respuestas directas a este comentario
             items(state.replies) { reply ->
                 Comment(
                     Fecha = reply.fecha,

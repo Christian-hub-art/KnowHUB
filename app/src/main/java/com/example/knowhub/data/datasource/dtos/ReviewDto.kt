@@ -9,7 +9,6 @@ data class ReviewUserDto(
     val profileImage: String? = null
 )
 
-// Lo que se lee de Firestore
 data class ReviewDto(
     val id: String = "",              // id del documento en Firestore
     val userId: String = "",          // uid del autor
@@ -24,7 +23,6 @@ data class ReviewDto(
     val user: ReviewUserDto = ReviewUserDto()
 )
 
-// Lo que se envía al crear una reseña
 data class CreateReviewDto(
     val userId: String = "",
     val clase: String = "",
@@ -34,7 +32,6 @@ data class CreateReviewDto(
     val user: ReviewUserDto? = null
 )
 
-// Convierte la reseña de Firestore al modelo que usan las pantallas
 fun ReviewDto.toReview(): Review {
     return Review(
         id = id,
