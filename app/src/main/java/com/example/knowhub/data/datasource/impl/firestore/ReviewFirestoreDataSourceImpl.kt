@@ -18,14 +18,15 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getAllReviews(): List<ReviewDto> {
-        return emptyList()
+        return db.collection("reviews").get().await().toObjects(ReviewDto::class.java)
     }
 
     override suspend fun getReviewById(
         id: String,
         currentUserId: String
     ): ReviewDto {
-        TODO("Not yet implemented")
+        return db.collection("reviews").document(id).get().await().toObject(ReviewDto::class.java) ?: throw Exception("Review not found")
+
     }
 
     override suspend fun updateReview(

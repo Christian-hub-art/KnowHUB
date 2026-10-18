@@ -25,7 +25,7 @@ class CreateReviewsViewModel @Inject constructor(
         getUserName()
     }
 
-    //Obtiene el nombre de usuario del autor para mostrarlo en la pantalla.
+
     private fun getUserName() {
         val userId = authRepository.currentUser?.uid ?: return
         viewModelScope.launch {
@@ -36,7 +36,7 @@ class CreateReviewsViewModel @Inject constructor(
         }
     }
 
-    //Valida el formulario y publica la reseña en Firestore.
+
     fun publicarButtonPressed() {
         val state = _uiState.value
         if (state.clase.isBlank() || state.tituloMateria.isBlank() ||

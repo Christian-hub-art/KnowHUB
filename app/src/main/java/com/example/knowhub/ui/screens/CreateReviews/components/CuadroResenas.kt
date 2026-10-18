@@ -99,11 +99,7 @@ fun CuadroResenas(
                     }
                 }
 
-                Text(
-                    text = stringResource(R.string.fecha_default),
-                    color = primaryLight,
-                    fontSize = 20.sp
-                )
+
             }
 
             // Contenido del Formulario
@@ -116,7 +112,7 @@ fun CuadroResenas(
                 FormTextField(
                     value = tituloMateria,
                     onValueChange = onTituloMateriaChange,
-                    placeholder = stringResource(R.string.escoge_materia_placeholder)
+                    placeholder = stringResource(R.string.escribir_titulo_de_la_materia)
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
