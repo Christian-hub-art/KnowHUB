@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.data.Comment as CommentData
-import com.example.knowhub.data.local.localReviewProvider
+import com.example.knowhub.data.Review
 import com.example.knowhub.ui.screens.completeSpecificReview.components.Comment
 import com.example.knowhub.ui.screens.completeSpecificReview.components.Review as ReviewComponent
 import com.example.knowhub.ui.theme.BangersFont
@@ -32,7 +32,7 @@ import com.example.knowhub.ui.utils.BackgroundImage
 
 @Composable
 fun CompleteSpecificReviewScreen(
-    reviewId: Int,
+    reviewId: String,
     completeSpecificReviewViewModel: CompleteSpecificReviewViewModel,
     modifier: Modifier = Modifier
 ){
@@ -47,8 +47,10 @@ fun CompleteSpecificReviewScreen(
     ){
         BackgroundImage()
         BodyCompleteSpecificReviewScreen(
-            reviewId = reviewId,
-            comments = state.comments
+            review = state.review,
+            comments = state.comments,
+            errorMessage = state.errorMessage,
+            mostrarMensajeError = state.mostrarMensajeError
         )
     }
 
@@ -56,11 +58,12 @@ fun CompleteSpecificReviewScreen(
 
 @Composable
 fun BodyCompleteSpecificReviewScreen(
-    reviewId: Int,
+    review: Review?,
     comments: List<CommentData>,
+    errorMessage: String = "",
+    mostrarMensajeError: Boolean = false,
     modifier: Modifier = Modifier
 ){
-    val review = localReviewProvider.Reviews.find { it.id == reviewId }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
@@ -69,6 +72,9 @@ fun BodyCompleteSpecificReviewScreen(
             item {
 
                 Spacer(modifier = Modifier.height(35.dp))
+                if (mostrarMensajeError) {
+                    Text(errorMessage)
+                }
                 if (review != null) {
                     ReviewComponent(
                         review,
@@ -120,7 +126,7 @@ fun BodyCompleteSpecificReviewScreen(
 @Preview(showBackground = true)
 fun CompleteSpecificReviewScreenPreview(){
     CompleteSpecificReviewScreen(
-        reviewId = 5,
+        reviewId = "",
         completeSpecificReviewViewModel = viewModel()
     )
 }

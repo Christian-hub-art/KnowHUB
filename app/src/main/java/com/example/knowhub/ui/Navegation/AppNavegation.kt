@@ -47,7 +47,7 @@ sealed class Screens(val route: String) {
     object BusquePerfil : Screens("busquedaPerfil")
 
     object CompleteSpecificReview : Screens("completeSpecificReviews/{reviewId}") {
-        fun createRoute(id: Int) = "completeSpecificReviews/$id"
+        fun createRoute(id: String) = "completeSpecificReviews/$id"
     }
 }
 
@@ -156,7 +156,12 @@ fun AppNavegation(
             ProfileScreen()
         }
         composable ( route = Screens.Reviews.route ){
-            ReviewScreen()
+            ReviewScreen(
+                viewModel = hiltViewModel(),
+                reviewPressed = { reviewId ->
+                    navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
+                }
+            )
         }
         composable ( route = Screens.Inicio.route ){
             val viewModel: InicioViewModel = hiltViewModel()
@@ -168,9 +173,9 @@ fun AppNavegation(
             )
         }
         composable ( route = Screens.CompleteSpecificReview.route,
-            arguments = listOf(navArgument("reviewId"){type = NavType.IntType})
+            arguments = listOf(navArgument("reviewId"){type = NavType.StringType})
         ){
-            val reviewId = it.arguments?.getInt("reviewId") ?: 0
+            val reviewId = it.arguments?.getString("reviewId") ?: ""
             val viewModel: CompleteSpecificReviewViewModel = hiltViewModel()
             CompleteSpecificReviewScreen(
                 reviewId = reviewId,

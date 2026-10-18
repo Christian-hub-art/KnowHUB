@@ -6,7 +6,7 @@ object localReviewProvider {
 
     val Reviews = listOf(
         Review(
-            1,
+            "1",
             "Dana Trujillo",
             "Yesid Lemus",
             "Ecuaciones diferenciales",
@@ -17,7 +17,7 @@ object localReviewProvider {
             10
         ),
         Review(
-            2,
+            "2",
             "Santiago Moreno",
             "Laura Gómez",
             "Cálculo diferencial",
@@ -28,7 +28,7 @@ object localReviewProvider {
             9
         ),
         Review(
-            3,
+            "3",
             "Valentina Rojas",
             "Andrés Cárdenas",
             "Programación",
@@ -39,7 +39,7 @@ object localReviewProvider {
             8
         ),
         Review(
-            4,
+            "4",
             "Mateo Vargas",
             "Camila Torres",
             "Álgebra lineal",
@@ -50,7 +50,7 @@ object localReviewProvider {
             10
         ),
         Review(
-            5,
+            "5",
             "Mariana Pérez",
             "Felipe Ramírez",
             "Física mecánica",

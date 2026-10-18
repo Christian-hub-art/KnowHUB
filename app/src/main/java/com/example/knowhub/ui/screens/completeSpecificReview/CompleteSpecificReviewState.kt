@@ -4,6 +4,8 @@ import com.example.knowhub.data.Comment
 import com.example.knowhub.data.Review
 
 data class CompleteSpecificReviewState(
-    val review: Review = Review(0, "", "", "", "", "", 0, 0, 0),
-    val comments: List<Comment> = emptyList()
+    val review: Review? = null,
+    val comments: List<Comment> = emptyList(),
+    val errorMessage: String = "",
+    val mostrarMensajeError: Boolean = false
 )

@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -19,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.data.Review
-import com.example.knowhub.data.local.localReviewProvider
 import com.example.knowhub.ui.screens.reviews.components.CajaReview
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppLabel
@@ -28,15 +29,23 @@ import com.example.knowhub.ui.utils.BackgroundImage
 @Composable
 fun ReviewScreen(
     modifier: Modifier = Modifier,
-    viewModel: ReviewViewModel = viewModel()
+    viewModel: ReviewViewModel = viewModel(),
+    reviewPressed: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadReviews()
+    }
 
     Box(modifier = modifier) {
         BackgroundImage()
         BodyReviewScreen(
             usuario = uiState.usuario,
-            reviews = uiState.reviews
+            reviews = uiState.reviews,
+            errorMessage = uiState.errorMessage,
+            mostrarMensajeError = uiState.mostrarMensajeError,
+            reviewPressed = reviewPressed
         )
     }
 }
@@ -44,8 +53,11 @@ fun ReviewScreen(
 @Composable
 fun BodyReviewScreen(
     modifier: Modifier = Modifier,
-    usuario: String = "Leo6767",
-    reviews: List<Review> = localReviewProvider.Reviews
+    usuario: String,
+    reviews: List<Review>,
+    errorMessage: String = "",
+    mostrarMensajeError: Boolean = false,
+    reviewPressed: (String) -> Unit = {}
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,6 +92,11 @@ fun BodyReviewScreen(
             Spacer(modifier = Modifier.width(150.dp))
         }
 
+        if (mostrarMensajeError) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(errorMessage)
+        }
+
         LazyColumn(
             modifier = Modifier.width(325.dp)
         ) {
@@ -94,13 +111,14 @@ fun BodyReviewScreen(
 
                 CajaReview(
                     Fecha = review.fechaPublicacion,
-                    Codigo = review.id.toString(),
+                    Codigo = review.clase,
                     Materia = review.nombreAsignatura,
                     Profesor = review.nombreProfesor,
                     Reseña = review.descripcion,
                     Calificacion = review.calificacion,
                     colorCaja = colorCaja,
-                    colorTexto = colorTexto
+                    colorTexto = colorTexto,
+                    onClick = { reviewPressed(review.id) }
                 )
                 Spacer(modifier = Modifier.height(15.dp))
             }

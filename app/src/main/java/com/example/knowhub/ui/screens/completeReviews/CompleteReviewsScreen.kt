@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.data.local.localGeneralReviewProvider
-import com.example.knowhub.data.local.localReviewProvider
+import com.example.knowhub.data.Review
 import com.example.knowhub.ui.screens.completeReviews.components.CajaPrincipal
 import com.example.knowhub.ui.screens.completeReviews.components.Review as ReviewComponent
 import com.example.knowhub.ui.theme.*
@@ -33,10 +35,12 @@ import com.example.knowhub.ui.utils.BackgroundImage
 fun CompleteReviewsScreen(
     generalReviewId: Int,
     completeReviewsViewModel: CompleteReviewsViewModel,
-    reviewPressed: (Int) -> Unit,
+    reviewPressed: (String) -> Unit,
     escribirBottonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
+    val state by completeReviewsViewModel.uiState.collectAsState()
+
     LaunchedEffect(generalReviewId) {
         completeReviewsViewModel.loadData(generalReviewId)
     }
@@ -47,6 +51,9 @@ fun CompleteReviewsScreen(
         BackgroundImage()
         BodyCompleteReviewsScreen(
             generalReviewId = generalReviewId,
+            allReviews = state.allReviews,
+            errorMessage = state.errorMessage,
+            mostrarMensajeError = state.mostrarMensajeError,
             reviewPressed = reviewPressed,
             escribirBottonPressed = escribirBottonPressed
         )
@@ -56,12 +63,14 @@ fun CompleteReviewsScreen(
 @Composable
 fun BodyCompleteReviewsScreen(
     generalReviewId: Int,
-    reviewPressed: (Int) -> Unit,
+    allReviews: List<Review>,
+    errorMessage: String,
+    mostrarMensajeError: Boolean,
+    reviewPressed: (String) -> Unit,
     escribirBottonPressed: () -> Unit,
     modifier: Modifier = Modifier
 ){
     val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId }
-    val allReviews = localReviewProvider.Reviews
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
@@ -117,6 +126,9 @@ fun BodyCompleteReviewsScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
+            }
+            if (mostrarMensajeError) {
+                item { Text(errorMessage) }
             }
             // Listado de reseñas
             items(allReviews.size) { index ->

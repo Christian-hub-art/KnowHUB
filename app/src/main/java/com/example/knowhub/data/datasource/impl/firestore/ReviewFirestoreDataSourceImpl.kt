@@ -18,14 +18,26 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getAllReviews(): List<ReviewDto> {
-        return db.collection("reviews").get().await().toObjects(ReviewDto::class.java)
+        val snapshot = db.collection("reviews").get().await()
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
+        }
+    }
+
+    override suspend fun getReviewsByUser(userId: String): List<ReviewDto> {
+        val snapshot = db.collection("reviews").whereEqualTo("userId", userId).get().await()
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
+        }
     }
 
     override suspend fun getReviewById(
         id: String,
         currentUserId: String
     ): ReviewDto {
-        return db.collection("reviews").document(id).get().await().toObject(ReviewDto::class.java) ?: throw Exception("Review not found")
+        val doc = db.collection("reviews").document(id).get().await()
+        return doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
+            ?: throw Exception("Reseña no encontrada")
 
     }
 

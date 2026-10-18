@@ -1,12 +1,14 @@
 package com.example.knowhub.data.datasource.repository
 
 import android.util.Log
+import com.example.knowhub.data.Review
 import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.impl.firestore.ReviewFirestoreDataSourceImpl
 import com.example.knowhub.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
 import com.example.knowhub.data.datasource.dtos.CreateReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewUserDto
+import com.example.knowhub.data.datasource.dtos.toReview
 import javax.inject.Inject
 
 class ReviewRepository @Inject constructor(
@@ -15,12 +17,32 @@ class ReviewRepository @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource
 ) {
 
-    suspend fun getReviews(): Result<List<ReviewDto>> {
+    suspend fun getReviews(): Result<List<Review>> {
         return try {
             val reviews = reviewRemoteDataSource.getAllReviews()
-            Result.success(reviews)
+            Result.success(reviews.map { it.toReview() })
         } catch (e: Exception) {
             Log.d("TAG", "getReviews: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getReviewsByUser(userId: String): Result<List<Review>> {
+        return try {
+            val reviews = reviewRemoteDataSource.getReviewsByUser(userId)
+            Result.success(reviews.map { it.toReview() })
+        } catch (e: Exception) {
+            Log.d("TAG", "getReviewsByUser: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getReviewById(id: String): Result<Review> {
+        return try {
+            val review = reviewRemoteDataSource.getReviewById(id)
+            Result.success(review.toReview())
+        } catch (e: Exception) {
+            Log.d("TAG", "getReviewById: ${e.message}")
             Result.failure(e)
         }
     }

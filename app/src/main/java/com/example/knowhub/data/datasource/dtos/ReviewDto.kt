@@ -1,5 +1,7 @@
 package com.example.knowhub.data.datasource.dtos
 
+import com.example.knowhub.data.Review
+
 // Datos del autor copiados dentro de la reseña
 data class ReviewUserDto(
     val name: String = "",
@@ -31,3 +33,19 @@ data class CreateReviewDto(
     val descripcion: String = "",
     val user: ReviewUserDto? = null
 )
+
+// Convierte la reseña de Firestore al modelo que usan las pantallas
+fun ReviewDto.toReview(): Review {
+    return Review(
+        id = id,
+        nombreEstudiante = user.userName,
+        nombreProfesor = nombreProfesor,
+        nombreAsignatura = nombreAsignatura,
+        descripcion = descripcion,
+        fechaPublicacion = fechaPublicacion,
+        calificacion = calificacion,
+        likes = likes,
+        cantidadComentarios = cantidadComentarios,
+        clase = clase
+    )
+}
