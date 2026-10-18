@@ -45,7 +45,15 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         id: String,
         review: CreateReviewDto
     ) {
-        db.collection("reviews").document(id).set(review).await()
+        // update en vez de set: así no se pierden likes, comentarios, fecha ni autor
+        db.collection("reviews").document(id).update(
+            mapOf(
+                "clase" to review.clase,
+                "nombreAsignatura" to review.nombreAsignatura,
+                "nombreProfesor" to review.nombreProfesor,
+                "descripcion" to review.descripcion
+            )
+        ).await()
     }
 
     override suspend fun deleteReview(id: String) {

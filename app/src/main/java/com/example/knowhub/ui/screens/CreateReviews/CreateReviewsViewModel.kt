@@ -37,6 +37,38 @@ class CreateReviewsViewModel @Inject constructor(
     }
 
 
+    //Carga una reseña existente para editarla (equivale a getTweetById del profesor).
+    fun loadReview(reviewId: String) {
+        if (_uiState.value.reviewId == reviewId) return
+        viewModelScope.launch {
+            val result = reviewRepository.getReviewById(reviewId)
+            val review = result.getOrNull()
+            if (review == null) {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeError = true,
+                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudo cargar la reseña"
+                    )
+                }
+                return@launch
+            }
+            if (review.userId != authRepository.currentUser?.uid) {
+                _uiState.update { it.copy(mostrarMensajeError = true, errorMessage = "Solo el autor puede editar esta reseña") }
+                return@launch
+            }
+            _uiState.update {
+                it.copy(
+                    reviewId = reviewId,
+                    clase = review.clase,
+                    tituloMateria = review.nombreAsignatura,
+                    nombreProfesor = review.nombreProfesor,
+                    resena = review.descripcion,
+                    mostrarMensajeError = false
+                )
+            }
+        }
+    }
+
     fun publicarButtonPressed() {
         val state = _uiState.value
         if (state.clase.isBlank() || state.tituloMateria.isBlank() ||
@@ -54,13 +86,24 @@ class CreateReviewsViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
-            val result = reviewRepository.createReview(
-                userId = userId,
-                clase = state.clase,
-                nombreAsignatura = state.tituloMateria,
-                nombreProfesor = state.nombreProfesor,
-                descripcion = state.resena
-            )
+            // Si hay reviewId se edita; si no, se crea (como createTweet del profesor)
+            val result = if (state.reviewId != null) {
+                reviewRepository.updateReview(
+                    reviewId = state.reviewId,
+                    clase = state.clase,
+                    nombreAsignatura = state.tituloMateria,
+                    nombreProfesor = state.nombreProfesor,
+                    descripcion = state.resena
+                )
+            } else {
+                reviewRepository.createReview(
+                    userId = userId,
+                    clase = state.clase,
+                    nombreAsignatura = state.tituloMateria,
+                    nombreProfesor = state.nombreProfesor,
+                    descripcion = state.resena
+                )
+            }
             if (result.isSuccess) {
                 _uiState.update { it.copy(isLoading = false, navigateBack = true) }
             } else {
@@ -68,7 +111,7 @@ class CreateReviewsViewModel @Inject constructor(
                     it.copy(
                         isLoading = false,
                         mostrarMensajeError = true,
-                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudo publicar la reseña"
+                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudo guardar la reseña"
                     )
                 }
             }

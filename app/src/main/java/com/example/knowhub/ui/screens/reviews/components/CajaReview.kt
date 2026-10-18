@@ -38,7 +38,8 @@ fun CajaReview(
     colorCaja: Color,
     colorTexto: Color,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    onEditarClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -136,6 +137,7 @@ fun CajaReview(
                     stringResource(R.string.lapizEditar),
                     colorTexto,
                     colorCaja,
+                    onClick = onEditarClick,
                     modifier = Modifier.height(40.dp)
                 )
             }

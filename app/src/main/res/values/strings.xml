@@ -84,4 +84,6 @@
     <string name="escribir_titulo_de_la_materia">ESCRIBIR TITULO DE LA MATERIA</string>
     <string name="escribe_tu_respuesta">ESCRIBE TU RESPUESTA</string>
     <string name="responder">RESPONDER</string>
+    <string name="editar_resena">EDITAR RESEÑA</string>
+    <string name="guardar">GUARDAR</string>
 </resources>

@@ -30,7 +30,8 @@ import com.example.knowhub.ui.utils.BackgroundImage
 fun ReviewScreen(
     modifier: Modifier = Modifier,
     viewModel: ReviewViewModel = viewModel(),
-    reviewPressed: (String) -> Unit = {}
+    reviewPressed: (String) -> Unit = {},
+    editarPressed: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -45,7 +46,8 @@ fun ReviewScreen(
             reviews = uiState.reviews,
             errorMessage = uiState.errorMessage,
             mostrarMensajeError = uiState.mostrarMensajeError,
-            reviewPressed = reviewPressed
+            reviewPressed = reviewPressed,
+            editarPressed = editarPressed
         )
     }
 }
@@ -57,7 +59,8 @@ fun BodyReviewScreen(
     reviews: List<Review>,
     errorMessage: String = "",
     mostrarMensajeError: Boolean = false,
-    reviewPressed: (String) -> Unit = {}
+    reviewPressed: (String) -> Unit = {},
+    editarPressed: (String) -> Unit = {}
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -118,7 +121,8 @@ fun BodyReviewScreen(
                     Calificacion = review.calificacion,
                     colorCaja = colorCaja,
                     colorTexto = colorTexto,
-                    onClick = { reviewPressed(review.id) }
+                    onClick = { reviewPressed(review.id) },
+                    onEditarClick = { editarPressed(review.id) }
                 )
                 Spacer(modifier = Modifier.height(15.dp))
             }

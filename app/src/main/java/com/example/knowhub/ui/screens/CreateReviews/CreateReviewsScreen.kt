@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,9 +28,17 @@ import com.example.knowhub.R
 @Composable
 fun CreateReviewsScreen(
     createReviewsViewModel: CreateReviewsViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    reviewId: String? = null
 ) {
     val state by createReviewsViewModel.uiState.collectAsState()
+
+    // Modo edición: carga la reseña para llenar el formulario
+    LaunchedEffect(reviewId) {
+        if (reviewId != null) {
+            createReviewsViewModel.loadReview(reviewId)
+        }
+    }
     Box(modifier = modifier.fillMaxSize()) {
         BackgroundImage()
         BodyCreateReviewsScreen(
@@ -40,6 +49,7 @@ fun CreateReviewsScreen(
             userName = state.userName,
             errorMessage = state.errorMessage,
             mostrarMensajeError = state.mostrarMensajeError,
+            editando = reviewId != null,
             onClaseChange = { createReviewsViewModel.updateClase(it) },
             onTituloMateriaChange = { createReviewsViewModel.updateTituloMateria(it) },
             onNombreProfesorChange = { createReviewsViewModel.updateNombreProfesor(it) },
@@ -59,6 +69,7 @@ fun BodyCreateReviewsScreen(
     userName: String,
     errorMessage: String,
     mostrarMensajeError: Boolean,
+    editando: Boolean = false,
     onClaseChange: (String) -> Unit,
     onTituloMateriaChange: (String) -> Unit,
     onNombreProfesorChange: (String) -> Unit,
@@ -74,7 +85,7 @@ fun BodyCreateReviewsScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         AppLabelBig(
-            texto = stringResource(R.string.crea_nueva_resena),
+            texto = stringResource(if (editando) R.string.editar_resena else R.string.crea_nueva_resena),
             colorTexto = primaryLight,
             color = tertiaryContainerLight,
             modifier = Modifier
@@ -99,7 +110,8 @@ fun BodyCreateReviewsScreen(
             onNombreProfesorChange = onNombreProfesorChange,
             onResenaChange = onResenaChange,
             onClick = onClick,
-            onCancelarClick = onCancelarClick
+            onCancelarClick = onCancelarClick,
+            textoPublicar = stringResource(if (editando) R.string.guardar else R.string.publicar)
         )
 
         if (mostrarMensajeError) {

@@ -43,6 +43,7 @@ fun KnowHUBApp (){
         Screens.Reviews.route,
         Screens.Notifications.route,
         Screens.CreateReviews.route,
+        Screens.EditReview.route,
         Screens.Busqueda.route,
         Screens.CompleteReviews.route,
         Screens.BusquePerfil.route

@@ -81,4 +81,26 @@ class ReviewRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
+    suspend fun updateReview(
+        reviewId: String,
+        clase: String,
+        nombreAsignatura: String,
+        nombreProfesor: String,
+        descripcion: String
+    ): Result<Unit> {
+        return try {
+            val createReviewDto = CreateReviewDto(
+                clase = clase,
+                nombreAsignatura = nombreAsignatura,
+                nombreProfesor = nombreProfesor,
+                descripcion = descripcion
+            )
+            reviewRemoteDataSource.updateReview(reviewId, createReviewDto)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("TAG", "updateReview: ${e.message}")
+            Result.failure(e)
+        }
+    }
 }

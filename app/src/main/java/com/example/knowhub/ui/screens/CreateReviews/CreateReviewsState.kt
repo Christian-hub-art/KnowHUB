@@ -9,5 +9,6 @@ data class CreateReviewsState(
     val isLoading: Boolean = false,
     val errorMessage: String = "",
     val mostrarMensajeError: Boolean = false,
-    val navigateBack: Boolean = false
+    val navigateBack: Boolean = false,
+    val reviewId: String? = null      // distinto de null cuando se edita una reseña
 )

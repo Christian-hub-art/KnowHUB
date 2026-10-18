@@ -40,6 +40,9 @@ sealed class Screens(val route: String) {
         fun createRoute(id: Int) = "completeReviews/$id"
     }
     object CreateReviews : Screens("createReviews")
+    object EditReview : Screens("createReviews/{reviewId}") {
+        fun createRoute(reviewId: String) = "createReviews/$reviewId"
+    }
     object Notifications : Screens("notifications")
     object Profile : Screens("profile")
     object Reviews : Screens("reviews")
@@ -154,6 +157,22 @@ fun AppNavegation(
                 createReviewsViewModel = viewModel
             )
         }
+        composable ( route = Screens.EditReview.route,
+            arguments = listOf(navArgument("reviewId"){type = NavType.StringType})
+        ){
+            val reviewId = it.arguments?.getString("reviewId") ?: ""
+            val viewModel: CreateReviewsViewModel = hiltViewModel()
+            val state by viewModel.uiState.collectAsState()
+            LaunchedEffect(state.navigateBack) {
+                if (state.navigateBack) {
+                    navController.popBackStack()
+                }
+            }
+            CreateReviewsScreen(
+                createReviewsViewModel = viewModel,
+                reviewId = reviewId
+            )
+        }
         composable ( route = Screens.Notifications.route ){
             NotificatonsScreen()
         }
@@ -165,6 +184,9 @@ fun AppNavegation(
                 viewModel = hiltViewModel(),
                 reviewPressed = { reviewId ->
                     navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
+                },
+                editarPressed = { reviewId ->
+                    navController.navigate(Screens.EditReview.createRoute(reviewId))
                 }
             )
         }

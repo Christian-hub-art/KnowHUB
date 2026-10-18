@@ -51,6 +51,7 @@ fun CuadroResenas(
     onResenaChange: (String) -> Unit,
     onClick: () -> Unit = {},
     onCancelarClick: () -> Unit = {},
+    textoPublicar: String? = null,
     modifier: Modifier = Modifier
 ) {
     // Cuadro de Reseña
@@ -169,7 +170,7 @@ fun CuadroResenas(
                     Spacer(modifier = Modifier.width(16.dp))
 
                     AppButton(
-                        textoButon = stringResource(R.string.publicar),
+                        textoButon = textoPublicar ?: stringResource(R.string.publicar),
                         colorTexto = primaryLight,
                         colorBoton = primaryContainerLight,
                         onClick = onClick,
