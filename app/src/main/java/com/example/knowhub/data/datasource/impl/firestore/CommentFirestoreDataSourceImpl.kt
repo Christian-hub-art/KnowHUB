@@ -75,11 +75,12 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
         }
     }
 
-    // Borra todos los comentarios de una reseña, incluidas las respuestas a respuestas
+    // Como deleteTweet del profesor: busca las respuestas directas de la reseña
+    // y borra cada una con todo su hilo de forma recursiva
     override suspend fun deleteCommentsByReview(reviewId: String) {
-        val snapshot = db.collection("comments").whereEqualTo("reviewId", reviewId).get().await()
-        for (doc in snapshot.documents) {
-            doc.reference.delete().await()
+        val replies = getCommentsByReview(reviewId)
+        for (reply in replies) {
+            deleteThread(reply.id)
         }
     }
 }

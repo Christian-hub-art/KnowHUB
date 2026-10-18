@@ -106,11 +106,11 @@ class ReviewRepository @Inject constructor(
         }
     }
 
-    // Borra la reseña y todos sus comentarios
+    // Igual que el profesor: primero borra la reseña y luego sus respuestas en cascada
     suspend fun deleteReview(reviewId: String): Result<Unit> {
         return try {
-            commentRemoteDataSource.deleteCommentsByReview(reviewId)
             reviewRemoteDataSource.deleteReview(reviewId)
+            commentRemoteDataSource.deleteCommentsByReview(reviewId)
             Result.success(Unit)
         } catch (e: Exception) {
             Log.d("TAG", "deleteReview: ${e.message}")
