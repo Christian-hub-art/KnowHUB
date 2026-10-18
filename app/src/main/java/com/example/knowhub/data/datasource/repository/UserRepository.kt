@@ -36,5 +36,13 @@ class UserRepository @Inject constructor(
         }
     }
 
-
+    suspend fun updateUserProfileImage(userId: String, photoUrl: String): Result<Unit> {
+        return try {
+            userRemoteDataSource.updateUserProfileImage(userId, photoUrl)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("TAG", "updateUserProfileImage: ${e.message}")
+            Result.failure(e)
+        }
+    }
 }

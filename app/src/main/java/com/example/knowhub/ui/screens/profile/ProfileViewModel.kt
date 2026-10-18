@@ -86,6 +86,13 @@ class ProfileViewModel @Inject constructor(
             val result = storageRepository.uploadProfileImage(uri)
             if(result.isSuccess){
                 _uiState.update { it.copy(profileImageUrl = result.getOrNull()) }
+
+                // También se guarda en Firestore para que otros usuarios vean la foto
+                val photoUrl = result.getOrNull()
+                val userId = authRepository.currentUser?.uid
+                if (photoUrl != null && userId != null) {
+                    userRepository.updateUserProfileImage(userId, photoUrl)
+                }
             }
 
         }

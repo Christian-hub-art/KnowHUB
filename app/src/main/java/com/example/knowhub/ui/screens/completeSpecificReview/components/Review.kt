@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.completeSpecificReview.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,7 +38,8 @@ import com.example.knowhub.ui.utils.ProfileAsyncImage
 @Composable
 fun Review(
     review: Review,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    autorPressed: (String) -> Unit = {}
 ) {
     Column(modifier = modifier) {// Encabezado superior con información de profesor y asignatura
         Row(modifier = Modifier.padding(10.dp)
@@ -71,7 +73,9 @@ fun Review(
                 )
         ) {// Fila con datos del autor y calificación
             Row(
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier
+                    .padding(10.dp)
+                    .clickable { autorPressed(review.userId) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ProfileAsyncImage(

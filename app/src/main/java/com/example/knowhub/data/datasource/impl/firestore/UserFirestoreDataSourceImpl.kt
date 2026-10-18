@@ -25,4 +25,8 @@ class UserFirestoreDataSourceImpl @Inject constructor (private val db: FirebaseF
         return snapshot.toObject(UserProfileDto::class.java) ?: throw Exception("No se pudo obetenr el usuario")
     }
 
+    override suspend fun updateUserProfileImage(userId: String, photoUrl: String) {
+        db.collection("users").document(userId).update("foto", photoUrl).await()
+    }
+
 }

@@ -37,7 +37,8 @@ fun CompleteReviewsScreen(
     completeReviewsViewModel: CompleteReviewsViewModel,
     reviewPressed: (String) -> Unit,
     escribirBottonPressed: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    autorPressed: (String) -> Unit = {}
 ){
     val state by completeReviewsViewModel.uiState.collectAsState()
 
@@ -55,7 +56,8 @@ fun CompleteReviewsScreen(
             errorMessage = state.errorMessage,
             mostrarMensajeError = state.mostrarMensajeError,
             reviewPressed = reviewPressed,
-            escribirBottonPressed = escribirBottonPressed
+            escribirBottonPressed = escribirBottonPressed,
+            autorPressed = autorPressed
         )
     }
 }
@@ -68,7 +70,8 @@ fun BodyCompleteReviewsScreen(
     mostrarMensajeError: Boolean,
     reviewPressed: (String) -> Unit,
     escribirBottonPressed: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    autorPressed: (String) -> Unit = {}
 ){
     val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId }
     Column(
@@ -135,7 +138,8 @@ fun BodyCompleteReviewsScreen(
                 ReviewComponent(
                     allReviews[index],
                     reviewPressed = reviewPressed,
-                    modifier = Modifier.width(350.dp)
+                    modifier = Modifier.width(350.dp),
+                    autorPressed = autorPressed
                 )
                 Spacer(modifier = Modifier.height(20.dp))
             }

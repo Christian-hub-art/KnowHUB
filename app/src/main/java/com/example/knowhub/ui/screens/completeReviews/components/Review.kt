@@ -41,10 +41,14 @@ import com.example.knowhub.ui.utils.ProfileAsyncImage
 fun Review(
     review: Review,
     reviewPressed: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    autorPressed: (String) -> Unit = {}
 ) {
     Column(modifier = modifier) {// Cabecera con datos del estudiante, fecha y calificación
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.clickable { autorPressed(review.userId) },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             ProfileAsyncImage(
                 profileImage = review.fotoAutor,
                 size = 40

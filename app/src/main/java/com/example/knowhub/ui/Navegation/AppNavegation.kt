@@ -44,7 +44,9 @@ sealed class Screens(val route: String) {
     object Profile : Screens("profile")
     object Reviews : Screens("reviews")
     object Inicio : Screens("inicio")
-    object BusquePerfil : Screens("busquedaPerfil")
+    object BusquePerfil : Screens("busquedaPerfil/{userId}") {
+        fun createRoute(userId: String) = "busquedaPerfil/$userId"
+    }
 
     object CompleteSpecificReview : Screens("completeSpecificReviews/{reviewId}") {
         fun createRoute(id: String) = "completeSpecificReviews/$id"
@@ -134,6 +136,9 @@ fun AppNavegation(
                },
                 escribirBottonPressed = {
                     navController.navigate(Screens.CreateReviews.route)
+                },
+                autorPressed = { userId ->
+                    navController.navigate(Screens.BusquePerfil.createRoute(userId))
                 }
             )
         }
@@ -179,13 +184,23 @@ fun AppNavegation(
             val viewModel: CompleteSpecificReviewViewModel = hiltViewModel()
             CompleteSpecificReviewScreen(
                 reviewId = reviewId,
-                completeSpecificReviewViewModel = viewModel
+                completeSpecificReviewViewModel = viewModel,
+                autorPressed = { userId ->
+                    navController.navigate(Screens.BusquePerfil.createRoute(userId))
+                }
             )
         }
 
-        composable(route = Screens.BusquePerfil.route){
+        composable(route = Screens.BusquePerfil.route,
+            arguments = listOf(navArgument("userId"){type = NavType.StringType})
+        ){
+            val userId = it.arguments?.getString("userId") ?: ""
             BusquedaPerfilScreen(
-
+                userId = userId,
+                viewModel = hiltViewModel(),
+                reviewPressed = { reviewId ->
+                    navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
+                }
             )
         }
 

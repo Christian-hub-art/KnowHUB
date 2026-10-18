@@ -38,7 +38,8 @@ import com.example.knowhub.ui.utils.FormTextField
 fun CompleteSpecificReviewScreen(
     reviewId: String,
     completeSpecificReviewViewModel: CompleteSpecificReviewViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    autorPressed: (String) -> Unit = {}
 ){
     val state by completeSpecificReviewViewModel.uiState.collectAsState()
 
@@ -59,7 +60,8 @@ fun CompleteSpecificReviewScreen(
             errorMessageComentario = state.errorMessageComentario,
             mostrarMensajeErrorComentario = state.mostrarMensajeErrorComentario,
             onNuevoComentarioChange = { completeSpecificReviewViewModel.updateNuevoComentario(it) },
-            responderButtonPressed = { completeSpecificReviewViewModel.responderButtonPressed(reviewId) }
+            responderButtonPressed = { completeSpecificReviewViewModel.responderButtonPressed(reviewId) },
+            autorPressed = autorPressed
         )
     }
 
@@ -76,7 +78,8 @@ fun BodyCompleteSpecificReviewScreen(
     mostrarMensajeErrorComentario: Boolean = false,
     onNuevoComentarioChange: (String) -> Unit = {},
     responderButtonPressed: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    autorPressed: (String) -> Unit = {}
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -92,7 +95,8 @@ fun BodyCompleteSpecificReviewScreen(
                 if (review != null) {
                     ReviewComponent(
                         review,
-                        Modifier.width(350.dp)
+                        Modifier.width(350.dp),
+                        autorPressed = autorPressed
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))

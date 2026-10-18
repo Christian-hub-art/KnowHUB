@@ -21,10 +21,15 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryLight
+import com.example.knowhub.ui.utils.ProfileAsyncImage
 
 //Sección de encabezado que muestra la imagen de perfil del usuario y sus estadísticas
 @Composable
 fun InformacionPerfil(
+    fotoPerfil: String?,
+    seguidos: Int,
+    materiasResenadas: Int,
+    seguidores: Int,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -42,19 +47,18 @@ fun InformacionPerfil(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.perfil),
-                contentDescription = "Foto Perfil",
-                modifier = Modifier.size(65.dp)
+            ProfileAsyncImage(
+                profileImage = fotoPerfil,
+                size = 75
             )
         }
 
         Spacer(modifier = Modifier.width(8.dp))
         // Bloque con las métricas del usuario
         CuadrosInformacionPerfil(
-            seguidos = 48,
-            materiasResenadas = 32,
-            seguidores = 126,
+            seguidos = seguidos,
+            materiasResenadas = materiasResenadas,
+            seguidores = seguidores,
             modifier = Modifier
                 .weight(1f)
         )
