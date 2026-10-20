@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.R
 import com.example.knowhub.data.Review
 import com.example.knowhub.ui.screens.BusquedaPerfil.Components.InformacionPerfil
@@ -39,8 +39,9 @@ import com.example.knowhub.ui.utils.BackgroundImage
 fun BusquedaPerfilScreen(
     userId: String,
     modifier: Modifier = Modifier,
-    viewModel: BusquedaPerfilViewModel = viewModel(),
-    reviewPressed: (String) -> Unit = {}
+    viewModel: BusquedaPerfilViewModel = hiltViewModel(),
+    reviewPressed: (String) -> Unit = {},
+    connectionsPressed: (String, Boolean) -> Unit = { _, _ -> }
 ){
     val uiState by viewModel.uiState.collectAsState()
 
@@ -57,10 +58,21 @@ fun BusquedaPerfilScreen(
             userName = uiState.userName,
             fotoPerfil = uiState.fotoPerfil,
             reviews = uiState.reviews,
+            seguidos = uiState.followingCount,
+            seguidores = uiState.followersCount,
+            isFollowed = uiState.isFollowed,
+            showFollowButton = uiState.currentUserId.isNotBlank() && uiState.currentUserId != userId,
+            isUpdatingFollow = uiState.isUpdatingFollow,
             errorMessage = uiState.errorMessage,
             mostrarMensajeError = uiState.mostrarMensajeError,
             reviewPressed = reviewPressed,
-            onClick = {}
+            onClick = { viewModel.toggleFollow(userId) },
+            onRateReview = { reviewId, rating ->
+                viewModel.rateReview(reviewId, rating, userId)
+            },
+            onConnectionsClick = { followers ->
+                connectionsPressed(userId, followers)
+            }
         )
     }
 }
@@ -70,10 +82,17 @@ fun BodyBusquedaPerfilScrenn(
     userName: String,
     fotoPerfil: String?,
     reviews: List<Review>,
+    seguidos: Int = 0,
+    seguidores: Int = 0,
+    isFollowed: Boolean = false,
+    showFollowButton: Boolean = true,
+    isUpdatingFollow: Boolean = false,
     errorMessage: String = "",
     mostrarMensajeError: Boolean = false,
     reviewPressed: (String) -> Unit = {},
     onClick: () -> Unit = {},
+    onRateReview: (String, Int) -> Unit = { _, _ -> },
+    onConnectionsClick: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -102,23 +121,29 @@ fun BodyBusquedaPerfilScrenn(
             Spacer(modifier = Modifier.height(40.dp))
             InformacionPerfil(
                 fotoPerfil = fotoPerfil,
-                seguidos = 0,
+                seguidos = seguidos,
                 materiasResenadas = reviews.map { it.nombreAsignatura }.distinct().size,
-                seguidores = 0
+                seguidores = seguidores,
+                onFollowingClick = { onConnectionsClick(false) },
+                onFollowersClick = { onConnectionsClick(true) }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-            Row(
-                modifier = Modifier.width(320.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
+            if (showFollowButton) {
+                Row(
+                    modifier = Modifier.width(320.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.weight(1f))
 
-                AppButton(
-                    stringResource(R.string.btn_seguir),
-                    colorBoton = primaryContainerLight,
-                    onClick = onClick
-                )
+                    AppButton(
+                        if (isFollowed) "Dejar de seguir"
+                        else stringResource(R.string.btn_seguir),
+                        colorBoton = primaryContainerLight,
+                        onClick = onClick,
+                        enabled = !isUpdatingFollow
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(40.dp))
@@ -138,7 +163,8 @@ fun BodyBusquedaPerfilScrenn(
             ReviewComponent(
                 review,
                 reviewPressed = reviewPressed,
-                modifier = Modifier.width(350.dp)
+                modifier = Modifier.width(350.dp),
+                onRateReview = onRateReview
             )
 
             Spacer(modifier = Modifier.height(15.dp))

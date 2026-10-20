@@ -52,12 +52,19 @@ fun CompleteReviewsScreen(
         BackgroundImage()
         BodyCompleteReviewsScreen(
             generalReviewId = generalReviewId,
-            allReviews = state.allReviews,
+            allReviews = state.visibleReviews,
+            showFollowingOnly = state.showFollowingOnly,
+            followingErrorMessage = state.followingErrorMessage,
             errorMessage = state.errorMessage,
             mostrarMensajeError = state.mostrarMensajeError,
             reviewPressed = reviewPressed,
             escribirBottonPressed = escribirBottonPressed,
-            autorPressed = autorPressed
+            autorPressed = autorPressed,
+            onRateReview = { reviewId, rating ->
+                completeReviewsViewModel.rateReview(reviewId, rating)
+            },
+            onShowAll = completeReviewsViewModel::showAllReviews,
+            onShowFollowing = completeReviewsViewModel::showFollowedUsersReviews
         )
     }
 }
@@ -71,7 +78,12 @@ fun BodyCompleteReviewsScreen(
     reviewPressed: (String) -> Unit,
     escribirBottonPressed: () -> Unit,
     modifier: Modifier = Modifier,
-    autorPressed: (String) -> Unit = {}
+    autorPressed: (String) -> Unit = {},
+    onRateReview: (String, Int) -> Unit = { _, _ -> },
+    showFollowingOnly: Boolean = false,
+    followingErrorMessage: String = "",
+    onShowAll: () -> Unit = {},
+    onShowFollowing: () -> Unit = {}
 ){
     val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId }
     Column(
@@ -117,14 +129,16 @@ fun BodyCompleteReviewsScreen(
                     AppButton(
                         stringResource(R.string.para_ti),
                         primaryLight,
-                        primaryContainerLight,
+                        if (!showFollowingOnly) primaryContainerLight else tertiaryContainerLight,
+                        onClick = onShowAll,
                         modifier = Modifier.height(40.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     AppButton(
                         stringResource(R.string.siguiendo),
-                        tertiaryContainerLight,
-                        secondaryContainerLight,
+                        primaryLight,
+                        if (showFollowingOnly) primaryContainerLight else secondaryContainerLight,
+                        onClick = onShowFollowing,
                         modifier = Modifier.height(40.dp)
                     )
                 }
@@ -133,13 +147,17 @@ fun BodyCompleteReviewsScreen(
             if (mostrarMensajeError) {
                 item { Text(errorMessage) }
             }
+            if (showFollowingOnly && followingErrorMessage.isNotBlank()) {
+                item { Text(followingErrorMessage) }
+            }
             // Listado de reseñas
             items(allReviews.size) { index ->
                 ReviewComponent(
                     allReviews[index],
                     reviewPressed = reviewPressed,
                     modifier = Modifier.width(350.dp),
-                    autorPressed = autorPressed
+                    autorPressed = autorPressed,
+                    onRateReview = onRateReview
                 )
                 Spacer(modifier = Modifier.height(20.dp))
             }

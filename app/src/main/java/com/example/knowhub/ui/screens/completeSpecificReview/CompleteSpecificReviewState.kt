@@ -7,6 +7,8 @@ data class CompleteSpecificReviewState(
     val review: Review? = null,
     val comments: List<Comment> = emptyList(),
     val currentUserId: String = "",
+    val isRating: Boolean = false,
+    val isUpdatingCommentLike: Boolean = false,
     val errorMessage: String = "",
     val mostrarMensajeError: Boolean = false,
     val nuevoComentario: String = "",

@@ -6,6 +6,7 @@ data class CommentDetailState(
     val comment: Comment? = null,
     val replies: List<Comment> = emptyList(),
     val currentUserId: String = "",
+    val isUpdatingLike: Boolean = false,
     val errorMessage: String = "",
     val mostrarMensajeError: Boolean = false,
     val nuevoComentario: String = "",

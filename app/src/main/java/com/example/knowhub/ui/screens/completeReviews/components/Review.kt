@@ -35,6 +35,7 @@ import com.example.knowhub.ui.utils.AppButton
 
 import com.example.knowhub.ui.utils.generarEstrellas
 import com.example.knowhub.ui.utils.ProfileAsyncImage
+import com.example.knowhub.ui.utils.ReviewRatingControl
 //Componente que muestra el detalle de una reseña individual con sus métricas e interacciones
 
 @Composable
@@ -42,7 +43,8 @@ fun Review(
     review: Review,
     reviewPressed: (String) -> Unit,
     modifier: Modifier = Modifier,
-    autorPressed: (String) -> Unit = {}
+    autorPressed: (String) -> Unit = {},
+    onRateReview: (String, Int) -> Unit = { _, _ -> }
 ) {
     Column(modifier = modifier) {// Cabecera con datos del estudiante, fecha y calificación
         Row(
@@ -106,25 +108,11 @@ fun Review(
                 Spacer(modifier = Modifier.height(20.dp))
                 Row( modifier= Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ) {// Botones de reacción (me gusta y comentarios)
-                    Row(verticalAlignment = Alignment.CenterVertically,) {
-                        IconButton(
-                            onClick = { /* Acción de Like */ },
-                            modifier = Modifier.size(30.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.iconolike),
-                                contentDescription = "Icono",
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "( "+ review.likes + " )",
-                            fontSize = 17.sp,
-                            fontFamily = BangersFont
-                        )
-                    }
+                ) {// Calificación de la reseña y contador de comentarios
+                    ReviewRatingControl(
+                        review = review,
+                        onRate = { rating -> onRateReview(review.id, rating) }
+                    )
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
                             onClick = { /* Acción de Like */ },

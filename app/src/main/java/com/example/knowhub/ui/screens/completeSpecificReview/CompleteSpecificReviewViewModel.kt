@@ -87,6 +87,61 @@ class CompleteSpecificReviewViewModel @Inject constructor(
         }
     }
 
+    fun toggleCommentLike(commentId: String, reviewId: String) {
+        if (_uiState.value.isUpdatingCommentLike) return
+        viewModelScope.launch {
+            _uiState.update { it.copy(isUpdatingCommentLike = true, mostrarMensajeErrorComentario = false) }
+            val result = commentRepository.toggleLike(commentId)
+            if (result.isSuccess) {
+                val commentsResult = commentRepository.getCommentsByReview(reviewId)
+                val refreshError = commentsResult.exceptionOrNull()
+                _uiState.update {
+                    it.copy(
+                        comments = commentsResult.getOrNull() ?: it.comments,
+                        isUpdatingCommentLike = false,
+                        mostrarMensajeErrorComentario = refreshError != null,
+                        errorMessageComentario = refreshError?.message.orEmpty()
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isUpdatingCommentLike = false,
+                        mostrarMensajeErrorComentario = true,
+                        errorMessageComentario = result.exceptionOrNull()?.message
+                            ?: "No se pudo actualizar el me gusta."
+                    )
+                }
+            }
+        }
+    }
+
+    fun rateReview(reviewId: String, rating: Int) {
+        if (_uiState.value.isRating) return
+        viewModelScope.launch {
+            _uiState.update { it.copy(isRating = true, mostrarMensajeError = false) }
+            val result = reviewRepository.rateReview(reviewId, rating)
+            if (result.isSuccess) {
+                val reviewResult = reviewRepository.getReviewById(reviewId)
+                _uiState.update {
+                    it.copy(
+                        isRating = false,
+                        review = reviewResult.getOrNull() ?: it.review
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isRating = false,
+                        mostrarMensajeError = true,
+                        errorMessage = result.exceptionOrNull()?.message
+                            ?: "No se pudo guardar la calificación."
+                    )
+                }
+            }
+        }
+    }
+
     fun updateNuevoComentario(input: String) {
         _uiState.update { it.copy(nuevoComentario = input, mostrarMensajeErrorComentario = false) }
     }

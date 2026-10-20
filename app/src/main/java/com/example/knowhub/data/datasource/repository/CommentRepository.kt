@@ -2,6 +2,7 @@ package com.example.knowhub.data.datasource.repository
 
 import android.util.Log
 import com.example.knowhub.data.Comment
+import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.dtos.CreateCommentDto
 import com.example.knowhub.data.datasource.dtos.ReviewUserDto
 import com.example.knowhub.data.datasource.dtos.toComment
@@ -14,12 +15,16 @@ import javax.inject.Inject
 
 class CommentRepository @Inject constructor(
     private val commentRemoteDataSource: CommentFirestoreDataSourceImpl,
-    private val userRemoteDataSource: UserFirestoreDataSourceImpl
+    private val userRemoteDataSource: UserFirestoreDataSourceImpl,
+    private val authRemoteDataSource: AuthRemoteDataSource
 ) {
 
     suspend fun getCommentsByReview(reviewId: String): Result<List<Comment>> {
         return try {
-            val comments = commentRemoteDataSource.getCommentsByReview(reviewId)
+            val comments = commentRemoteDataSource.getCommentsByReview(
+                reviewId,
+                authRemoteDataSource.currentUser?.uid.orEmpty()
+            )
             Result.success(comments.map { it.toComment() })
         } catch (e: Exception) {
             Log.d("TAG", "getCommentsByReview: ${e.message}")
@@ -29,7 +34,12 @@ class CommentRepository @Inject constructor(
 
     suspend fun getCommentById(id: String): Result<Comment> {
         return try {
-            Result.success(commentRemoteDataSource.getCommentById(id).toComment())
+            Result.success(
+                commentRemoteDataSource.getCommentById(
+                    id,
+                    authRemoteDataSource.currentUser?.uid.orEmpty()
+                ).toComment()
+            )
         } catch (e: Exception) {
             Log.d("TAG", "getCommentById: ${e.message}")
             Result.failure(e)
@@ -38,10 +48,25 @@ class CommentRepository @Inject constructor(
 
     suspend fun getReplies(commentId: String): Result<List<Comment>> {
         return try {
-            val replies = commentRemoteDataSource.getReplies(commentId)
+            val replies = commentRemoteDataSource.getReplies(
+                commentId,
+                authRemoteDataSource.currentUser?.uid.orEmpty()
+            )
             Result.success(replies.map { it.toComment() })
         } catch (e: Exception) {
             Log.d("TAG", "getReplies: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun toggleLike(commentId: String): Result<Unit> {
+        val userId = authRemoteDataSource.currentUser?.uid
+            ?: return Result.failure(IllegalStateException("Inicia sesión para dar me gusta."))
+        return try {
+            commentRemoteDataSource.toggleLike(commentId, userId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("TAG", "toggleCommentLike: ${e.message}")
             Result.failure(e)
         }
     }

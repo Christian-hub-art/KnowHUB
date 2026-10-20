@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +43,10 @@ fun Comment(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     mostrarEliminar: Boolean = false,
-    onEliminarClick: () -> Unit = {}
+    onEliminarClick: () -> Unit = {},
+    likedByCurrentUser: Boolean = false,
+    onLikeClick: () -> Unit = {},
+    likeEnabled: Boolean = true
 ) {
     Column(modifier = modifier) {
         Column(
@@ -106,13 +110,19 @@ fun Comment(
                 ) {// Reacción: Me gusta
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
-                            onClick = { /* Acción de Like */ },
+                            onClick = onLikeClick,
+                            enabled = likeEnabled,
                             modifier = Modifier.size(30.dp)
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.iconolike),
-                                contentDescription = "Icono",
-                                modifier = Modifier.fillMaxSize()
+                                contentDescription = if (likedByCurrentUser) {
+                                    "Quitar me gusta"
+                                } else {
+                                    "Dar me gusta"
+                                },
+                                modifier = Modifier.fillMaxSize(),
+                                tint = if (likedByCurrentUser) Color(0xFFE53935) else Color.Unspecified
                             )
                         }
                         Spacer(modifier = Modifier.width(6.dp))

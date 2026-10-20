@@ -15,4 +15,7 @@ data class Review(
     val clase: String = "",
     val fotoAutor: String? = null,
     val userId: String = "",
+    val ratingAverage: Double = 0.0,
+    val ratingCount: Int = 0,
+    val userRating: Int = 0
 )

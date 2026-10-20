@@ -7,6 +7,11 @@ data class BusquedaPerfilState(
     val userName: String = "",
     val fotoPerfil: String? = null,
     val reviews: List<Review> = emptyList(),
+    val followersCount: Int = 0,
+    val followingCount: Int = 0,
+    val isFollowed: Boolean = false,
+    val currentUserId: String = "",
+    val isUpdatingFollow: Boolean = false,
     val isLoading: Boolean = false,
     val errorMessage: String = "",
     val mostrarMensajeError: Boolean = false

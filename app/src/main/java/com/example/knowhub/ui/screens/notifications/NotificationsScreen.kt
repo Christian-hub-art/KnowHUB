@@ -1,54 +1,70 @@
 package com.example.knowhub.ui.screens.notifications
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.R
 import com.example.knowhub.data.Notificacion
-import com.example.knowhub.data.local.LocalNotificacionProvider
 import com.example.knowhub.ui.screens.notifications.components.CuadroNotificacion
-import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
-import com.example.knowhub.ui.screens.register.BodyRegisterScreen
-import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.theme.*
-import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
-import com.example.knowhub.ui.utils.BarraArriba
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.content.ContextCompat
 //Pantalla principal que muestra el listado de notificaciones recibidas por el usuario.
 @Composable
 fun NotificatonsScreen(
     modifier: Modifier = Modifier,
-    viewModel: NotificationsViewModel = viewModel()
+    viewModel: NotificationsViewModel = hiltViewModel()
 ){
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { }
+
+    LaunchedEffect(Unit) {
+        if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
 
     Box(modifier = modifier){
         BackgroundImage()
-        BodyNotificationsScreen(notifications = uiState.notifications)
+        BodyNotificationsScreen(
+            notifications = uiState.notifications,
+            errorMessage = uiState.errorMessage.orEmpty()
+        )
     }
 }
 //Disposición del contenido visual y lista de elementos para las notificaciones.
 @Composable
 fun BodyNotificationsScreen(
     modifier: Modifier = Modifier,
-    notifications: List<Notificacion> = LocalNotificacionProvider.notificaciones
+    notifications: List<Notificacion> = emptyList(),
+    errorMessage: String = ""
 ){
     Column(
         modifier = modifier,
@@ -69,6 +85,9 @@ fun BodyNotificationsScreen(
                 )
 
                 Spacer(modifier = Modifier.height(25.dp))
+                if (errorMessage.isNotBlank()) {
+                    androidx.compose.material3.Text(errorMessage)
+                }
             }
             items(notifications.size){ index ->
                 CuadroNotificacion(

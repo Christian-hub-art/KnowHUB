@@ -33,6 +33,7 @@ import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
 import com.example.knowhub.ui.utils.ProfileAsyncImage
+import com.example.knowhub.ui.utils.ReviewRatingControl
 
 //Componente que muestra la tarjeta detallada de una reseña específica incluyendo el profesor y la asignatura.
 @Composable
@@ -41,7 +42,8 @@ fun Review(
     modifier: Modifier = Modifier,
     autorPressed: (String) -> Unit = {},
     mostrarEliminar: Boolean = false,
-    onEliminarClick: () -> Unit = {}
+    onEliminarClick: () -> Unit = {},
+    onRateReview: (String, Int) -> Unit = { _, _ -> }
 ) {
     Column(modifier = modifier) {
         // Tarjeta contenedora de la reseña
@@ -132,25 +134,12 @@ fun Review(
                 Spacer(modifier = Modifier.height(20.dp))
                 Row( modifier= Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ) {// Botón de Me gusta
-                    Row(verticalAlignment = Alignment.CenterVertically,) {
-                        IconButton(
-                            onClick = { /* Acción de Like */ },
-                            modifier = Modifier.size(30.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.iconolike),
-                                contentDescription = "Icono",
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = "( "+ review.likes + " )",
-                            fontSize = 17.sp,
-                            fontFamily = BangersFont
-                        )
-                    }// Botón de Comentarios
+                ) {// Calificación de la reseña
+                    ReviewRatingControl(
+                        review = review,
+                        onRate = { rating -> onRateReview(review.id, rating) }
+                    )
+                    // Contador de comentarios
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
                             onClick = { /* Acción de Like */ },
