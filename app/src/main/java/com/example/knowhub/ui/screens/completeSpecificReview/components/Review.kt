@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import com.example.knowhub.ui.theme.primaryContainerLight
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,7 +43,8 @@ fun Review(
     modifier: Modifier = Modifier,
     autorPressed: (String) -> Unit = {},
     mostrarEliminar: Boolean = false,
-    onEliminarClick: () -> Unit = {}
+    onEliminarClick: () -> Unit = {},
+    onLikeClick: () -> Unit = {}
 ) {
     Column(modifier = modifier) {
         // Tarjeta contenedora de la reseña
@@ -135,12 +138,13 @@ fun Review(
                 ) {// Botón de Me gusta
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
-                            onClick = { /* Acción de Like */ },
+                            onClick = onLikeClick,
                             modifier = Modifier.size(30.dp)
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.iconolike),
-                                contentDescription = "Icono",
+                                contentDescription = "Me gusta",
+                                tint = if (review.liked) primaryContainerLight else LocalContentColor.current,
                                 modifier = Modifier.fillMaxSize()
                             )
                         }

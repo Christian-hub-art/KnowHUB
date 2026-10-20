@@ -51,7 +51,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
 
         }
 
-        return review
+        return review.copy(id = reviewSnapshot.id)
     }
 
     override suspend fun updateReview(
@@ -83,12 +83,12 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
 
             if(likeDoc.exists()){
                 transaction.delete(likesRef)
-                transaction.update(reviewRef, "likescount", FieldValue.increment(-1))
+                transaction.update(reviewRef, "likes", FieldValue.increment(-1))
             }else{
                 transaction.set(likesRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
-                transaction.update(reviewRef, "likescount", FieldValue.increment(1))
+                transaction.update(reviewRef, "likes", FieldValue.increment(1))
             }
-        }
+        }.await()
     }
 
 

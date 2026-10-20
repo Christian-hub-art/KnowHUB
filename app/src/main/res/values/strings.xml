@@ -76,6 +76,7 @@
     <string name="seguidores">Seguidores</string>
     <string name="ingenieria_sistemas">Ingeniería de Sistemas</string>
     <string name="btn_seguir">Seguir</string>
+    <string name="btn_siguiendo">Siguiendo</string>
     <string name="icono_graduado">Icono graduado</string>
     <string name="fecha_default">15 NOV 2025</string>
     <string name="numero_resenas">%1$d reseñas</string>

@@ -60,7 +60,11 @@ fun BusquedaPerfilScreen(
             errorMessage = uiState.errorMessage,
             mostrarMensajeError = uiState.mostrarMensajeError,
             reviewPressed = reviewPressed,
-            onClick = {}
+            followed = uiState.followed,
+            seguidores = uiState.seguidores,
+            seguidos = uiState.seguidos,
+            mostrarSeguir = userId != uiState.currentUserId,
+            onClick = { viewModel.followOrUnfollowUser(userId) }
         )
     }
 }
@@ -73,6 +77,10 @@ fun BodyBusquedaPerfilScrenn(
     errorMessage: String = "",
     mostrarMensajeError: Boolean = false,
     reviewPressed: (String) -> Unit = {},
+    followed: Boolean = false,
+    seguidores: Int = 0,
+    seguidos: Int = 0,
+    mostrarSeguir: Boolean = true,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -102,9 +110,9 @@ fun BodyBusquedaPerfilScrenn(
             Spacer(modifier = Modifier.height(40.dp))
             InformacionPerfil(
                 fotoPerfil = fotoPerfil,
-                seguidos = 0,
+                seguidos = seguidos,
                 materiasResenadas = reviews.map { it.nombreAsignatura }.distinct().size,
-                seguidores = 0
+                seguidores = seguidores
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -114,11 +122,13 @@ fun BodyBusquedaPerfilScrenn(
             ) {
                 Spacer(modifier = Modifier.weight(1f))
 
-                AppButton(
-                    stringResource(R.string.btn_seguir),
-                    colorBoton = primaryContainerLight,
-                    onClick = onClick
-                )
+                if (mostrarSeguir) {
+                    AppButton(
+                        stringResource(if (followed) R.string.btn_siguiendo else R.string.btn_seguir),
+                        colorBoton = primaryContainerLight,
+                        onClick = onClick
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(40.dp))

@@ -9,5 +9,9 @@ data class BusquedaPerfilState(
     val reviews: List<Review> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String = "",
-    val mostrarMensajeError: Boolean = false
+    val mostrarMensajeError: Boolean = false,
+    val followed: Boolean = false,
+    val seguidores: Int = 0,
+    val seguidos: Int = 0,
+    val currentUserId: String = ""
 )

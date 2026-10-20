@@ -25,11 +25,13 @@ class UserFirestoreDataSourceImpl @Inject constructor (private val db: FirebaseF
         val respuesta  = docRef.get().await()
         val user = respuesta.toObject(UserProfileDto::class.java) ?: throw Exception("No se pudo obetenr el usuario")
 
-        val followerDoc = db.collection("users").document(id).collection("followers").document(currentUserId).get().await()
+        if (currentUserId.isNotEmpty()) {
+            val followerDoc = db.collection("users").document(id).collection("followers").document(currentUserId).get().await()
 
-        val exist = followerDoc.exists()
+            val exist = followerDoc.exists()
 
-        user.followed = exist
+            user.followed = exist
+        }
 
         return user
 
@@ -66,7 +68,7 @@ class UserFirestoreDataSourceImpl @Inject constructor (private val db: FirebaseF
                 transaction.update(currentUserRef, "followinCount", FieldValue.increment(1))
                 transaction.update(targetUserRef, "followersCount", FieldValue.increment(1))
             }
-        }
+        }.await()
     }
 
 }

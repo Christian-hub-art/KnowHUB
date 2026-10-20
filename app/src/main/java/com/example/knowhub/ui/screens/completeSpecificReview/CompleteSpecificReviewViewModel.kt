@@ -122,7 +122,28 @@ class CompleteSpecificReviewViewModel @Inject constructor(
         }
     }
 
-
-
-
+    fun sendOrDeleteReviewLike(reviewId: String) {
+        val userId = _uiState.value.currentUserId
+        if (userId.isEmpty()) return
+        viewModelScope.launch {
+            val result = reviewRepository.sendOrDeleteReviewLike(reviewId, userId)
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        review = it.review?.copy(
+                            liked = !it.review.liked,
+                            likes = if (it.review.liked) it.review.likes - 1 else it.review.likes + 1
+                        )
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeError = true,
+                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudo registrar el like"
+                    )
+                }
+            }
+        }
+    }
 }
