@@ -59,13 +59,13 @@ class UserFirestoreDataSourceImpl @Inject constructor (private val db: FirebaseF
 
                 transaction.delete(followinRef)
                 transaction.delete(followerRef)
-                transaction.update(currentUserRef, "followinCount", FieldValue.increment(-1))
+                transaction.update(currentUserRef, "followingCount", FieldValue.increment(-1))
                 transaction.update(targetUserRef, "followersCount", FieldValue.increment(-1))
 
             }else{
                 transaction.set(followinRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
                 transaction.set(followerRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
-                transaction.update(currentUserRef, "followinCount", FieldValue.increment(1))
+                transaction.update(currentUserRef, "followingCount", FieldValue.increment(1))
                 transaction.update(targetUserRef, "followersCount", FieldValue.increment(1))
             }
         }.await()

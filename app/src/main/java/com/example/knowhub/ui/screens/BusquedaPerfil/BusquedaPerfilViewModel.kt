@@ -35,7 +35,7 @@ class BusquedaPerfilViewModel @Inject constructor(
                         fotoPerfil = user?.foto?.ifBlank { null } ?: it.fotoPerfil,
                         followed = user?.followed ?: false,
                         seguidores = user?.followersCount ?: 0,
-                        seguidos = user?.followinCount ?: 0,
+                        seguidos = user?.followingCount ?: 0,
                         currentUserId = authRepository.currentUser?.uid ?: "",
                         isLoading = false
                     )
