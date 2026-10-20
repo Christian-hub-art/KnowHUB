@@ -3,6 +3,7 @@ package com.example.knowhub.data.datasource.impl.firestore
 import com.example.knowhub.data.datasource.ReviewRemoteDataSource
 import com.example.knowhub.data.datasource.dtos.CreateReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewDto
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
@@ -35,10 +36,22 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         id: String,
         currentUserId: String
     ): ReviewDto {
-        val doc = db.collection("reviews").document(id).get().await()
-        return doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
-            ?: throw Exception("Reseña no encontrada")
 
+        val reviewRef = db.collection("reviews").document(id)
+        val reviewSnapshot = reviewRef.get().await()
+        val review = reviewSnapshot.toObject(ReviewDto::class.java) ?: throw Exception("Review not found")
+
+        if(currentUserId.isNotEmpty()){
+            val likeSnapshot = reviewRef.collection("likes").document(currentUserId).get().await()
+            val hasliked = likeSnapshot.exists()
+
+            if(hasliked){
+                review.liked= true
+            }
+
+        }
+
+        return review
     }
 
     override suspend fun updateReview(
@@ -60,11 +73,23 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         db.collection("reviews").document(id).delete().await()
     }
 
-    override suspend fun sendOrDeleteLike(reviewId: String, userId: String) {
-        TODO("Not yet implemented")
+    override suspend fun sendOrDeleteReviewLike(reviewId: String, userId: String) {
+        val reviewRef = db.collection("reviews").document(reviewId)
+        val likesRef = reviewRef.collection("likes").document(userId)
+
+        db.runTransaction { transaction ->
+
+            val likeDoc = transaction.get(likesRef)
+
+            if(likeDoc.exists()){
+                transaction.delete(likesRef)
+                transaction.update(reviewRef, "likescount", FieldValue.increment(-1))
+            }else{
+                transaction.set(likesRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
+                transaction.update(reviewRef, "likescount", FieldValue.increment(1))
+            }
+        }
     }
 
-    override fun listenAllReviews(): Flow<List<ReviewDto>> {
-        TODO("Not yet implemented")
-    }
+
 }

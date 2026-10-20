@@ -1,15 +1,18 @@
 package com.example.knowhub.data.datasource.repository
 
 import android.util.Log
+import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.dtos.RegisterUserDto
 import com.example.knowhub.data.datasource.dtos.UserProfileDto
 import com.example.knowhub.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val userRemoteDataSource: UserFirestoreDataSourceImpl
+    private val userRemoteDataSource: UserFirestoreDataSourceImpl,
+    private val authRemoteDataSource: AuthRemoteDataSource
 
 ){
+
 
     suspend fun registerUser(name: String, userName: String, userId: String): Result<Unit>{
         return try {
@@ -23,8 +26,11 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getUserById(id: String, currentUserId: String = ""): Result<UserProfileDto> {
+
+        val currentUserId = authRemoteDataSource.currentUser?.uid ?: ""
+
         return try {
-            val user = userRemoteDataSource.getUserById(id)
+            val user = userRemoteDataSource.getUserById(id, currentUserId)
 
             if(user == null) return Result.failure(NoSuchElementException("Usuario $id no encontrado"))
 
@@ -42,6 +48,17 @@ class UserRepository @Inject constructor(
             Result.success(Unit)
         } catch (e: Exception) {
             Log.d("TAG", "updateUserProfileImage: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+
+    suspend fun followOrUnfollowUser(currentUserId: String, targetUserId: String): Result<Unit>{
+        return  try{
+            userRemoteDataSource.followOrUnfollowUser(currentUserId,targetUserId)
+            Result.success(Unit)
+        }catch (e: Exception){
+            Log.d("followOrUnfollowUser", "getUserById: ${e.message} ")
             Result.failure(e)
         }
     }

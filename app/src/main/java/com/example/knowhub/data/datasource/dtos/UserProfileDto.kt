@@ -20,5 +20,6 @@ data class UserProfileDto(
     val likes: MutableList<Like> = mutableListOf(),
     val comentarios: MutableList<Comentario> = mutableListOf(),
     val siguiendo: MutableList<Usuario> = mutableListOf(),
-    val seguidores: MutableList<Usuario> = mutableListOf()
+    val seguidores: MutableList<Usuario> = mutableListOf(),
+    var followed  : Boolean = false,
 )

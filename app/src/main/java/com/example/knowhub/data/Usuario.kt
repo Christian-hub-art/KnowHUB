@@ -13,5 +13,6 @@ data class Usuario(
     val likes: MutableList<Like> = mutableListOf(),
     val comentarios: MutableList<Comentario> = mutableListOf(),
     val siguiendo: MutableList<Usuario> = mutableListOf(),
-    val seguidores: MutableList<Usuario> = mutableListOf()
+    val seguidores: MutableList<Usuario> = mutableListOf(),
+    val followed: Boolean = false
 )

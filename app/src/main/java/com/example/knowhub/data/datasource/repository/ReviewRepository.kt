@@ -40,6 +40,7 @@ class ReviewRepository @Inject constructor(
     }
 
     suspend fun getReviewById(id: String): Result<Review> {
+        val currentUserId = authRemoteDataSource.currentUser?.uid ?: ""
         return try {
             val review = reviewRemoteDataSource.getReviewById(id)
             Result.success(review.toReview())
@@ -114,6 +115,16 @@ class ReviewRepository @Inject constructor(
         } catch (e: Exception) {
             Log.d("TAG", "deleteReview: ${e.message}")
             Result.failure(e)
+        }
+    }
+
+
+    suspend fun sendOrDeleteReviewLike(reviewId: String, userId: String): Result<Unit>{
+        return try {
+            reviewRemoteDataSource.sendOrDeleteReviewLike(reviewId, userId)
+            Result.success(Unit)
+        }catch (e: Exception){
+            Result.failure  (e)
         }
     }
 }

@@ -23,8 +23,7 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
         }
     }
 
-    // Respuestas directas a la reseña. Se filtra en código porque los comentarios
-    // antiguos no tienen el campo parentCommentId y Firestore no los encontraría con == null.
+
     override suspend fun getCommentsByReview(reviewId: String): List<CommentDto> {
         val snapshot = db.collection("comments").whereEqualTo("reviewId", reviewId).get().await()
         return snapshot.documents.mapNotNull { doc ->
