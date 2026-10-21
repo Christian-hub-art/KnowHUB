@@ -3,7 +3,6 @@ package com.example.knowhub.ui.screens.notifications
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.datasource.repository.NotificationRepository
-import com.example.knowhub.data.datasource.services.NotificationTokenStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +21,6 @@ class NotificationsViewModel @Inject constructor(
     val uiState: StateFlow<NotificationsState> = _uiState.asStateFlow()
 
     init {
-        NotificationTokenStore.registerCurrentToken()
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             notificationRepository.listenNotifications()

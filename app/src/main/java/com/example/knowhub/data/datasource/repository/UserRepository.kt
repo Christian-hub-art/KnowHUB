@@ -6,7 +6,6 @@ import com.example.knowhub.data.datasource.UserRemoteDataSource
 import com.example.knowhub.data.datasource.dtos.RegisterUserDto
 import com.example.knowhub.data.datasource.dtos.UserProfileDto
 import com.example.knowhub.data.datasource.dtos.UserSummaryDto
-import com.example.knowhub.data.datasource.services.NotificationTokenStore
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -22,7 +21,6 @@ class UserRepository @Inject constructor(
             val fcmToken= FirebaseMessaging.getInstance().token.await()
             val registerUserDto = RegisterUserDto(name,userName, fcmToken)
             userRemoteDataSource.registerUser(registerUserDto, userId)
-            NotificationTokenStore.save(fcmToken)
             Result.success(Unit)
         }catch (e: Exception){
             Log.d("TAG","getUserById: ${e.message}")

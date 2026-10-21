@@ -1,49 +1,96 @@
-const { initializeApp } = require("firebase-admin/app");
-const { FieldValue, getFirestore } = require("firebase-admin/firestore");
-const { getMessaging } = require("firebase-admin/messaging");
-const { logger } = require("firebase-functions");
+const admin = require("firebase-admin");
+const { FieldValue } = require("firebase-admin/firestore");
 const {
   onDocumentCreated,
   onDocumentUpdated,
 } = require("firebase-functions/v2/firestore");
+const { logger } = require("firebase-functions");
 
-initializeApp();
+admin.initializeApp();
 
-const db = getFirestore();
-const messaging = getMessaging();
+const db = admin.firestore();
 
-exports.sendNotification = onDocumentCreated(
-  "users/{userId}/notifications/{notificationId}",
+exports.sendFollowNotification = onDocumentCreated(
+  "users/{userId}/followers/{followerId}",
   async (event) => {
-    const notification = event.data?.data();
-    if (!notification) {
-      logger.warn("Notification document has no data.", {
-        notificationId: event.params.notificationId,
-      });
+    const { userId, followerId } = event.params;
+
+    const userDoc = await db.collection("users").doc(userId).get();
+    const followerDoc = await db.collection("users").doc(followerId).get();
+
+    if (!userDoc.exists || !followerDoc.exists) {
       return;
     }
 
-    const tokens = await db
-      .collection("users")
-      .doc(event.params.userId)
-      .collection("fcmTokens")
-      .get();
+    const userData = userDoc.data();
+    const followerData = followerDoc.data();
+    const userToken = userData.fcmToken;
 
-    for (const document of tokens.docs) {
-      await messaging.send({
-        token: document.id,
-        notification: {
-          title: notification.title || "KnowHUB",
-          body: notification.body || "Tienes una nueva notificación.",
-        },
-        data: {
-          notificationId: event.params.notificationId,
-          type: String(notification.type || ""),
-          actorId: String(notification.actorId || ""),
-          reviewId: String(notification.reviewId || ""),
-          commentId: String(notification.commentId || ""),
-        },
-      });
+    if (!userToken) {
+      logger.log(`El usuario ${userId} no tiene un token FCM válido.`);
+      return;
+    }
+
+    const message = {
+      token: userToken,
+      notification: {
+        title: "Nuevo seguidor",
+        body: `${followerData.userName || "Un usuario"} ha comenzado a seguirte.`,
+      },
+    };
+
+    try {
+      await admin.messaging().send(message);
+      logger.log(`Notificación enviada a ${userId} por nuevo seguidor.`);
+    } catch (error) {
+      logger.error(`Error al enviar notificación a ${userId}:`, error);
+    }
+  }
+);
+
+exports.sendLikeNotification = onDocumentCreated(
+  "reviews/{reviewId}/likes/{userId}",
+  async (event) => {
+    const { reviewId, userId } = event.params;
+
+    const reviewDoc = await db.collection("reviews").doc(reviewId).get();
+    if (!reviewDoc.exists) {
+      return;
+    }
+
+    const reviewData = reviewDoc.data();
+    const authorId = reviewData.userId;
+
+    if (!authorId || authorId === userId) {
+      return;
+    }
+
+    const authorDoc = await db.collection("users").doc(authorId).get();
+    const userDoc = await db.collection("users").doc(userId).get();
+
+    if (!authorDoc.exists || !userDoc.exists) {
+      return;
+    }
+
+    const authorToken = authorDoc.get("fcmToken");
+    if (!authorToken) {
+      logger.log(`El usuario ${authorId} no tiene un token FCM válido.`);
+      return;
+    }
+
+    const message = {
+      token: authorToken,
+      notification: {
+        title: "Nuevo like",
+        body: `A ${userDoc.get("userName") || "Un usuario"} le gustó tu reseña de ${reviewData.nombreAsignatura}.`,
+      },
+    };
+
+    try {
+      await admin.messaging().send(message);
+      logger.log(`Notificación enviada a ${authorId} por un nuevo like.`);
+    } catch (error) {
+      logger.error(`Error al enviar notificación a ${authorId}:`, error);
     }
   }
 );

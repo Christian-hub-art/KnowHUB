@@ -16,11 +16,11 @@ data class UserProfileDto(
     val contrasena: String = "",
     val foto: String = "",
     val notificacion: Notificacion? = null,
-    val reviewsCreadas: MutableList<Review> = mutableListOf(),
-    val likes: MutableList<Like> = mutableListOf(),
-    val comentarios: MutableList<Comentario> = mutableListOf(),
+    val reviewsCreadas: List<Review> = emptyList(),
+    val likes: List<Like> = emptyList(),
+    val comentarios: List<Comentario> = emptyList(),
     val followed: Boolean = false,
     val followersCount: Int = 0,
     val followingCount: Int = 0,
-    val following: MutableList<Usuario> = mutableListOf()
+    val following: List<Usuario> = emptyList()
 )
