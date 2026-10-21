@@ -96,6 +96,13 @@ class CreateReviewsViewModel @Inject constructor(
         }
         if (state.isLoading) return
 
+        val generalReviewId = if (state.generalReviewId != 0) {
+            state.generalReviewId
+        } else {
+            localGeneralReviewProvider.generalReviews
+                .find { it.codigoAsignatura.toString() == state.clase.trim() }?.id ?: 0
+        }
+
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
             val result = if (state.reviewId != null) {
@@ -113,7 +120,7 @@ class CreateReviewsViewModel @Inject constructor(
                     nombreAsignatura = state.tituloMateria,
                     nombreProfesor = state.nombreProfesor,
                     descripcion = state.resena,
-                    generalReviewId = state.generalReviewId
+                    generalReviewId = generalReviewId
                 )
             }
             if (result.isSuccess) {
