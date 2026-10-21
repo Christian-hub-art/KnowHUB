@@ -1,11 +1,10 @@
-const { initializeApp } = require("firebase-admin/app");
-const { getFirestore } = require("firebase-admin/firestore");
-const { getMessaging } = require("firebase-admin/messaging");
+const admin = require("firebase-admin");
+const { logger } = require("firebase-functions");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 
-initializeApp();
+admin.initializeApp();
 
-const db = getFirestore();
+const db = admin.firestore();
 
 exports.sendFollowNotification = onDocumentCreated(
   "users/{userId}/followers/{followerId}",
@@ -19,17 +18,27 @@ exports.sendFollowNotification = onDocumentCreated(
 
     const followerDoc = await db.collection("users").doc(followerId).get();
     const followerData = followerDoc.data();
+    const followerName = followerData.userName;
 
     if (userToken) {
-      const payload = {
+      const message = {
         token: userToken,
         notification: {
           title: "Nuevo seguidor",
-          body: `${followerData.userName} empezó a seguirte`,
+          body: `${followerName} ha comenzado a seguirte.`,
         },
       };
 
-      await getMessaging().send(payload);
+      try {
+        await admin.messaging().send(message);
+        logger.log(
+          `Notificación enviada a ${userId} por nuevo seguidor: ${followerName}`
+        );
+      } catch (error) {
+        logger.error(`Error al enviar notificación a ${userId}:`, error);
+      }
+    } else {
+      logger.log(`El usuario ${userId} no tiene un token FCM válido.`);
     }
   }
 );
@@ -52,17 +61,27 @@ exports.sendLikeNotification = onDocumentCreated(
 
     const userDoc = await db.collection("users").doc(userId).get();
     const userData = userDoc.data();
+    const userName = userData.userName;
 
     if (autorToken) {
-      const payload = {
+      const message = {
         token: autorToken,
         notification: {
           title: "Nuevo like",
-          body: `A ${userData.userName} le gustó tu reseña de ${reviewData.nombreAsignatura}`,
+          body: `A ${userName} le gustó tu reseña de ${reviewData.nombreAsignatura}.`,
         },
       };
 
-      await getMessaging().send(payload);
+      try {
+        await admin.messaging().send(message);
+        logger.log(
+          `Notificación enviada a ${autorId} por like de: ${userName}`
+        );
+      } catch (error) {
+        logger.error(`Error al enviar notificación a ${autorId}:`, error);
+      }
+    } else {
+      logger.log(`El usuario ${autorId} no tiene un token FCM válido.`);
     }
   }
 );
