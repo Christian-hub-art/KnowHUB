@@ -18,5 +18,5 @@ data class Review(
     val ratingAverage: Double = 0.0,
     val ratingCount: Int = 0,
     val userRating: Int = 0,
-    val likedByCurrentUser: Boolean = false
+    val liked: Boolean = false
 )

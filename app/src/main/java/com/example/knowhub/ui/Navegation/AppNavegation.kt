@@ -186,8 +186,10 @@ fun AppNavegation(
         }
         composable ( route = Screens.Profile.route ){
             ProfileScreen(
-                connectionsPressed = { userId, followers ->
-                    navController.navigate(Screens.Connections.createRoute(userId, followers))
+                onConnectionsClick = { idUsuario, esListaSeguidores ->
+                    navController.navigate(
+                        Screens.Connections.createRoute(idUsuario, esListaSeguidores)
+                    )
                 }
             )
         }
@@ -263,9 +265,9 @@ fun AppNavegation(
                 reviewPressed = { reviewId ->
                     navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
                 },
-                connectionsPressed = { profileUserId, followers ->
+                onConnectionsClick = { idUsuario, esListaSeguidores ->
                     navController.navigate(
-                        Screens.Connections.createRoute(profileUserId, followers)
+                        Screens.Connections.createRoute(idUsuario, esListaSeguidores)
                     )
                 }
             )

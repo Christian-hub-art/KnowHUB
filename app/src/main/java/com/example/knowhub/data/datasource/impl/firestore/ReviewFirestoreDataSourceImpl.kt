@@ -25,14 +25,14 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         val snapshot = db.collection("reviews").get().await()
         return snapshot.documents.mapNotNull { doc ->
             doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
-        }.map { it.withCurrentUserInteraction(currentUserId) }
+        }.map { it.withUserRating(currentUserId).withCurrentUserLike(currentUserId) }
     }
 
     override suspend fun getReviewsByUser(userId: String, currentUserId: String): List<ReviewDto> {
         val snapshot = db.collection("reviews").whereEqualTo("userId", userId).get().await()
         return snapshot.documents.mapNotNull { doc ->
             doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
-        }.map { it.withCurrentUserInteraction(currentUserId) }
+        }.map { it.withUserRating(currentUserId).withCurrentUserLike(currentUserId) }
     }
 
     override suspend fun getReviewById(
@@ -42,7 +42,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         val doc = db.collection("reviews").document(id).get().await()
         val review = doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
             ?: throw Exception("Reseña no encontrada")
-        return review.withCurrentUserInteraction(currentUserId)
+        return review.withUserRating(currentUserId).withCurrentUserLike(currentUserId)
     }
 
     override suspend fun updateReview(
@@ -121,8 +121,6 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
     }
 
     override suspend fun toggleLike(reviewId: String, userId: String) {
-        require(userId.isNotBlank()) { "Inicia sesión para dar me gusta a una reseña." }
-
         val reviewRef = db.collection("reviews").document(reviewId)
         val likeRef = reviewRef.collection("likes").document(userId)
 
@@ -152,7 +150,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
                         val reviews = snapshot.documents.mapNotNull { doc ->
                             doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
                         }
-                            .map { it.withCurrentUserInteraction(currentUserId) }
+                            .map { it.withUserRating(currentUserId).withCurrentUserLike(currentUserId) }
                         trySend(reviews).isSuccess
                     } catch (exception: Exception) {
                         close(exception)
@@ -164,8 +162,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
     }
 
     override fun listenReviewsByUser(
-        userId: String,
-        currentUserId: String
+        userId: String
     ): Flow<List<ReviewDto>> = callbackFlow {
         val registration = db.collection("reviews")
             .whereEqualTo("userId", userId)
@@ -175,25 +172,19 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
                     return@addSnapshotListener
                 }
                 if (snapshot != null) {
-                    launch {
-                        try {
-                            val reviews = snapshot.documents.mapNotNull { doc ->
-                                doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
-                            }
-                                .map { it.withCurrentUserInteraction(currentUserId) }
-                            trySend(reviews).isSuccess
-                        } catch (exception: Exception) {
-                            close(exception)
-                        }
+                    val resenas = snapshot.documents.map { doc ->
+                        val resena = doc.toObject(ReviewDto::class.java)
+                        resena?.copy(id = doc.id)
+                            ?: throw Exception("Reseña no encontrada")
                     }
+                    trySend(resenas).isSuccess
                 }
             }
         awaitClose { registration.remove() }
     }
 
     override fun listenReviewById(
-        id: String,
-        currentUserId: String
+        id: String
     ): Flow<ReviewDto?> = callbackFlow {
         val registration = db.collection("reviews").document(id)
             .addSnapshotListener { snapshot, error ->
@@ -202,28 +193,27 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
                     return@addSnapshotListener
                 }
                 if (snapshot != null) {
-                    launch {
-                        try {
-                            val review = snapshot.toObject(ReviewDto::class.java)
-                                ?.copy(id = snapshot.id)
-                                ?.withCurrentUserInteraction(currentUserId)
-                            trySend(review).isSuccess
-                        } catch (exception: Exception) {
-                            close(exception)
-                        }
-                    }
+                    val resena = snapshot.toObject(ReviewDto::class.java)
+                        ?.copy(id = snapshot.id)
+                    trySend(resena).isSuccess
                 }
             }
         awaitClose { registration.remove() }
     }
 
-    private suspend fun ReviewDto.withCurrentUserInteraction(userId: String): ReviewDto {
+    private suspend fun ReviewDto.withUserRating(userId: String): ReviewDto {
         if (userId.isBlank()) return this
-        val reviewRef = db.collection("reviews").document(id)
-        val rating = reviewRef.collection("ratings").document(userId)
+        val rating = db.collection("reviews").document(id)
+            .collection("ratings").document(userId)
             .get().await().getLong("rating")?.toInt() ?: 0
-        val liked = reviewRef.collection("likes").document(userId)
+        return copy(userRating = rating)
+    }
+
+    private suspend fun ReviewDto.withCurrentUserLike(userId: String): ReviewDto {
+        if (userId.isBlank()) return this
+        val liked = db.collection("reviews").document(id)
+            .collection("likes").document(userId)
             .get().await().exists()
-        return copy(userRating = rating, likedByCurrentUser = liked)
+        return copy(liked = liked)
     }
 }

@@ -41,7 +41,7 @@ fun BusquedaPerfilScreen(
     modifier: Modifier = Modifier,
     viewModel: BusquedaPerfilViewModel = hiltViewModel(),
     reviewPressed: (String) -> Unit = {},
-    connectionsPressed: (String, Boolean) -> Unit = { _, _ -> }
+    onConnectionsClick: (idUsuario: String, esListaSeguidores: Boolean) -> Unit = { _, _ -> }
 ){
     val uiState by viewModel.uiState.collectAsState()
 
@@ -72,8 +72,8 @@ fun BusquedaPerfilScreen(
             },
             onLikeReview = viewModel::toggleReviewLike,
             isUpdatingReviewLike = uiState.isUpdatingReviewLike,
-            onConnectionsClick = { followers ->
-                connectionsPressed(userId, followers)
+            onConnectionsClick = { esListaSeguidores ->
+                onConnectionsClick(userId, esListaSeguidores)
             }
         )
     }
@@ -96,7 +96,7 @@ fun BodyBusquedaPerfilScreen(
     onRateReview: (String, Int) -> Unit = { _, _ -> },
     onLikeReview: (String) -> Unit = {},
     isUpdatingReviewLike: Boolean = false,
-    onConnectionsClick: (Boolean) -> Unit = {},
+    onConnectionsClick: (esListaSeguidores: Boolean) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
