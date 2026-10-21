@@ -123,7 +123,7 @@ fun CajaReview(
                     painter = painterResource(R.drawable.iconolike),
                     contentDescription = "Me gusta",
                     modifier = Modifier.size(18.dp),
-                    tint = Color(0xFFE53935)
+                    tint = primaryContainerLight
                 )
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(text = likes.toString(), fontSize = 14.sp)

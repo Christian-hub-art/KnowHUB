@@ -48,7 +48,7 @@ class ReviewRepository @Inject constructor(
 
     fun getReviewsByUserLive(userId: String): Flow<List<Review>> =
         reviewRemoteDataSource
-            .listenReviewsByUser(userId, authRemoteDataSource.currentUser?.uid.orEmpty())
+            .listenReviewsByUser(userId)
             .map { reviews -> reviews.map { it.toReview() } }
 
     suspend fun getReviewById(id: String): Result<Review> {
@@ -66,7 +66,7 @@ class ReviewRepository @Inject constructor(
 
     fun getReviewLive(id: String): Flow<Review?> =
         reviewRemoteDataSource
-            .listenReviewById(id, authRemoteDataSource.currentUser?.uid.orEmpty())
+            .listenReviewById(id)
             .map { it?.toReview() }
 
     suspend fun rateReview(reviewId: String, rating: Int): Result<Unit> {

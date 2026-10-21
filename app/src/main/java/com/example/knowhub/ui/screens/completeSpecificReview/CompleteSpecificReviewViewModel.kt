@@ -7,7 +7,6 @@ import com.example.knowhub.data.datasource.repository.CommentRepository
 import com.example.knowhub.data.datasource.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -23,8 +22,6 @@ class CompleteSpecificReviewViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CompleteSpecificReviewState())
     val uiState: StateFlow<CompleteSpecificReviewState> = _uiState
-    private var reviewListenerJob: Job? = null
-    private var listeningReviewId: String? = null
 
     init {
         _uiState.update { it.copy(currentUserId = authRepository.currentUser?.uid ?: "") }
@@ -68,10 +65,7 @@ class CompleteSpecificReviewViewModel @Inject constructor(
     }
 
     fun getReviewById(reviewId: String) {
-        if (listeningReviewId == reviewId && reviewListenerJob?.isActive == true) return
-        listeningReviewId = reviewId
-        reviewListenerJob?.cancel()
-        reviewListenerJob = viewModelScope.launch {
+        viewModelScope.launch {
             reviewRepository.getReviewLive(reviewId)
                 .catch { error ->
                     _uiState.update {
@@ -90,7 +84,7 @@ class CompleteSpecificReviewViewModel @Inject constructor(
                         )
                     }
                 }
-            }
+        }
     }
 
     fun getComments(reviewId: String) {

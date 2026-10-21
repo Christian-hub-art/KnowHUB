@@ -19,7 +19,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
@@ -32,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.data.Review
 import com.example.knowhub.ui.theme.*
+import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
 
 import com.example.knowhub.ui.utils.generarEstrellas
@@ -124,13 +124,13 @@ fun Review(
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.iconolike),
-                                contentDescription = if (review.likedByCurrentUser) {
+                                contentDescription = if (review.liked) {
                                     "Quitar me gusta"
                                 } else {
                                     "Me gusta"
                                 },
                                 modifier = Modifier.fillMaxSize(),
-                                tint = if (review.likedByCurrentUser) Color(0xFFE53935) else Color.Unspecified
+                                tint = primaryContainerLight
                             )
                         }
                         Text(

@@ -8,7 +8,6 @@ import com.example.knowhub.data.datasource.repository.UserRepository
 import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +25,6 @@ class ReviewViewModel @Inject constructor(
     // Encapsulamiento: Mutable privado, Inmutable expuesto
     private val _uiState = MutableStateFlow(ReviewState())
     val uiState: StateFlow<ReviewState> = _uiState.asStateFlow()
-    private var reviewsListenerJob: Job? = null
 
     fun deleteReview(reviewId: String) {
         viewModelScope.launch {
@@ -56,29 +54,26 @@ class ReviewViewModel @Inject constructor(
                 _uiState.update { it.copy(usuario = userResult.getOrNull()?.userName ?: "") }
             }
 
-            if (reviewsListenerJob?.isActive == true) return@launch
-            reviewsListenerJob = viewModelScope.launch {
-                reviewRepository.getReviewsByUserLive(userId)
-                    .catch { error ->
-                        _uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                mostrarMensajeError = true,
-                                errorMessage = error.message ?: "No se pudieron actualizar las reseñas"
-                            )
-                        }
+            reviewRepository.getReviewsByUserLive(userId)
+                .catch { error ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            mostrarMensajeError = true,
+                            errorMessage = error.message ?: "No se pudieron actualizar las reseñas"
+                        )
                     }
-                    .collect { reviews ->
-                        _uiState.update {
-                            it.copy(
-                                reviews = reviews,
-                                isLoading = false,
-                                mostrarMensajeError = false,
-                                errorMessage = ""
-                            )
-                        }
+                }
+                .collect { reviews ->
+                    _uiState.update {
+                        it.copy(
+                            reviews = reviews,
+                            isLoading = false,
+                            mostrarMensajeError = false,
+                            errorMessage = ""
+                        )
                     }
-            }
+                }
         }
     }
 }

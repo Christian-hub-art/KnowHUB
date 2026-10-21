@@ -7,7 +7,6 @@ import com.example.knowhub.data.datasource.repository.UserRepository
 import com.example.knowhub.data.local.localGeneralReviewProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -22,7 +21,6 @@ class CompleteReviewsViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CompleteReviewsState())
     val uiState: StateFlow<CompleteReviewsState> = _uiState
-    private var reviewsListenerJob: Job? = null
     private var loadedFollowingIds = false
 
     fun loadData(generalReviewId: Int) {
@@ -57,9 +55,7 @@ class CompleteReviewsViewModel @Inject constructor(
             }
         }
 
-        if (reviewsListenerJob?.isActive == true) return
-
-        reviewsListenerJob = viewModelScope.launch {
+        viewModelScope.launch {
             reviewRepository.getReviewsLive()
                 .catch { error ->
                     _uiState.update {
