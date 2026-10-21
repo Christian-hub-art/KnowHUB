@@ -46,12 +46,10 @@ class ReviewRetrofitDataSourceImpl @Inject constructor(
     }
 
     override fun listenReviewsByUser(
-        userId: String,
-        currentUserId: String
+        userId: String
     ): Flow<List<ReviewDto>> = TODO("Not yet implemented")
 
     override fun listenReviewById(
-        id: String,
-        currentUserId: String
+        id: String
     ): Flow<ReviewDto?> = TODO("Not yet implemented")
 }

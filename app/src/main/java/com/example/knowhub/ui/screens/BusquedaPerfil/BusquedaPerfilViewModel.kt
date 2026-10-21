@@ -7,7 +7,6 @@ import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,8 +24,6 @@ class BusquedaPerfilViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(BusquedaPerfilState())
     val uiState: StateFlow<BusquedaPerfilState> = _uiState.asStateFlow()
-    private var reviewsListenerJob: Job? = null
-    private var listeningReviewsForUserId: String? = null
 
     fun getUserProfile(userId: String) {
         val currentUserId = authRepository.currentUser?.uid.orEmpty()
@@ -149,10 +146,7 @@ class BusquedaPerfilViewModel @Inject constructor(
     }
 
     fun getUserReviews(userId: String) {
-        if (listeningReviewsForUserId == userId && reviewsListenerJob?.isActive == true) return
-        listeningReviewsForUserId = userId
-        reviewsListenerJob?.cancel()
-        reviewsListenerJob = viewModelScope.launch {
+        viewModelScope.launch {
             reviewRepository.getReviewsByUserLive(userId)
                 .catch { error ->
                     _uiState.update {
@@ -171,6 +165,6 @@ class BusquedaPerfilViewModel @Inject constructor(
                         )
                     }
                 }
-            }
+        }
     }
 }

@@ -32,7 +32,7 @@ import com.example.knowhub.ui.utils.ProfileAsyncImage
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    connectionsPressed: (String, Boolean) -> Unit = { _, _ -> },
+    onConnectionsClick: (idUsuario: String, esListaSeguidores: Boolean) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -47,9 +47,9 @@ fun ProfileScreen(
             state.errorMessageGuardar,
             state.mostrarMensajeErrorGuardar,
             state.profileImageUrl,
-            state.followingCount,
-            state.followersCount,
-            state.reviewedSubjectsCount,
+            state.cantidadSeguidos,
+            state.cantidadSeguidores,
+            state.cantidadMateriasResenadas,
             state.errorMessageCarga,
             state.mostrarMensajeErrorCarga,
             onNombreChange = {viewModel.updateNombre(it)},
@@ -58,8 +58,8 @@ fun ProfileScreen(
             eliminarcuentaBottonPressed = {viewModel.eliminarcuentaBottonPressed()},
             cambiarcontraseñaBottonPressed = {viewModel.cambiarcontraseñaBottonPressed()},
             cambiarCorreoBottonPressed = {viewModel.cambiairCorreoBottonPressed()},
-            connectionsPressed = { followers ->
-                connectionsPressed(state.userId, followers)
+            onConnectionsClick = { esListaSeguidores ->
+                onConnectionsClick(state.userId, esListaSeguidores)
             }
         )
 
@@ -73,9 +73,9 @@ fun BodyProfileScreen(
     errorMessageGuardar: String,
     mostrarMensajeErrorGuardar: Boolean,
     profileImage: String?,
-    followingCount: Int,
-    followersCount: Int,
-    reviewedSubjectsCount: Int,
+    cantidadSeguidos: Int,
+    cantidadSeguidores: Int,
+    cantidadMateriasResenadas: Int,
     errorMessageCarga: String,
     mostrarMensajeErrorCarga: Boolean,
     onNombreChange: (String) -> Unit,
@@ -84,7 +84,7 @@ fun BodyProfileScreen(
     eliminarcuentaBottonPressed: () -> Unit = {},
     cambiarcontraseñaBottonPressed: () -> Unit = {},
     cambiarCorreoBottonPressed: () -> Unit = {},
-    connectionsPressed: (Boolean) -> Unit = {},
+    onConnectionsClick: (esListaSeguidores: Boolean) -> Unit = {},
     modifier: Modifier = Modifier
 ){
     Column(
@@ -112,12 +112,12 @@ fun BodyProfileScreen(
         )
 
         CuadrosInformacionPerfil(
-            seguidos = followingCount,
-            materiasResenadas = reviewedSubjectsCount,
-            seguidores = followersCount,
+            seguidos = cantidadSeguidos,
+            materiasResenadas = cantidadMateriasResenadas,
+            seguidores = cantidadSeguidores,
             modifier = Modifier.width(320.dp),
-            onFollowingClick = { connectionsPressed(false) },
-            onFollowersClick = { connectionsPressed(true) }
+            onFollowingClick = { onConnectionsClick(false) },
+            onFollowersClick = { onConnectionsClick(true) }
         )
 
         Spacer(modifier = Modifier.weight(10.0F))

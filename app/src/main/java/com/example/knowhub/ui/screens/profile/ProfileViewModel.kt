@@ -9,7 +9,6 @@ import com.example.knowhub.data.datasource.repository.StorageRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -30,7 +29,6 @@ class ProfileViewModel @Inject constructor(
     ))
 
     val uiState: StateFlow<ProfileState> = _uiState
-    private var reviewsListenerJob: Job? = null
 
     init {
         getUser()
@@ -52,34 +50,32 @@ class ProfileViewModel @Inject constructor(
                         userId = userId,
                         nombre = user?.userName ?: "",
                         profileImageUrl = user?.foto?.ifBlank { null } ?: it.profileImageUrl,
-                        followingCount = user?.followingCount ?: 0,
-                        followersCount = user?.followersCount ?: 0,
+                        cantidadSeguidos = user?.followingCount ?: 0,
+                        cantidadSeguidores = user?.followersCount ?: 0,
                         isLoading = false
                     )
                 }
-                if (reviewsListenerJob?.isActive != true) {
-                    reviewsListenerJob = viewModelScope.launch {
-                        reviewRepository.getReviewsByUserLive(userId)
-                            .catch { error ->
-                                _uiState.update {
-                                    it.copy(
-                                        mostrarMensajeErrorCarga = true,
-                                        errorMessageCarga = error.message
-                                            ?: "No se pudieron actualizar las materias reseñadas"
-                                    )
-                                }
+                viewModelScope.launch {
+                    reviewRepository.getReviewsByUserLive(userId)
+                        .catch { error ->
+                            _uiState.update {
+                                it.copy(
+                                    mostrarMensajeErrorCarga = true,
+                                    errorMessageCarga = error.message
+                                        ?: "No se pudieron actualizar las materias reseñadas"
+                                )
                             }
-                            .collect { reviews ->
-                                _uiState.update {
-                                    it.copy(
-                                        reviewedSubjectsCount = reviews
-                                            .map { review -> review.nombreAsignatura }
-                                            .distinct()
-                                            .size
-                                    )
-                                }
+                        }
+                        .collect { reviews ->
+                            val materiasResenadas = reviews.map { review ->
+                                review.nombreAsignatura
                             }
-                    }
+                            val materiasUnicas = materiasResenadas.distinct()
+                            val cantidadMateriasResenadas = materiasUnicas.size
+                            _uiState.update {
+                                it.copy(cantidadMateriasResenadas = cantidadMateriasResenadas)
+                            }
+                        }
                 }
             } else {
                 _uiState.update {

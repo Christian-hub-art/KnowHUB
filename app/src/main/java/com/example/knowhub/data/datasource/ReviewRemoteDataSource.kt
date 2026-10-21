@@ -18,7 +18,7 @@ interface ReviewRemoteDataSource {
     suspend fun rateReview(reviewId: String, userId: String, rating: Int): Unit
     suspend fun toggleLike(reviewId: String, userId: String): Unit
     fun listenAllReviews(currentUserId: String = ""): Flow<List<ReviewDto>>
-    fun listenReviewsByUser(userId: String, currentUserId: String = ""): Flow<List<ReviewDto>>
-    fun listenReviewById(id: String, currentUserId: String = ""): Flow<ReviewDto?>
+    fun listenReviewsByUser(userId: String): Flow<List<ReviewDto>>
+    fun listenReviewById(id: String): Flow<ReviewDto?>
 
 }

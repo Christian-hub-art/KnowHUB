@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
@@ -122,7 +122,7 @@ fun Comment(
                                     "Dar me gusta"
                                 },
                                 modifier = Modifier.fillMaxSize(),
-                                tint = if (likedByCurrentUser) Color(0xFFE53935) else Color.Unspecified
+                                tint = primaryContainerLight
                             )
                         }
                         Spacer(modifier = Modifier.width(6.dp))
