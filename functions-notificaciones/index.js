@@ -1,73 +1,68 @@
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
-const { logger } = require("firebase-functions");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 
 initializeApp();
 
-// La app guarda el token con el campo FCMToken de RegisterUserDto;
-// Firestore lo puede escribir como "fcmtoken", así que se revisan ambos nombres.
-function obtenerToken(user) {
-  return user.FCMToken || user.fcmtoken || user.fcmToken || null;
-}
+const db = getFirestore();
 
-async function obtenerUserName(userId) {
-  const doc = await getFirestore().collection("users").doc(userId).get();
-  return (doc.exists && doc.data().userName) || "Alguien";
-}
-
-async function enviarNotificacion(userId, title, body) {
-  const userDoc = await getFirestore().collection("users").doc(userId).get();
-  if (!userDoc.exists) {
-    logger.info("El usuario no existe", { userId });
-    return;
-  }
-
-  const token = obtenerToken(userDoc.data());
-  if (!token) {
-    logger.info("El usuario no tiene token FCM", { userId });
-    return;
-  }
-
-  try {
-    await getMessaging().send({
-      token: token,
-      notification: { title: title, body: body },
-    });
-    logger.info("Notificación enviada", { userId });
-  } catch (error) {
-    logger.error("Error enviando la notificación", { userId, error: error.message });
-  }
-}
-
-exports.notificarNuevoSeguidor = onDocumentCreated(
+exports.sendFollowNotification = onDocumentCreated(
   "users/{userId}/followers/{followerId}",
   async (event) => {
-    const { userId, followerId } = event.params;
-    const nombre = await obtenerUserName(followerId);
+    const userId = event.params.userId;
+    const followerId = event.params.followerId;
 
-    await enviarNotificacion(userId, "Nuevo seguidor", `${nombre} empezó a seguirte`);
+    const userDoc = await db.collection("users").doc(userId).get();
+    const userData = userDoc.data();
+    const userToken = userData.fcmToken;
+
+    const followerDoc = await db.collection("users").doc(followerId).get();
+    const followerData = followerDoc.data();
+
+    if (userToken) {
+      const payload = {
+        token: userToken,
+        notification: {
+          title: "Nuevo seguidor",
+          body: `${followerData.userName} empezó a seguirte`,
+        },
+      };
+
+      await getMessaging().send(payload);
+    }
   }
 );
 
-exports.notificarLikeResena = onDocumentCreated(
+exports.sendLikeNotification = onDocumentCreated(
   "reviews/{reviewId}/likes/{userId}",
   async (event) => {
-    const { reviewId, userId } = event.params;
+    const reviewId = event.params.reviewId;
+    const userId = event.params.userId;
 
-    const reviewDoc = await getFirestore().collection("reviews").doc(reviewId).get();
-    if (!reviewDoc.exists) return;
+    const reviewDoc = await db.collection("reviews").doc(reviewId).get();
+    const reviewData = reviewDoc.data();
+    const autorId = reviewData.userId;
 
-    const review = reviewDoc.data();
-    const autorId = review.userId;
-    if (!autorId || autorId === userId) return;
+    if (autorId === userId) return;
 
-    const nombre = await obtenerUserName(userId);
-    await enviarNotificacion(
-      autorId,
-      "Nuevo like",
-      `A ${nombre} le gustó tu reseña de ${review.nombreAsignatura || "una materia"}`
-    );
+    const autorDoc = await db.collection("users").doc(autorId).get();
+    const autorData = autorDoc.data();
+    const autorToken = autorData.fcmToken;
+
+    const userDoc = await db.collection("users").doc(userId).get();
+    const userData = userDoc.data();
+
+    if (autorToken) {
+      const payload = {
+        token: autorToken,
+        notification: {
+          title: "Nuevo like",
+          body: `A ${userData.userName} le gustó tu reseña de ${reviewData.nombreAsignatura}`,
+        },
+      };
+
+      await getMessaging().send(payload);
+    }
   }
 );
