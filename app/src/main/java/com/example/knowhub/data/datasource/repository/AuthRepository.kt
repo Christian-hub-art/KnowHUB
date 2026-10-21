@@ -36,6 +36,10 @@ class AuthRepository @Inject constructor(
             Result.success(Unit)
         } catch (e: FirebaseAuthUserCollisionException) {
             Result.failure(Exception("El correo ya se encuentra registrado"))
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            Result.failure(Exception("La contraseña debe tener al menos 6 caracteres"))
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            Result.failure(Exception("El correo no es válido"))
         } catch (e: Exception) {
             Result.failure(Exception("Error al registrar usuario"))
         }
