@@ -24,24 +24,37 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
     }
 
 
-    override suspend fun getCommentsByReview(reviewId: String): List<CommentDto> {
+    override suspend fun getCommentsByReview(reviewId: String, currentUserId: String): List<CommentDto> {
         val snapshot = db.collection("comments").whereEqualTo("reviewId", reviewId).get().await()
         return snapshot.documents.mapNotNull { doc ->
             doc.toObject(CommentDto::class.java)?.copy(id = doc.id)
         }.filter { it.parentCommentId == null }
+            .map { marcarLike(it, currentUserId) }
     }
 
-    override suspend fun getCommentById(id: String): CommentDto {
+    override suspend fun getCommentById(id: String, currentUserId: String): CommentDto {
         val doc = db.collection("comments").document(id).get().await()
-        return doc.toObject(CommentDto::class.java)?.copy(id = doc.id)
+        val comment = doc.toObject(CommentDto::class.java)?.copy(id = doc.id)
             ?: throw Exception("Comentario no encontrado")
+        return marcarLike(comment, currentUserId)
     }
 
-    override suspend fun getReplies(commentId: String): List<CommentDto> {
+    override suspend fun getReplies(commentId: String, currentUserId: String): List<CommentDto> {
         val snapshot = db.collection("comments").whereEqualTo("parentCommentId", commentId).get().await()
         return snapshot.documents.mapNotNull { doc ->
             doc.toObject(CommentDto::class.java)?.copy(id = doc.id)
+        }.map { marcarLike(it, currentUserId) }
+    }
+
+    private suspend fun marcarLike(comment: CommentDto, currentUserId: String): CommentDto {
+        if (currentUserId.isNotEmpty()) {
+            val likeSnapshot = db.collection("comments").document(comment.id)
+                .collection("likes").document(currentUserId).get().await()
+            if (likeSnapshot.exists()) {
+                comment.liked = true
+            }
         }
+        return comment
     }
 
     override suspend fun deleteComment(id: String) {
@@ -75,5 +88,23 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
         for (reply in replies) {
             deleteThread(reply.id)
         }
+    }
+
+    override suspend fun sendOrDeleteCommentLike(commentId: String, userId: String) {
+        val commentRef = db.collection("comments").document(commentId)
+        val likesRef = commentRef.collection("likes").document(userId)
+
+        db.runTransaction { transaction ->
+
+            val likeDoc = transaction.get(likesRef)
+
+            if(likeDoc.exists()){
+                transaction.delete(likesRef)
+                transaction.update(commentRef, "likes", FieldValue.increment(-1))
+            }else{
+                transaction.set(likesRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
+                transaction.update(commentRef, "likes", FieldValue.increment(1))
+            }
+        }.await()
     }
 }

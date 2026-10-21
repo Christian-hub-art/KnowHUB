@@ -8,5 +8,6 @@ data class Comment(
     val likes: Int,
     val cantidadComentarios: Int,
     val userId: String = "",
-    val reviewId: String = ""
+    val reviewId: String = "",
+    val liked: Boolean = false
 )

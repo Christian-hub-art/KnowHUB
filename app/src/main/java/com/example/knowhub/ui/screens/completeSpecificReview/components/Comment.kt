@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
@@ -42,7 +44,9 @@ fun Comment(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     mostrarEliminar: Boolean = false,
-    onEliminarClick: () -> Unit = {}
+    onEliminarClick: () -> Unit = {},
+    liked: Boolean = false,
+    onLikeClick: () -> Unit = {}
 ) {
     Column(modifier = modifier) {
         Column(
@@ -106,12 +110,13 @@ fun Comment(
                 ) {// Reacción: Me gusta
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
-                            onClick = { /* Acción de Like */ },
+                            onClick = onLikeClick,
                             modifier = Modifier.size(30.dp)
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.iconolike),
-                                contentDescription = "Icono",
+                                contentDescription = "Me gusta",
+                                tint = if (liked) primaryContainerLight else LocalContentColor.current,
                                 modifier = Modifier.fillMaxSize()
                             )
                         }

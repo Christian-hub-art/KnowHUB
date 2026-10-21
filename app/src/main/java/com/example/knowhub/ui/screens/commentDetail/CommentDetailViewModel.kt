@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.commentDetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.knowhub.data.Comment
 import com.example.knowhub.data.datasource.repository.AuthRepository
 import com.example.knowhub.data.datasource.repository.CommentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -104,5 +105,32 @@ class CommentDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun sendOrDeleteCommentLike(commentId: String) {
+        val userId = _uiState.value.currentUserId
+        if (userId.isEmpty()) return
+        viewModelScope.launch {
+            val result = commentRepository.sendOrDeleteCommentLike(commentId, userId)
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        comment = it.comment?.let { c -> if (c.id == commentId) toggleLike(c) else c },
+                        replies = it.replies.map { r -> if (r.id == commentId) toggleLike(r) else r }
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeErrorComentario = true,
+                        errorMessageComentario = result.exceptionOrNull()?.message ?: "No se pudo registrar el like"
+                    )
+                }
+            }
+        }
+    }
+
+    private fun toggleLike(c: Comment): Comment {
+        return c.copy(liked = !c.liked, likes = if (c.liked) c.likes - 1 else c.likes + 1)
     }
 }

@@ -11,7 +11,8 @@ data class CommentDto(
     val fecha: String = "",
     val likes: Int = 0,
     val cantidadComentarios: Int = 0,     // respuestas directas que tiene
-    val user: ReviewUserDto = ReviewUserDto()
+    val user: ReviewUserDto = ReviewUserDto(),
+    var liked: Boolean = false
 )
 
 data class CreateCommentDto(
@@ -32,6 +33,7 @@ fun CommentDto.toComment(): Comment {
         likes = likes,
         cantidadComentarios = cantidadComentarios,
         userId = userId,
-        reviewId = reviewId
+        reviewId = reviewId,
+        liked = liked
     )
 }

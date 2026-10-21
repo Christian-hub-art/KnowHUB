@@ -146,4 +146,30 @@ class CompleteSpecificReviewViewModel @Inject constructor(
             }
         }
     }
+
+    fun sendOrDeleteCommentLike(commentId: String) {
+        val userId = _uiState.value.currentUserId
+        if (userId.isEmpty()) return
+        viewModelScope.launch {
+            val result = commentRepository.sendOrDeleteCommentLike(commentId, userId)
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        comments = it.comments.map { c ->
+                            if (c.id == commentId) {
+                                c.copy(liked = !c.liked, likes = if (c.liked) c.likes - 1 else c.likes + 1)
+                            } else c
+                        }
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeErrorComentario = true,
+                        errorMessageComentario = result.exceptionOrNull()?.message ?: "No se pudo registrar el like"
+                    )
+                }
+            }
+        }
+    }
 }
