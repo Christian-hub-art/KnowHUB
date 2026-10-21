@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
 import com.example.knowhub.ui.screens.profile.components.PickImageButton
+import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
@@ -122,12 +123,12 @@ fun BodyProfileScreen(
 
         Text(
             name,
-            fontFamily = ArvoFont,
+            fontFamily = BangersFont,
             fontSize = 18.sp
         )
         Text(
             correo,
-            fontFamily = ArvoFont,
+            fontFamily = BangersFont,
             fontSize = 14.sp
         )
 
