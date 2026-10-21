@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
+import com.example.knowhub.data.Comment as CommentData
 import com.example.knowhub.ui.screens.completeSpecificReview.components.Comment
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryContainerLight
@@ -45,97 +46,130 @@ fun CommentDetailScreen(
 
     Box(modifier = modifier) {
         BackgroundImage()
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                Spacer(modifier = Modifier.height(35.dp))
-                if (state.mostrarMensajeError) {
-                    Text(state.errorMessage)
-                }
-                val comment = state.comment
-                if (comment != null) {
-                    Comment(
-                        Fecha = comment.fecha,
-                        Estudiante = comment.estudiante,
-                        Comentario = comment.comentario,
-                        Likes = comment.likes,
-                        cantidadComentarios = comment.cantidadComentarios,
-                        modifier = Modifier.width(350.dp),
-                        mostrarEliminar = comment.userId.isNotEmpty() && comment.userId == state.currentUserId,
-                        onEliminarClick = { commentDetailViewModel.deleteComment(comment.id, commentId) },
-                        liked = comment.liked,
-                        onLikeClick = { commentDetailViewModel.sendOrDeleteCommentLike(comment.id) }
-                    )
+        BodyCommentDetailScreen(
+            comment = state.comment,
+            replies = state.replies,
+            currentUserId = state.currentUserId,
+            errorMessage = state.errorMessage,
+            mostrarMensajeError = state.mostrarMensajeError,
+            nuevoComentario = state.nuevoComentario,
+            errorMessageComentario = state.errorMessageComentario,
+            mostrarMensajeErrorComentario = state.mostrarMensajeErrorComentario,
+            onNuevoComentarioChange = { commentDetailViewModel.updateNuevoComentario(it) },
+            responderButtonPressed = { commentDetailViewModel.responderButtonPressed(commentId) },
+            commentPressed = commentPressed,
+            eliminarCommentPressed = { id -> commentDetailViewModel.deleteComment(id, commentId) },
+            likePressed = { id -> commentDetailViewModel.sendOrDeleteCommentLike(id) }
+        )
+    }
+}
 
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Column(
-                        modifier = Modifier.width(350.dp),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        FormTextField(
-                            value = state.nuevoComentario,
-                            onValueChange = { commentDetailViewModel.updateNuevoComentario(it) },
-                            placeholder = stringResource(R.string.escribe_tu_respuesta)
-                        )
-                        if (state.mostrarMensajeErrorComentario) {
-                            Text(state.errorMessageComentario)
-                        }
-                        Spacer(modifier = Modifier.height(10.dp))
-                        AppButton(
-                            stringResource(R.string.responder),
-                            primaryLight,
-                            primaryContainerLight,
-                            onClick = { commentDetailViewModel.responderButtonPressed(commentId) },
-                            modifier = Modifier
-                                .height(40.dp)
-                                .width(150.dp)
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(30.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .background(tertiaryContainerLight)
-                            .height(2.5.dp)
-                            .width(120.dp)
-                    ) {}
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = stringResource(R.string.respuestas),
-                        fontSize = 17.sp,
-                        fontFamily = BangersFont
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Box(
-                        modifier = Modifier
-                            .background(tertiaryContainerLight)
-                            .height(2.5.dp)
-                            .width(120.dp)
-                    ) {}
-                }
-                Spacer(modifier = Modifier.height(20.dp))
+@Composable
+fun BodyCommentDetailScreen(
+    comment: CommentData?,
+    replies: List<CommentData>,
+    currentUserId: String,
+    errorMessage: String = "",
+    mostrarMensajeError: Boolean = false,
+    nuevoComentario: String = "",
+    errorMessageComentario: String = "",
+    mostrarMensajeErrorComentario: Boolean = false,
+    onNuevoComentarioChange: (String) -> Unit = {},
+    responderButtonPressed: () -> Unit = {},
+    commentPressed: (String) -> Unit = {},
+    eliminarCommentPressed: (String) -> Unit = {},
+    likePressed: (String) -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        item {
+            Spacer(modifier = Modifier.height(35.dp))
+            if (mostrarMensajeError) {
+                Text(errorMessage)
             }
-
-            items(state.replies) { reply ->
+            if (comment != null) {
                 Comment(
-                    Fecha = reply.fecha,
-                    Estudiante = reply.estudiante,
-                    Comentario = reply.comentario,
-                    Likes = reply.likes,
-                    cantidadComentarios = reply.cantidadComentarios,
+                    Fecha = comment.fecha,
+                    Estudiante = comment.estudiante,
+                    Comentario = comment.comentario,
+                    Likes = comment.likes,
+                    cantidadComentarios = comment.cantidadComentarios,
                     modifier = Modifier.width(350.dp),
-                    onClick = { commentPressed(reply.id) },
-                    mostrarEliminar = reply.userId.isNotEmpty() && reply.userId == state.currentUserId,
-                    onEliminarClick = { commentDetailViewModel.deleteComment(reply.id, commentId) },
-                    liked = reply.liked,
-                    onLikeClick = { commentDetailViewModel.sendOrDeleteCommentLike(reply.id) }
+                    mostrarEliminar = comment.userId.isNotEmpty() && comment.userId == currentUserId,
+                    onEliminarClick = { eliminarCommentPressed(comment.id) },
+                    liked = comment.liked,
+                    onLikeClick = { likePressed(comment.id) }
                 )
+
                 Spacer(modifier = Modifier.height(20.dp))
+                Column(
+                    modifier = Modifier.width(350.dp),
+                    horizontalAlignment = Alignment.End
+                ) {
+                    FormTextField(
+                        value = nuevoComentario,
+                        onValueChange = onNuevoComentarioChange,
+                        placeholder = stringResource(R.string.escribe_tu_respuesta)
+                    )
+                    if (mostrarMensajeErrorComentario) {
+                        Text(errorMessageComentario)
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    AppButton(
+                        stringResource(R.string.responder),
+                        primaryLight,
+                        primaryContainerLight,
+                        onClick = responderButtonPressed,
+                        modifier = Modifier
+                            .height(40.dp)
+                            .width(150.dp)
+                    )
+                }
             }
+
+            Spacer(modifier = Modifier.height(30.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .background(tertiaryContainerLight)
+                        .height(2.5.dp)
+                        .width(120.dp)
+                ) {}
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = stringResource(R.string.respuestas),
+                    fontSize = 17.sp,
+                    fontFamily = BangersFont
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Box(
+                    modifier = Modifier
+                        .background(tertiaryContainerLight)
+                        .height(2.5.dp)
+                        .width(120.dp)
+                ) {}
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+
+        items(replies) { reply ->
+            Comment(
+                Fecha = reply.fecha,
+                Estudiante = reply.estudiante,
+                Comentario = reply.comentario,
+                Likes = reply.likes,
+                cantidadComentarios = reply.cantidadComentarios,
+                modifier = Modifier.width(350.dp),
+                onClick = { commentPressed(reply.id) },
+                mostrarEliminar = reply.userId.isNotEmpty() && reply.userId == currentUserId,
+                onEliminarClick = { eliminarCommentPressed(reply.id) },
+                liked = reply.liked,
+                onLikeClick = { likePressed(reply.id) }
+            )
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
