@@ -9,6 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -64,17 +66,24 @@ class CompleteSpecificReviewViewModel @Inject constructor(
 
     fun getReviewById(reviewId: String) {
         viewModelScope.launch {
-            val result = reviewRepository.getReviewById(reviewId)
-            if (result.isSuccess) {
-                _uiState.update { it.copy(review = result.getOrNull(), mostrarMensajeError = false) }
-            } else {
-                _uiState.update {
-                    it.copy(
-                        mostrarMensajeError = true,
-                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudo cargar la reseña"
-                    )
+            reviewRepository.getReviewLive(reviewId)
+                .catch { error ->
+                    _uiState.update {
+                        it.copy(
+                            mostrarMensajeError = true,
+                            errorMessage = error.message ?: "No se pudo actualizar la reseña"
+                        )
+                    }
                 }
-            }
+                .collect { review ->
+                    _uiState.update {
+                        it.copy(
+                            review = review,
+                            mostrarMensajeError = review == null,
+                            errorMessage = if (review == null) "Reseña no encontrada" else ""
+                        )
+                    }
+                }
         }
     }
 
@@ -83,6 +92,72 @@ class CompleteSpecificReviewViewModel @Inject constructor(
             val result = commentRepository.getCommentsByReview(reviewId)
             if (result.isSuccess) {
                 _uiState.update { it.copy(comments = result.getOrNull() ?: emptyList()) }
+            }
+        }
+    }
+
+    fun toggleCommentLike(commentId: String, reviewId: String) {
+        if (_uiState.value.isUpdatingCommentLike) return
+        viewModelScope.launch {
+            _uiState.update { it.copy(isUpdatingCommentLike = true, mostrarMensajeErrorComentario = false) }
+            val result = commentRepository.toggleLike(commentId)
+            if (result.isSuccess) {
+                val commentsResult = commentRepository.getCommentsByReview(reviewId)
+                val refreshError = commentsResult.exceptionOrNull()
+                _uiState.update {
+                    it.copy(
+                        comments = commentsResult.getOrNull() ?: it.comments,
+                        isUpdatingCommentLike = false,
+                        mostrarMensajeErrorComentario = refreshError != null,
+                        errorMessageComentario = refreshError?.message.orEmpty()
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isUpdatingCommentLike = false,
+                        mostrarMensajeErrorComentario = true,
+                        errorMessageComentario = result.exceptionOrNull()?.message
+                            ?: "No se pudo actualizar el me gusta."
+                    )
+                }
+            }
+        }
+    }
+
+    fun rateReview(reviewId: String, rating: Int) {
+        if (_uiState.value.isRating) return
+        viewModelScope.launch {
+            _uiState.update { it.copy(isRating = true, mostrarMensajeError = false) }
+            val result = reviewRepository.rateReview(reviewId, rating)
+            if (result.isSuccess) {
+                _uiState.update { it.copy(isRating = false) }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isRating = false,
+                        mostrarMensajeError = true,
+                        errorMessage = result.exceptionOrNull()?.message
+                            ?: "No se pudo guardar la calificación."
+                    )
+                }
+            }
+        }
+    }
+
+    fun toggleReviewLike(reviewId: String) {
+        if (_uiState.value.isUpdatingReviewLike) return
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isUpdatingReviewLike = true, mostrarMensajeError = false)
+            }
+            val result = reviewRepository.toggleLike(reviewId)
+            _uiState.update {
+                it.copy(
+                    isUpdatingReviewLike = false,
+                    mostrarMensajeError = result.isFailure,
+                    errorMessage = result.exceptionOrNull()?.message.orEmpty()
+                )
             }
         }
     }

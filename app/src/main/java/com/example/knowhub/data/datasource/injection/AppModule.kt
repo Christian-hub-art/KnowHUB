@@ -1,5 +1,8 @@
 package com.example.knowhub.data.datasource.injection
 
+import com.example.knowhub.data.datasource.services.CommentRetrofitService
+import com.example.knowhub.data.datasource.services.ReviewRetrofitService
+import com.example.knowhub.data.datasource.services.UserRetrofitService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,4 +25,19 @@ object AppModule {
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
     }
+
+    @Singleton
+    @Provides
+    fun provideUserRetrofitService(retrofit: Retrofit): UserRetrofitService =
+        retrofit.create(UserRetrofitService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideReviewRetrofitService(retrofit: Retrofit): ReviewRetrofitService =
+        retrofit.create(ReviewRetrofitService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideCommentRetrofitService(retrofit: Retrofit): CommentRetrofitService =
+        retrofit.create(CommentRetrofitService::class.java)
 }

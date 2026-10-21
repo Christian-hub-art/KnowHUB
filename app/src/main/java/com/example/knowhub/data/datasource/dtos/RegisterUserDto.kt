@@ -2,5 +2,6 @@ package com.example.knowhub.data.datasource.dtos
 
 data class RegisterUserDto(
     val name: String,
-    val userName: String
+    val userName: String,
+    val FCMToken: String
 )

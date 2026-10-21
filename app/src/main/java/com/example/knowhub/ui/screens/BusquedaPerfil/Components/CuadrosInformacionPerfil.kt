@@ -14,7 +14,9 @@ fun CuadrosInformacionPerfil(
     seguidos: Int,
     materiasResenadas: Int,
     seguidores: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onFollowingClick: () -> Unit = {},
+    onFollowersClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier,
@@ -24,7 +26,8 @@ fun CuadrosInformacionPerfil(
         MiniCuadroInformacion(
             tipo = stringResource(R.string.seguidos),
             numero = seguidos,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            onClick = onFollowingClick
         )
 
         // Bloque de métrica para materias evaluadas
@@ -38,7 +41,8 @@ fun CuadrosInformacionPerfil(
         MiniCuadroInformacion(
             tipo = stringResource(R.string.seguidores),
             numero = seguidores,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            onClick = onFollowersClick
         )
     }
 }

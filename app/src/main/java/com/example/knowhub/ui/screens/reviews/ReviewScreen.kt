@@ -120,9 +120,9 @@ fun BodyReviewScreen(
                     Materia = review.nombreAsignatura,
                     Profesor = review.nombreProfesor,
                     Reseña = review.descripcion,
-                    Calificacion = review.calificacion,
                     colorCaja = colorCaja,
                     colorTexto = colorTexto,
+                    likes = review.likes,
                     onClick = { reviewPressed(review.id) },
                     onEditarClick = { editarPressed(review.id) },
                     onEliminarClick = { eliminarPressed(review.id) }

@@ -64,7 +64,10 @@ fun CommentDetailScreen(
                         cantidadComentarios = comment.cantidadComentarios,
                         modifier = Modifier.width(350.dp),
                         mostrarEliminar = comment.userId.isNotEmpty() && comment.userId == state.currentUserId,
-                        onEliminarClick = { commentDetailViewModel.deleteComment(comment.id, commentId) }
+                        onEliminarClick = { commentDetailViewModel.deleteComment(comment.id, commentId) },
+                        likedByCurrentUser = comment.likedByCurrentUser,
+                        likeEnabled = !state.isUpdatingLike,
+                        onLikeClick = { commentDetailViewModel.toggleLike(comment.id) }
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -128,7 +131,10 @@ fun CommentDetailScreen(
                     modifier = Modifier.width(350.dp),
                     onClick = { commentPressed(reply.id) },
                     mostrarEliminar = reply.userId.isNotEmpty() && reply.userId == state.currentUserId,
-                    onEliminarClick = { commentDetailViewModel.deleteComment(reply.id, commentId) }
+                    onEliminarClick = { commentDetailViewModel.deleteComment(reply.id, commentId) },
+                    likedByCurrentUser = reply.likedByCurrentUser,
+                    likeEnabled = !state.isUpdatingLike,
+                    onLikeClick = { commentDetailViewModel.toggleLike(reply.id) }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
             }

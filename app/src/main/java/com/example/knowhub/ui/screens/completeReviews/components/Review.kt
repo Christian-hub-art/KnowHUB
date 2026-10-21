@@ -31,9 +31,8 @@ import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.data.Review
 import com.example.knowhub.ui.theme.*
+import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
-
-import com.example.knowhub.ui.utils.generarEstrellas
 import com.example.knowhub.ui.utils.ProfileAsyncImage
 //Componente que muestra el detalle de una reseña individual con sus métricas e interacciones
 
@@ -42,7 +41,9 @@ fun Review(
     review: Review,
     reviewPressed: (String) -> Unit,
     modifier: Modifier = Modifier,
-    autorPressed: (String) -> Unit = {}
+    autorPressed: (String) -> Unit = {},
+    onLikeClick: (String) -> Unit = {},
+    isUpdatingLike: Boolean = false
 ) {
     Column(modifier = modifier) {// Cabecera con datos del estudiante, fecha y calificación
         Row(
@@ -67,12 +68,6 @@ fun Review(
                 )
             }
             Spacer(modifier = Modifier.width(20.dp))
-
-            val estrellas= generarEstrellas(review.calificacion)
-            Text(
-                text = estrellas,
-                fontSize = 18.sp
-            )
         }
         Spacer(modifier = Modifier.height(6.dp))
         Column(// Tarjeta contenedora con la descripción y botones de interacción
@@ -106,28 +101,32 @@ fun Review(
                 Spacer(modifier = Modifier.height(20.dp))
                 Row( modifier= Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ) {// Botones de reacción (me gusta y comentarios)
+                ) {// Contador de likes y comentarios
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
-                            onClick = { /* Acción de Like */ },
+                            onClick = { onLikeClick(review.id) },
+                            enabled = !isUpdatingLike,
                             modifier = Modifier.size(30.dp)
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.iconolike),
-                                contentDescription = "Icono",
-                                modifier = Modifier.fillMaxSize()
+                                contentDescription = if (review.liked) {
+                                    "Quitar me gusta"
+                                } else {
+                                    "Me gusta"
+                                },
+                                modifier = Modifier.fillMaxSize(),
+                                tint = primaryContainerLight
                             )
                         }
-                        Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "( "+ review.likes + " )",
-                            fontSize = 17.sp,
+                            text = "( ${review.likes} )",
+                            fontSize = 15.sp,
                             fontFamily = BangersFont
                         )
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically,) {
+                        Spacer(modifier = Modifier.width(6.dp))
                         IconButton(
-                            onClick = { /* Acción de Like */ },
+                            onClick = { reviewPressed(review.id) },
                             modifier = Modifier.size(30.dp)
                         ) {
                             Icon(

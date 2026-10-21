@@ -1,5 +1,11 @@
 package com.example.knowhub
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,11 +18,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.knowhub.ui.Navegation.AppNavegation
@@ -28,6 +37,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun KnowHUBApp (){
+
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -36,6 +46,10 @@ fun KnowHUBApp (){
 
     val currentUser = FirebaseAuth.getInstance().currentUser
     val userId: String  = currentUser?.uid ?: ""
+    val context = LocalContext.current
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { }
 
     val showTopBar = currentRoute in listOf(
         Screens.Inicio.route,
@@ -46,13 +60,31 @@ fun KnowHUBApp (){
         Screens.EditReview.route,
         Screens.Busqueda.route,
         Screens.CompleteReviews.route,
-        Screens.BusquePerfil.route
+        Screens.BusquePerfil.route,
+        Screens.CompleteSpecificReview.route,
+        Screens.CommentDetail.route,
+        Screens.Connections.route
     )
 
     val showDrawer = currentRoute !in listOf(
         Screens.Start.route,
         Screens.Register.route
     )
+    LaunchedEffect(Unit) {
+        val preferences = context.getSharedPreferences("knowhub_preferences", 0)
+        val permissionRequested = preferences.getBoolean("notification_permission_requested", false)
+        if (!permissionRequested && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            preferences.edit().putBoolean("notification_permission_requested", true).apply()
+            if (
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
 
 
     if (showDrawer) {

@@ -84,10 +84,12 @@ fun AppButton(
     colorTexto: Color? =null,
     colorBoton: Color? = null,
     onClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             containerColor = colorBoton ?: MaterialTheme.colorScheme.primary
         ),

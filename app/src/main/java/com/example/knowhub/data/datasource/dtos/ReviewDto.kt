@@ -18,9 +18,13 @@ data class ReviewDto(
     val descripcion: String = "",
     val calificacion: Int = 0,
     val likes: Int = 0,
+    val ratingTotal: Long = 0,
+    val ratingCount: Int = 0,
+    val userRating: Int = 0,
     val cantidadComentarios: Int = 0,
     val fechaPublicacion: String = "",
-    val user: ReviewUserDto = ReviewUserDto()
+    val user: ReviewUserDto = ReviewUserDto(),
+    val liked: Boolean = false
 )
 
 data class CreateReviewDto(
@@ -42,9 +46,17 @@ fun ReviewDto.toReview(): Review {
         fechaPublicacion = fechaPublicacion,
         calificacion = calificacion,
         likes = likes,
+        liked = liked,
         cantidadComentarios = cantidadComentarios,
         clase = clase,
         fotoAutor = user.profileImage,
-        userId = userId
+        userId = userId,
+        ratingAverage = if (ratingCount == 0) 0.0 else ratingTotal.toDouble() / ratingCount,
+        ratingCount = ratingCount,
+        userRating = userRating
     )
 }
+
+data class ReviewRatingDto(
+    val rating: Int = 0
+)

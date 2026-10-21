@@ -36,19 +36,24 @@ El sistema busca ayudar a los estudiantes a tomar decisiones informadas sobre qu
 ### 💬 Comentarios e Interacciones
 - Comentarios en reseñas de otros usuarios, con hilos de respuestas (más de un comentario por reseña/usuario).
 - Visualización de todos los comentarios de una reseña.
-- "Me gusta" en reseñas y en comentarios, con conteo visible.
+- Dar y quitar "Me gusta" a comentarios, con un único like por usuario y contador actualizado.
+- Calificación de reseñas con estrellas (de 1 a 5) por usuario, con promedio y cantidad de calificaciones visibles.
 - Edición y eliminación de comentarios propios.
 - Al eliminar un comentario con respuestas, este se reemplaza por el mensaje **"Comentario eliminado por el usuario"**, conservando las respuestas visibles.
 
 ### 📰 Feed Principal
-- Feed con las reseñas más recientes de los usuarios seguidos, ordenado por fecha descendente.
+- Reseñas actualizadas en tiempo real desde Firestore.
+- Filtro para mostrar todas las reseñas o solo las de usuarios seguidos.
 - Acceso directo al perfil del autor y al detalle de la materia desde el feed.
 
 ### 🔔 Notificaciones
 - Notificación al obtener un nuevo seguidor.
 - Notificación al recibir un comentario en una reseña.
-- Notificación al recibir un "Me gusta" en una reseña o en un comentario.
-- Historial de notificaciones.
+- Notificación al recibir un "Me gusta" en un comentario y al recibir una calificación con estrellas.
+- Historial de notificaciones sincronizado en tiempo real desde Firestore.
+- Envío push mediante Cloud Functions y Firebase Cloud Messaging.
+
+Para desplegar el envío push, instala las dependencias desde `functions` y despliega con Firebase CLI (`firebase deploy --only functions --project <id-proyecto>`). El proyecto Firebase debe tener Firestore y Cloud Messaging habilitados; cada cuenta registra tokens en `users/{userId}/fcmTokens`.
 
 ### ✅ Validaciones
 - Formato válido de correo electrónico.

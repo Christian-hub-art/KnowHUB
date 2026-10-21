@@ -57,6 +57,10 @@ fun CuadroNotificacion(
             colorNotificacion = tertiaryLight
             idImagen= R.drawable.iconolike
         }
+        "rating" -> {
+            colorNotificacion = secondaryContainerLight
+            idImagen = R.drawable.iconolike
+        }
         //Caso default, tipo de notificacion invalido
         else -> {
             colorNotificacion = tertiaryContainerLight

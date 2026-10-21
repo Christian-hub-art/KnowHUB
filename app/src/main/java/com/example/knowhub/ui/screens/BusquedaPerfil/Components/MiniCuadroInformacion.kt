@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.BusquedaPerfil.Components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,10 +16,11 @@ import com.example.knowhub.ui.theme.BangersFont
 fun MiniCuadroInformacion(
     tipo: String,
     numero: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null
 ) {
     Column(
-        modifier = modifier,
+        modifier = if (onClick != null) modifier.clickable(onClick = onClick) else modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -37,4 +39,3 @@ fun MiniCuadroInformacion(
         )
     }
 }
-

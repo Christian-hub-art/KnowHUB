@@ -10,6 +10,8 @@ import com.example.knowhub.data.datasource.dtos.CreateReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewUserDto
 import com.example.knowhub.data.datasource.dtos.toReview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ReviewRepository @Inject constructor(
@@ -21,7 +23,9 @@ class ReviewRepository @Inject constructor(
 
     suspend fun getReviews(): Result<List<Review>> {
         return try {
-            val reviews = reviewRemoteDataSource.getAllReviews()
+            val reviews = reviewRemoteDataSource.getAllReviews(
+                authRemoteDataSource.currentUser?.uid.orEmpty()
+            )
             Result.success(reviews.map { it.toReview() })
         } catch (e: Exception) {
             Log.d("TAG", "getReviews: ${e.message}")
@@ -31,7 +35,10 @@ class ReviewRepository @Inject constructor(
 
     suspend fun getReviewsByUser(userId: String): Result<List<Review>> {
         return try {
-            val reviews = reviewRemoteDataSource.getReviewsByUser(userId)
+            val reviews = reviewRemoteDataSource.getReviewsByUser(
+                userId,
+                authRemoteDataSource.currentUser?.uid.orEmpty()
+            )
             Result.success(reviews.map { it.toReview() })
         } catch (e: Exception) {
             Log.d("TAG", "getReviewsByUser: ${e.message}")
@@ -39,12 +46,49 @@ class ReviewRepository @Inject constructor(
         }
     }
 
+    fun getReviewsByUserLive(userId: String): Flow<List<Review>> =
+        reviewRemoteDataSource
+            .listenReviewsByUser(userId)
+            .map { reviews -> reviews.map { it.toReview() } }
+
     suspend fun getReviewById(id: String): Result<Review> {
         return try {
-            val review = reviewRemoteDataSource.getReviewById(id)
+            val review = reviewRemoteDataSource.getReviewById(
+                id,
+                authRemoteDataSource.currentUser?.uid.orEmpty()
+            )
             Result.success(review.toReview())
         } catch (e: Exception) {
             Log.d("TAG", "getReviewById: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    fun getReviewLive(id: String): Flow<Review?> =
+        reviewRemoteDataSource
+            .listenReviewById(id)
+            .map { it?.toReview() }
+
+    suspend fun rateReview(reviewId: String, rating: Int): Result<Unit> {
+        val userId = authRemoteDataSource.currentUser?.uid
+            ?: return Result.failure(IllegalStateException("Inicia sesión para calificar una reseña."))
+        return try {
+            reviewRemoteDataSource.rateReview(reviewId, userId, rating)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("TAG", "rateReview: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun toggleLike(reviewId: String): Result<Unit> {
+        val userId = authRemoteDataSource.currentUser?.uid
+            ?: return Result.failure(IllegalStateException("Inicia sesión para dar me gusta a una reseña."))
+        return try {
+            reviewRemoteDataSource.toggleLike(reviewId, userId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("ReviewRepository", "toggleLike: ${e.message}")
             Result.failure(e)
         }
     }
@@ -116,4 +160,8 @@ class ReviewRepository @Inject constructor(
             Result.failure(e)
         }
     }
+    fun getReviewsLive(): Flow<List<Review>> =
+        reviewRemoteDataSource
+            .listenAllReviews(authRemoteDataSource.currentUser?.uid.orEmpty())
+            .map { reviews -> reviews.map { it.toReview() } }
 }

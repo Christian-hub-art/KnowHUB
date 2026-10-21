@@ -18,11 +18,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
 import com.example.knowhub.ui.screens.profile.components.PickImageButton
+import com.example.knowhub.ui.screens.BusquedaPerfil.Components.CuadrosInformacionPerfil
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
@@ -32,6 +32,7 @@ import com.example.knowhub.ui.utils.ProfileAsyncImage
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
+    onConnectionsClick: (idUsuario: String, esListaSeguidores: Boolean) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -46,6 +47,9 @@ fun ProfileScreen(
             state.errorMessageGuardar,
             state.mostrarMensajeErrorGuardar,
             state.profileImageUrl,
+            state.cantidadSeguidos,
+            state.cantidadSeguidores,
+            state.cantidadMateriasResenadas,
             state.errorMessageCarga,
             state.mostrarMensajeErrorCarga,
             onNombreChange = {viewModel.updateNombre(it)},
@@ -53,8 +57,10 @@ fun ProfileScreen(
             cancelarBottonPressed = {viewModel.cancelarBottonPressed()},
             eliminarcuentaBottonPressed = {viewModel.eliminarcuentaBottonPressed()},
             cambiarcontraseñaBottonPressed = {viewModel.cambiarcontraseñaBottonPressed()},
-            cambiarCorreoBottonPressed = {viewModel.cambiairCorreoBottonPressed()}
-
+            cambiarCorreoBottonPressed = {viewModel.cambiairCorreoBottonPressed()},
+            onConnectionsClick = { esListaSeguidores ->
+                onConnectionsClick(state.userId, esListaSeguidores)
+            }
         )
 
     }
@@ -67,6 +73,9 @@ fun BodyProfileScreen(
     errorMessageGuardar: String,
     mostrarMensajeErrorGuardar: Boolean,
     profileImage: String?,
+    cantidadSeguidos: Int,
+    cantidadSeguidores: Int,
+    cantidadMateriasResenadas: Int,
     errorMessageCarga: String,
     mostrarMensajeErrorCarga: Boolean,
     onNombreChange: (String) -> Unit,
@@ -75,6 +84,7 @@ fun BodyProfileScreen(
     eliminarcuentaBottonPressed: () -> Unit = {},
     cambiarcontraseñaBottonPressed: () -> Unit = {},
     cambiarCorreoBottonPressed: () -> Unit = {},
+    onConnectionsClick: (esListaSeguidores: Boolean) -> Unit = {},
     modifier: Modifier = Modifier
 ){
     Column(
@@ -99,6 +109,15 @@ fun BodyProfileScreen(
         ProfileAsyncImage(
             profileImage = profileImage,
             size = 200
+        )
+
+        CuadrosInformacionPerfil(
+            seguidos = cantidadSeguidos,
+            materiasResenadas = cantidadMateriasResenadas,
+            seguidores = cantidadSeguidores,
+            modifier = Modifier.width(320.dp),
+            onFollowingClick = { onConnectionsClick(false) },
+            onFollowersClick = { onConnectionsClick(true) }
         )
 
         Spacer(modifier = Modifier.weight(10.0F))

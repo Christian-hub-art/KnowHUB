@@ -45,6 +45,38 @@ class CommentDetailViewModel @Inject constructor(
         }
     }
 
+    fun toggleLike(commentId: String) {
+        if (_uiState.value.isUpdatingLike) return
+        viewModelScope.launch {
+            val threadId = _uiState.value.comment?.id ?: return@launch
+            _uiState.update { it.copy(isUpdatingLike = true, mostrarMensajeError = false) }
+            val result = commentRepository.toggleLike(commentId)
+            if (result.isSuccess) {
+                val commentResult = commentRepository.getCommentById(threadId)
+                val repliesResult = commentRepository.getReplies(threadId)
+                val refreshError = commentResult.exceptionOrNull() ?: repliesResult.exceptionOrNull()
+                _uiState.update {
+                    it.copy(
+                        comment = commentResult.getOrNull() ?: it.comment,
+                        replies = repliesResult.getOrNull() ?: it.replies,
+                        isUpdatingLike = false,
+                        mostrarMensajeError = refreshError != null,
+                        errorMessage = refreshError?.message.orEmpty()
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isUpdatingLike = false,
+                        mostrarMensajeError = true,
+                        errorMessage = result.exceptionOrNull()?.message
+                            ?: "No se pudo actualizar el me gusta."
+                    )
+                }
+            }
+        }
+    }
+
     fun updateNuevoComentario(input: String) {
         _uiState.update { it.copy(nuevoComentario = input, mostrarMensajeErrorComentario = false) }
     }

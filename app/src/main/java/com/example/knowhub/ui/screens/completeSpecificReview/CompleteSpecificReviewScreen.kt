@@ -66,7 +66,13 @@ fun CompleteSpecificReviewScreen(
             currentUserId = state.currentUserId,
             commentPressed = commentPressed,
             eliminarReviewPressed = { completeSpecificReviewViewModel.deleteReview(reviewId) },
-            eliminarCommentPressed = { commentId -> completeSpecificReviewViewModel.deleteComment(commentId, reviewId) }
+            onLikeReview = { id -> completeSpecificReviewViewModel.toggleReviewLike(id) },
+            isUpdatingReviewLike = state.isUpdatingReviewLike,
+            eliminarCommentPressed = { commentId -> completeSpecificReviewViewModel.deleteComment(commentId, reviewId) },
+            onCommentLikeClick = { commentId ->
+                completeSpecificReviewViewModel.toggleCommentLike(commentId, reviewId)
+            },
+            isUpdatingCommentLike = state.isUpdatingCommentLike
         )
     }
 
@@ -87,8 +93,12 @@ fun BodyCompleteSpecificReviewScreen(
     autorPressed: (String) -> Unit = {},
     currentUserId: String = "",
     commentPressed: (String) -> Unit = {},
+    onLikeReview: (String) -> Unit = {},
+    isUpdatingReviewLike: Boolean = false,
     eliminarReviewPressed: () -> Unit = {},
-    eliminarCommentPressed: (String) -> Unit = {}
+    eliminarCommentPressed: (String) -> Unit = {},
+    onCommentLikeClick: (String) -> Unit = {},
+    isUpdatingCommentLike: Boolean = false
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -107,7 +117,9 @@ fun BodyCompleteSpecificReviewScreen(
                         Modifier.width(350.dp),
                         autorPressed = autorPressed,
                         mostrarEliminar = review.userId.isNotEmpty() && review.userId == currentUserId,
-                        onEliminarClick = eliminarReviewPressed
+                        onEliminarClick = eliminarReviewPressed,
+                        onLikeClick = onLikeReview,
+                        isUpdatingLike = isUpdatingReviewLike
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -169,7 +181,10 @@ fun BodyCompleteSpecificReviewScreen(
                             cantidadComentarios = comment.cantidadComentarios,
                             onClick = { commentPressed(comment.id) },
                             mostrarEliminar = comment.userId.isNotEmpty() && comment.userId == currentUserId,
-                            onEliminarClick = { eliminarCommentPressed(comment.id) }
+                            onEliminarClick = { eliminarCommentPressed(comment.id) },
+                            likedByCurrentUser = comment.likedByCurrentUser,
+                            likeEnabled = !isUpdatingCommentLike,
+                            onLikeClick = { onCommentLikeClick(comment.id) }
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                     }

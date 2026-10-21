@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.ksp)
-    alias(libs.plugins.google.services)
+    alias(libs.plugins.google.service)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.dagger)
 }
@@ -85,6 +85,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
+
+    // Firebase Cloud Messaging
+    implementation(libs.firebase.messaging)
 
     implementation("com.google.firebase:firebase-firestore")
 
