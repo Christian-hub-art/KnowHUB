@@ -57,7 +57,8 @@ class ReviewRepository @Inject constructor(
         clase: String,
         nombreAsignatura: String,
         nombreProfesor: String,
-        descripcion: String
+        descripcion: String,
+        generalReviewId: Int = 0
     ): Result<Unit> {
         return try {
 
@@ -76,7 +77,8 @@ class ReviewRepository @Inject constructor(
                 nombreAsignatura = nombreAsignatura,
                 nombreProfesor = nombreProfesor,
                 descripcion = descripcion,
-                user = reviewUserDto
+                user = reviewUserDto,
+                generalReviewId = generalReviewId
             )
 
             reviewRemoteDataSource.createReview(createReviewDto)
@@ -127,6 +129,12 @@ class ReviewRepository @Inject constructor(
             Result.success(Unit)
         }catch (e: Exception){
             Result.failure  (e)
+        }
+    }
+
+    fun getReviewsByGeneralReviewLive(generalReviewId: Int): Flow<List<Review>>{
+        return  reviewRemoteDataSource.listenReviewsByGeneralReview(generalReviewId).map { reviews ->
+            reviews.map { it.toReview() }
         }
     }
 

@@ -42,6 +42,9 @@ sealed class Screens(val route: String) {
         fun createRoute(id: Int) = "completeReviews/$id"
     }
     object CreateReviews : Screens("createReviews")
+    object CreateReviewMateria : Screens("createReviews/materia/{generalReviewId}") {
+        fun createRoute(generalReviewId: Int) = "createReviews/materia/$generalReviewId"
+    }
     object CommentDetail : Screens("commentDetail/{commentId}") {
         fun createRoute(commentId: String) = "commentDetail/$commentId"
     }
@@ -142,8 +145,8 @@ fun AppNavegation(
                reviewPressed = { reviewId ->
                    navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
                },
-                escribirBottonPressed = {
-                    navController.navigate(Screens.CreateReviews.route)
+                escribirBottonPressed = { generalReviewId ->
+                    navController.navigate(Screens.CreateReviewMateria.createRoute(generalReviewId))
                 },
                 autorPressed = { userId ->
                     navController.navigate(Screens.BusquePerfil.createRoute(userId))
@@ -160,6 +163,22 @@ fun AppNavegation(
             }
             CreateReviewsScreen(
                 createReviewsViewModel = viewModel
+            )
+        }
+        composable ( route = Screens.CreateReviewMateria.route,
+            arguments = listOf(navArgument("generalReviewId"){type = NavType.IntType})
+        ){
+            val generalReviewId = it.arguments?.getInt("generalReviewId") ?: 0
+            val viewModel: CreateReviewsViewModel = hiltViewModel()
+            val state by viewModel.uiState.collectAsState()
+            LaunchedEffect(state.navigateBack) {
+                if (state.navigateBack) {
+                    navController.popBackStack()
+                }
+            }
+            CreateReviewsScreen(
+                createReviewsViewModel = viewModel,
+                generalReviewId = generalReviewId
             )
         }
         composable ( route = Screens.EditReview.route,

@@ -15,5 +15,6 @@ data class Review(
     val clase: String = "",
     val fotoAutor: String? = null,
     val userId: String = "",
-    val liked: Boolean = false
+    val liked: Boolean = false,
+    val generalReviewId: Int = 0
 )

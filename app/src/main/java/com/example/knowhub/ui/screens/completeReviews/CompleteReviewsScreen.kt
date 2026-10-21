@@ -36,7 +36,7 @@ fun CompleteReviewsScreen(
     generalReviewId: Int,
     completeReviewsViewModel: CompleteReviewsViewModel,
     reviewPressed: (String) -> Unit,
-    escribirBottonPressed: () -> Unit,
+    escribirBottonPressed: (Int) -> Unit,
     modifier: Modifier = Modifier,
     autorPressed: (String) -> Unit = {}
 ){
@@ -44,7 +44,7 @@ fun CompleteReviewsScreen(
 
     LaunchedEffect(generalReviewId) {
         completeReviewsViewModel.loadData(generalReviewId)
-        completeReviewsViewModel.getAllReviews()
+        completeReviewsViewModel.getAllReviews(generalReviewId)
     }
 
     Box(
@@ -57,7 +57,7 @@ fun CompleteReviewsScreen(
             errorMessage = state.errorMessage,
             mostrarMensajeError = state.mostrarMensajeError,
             reviewPressed = reviewPressed,
-            escribirBottonPressed = escribirBottonPressed,
+            escribirBottonPressed = { escribirBottonPressed(generalReviewId) },
             autorPressed = autorPressed
         )
     }

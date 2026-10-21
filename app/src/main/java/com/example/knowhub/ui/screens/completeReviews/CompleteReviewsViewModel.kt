@@ -26,10 +26,10 @@ class CompleteReviewsViewModel @Inject constructor(
         }
     }
 
-    fun getAllReviews() {
+    fun getAllReviews(generalReviewId: Int) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
-            reviewRepository.getReviewLive()
+            reviewRepository.getReviewsByGeneralReviewLive(generalReviewId)
                 .catch { e ->
                     _uiState.update {
                         it.copy(

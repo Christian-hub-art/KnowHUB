@@ -19,5 +19,7 @@ interface ReviewRemoteDataSource {
 
     fun listenAllReviews(): Flow<List<ReviewDto>>
 
+    fun listenReviewsByGeneralReview(generalReviewId: Int): Flow<List<ReviewDto>>
+
 
 }

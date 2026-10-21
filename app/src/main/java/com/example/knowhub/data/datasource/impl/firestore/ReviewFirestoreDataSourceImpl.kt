@@ -116,5 +116,24 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
 
     }
 
+    override fun listenReviewsByGeneralReview(generalReviewId: Int): Flow<List<ReviewDto>> = callbackFlow {
+        val listener = db.collection("reviews").whereEqualTo("generalReviewId", generalReviewId).addSnapshotListener { snapshot, error ->
+            if(error!=null){
+                close(error)
+                return@addSnapshotListener
+            }
 
+            if (snapshot!=null){
+                val reviews = snapshot.documents.map { doc ->
+                    val review = doc.toObject(ReviewDto::class.java)
+                    review?.copy(id = doc.id) ?: throw Exception("Reseña no encontrada")
+                }
+                trySend(reviews).isSuccess
+            }
+
+        }
+
+        awaitClose { listener.remove() }
+
+    }
 }

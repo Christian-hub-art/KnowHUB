@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.datasource.repository.AuthRepository
 import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
+import com.example.knowhub.data.local.localGeneralReviewProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +37,18 @@ class CreateReviewsViewModel @Inject constructor(
         }
     }
 
+
+    fun loadGeneralReview(generalReviewId: Int) {
+        val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId } ?: return
+        _uiState.update {
+            it.copy(
+                generalReviewId = generalReviewId,
+                clase = generalReview.codigoAsignatura.toString(),
+                tituloMateria = generalReview.nombreMateria,
+                nombreProfesor = generalReview.nombreProfesor
+            )
+        }
+    }
 
     fun loadReview(reviewId: String) {
         if (_uiState.value.reviewId == reviewId) return
@@ -91,7 +104,8 @@ class CreateReviewsViewModel @Inject constructor(
                     clase = state.clase,
                     nombreAsignatura = state.tituloMateria,
                     nombreProfesor = state.nombreProfesor,
-                    descripcion = state.resena
+                    descripcion = state.resena,
+                    generalReviewId = state.generalReviewId
                 )
             } else {
                 reviewRepository.createReview(

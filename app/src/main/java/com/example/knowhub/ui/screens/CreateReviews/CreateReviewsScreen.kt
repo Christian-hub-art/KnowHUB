@@ -29,9 +29,16 @@ import com.example.knowhub.R
 fun CreateReviewsScreen(
     createReviewsViewModel: CreateReviewsViewModel,
     modifier: Modifier = Modifier,
-    reviewId: String? = null
+    reviewId: String? = null,
+    generalReviewId: Int? = null
 ) {
     val state by createReviewsViewModel.uiState.collectAsState()
+
+    LaunchedEffect(generalReviewId) {
+        if (generalReviewId != null) {
+            createReviewsViewModel.loadGeneralReview(generalReviewId)
+        }
+    }
 
     LaunchedEffect(reviewId) {
         if (reviewId != null) {

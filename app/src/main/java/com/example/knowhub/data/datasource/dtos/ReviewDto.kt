@@ -21,7 +21,8 @@ data class ReviewDto(
     val cantidadComentarios: Int = 0,
     val fechaPublicacion: String = "",
     val user: ReviewUserDto = ReviewUserDto(),
-    var liked: Boolean = false
+    var liked: Boolean = false,
+    val generalReviewId: Int = 0
 )
 
 data class CreateReviewDto(
@@ -30,7 +31,8 @@ data class CreateReviewDto(
     val nombreAsignatura: String = "",
     val nombreProfesor: String = "",
     val descripcion: String = "",
-    val user: ReviewUserDto? = null
+    val user: ReviewUserDto? = null,
+    val generalReviewId: Int = 0
 )
 
 fun ReviewDto.toReview(): Review {
@@ -47,6 +49,7 @@ fun ReviewDto.toReview(): Review {
         clase = clase,
         fotoAutor = user.profileImage,
         userId = userId,
-        liked = liked
+        liked = liked,
+        generalReviewId = generalReviewId
     )
 }
