@@ -50,7 +50,6 @@ fun ProfileScreen(
             state.mostrarMensajeErrorCarga,
             onNombreChange = {viewModel.updateNombre(it)},
             guardarBottonPressed = {viewModel.guardarBottonPressed()},
-            cancelarBottonPressed = {viewModel.cancelarBottonPressed()},
             eliminarcuentaBottonPressed = {viewModel.eliminarcuentaBottonPressed()},
             cambiarcontraseñaBottonPressed = {viewModel.cambiarcontraseñaBottonPressed()},
             cambiarCorreoBottonPressed = {viewModel.cambiairCorreoBottonPressed()}
@@ -71,7 +70,6 @@ fun BodyProfileScreen(
     mostrarMensajeErrorCarga: Boolean,
     onNombreChange: (String) -> Unit,
     guardarBottonPressed: () -> Unit = {},
-    cancelarBottonPressed: () -> Unit = {},
     eliminarcuentaBottonPressed: () -> Unit = {},
     cambiarcontraseñaBottonPressed: () -> Unit = {},
     cambiarCorreoBottonPressed: () -> Unit = {},
@@ -115,7 +113,6 @@ fun BodyProfileScreen(
             nombre,
             onNombreChange = {onNombreChange(it)},
             guardarBottonPressed = guardarBottonPressed,
-            cancelarBottonPressed = cancelarBottonPressed,
             cambiarcontraseñaBottonPressed = cambiarcontraseñaBottonPressed,
             cambiarCorreoBottonPressed = cambiarCorreoBottonPressed
         )

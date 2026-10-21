@@ -3,6 +3,7 @@ package com.example.knowhub.ui.screens.profile
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.knowhub.data.datasource.dtos.UpdateUserDto
 import com.example.knowhub.data.datasource.repository.AuthRepository
 import com.example.knowhub.data.datasource.repository.StorageRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
@@ -55,19 +56,33 @@ class ProfileViewModel @Inject constructor(
     }
     //Actualiza el valor del nombre de usuario ingresado en la interfaz.
     fun updateNombre (input: String){
-        _uiState.update { it.copy( nombre =  input) }
+        _uiState.update { it.copy( nombre =  input, mostrarMensajeErrorGuardar = false) }
     }
     //Valida y procesa la acción de guardar los cambios del perfil.
     fun guardarBottonPressed () {
         if (_uiState.value.nombre.isNullOrEmpty()
         ) {
             _uiState.update { it.copy(mostrarMensajeErrorGuardar = true, errorMessageGuardar = "No ha puesto un nombre nuevo") }
+            return
         }
 
-    }
-    //Cancela las ediciones realizadas y restablece los valores
-    fun cancelarBottonPressed() {
-
+        val userId = authRepository.currentUser?.uid ?: return
+        val updateUserDto = UpdateUserDto(
+            userName = _uiState.value.nombre
+        )
+        viewModelScope.launch {
+            val result = userRepository.updateUserProfile(userId, updateUserDto)
+            if (result.isSuccess) {
+                _uiState.update { it.copy(mostrarMensajeErrorGuardar = true, errorMessageGuardar = "Nombre de usuario actualizado") }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeErrorGuardar = true,
+                        errorMessageGuardar = result.exceptionOrNull()?.message ?: "No se pudo actualizar el nombre de usuario"
+                    )
+                }
+            }
+        }
     }
     //Gestiona el evento de eliminación de la cuenta de usuario.
     fun eliminarcuentaBottonPressed () {

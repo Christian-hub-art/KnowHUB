@@ -40,7 +40,6 @@ fun CuadroInformaciónPersonal(
     nombre: String,
     onNombreChange: (String) ->Unit,
     guardarBottonPressed: () -> Unit = {},
-    cancelarBottonPressed: () -> Unit = {},
     cambiarcontraseñaBottonPressed: () -> Unit = {},
     cambiarCorreoBottonPressed: () -> Unit = {},
     modifier: Modifier = Modifier
@@ -103,7 +102,7 @@ fun CuadroInformaciónPersonal(
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            // GUARDAR Y CANCELAR
+            // GUARDAR
             Row(
                 horizontalArrangement = Arrangement.spacedBy(30.dp)
             ) {
@@ -121,17 +120,6 @@ fun CuadroInformaciónPersonal(
                         .width(150.dp)
                 )
 
-                AppButton(
-                    stringResource(R.string.cancelar_con_x),
-                    colorResource(R.color.NegroKnowHUB),
-                    colorResource(R.color.blancoKnowHUB),
-                    onClick = {
-                        cancelarBottonPressed()
-                    },
-                    modifier = Modifier
-                        .height(35.dp)
-                        .width(150.dp)
-                )
             }
 
             Spacer(modifier = Modifier.height(23.dp))

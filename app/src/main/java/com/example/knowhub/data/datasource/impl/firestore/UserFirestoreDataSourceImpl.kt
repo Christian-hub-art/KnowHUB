@@ -2,6 +2,7 @@ package com.example.knowhub.data.datasource.impl.firestore
 
 import com.example.knowhub.data.datasource.UserRemoteDataSource
 import com.example.knowhub.data.datasource.dtos.RegisterUserDto
+import com.example.knowhub.data.datasource.dtos.UpdateUserDto
 import com.example.knowhub.data.datasource.dtos.UserProfileDto
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -40,6 +41,15 @@ class UserFirestoreDataSourceImpl @Inject constructor (private val db: FirebaseF
 
     override suspend fun updateUserProfileImage(userId: String, photoUrl: String) {
         db.collection("users").document(userId).update("foto", photoUrl).await()
+    }
+
+    override suspend fun updateUserProfile(userId: String, updateUserDto: UpdateUserDto) {
+        val docRef = db.collection("users").document(userId)
+        docRef.update(
+            mapOf(
+                "userName" to updateUserDto.userName
+            )
+        ).await()
     }
 
     override suspend fun followOrUnfollowUser(

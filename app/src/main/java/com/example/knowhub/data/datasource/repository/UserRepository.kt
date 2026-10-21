@@ -3,6 +3,7 @@ package com.example.knowhub.data.datasource.repository
 import android.util.Log
 import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.dtos.RegisterUserDto
+import com.example.knowhub.data.datasource.dtos.UpdateUserDto
 import com.example.knowhub.data.datasource.dtos.UserProfileDto
 import com.example.knowhub.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
 import com.google.firebase.messaging.FirebaseMessaging
@@ -42,6 +43,16 @@ class UserRepository @Inject constructor(
 
             Result.success(userProfileInfo)
         } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updateUserProfile(userId: String, updateUserDto: UpdateUserDto): Result<Unit> {
+        return try {
+            userRemoteDataSource.updateUserProfile(userId, updateUserDto)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("TAG", "updateUserProfile: ${e.message}")
             Result.failure(e)
         }
     }
