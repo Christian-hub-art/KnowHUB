@@ -12,6 +12,7 @@ data class BusquedaPerfilState(
     val isFollowed: Boolean = false,
     val currentUserId: String = "",
     val isUpdatingFollow: Boolean = false,
+    val isUpdatingReviewLike: Boolean = false,
     val isLoading: Boolean = false,
     val errorMessage: String = "",
     val mostrarMensajeError: Boolean = false

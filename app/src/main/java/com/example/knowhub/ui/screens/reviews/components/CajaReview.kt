@@ -9,24 +9,27 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.knowhub.R
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.generarEstrellas
+import com.example.knowhub.R
 
 @Composable
 fun CajaReview(
@@ -38,6 +41,7 @@ fun CajaReview(
     Calificacion: Int,
     colorCaja: Color,
     colorTexto: Color,
+    likes: Int = 0,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onEditarClick: () -> Unit = {},
@@ -113,6 +117,17 @@ fun CajaReview(
                 text = estrellas,
                 fontSize = 18.sp
             )
+
+            Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(R.drawable.iconolike),
+                    contentDescription = "Me gusta",
+                    modifier = Modifier.size(18.dp),
+                    tint = Color(0xFFE53935)
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(text = likes.toString(), fontSize = 14.sp)
+            }
 
             Spacer(modifier = Modifier.height(6.dp))
 

@@ -7,8 +7,11 @@ import com.example.knowhub.data.datasource.repository.CommentRepository
 import com.example.knowhub.data.datasource.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -20,6 +23,8 @@ class CompleteSpecificReviewViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CompleteSpecificReviewState())
     val uiState: StateFlow<CompleteSpecificReviewState> = _uiState
+    private var reviewListenerJob: Job? = null
+    private var listeningReviewId: String? = null
 
     init {
         _uiState.update { it.copy(currentUserId = authRepository.currentUser?.uid ?: "") }
@@ -63,19 +68,29 @@ class CompleteSpecificReviewViewModel @Inject constructor(
     }
 
     fun getReviewById(reviewId: String) {
-        viewModelScope.launch {
-            val result = reviewRepository.getReviewById(reviewId)
-            if (result.isSuccess) {
-                _uiState.update { it.copy(review = result.getOrNull(), mostrarMensajeError = false) }
-            } else {
-                _uiState.update {
-                    it.copy(
-                        mostrarMensajeError = true,
-                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudo cargar la reseña"
-                    )
+        if (listeningReviewId == reviewId && reviewListenerJob?.isActive == true) return
+        listeningReviewId = reviewId
+        reviewListenerJob?.cancel()
+        reviewListenerJob = viewModelScope.launch {
+            reviewRepository.getReviewLive(reviewId)
+                .catch { error ->
+                    _uiState.update {
+                        it.copy(
+                            mostrarMensajeError = true,
+                            errorMessage = error.message ?: "No se pudo actualizar la reseña"
+                        )
+                    }
+                }
+                .collect { review ->
+                    _uiState.update {
+                        it.copy(
+                            review = review,
+                            mostrarMensajeError = review == null,
+                            errorMessage = if (review == null) "Reseña no encontrada" else ""
+                        )
+                    }
                 }
             }
-        }
     }
 
     fun getComments(reviewId: String) {
@@ -122,13 +137,7 @@ class CompleteSpecificReviewViewModel @Inject constructor(
             _uiState.update { it.copy(isRating = true, mostrarMensajeError = false) }
             val result = reviewRepository.rateReview(reviewId, rating)
             if (result.isSuccess) {
-                val reviewResult = reviewRepository.getReviewById(reviewId)
-                _uiState.update {
-                    it.copy(
-                        isRating = false,
-                        review = reviewResult.getOrNull() ?: it.review
-                    )
-                }
+                _uiState.update { it.copy(isRating = false) }
             } else {
                 _uiState.update {
                     it.copy(
@@ -138,6 +147,23 @@ class CompleteSpecificReviewViewModel @Inject constructor(
                             ?: "No se pudo guardar la calificación."
                     )
                 }
+            }
+        }
+    }
+
+    fun toggleReviewLike(reviewId: String) {
+        if (_uiState.value.isUpdatingReviewLike) return
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isUpdatingReviewLike = true, mostrarMensajeError = false)
+            }
+            val result = reviewRepository.toggleLike(reviewId)
+            _uiState.update {
+                it.copy(
+                    isUpdatingReviewLike = false,
+                    mostrarMensajeError = result.isFailure,
+                    errorMessage = result.exceptionOrNull()?.message.orEmpty()
+                )
             }
         }
     }

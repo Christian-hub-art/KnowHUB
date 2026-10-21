@@ -19,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
@@ -43,7 +44,9 @@ fun Review(
     autorPressed: (String) -> Unit = {},
     mostrarEliminar: Boolean = false,
     onEliminarClick: () -> Unit = {},
-    onRateReview: (String, Int) -> Unit = { _, _ -> }
+    onRateReview: (String, Int) -> Unit = { _, _ -> },
+    onLikeClick: (String) -> Unit = {},
+    isUpdatingLike: Boolean = false
 ) {
     Column(modifier = modifier) {
         // Tarjeta contenedora de la reseña
@@ -142,7 +145,29 @@ fun Review(
                     // Contador de comentarios
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
-                            onClick = { /* Acción de Like */ },
+                            onClick = { onLikeClick(review.id) },
+                            enabled = !isUpdatingLike,
+                            modifier = Modifier.size(30.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.iconolike),
+                                contentDescription = if (review.likedByCurrentUser) {
+                                    "Quitar me gusta"
+                                } else {
+                                    "Me gusta"
+                                },
+                                modifier = Modifier.fillMaxSize(),
+                                tint = if (review.likedByCurrentUser) Color(0xFFE53935) else Color.Unspecified
+                            )
+                        }
+                        Text(
+                            text = "( ${review.likes} )",
+                            fontSize = 15.sp,
+                            fontFamily = BangersFont
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        IconButton(
+                            onClick = {},
                             modifier = Modifier.size(30.dp)
                         ) {
                             Icon(

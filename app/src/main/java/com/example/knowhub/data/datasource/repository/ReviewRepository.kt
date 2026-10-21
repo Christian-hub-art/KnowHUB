@@ -46,6 +46,11 @@ class ReviewRepository @Inject constructor(
         }
     }
 
+    fun getReviewsByUserLive(userId: String): Flow<List<Review>> =
+        reviewRemoteDataSource
+            .listenReviewsByUser(userId, authRemoteDataSource.currentUser?.uid.orEmpty())
+            .map { reviews -> reviews.map { it.toReview() } }
+
     suspend fun getReviewById(id: String): Result<Review> {
         return try {
             val review = reviewRemoteDataSource.getReviewById(
@@ -59,6 +64,11 @@ class ReviewRepository @Inject constructor(
         }
     }
 
+    fun getReviewLive(id: String): Flow<Review?> =
+        reviewRemoteDataSource
+            .listenReviewById(id, authRemoteDataSource.currentUser?.uid.orEmpty())
+            .map { it?.toReview() }
+
     suspend fun rateReview(reviewId: String, rating: Int): Result<Unit> {
         val userId = authRemoteDataSource.currentUser?.uid
             ?: return Result.failure(IllegalStateException("Inicia sesión para calificar una reseña."))
@@ -67,6 +77,18 @@ class ReviewRepository @Inject constructor(
             Result.success(Unit)
         } catch (e: Exception) {
             Log.d("TAG", "rateReview: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun toggleLike(reviewId: String): Result<Unit> {
+        val userId = authRemoteDataSource.currentUser?.uid
+            ?: return Result.failure(IllegalStateException("Inicia sesión para dar me gusta a una reseña."))
+        return try {
+            reviewRemoteDataSource.toggleLike(reviewId, userId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("ReviewRepository", "toggleLike: ${e.message}")
             Result.failure(e)
         }
     }

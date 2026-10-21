@@ -37,7 +37,21 @@ class ReviewRetrofitDataSourceImpl @Inject constructor(
         service.rateReview(reviewId, userId, ReviewRatingDto(rating))
     }
 
+    override suspend fun toggleLike(reviewId: String, userId: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun listenAllReviews(currentUserId: String): Flow<List<ReviewDto>> = flow {
         emit(service.getAllReviews(currentUserId))
     }
+
+    override fun listenReviewsByUser(
+        userId: String,
+        currentUserId: String
+    ): Flow<List<ReviewDto>> = TODO("Not yet implemented")
+
+    override fun listenReviewById(
+        id: String,
+        currentUserId: String
+    ): Flow<ReviewDto?> = TODO("Not yet implemented")
 }

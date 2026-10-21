@@ -123,6 +123,7 @@ fun BodyReviewScreen(
                     Calificacion = review.calificacion,
                     colorCaja = colorCaja,
                     colorTexto = colorTexto,
+                    likes = review.likes,
                     onClick = { reviewPressed(review.id) },
                     onEditarClick = { editarPressed(review.id) },
                     onEliminarClick = { eliminarPressed(review.id) }

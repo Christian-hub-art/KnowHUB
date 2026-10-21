@@ -51,7 +51,10 @@ fun KnowHUBApp (){
         Screens.EditReview.route,
         Screens.Busqueda.route,
         Screens.CompleteReviews.route,
-        Screens.BusquePerfil.route
+        Screens.BusquePerfil.route,
+        Screens.CompleteSpecificReview.route,
+        Screens.CommentDetail.route,
+        Screens.Connections.route
     )
 
     val showDrawer = currentRoute !in listOf(

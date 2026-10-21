@@ -9,6 +9,7 @@ data class CompleteReviewsState(
     val followingUserIds: Set<String> = emptySet(),
     val followingErrorMessage: String = "",
     val showFollowingOnly: Boolean = false,
+    val isUpdatingReviewLike: Boolean = false,
     val errorMessage: String = "",
     val mostrarMensajeError: Boolean = false
 ) {

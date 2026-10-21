@@ -1,9 +1,13 @@
 package com.example.knowhub.ui.screens.connections
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.R
+import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.AppLabel
@@ -63,18 +68,31 @@ fun ConnectionsScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(state.users, key = { it.userId }) { user ->
-                        androidx.compose.foundation.layout.Row(
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .background(
+                                    primaryContainerLight,
+                                    RoundedCornerShape(16.dp)
+                                )
+                                .border(
+                                    2.dp,
+                                    tertiaryContainerLight,
+                                    RoundedCornerShape(16.dp)
+                                )
                                 .clickable { onUserClick(user.userId) }
-                                .padding(horizontal = 24.dp, vertical = 8.dp),
+                                .padding(horizontal = 16.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             ProfileAsyncImage(profileImage = user.foto, size = 48)
-                            androidx.compose.foundation.layout.Column(
+                            Column(
                                 modifier = Modifier.padding(start = 12.dp)
                             ) {
-                                Text(user.name.ifBlank { user.userName })
+                                Text(
+                                    user.name.ifBlank { user.userName },
+                                    color = primaryLight
+                                )
                                 if (user.userName.isNotBlank()) Text("@${user.userName}")
                             }
                         }
