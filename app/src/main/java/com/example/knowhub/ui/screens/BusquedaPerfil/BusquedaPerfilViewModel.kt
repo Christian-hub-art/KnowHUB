@@ -7,9 +7,12 @@ import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -22,6 +25,8 @@ class BusquedaPerfilViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(BusquedaPerfilState())
     val uiState: StateFlow<BusquedaPerfilState> = _uiState.asStateFlow()
+    private var reviewsListenerJob: Job? = null
+    private var listeningReviewsForUserId: String? = null
 
     fun getUserProfile(userId: String) {
         val currentUserId = authRepository.currentUser?.uid.orEmpty()
@@ -126,19 +131,46 @@ class BusquedaPerfilViewModel @Inject constructor(
         }
     }
 
-    fun getUserReviews(userId: String) {
+    fun toggleReviewLike(reviewId: String) {
+        if (_uiState.value.isUpdatingReviewLike) return
         viewModelScope.launch {
-            val result = reviewRepository.getReviewsByUser(userId)
-            if (result.isSuccess) {
-                val reviews = result.getOrNull() ?: emptyList()
-                _uiState.update {
-                    it.copy(
-                        reviews = reviews,
-                        // Si el perfil aún no tiene foto guardada, se usa la de sus reseñas
-                        fotoPerfil = it.fotoPerfil ?: reviews.firstNotNullOfOrNull { r -> r.fotoAutor }
-                    )
-                }
+            _uiState.update {
+                it.copy(isUpdatingReviewLike = true, mostrarMensajeError = false)
+            }
+            val result = reviewRepository.toggleLike(reviewId)
+            _uiState.update {
+                it.copy(
+                    isUpdatingReviewLike = false,
+                    mostrarMensajeError = result.isFailure,
+                    errorMessage = result.exceptionOrNull()?.message.orEmpty()
+                )
             }
         }
+    }
+
+    fun getUserReviews(userId: String) {
+        if (listeningReviewsForUserId == userId && reviewsListenerJob?.isActive == true) return
+        listeningReviewsForUserId = userId
+        reviewsListenerJob?.cancel()
+        reviewsListenerJob = viewModelScope.launch {
+            reviewRepository.getReviewsByUserLive(userId)
+                .catch { error ->
+                    _uiState.update {
+                        it.copy(
+                            mostrarMensajeError = true,
+                            errorMessage = error.message ?: "No se pudieron actualizar las reseñas"
+                        )
+                    }
+                }
+                .collect { reviews ->
+                    _uiState.update {
+                        it.copy(
+                            reviews = reviews,
+                            fotoPerfil = it.fotoPerfil
+                                ?: reviews.firstNotNullOfOrNull { review -> review.fotoAutor }
+                        )
+                    }
+                }
+            }
     }
 }

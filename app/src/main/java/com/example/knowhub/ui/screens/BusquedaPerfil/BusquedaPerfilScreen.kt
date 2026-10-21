@@ -70,6 +70,8 @@ fun BusquedaPerfilScreen(
             onRateReview = { reviewId, rating ->
                 viewModel.rateReview(reviewId, rating, userId)
             },
+            onLikeReview = viewModel::toggleReviewLike,
+            isUpdatingReviewLike = uiState.isUpdatingReviewLike,
             onConnectionsClick = { followers ->
                 connectionsPressed(userId, followers)
             }
@@ -78,7 +80,7 @@ fun BusquedaPerfilScreen(
 }
 //Contenido principal de la pantalla de perfil y sus reseñas asociadas.
 @Composable
-fun BodyBusquedaPerfilScrenn(
+fun BodyBusquedaPerfilScreen(
     userName: String,
     fotoPerfil: String?,
     reviews: List<Review>,
@@ -92,6 +94,8 @@ fun BodyBusquedaPerfilScrenn(
     reviewPressed: (String) -> Unit = {},
     onClick: () -> Unit = {},
     onRateReview: (String, Int) -> Unit = { _, _ -> },
+    onLikeReview: (String) -> Unit = {},
+    isUpdatingReviewLike: Boolean = false,
     onConnectionsClick: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -164,7 +168,9 @@ fun BodyBusquedaPerfilScrenn(
                 review,
                 reviewPressed = reviewPressed,
                 modifier = Modifier.width(350.dp),
-                onRateReview = onRateReview
+                onRateReview = onRateReview,
+                onLikeClick = onLikeReview,
+                isUpdatingLike = isUpdatingReviewLike
             )
 
             Spacer(modifier = Modifier.height(15.dp))

@@ -8,9 +8,12 @@ import com.example.knowhub.data.datasource.repository.UserRepository
 import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 //ViewModel encargado de la gestión de datos y estado para la pantalla de Reseñas.
 @HiltViewModel
@@ -23,13 +26,12 @@ class ReviewViewModel @Inject constructor(
     // Encapsulamiento: Mutable privado, Inmutable expuesto
     private val _uiState = MutableStateFlow(ReviewState())
     val uiState: StateFlow<ReviewState> = _uiState.asStateFlow()
+    private var reviewsListenerJob: Job? = null
 
     fun deleteReview(reviewId: String) {
         viewModelScope.launch {
             val result = reviewRepository.deleteReview(reviewId)
-            if (result.isSuccess) {
-                _uiState.update { it.copy(reviews = it.reviews.filter { r -> r.id != reviewId }) }
-            } else {
+            if (result.isFailure) {
                 _uiState.update {
                     it.copy(
                         mostrarMensajeError = true,
@@ -54,17 +56,28 @@ class ReviewViewModel @Inject constructor(
                 _uiState.update { it.copy(usuario = userResult.getOrNull()?.userName ?: "") }
             }
 
-            val result = reviewRepository.getReviewsByUser(userId)
-            if (result.isSuccess) {
-                _uiState.update { it.copy(reviews = result.getOrNull() ?: emptyList(), isLoading = false) }
-            } else {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        mostrarMensajeError = true,
-                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudieron cargar las reseñas"
-                    )
-                }
+            if (reviewsListenerJob?.isActive == true) return@launch
+            reviewsListenerJob = viewModelScope.launch {
+                reviewRepository.getReviewsByUserLive(userId)
+                    .catch { error ->
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                mostrarMensajeError = true,
+                                errorMessage = error.message ?: "No se pudieron actualizar las reseñas"
+                            )
+                        }
+                    }
+                    .collect { reviews ->
+                        _uiState.update {
+                            it.copy(
+                                reviews = reviews,
+                                isLoading = false,
+                                mostrarMensajeError = false,
+                                errorMessage = ""
+                            )
+                        }
+                    }
             }
         }
     }

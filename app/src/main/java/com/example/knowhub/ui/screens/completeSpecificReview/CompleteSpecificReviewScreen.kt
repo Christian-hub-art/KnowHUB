@@ -67,6 +67,8 @@ fun CompleteSpecificReviewScreen(
             commentPressed = commentPressed,
             eliminarReviewPressed = { completeSpecificReviewViewModel.deleteReview(reviewId) },
             onRateReview = { id, rating -> completeSpecificReviewViewModel.rateReview(id, rating) },
+            onLikeReview = { id -> completeSpecificReviewViewModel.toggleReviewLike(id) },
+            isUpdatingReviewLike = state.isUpdatingReviewLike,
             eliminarCommentPressed = { commentId -> completeSpecificReviewViewModel.deleteComment(commentId, reviewId) },
             onCommentLikeClick = { commentId ->
                 completeSpecificReviewViewModel.toggleCommentLike(commentId, reviewId)
@@ -93,6 +95,8 @@ fun BodyCompleteSpecificReviewScreen(
     currentUserId: String = "",
     commentPressed: (String) -> Unit = {},
     onRateReview: (String, Int) -> Unit = { _, _ -> },
+    onLikeReview: (String) -> Unit = {},
+    isUpdatingReviewLike: Boolean = false,
     eliminarReviewPressed: () -> Unit = {},
     eliminarCommentPressed: (String) -> Unit = {},
     onCommentLikeClick: (String) -> Unit = {},
@@ -116,7 +120,9 @@ fun BodyCompleteSpecificReviewScreen(
                         autorPressed = autorPressed,
                         mostrarEliminar = review.userId.isNotEmpty() && review.userId == currentUserId,
                         onEliminarClick = eliminarReviewPressed,
-                        onRateReview = onRateReview
+                        onRateReview = onRateReview,
+                        onLikeClick = onLikeReview,
+                        isUpdatingLike = isUpdatingReviewLike
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))

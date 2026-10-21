@@ -25,14 +25,14 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         val snapshot = db.collection("reviews").get().await()
         return snapshot.documents.mapNotNull { doc ->
             doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
-        }.map { it.withUserRating(currentUserId) }
+        }.map { it.withCurrentUserInteraction(currentUserId) }
     }
 
     override suspend fun getReviewsByUser(userId: String, currentUserId: String): List<ReviewDto> {
         val snapshot = db.collection("reviews").whereEqualTo("userId", userId).get().await()
         return snapshot.documents.mapNotNull { doc ->
             doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
-        }.map { it.withUserRating(currentUserId) }
+        }.map { it.withCurrentUserInteraction(currentUserId) }
     }
 
     override suspend fun getReviewById(
@@ -42,7 +42,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         val doc = db.collection("reviews").document(id).get().await()
         val review = doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
             ?: throw Exception("Reseña no encontrada")
-        return review.withUserRating(currentUserId)
+        return review.withCurrentUserInteraction(currentUserId)
     }
 
     override suspend fun updateReview(
@@ -120,6 +120,27 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         }.await()
     }
 
+    override suspend fun toggleLike(reviewId: String, userId: String) {
+        require(userId.isNotBlank()) { "Inicia sesión para dar me gusta a una reseña." }
+
+        val reviewRef = db.collection("reviews").document(reviewId)
+        val likeRef = reviewRef.collection("likes").document(userId)
+
+        db.runTransaction { transaction ->
+            val like = transaction.get(likeRef)
+            if (like.exists()) {
+                transaction.delete(likeRef)
+                transaction.update(reviewRef, "likes", FieldValue.increment(-1))
+            } else {
+                transaction.set(
+                    likeRef,
+                    mapOf("timestamp" to FieldValue.serverTimestamp())
+                )
+                transaction.update(reviewRef, "likes", FieldValue.increment(1))
+            }
+        }.await()
+    }
+
     override fun listenAllReviews(currentUserId: String): Flow<List<ReviewDto>> = callbackFlow {
         val registration = db.collection("reviews").addSnapshotListener { snapshot, error ->
             if (error != null) {
@@ -130,7 +151,8 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
                     try {
                         val reviews = snapshot.documents.mapNotNull { doc ->
                             doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
-                        }.map { it.withUserRating(currentUserId) }
+                        }
+                            .map { it.withCurrentUserInteraction(currentUserId) }
                         trySend(reviews).isSuccess
                     } catch (exception: Exception) {
                         close(exception)
@@ -141,17 +163,67 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         awaitClose { registration.remove() }
     }
 
-    private suspend fun ReviewDto.withUserRating(userId: String): ReviewDto {
+    override fun listenReviewsByUser(
+        userId: String,
+        currentUserId: String
+    ): Flow<List<ReviewDto>> = callbackFlow {
+        val registration = db.collection("reviews")
+            .whereEqualTo("userId", userId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
+                    launch {
+                        try {
+                            val reviews = snapshot.documents.mapNotNull { doc ->
+                                doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
+                            }
+                                .map { it.withCurrentUserInteraction(currentUserId) }
+                            trySend(reviews).isSuccess
+                        } catch (exception: Exception) {
+                            close(exception)
+                        }
+                    }
+                }
+            }
+        awaitClose { registration.remove() }
+    }
+
+    override fun listenReviewById(
+        id: String,
+        currentUserId: String
+    ): Flow<ReviewDto?> = callbackFlow {
+        val registration = db.collection("reviews").document(id)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                if (snapshot != null) {
+                    launch {
+                        try {
+                            val review = snapshot.toObject(ReviewDto::class.java)
+                                ?.copy(id = snapshot.id)
+                                ?.withCurrentUserInteraction(currentUserId)
+                            trySend(review).isSuccess
+                        } catch (exception: Exception) {
+                            close(exception)
+                        }
+                    }
+                }
+            }
+        awaitClose { registration.remove() }
+    }
+
+    private suspend fun ReviewDto.withCurrentUserInteraction(userId: String): ReviewDto {
         if (userId.isBlank()) return this
-        val rating = db.collection("reviews")
-            .document(id)
-            .collection("ratings")
-            .document(userId)
-            .get()
-            .await()
-            .getLong("rating")
-            ?.toInt()
-            ?: 0
-        return copy(userRating = rating)
+        val reviewRef = db.collection("reviews").document(id)
+        val rating = reviewRef.collection("ratings").document(userId)
+            .get().await().getLong("rating")?.toInt() ?: 0
+        val liked = reviewRef.collection("likes").document(userId)
+            .get().await().exists()
+        return copy(userRating = rating, likedByCurrentUser = liked)
     }
 }

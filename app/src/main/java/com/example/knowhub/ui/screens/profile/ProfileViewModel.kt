@@ -4,12 +4,16 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.datasource.repository.AuthRepository
+import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.StorageRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -18,13 +22,15 @@ import kotlinx.coroutines.launch
 class ProfileViewModel @Inject constructor(
     private val storageRepository: StorageRepository,
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val reviewRepository: ReviewRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState(
         profileImageUrl = authRepository.currentUser?.photoUrl?.toString()
     ))
 
     val uiState: StateFlow<ProfileState> = _uiState
+    private var reviewsListenerJob: Job? = null
 
     init {
         getUser()
@@ -41,7 +47,40 @@ class ProfileViewModel @Inject constructor(
             val result = userRepository.getUserById(userId)
             if (result.isSuccess) {
                 val user = result.getOrNull()
-                _uiState.update { it.copy(nombre = user?.userName ?: "", isLoading = false) }
+                _uiState.update {
+                    it.copy(
+                        userId = userId,
+                        nombre = user?.userName ?: "",
+                        profileImageUrl = user?.foto?.ifBlank { null } ?: it.profileImageUrl,
+                        followingCount = user?.followingCount ?: 0,
+                        followersCount = user?.followersCount ?: 0,
+                        isLoading = false
+                    )
+                }
+                if (reviewsListenerJob?.isActive != true) {
+                    reviewsListenerJob = viewModelScope.launch {
+                        reviewRepository.getReviewsByUserLive(userId)
+                            .catch { error ->
+                                _uiState.update {
+                                    it.copy(
+                                        mostrarMensajeErrorCarga = true,
+                                        errorMessageCarga = error.message
+                                            ?: "No se pudieron actualizar las materias reseñadas"
+                                    )
+                                }
+                            }
+                            .collect { reviews ->
+                                _uiState.update {
+                                    it.copy(
+                                        reviewedSubjectsCount = reviews
+                                            .map { review -> review.nombreAsignatura }
+                                            .distinct()
+                                            .size
+                                    )
+                                }
+                            }
+                    }
+                }
             } else {
                 _uiState.update {
                     it.copy(

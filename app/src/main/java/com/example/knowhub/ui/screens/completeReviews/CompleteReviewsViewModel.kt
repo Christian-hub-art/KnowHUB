@@ -103,4 +103,21 @@ class CompleteReviewsViewModel @Inject constructor(
             }
         }
     }
+
+    fun toggleReviewLike(reviewId: String) {
+        if (_uiState.value.isUpdatingReviewLike) return
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isUpdatingReviewLike = true, mostrarMensajeError = false)
+            }
+            val result = reviewRepository.toggleLike(reviewId)
+            _uiState.update {
+                it.copy(
+                    isUpdatingReviewLike = false,
+                    mostrarMensajeError = result.isFailure,
+                    errorMessage = result.exceptionOrNull()?.message.orEmpty()
+                )
+            }
+        }
+    }
 }

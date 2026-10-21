@@ -185,7 +185,11 @@ fun AppNavegation(
             NotificatonsScreen()
         }
         composable ( route = Screens.Profile.route ){
-            ProfileScreen()
+            ProfileScreen(
+                connectionsPressed = { userId, followers ->
+                    navController.navigate(Screens.Connections.createRoute(userId, followers))
+                }
+            )
         }
         composable ( route = Screens.Reviews.route ){
             ReviewScreen(
