@@ -54,7 +54,7 @@ fun BusquedaPerfilScreen(
         modifier = modifier
     ){
         BackgroundImage()
-        BodyBusquedaPerfilScrenn(
+        BodyBusquedaPerfilScreen(
             userName = uiState.userName,
             fotoPerfil = uiState.fotoPerfil,
             reviews = uiState.reviews,
