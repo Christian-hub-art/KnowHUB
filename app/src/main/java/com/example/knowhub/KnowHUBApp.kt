@@ -34,10 +34,23 @@ import com.example.knowhub.ui.Navegation.Screens
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
 import com.example.knowhub.ui.screens.options.components.MenuOpciones
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
 @Composable
 fun KnowHUBApp (){
+
+
+    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("Token", task.result)
+            } else {
+                Log.e("Token", "Error obteniendo token")
+            }
+        }
+
+
+
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
