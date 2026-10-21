@@ -104,8 +104,7 @@ class CreateReviewsViewModel @Inject constructor(
                     clase = state.clase,
                     nombreAsignatura = state.tituloMateria,
                     nombreProfesor = state.nombreProfesor,
-                    descripcion = state.resena,
-                    generalReviewId = state.generalReviewId
+                    descripcion = state.resena
                 )
             } else {
                 reviewRepository.createReview(
@@ -113,7 +112,8 @@ class CreateReviewsViewModel @Inject constructor(
                     clase = state.clase,
                     nombreAsignatura = state.tituloMateria,
                     nombreProfesor = state.nombreProfesor,
-                    descripcion = state.resena
+                    descripcion = state.resena,
+                    generalReviewId = state.generalReviewId
                 )
             }
             if (result.isSuccess) {
