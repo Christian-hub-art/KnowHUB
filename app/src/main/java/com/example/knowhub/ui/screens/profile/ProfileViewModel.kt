@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.datasource.dtos.UpdateUserDto
 import com.example.knowhub.data.datasource.repository.AuthRepository
+import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.StorageRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 class ProfileViewModel @Inject constructor(
     private val storageRepository: StorageRepository,
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val reviewRepository: ReviewRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState(
         profileImageUrl = authRepository.currentUser?.photoUrl?.toString()
@@ -29,6 +31,7 @@ class ProfileViewModel @Inject constructor(
 
     init {
         getUser()
+        getUserReviews()
     }
 
     fun getUser() {
@@ -42,7 +45,16 @@ class ProfileViewModel @Inject constructor(
             val result = userRepository.getUserById(userId)
             if (result.isSuccess) {
                 val user = result.getOrNull()
-                _uiState.update { it.copy(nombre = user?.userName ?: "", isLoading = false) }
+                _uiState.update {
+                    it.copy(
+                        nombre = user?.userName ?: "",
+                        name = user?.name ?: "",
+                        correo = authRepository.currentUser?.email ?: "",
+                        seguidores = user?.followersCount ?: 0,
+                        seguidos = user?.followingCount ?: 0,
+                        isLoading = false
+                    )
+                }
             } else {
                 _uiState.update {
                     it.copy(
@@ -51,6 +63,17 @@ class ProfileViewModel @Inject constructor(
                         errorMessageCarga = result.exceptionOrNull()?.message ?: "No se pudo obtener el usuario"
                     )
                 }
+            }
+        }
+    }
+
+    fun getUserReviews() {
+        val userId = authRepository.currentUser?.uid ?: return
+        viewModelScope.launch {
+            val result = reviewRepository.getReviewsByUser(userId)
+            if (result.isSuccess) {
+                val reviews = result.getOrNull() ?: emptyList()
+                _uiState.update { it.copy(materiasResenadas = reviews.map { r -> r.nombreAsignatura }.distinct().size) }
             }
         }
     }

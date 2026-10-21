@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
+import androidx.compose.ui.unit.sp
+import com.example.knowhub.ui.screens.BusquedaPerfil.Components.CuadrosInformacionPerfil
+import com.example.knowhub.ui.theme.ArvoFont
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -48,6 +51,11 @@ fun ProfileScreen(
             state.profileImageUrl,
             state.errorMessageCarga,
             state.mostrarMensajeErrorCarga,
+            name = state.name,
+            correo = state.correo,
+            seguidores = state.seguidores,
+            seguidos = state.seguidos,
+            materiasResenadas = state.materiasResenadas,
             onNombreChange = {viewModel.updateNombre(it)},
             guardarBottonPressed = {viewModel.guardarBottonPressed()},
             eliminarcuentaBottonPressed = {viewModel.eliminarcuentaBottonPressed()},
@@ -68,6 +76,11 @@ fun BodyProfileScreen(
     profileImage: String?,
     errorMessageCarga: String,
     mostrarMensajeErrorCarga: Boolean,
+    name: String = "",
+    correo: String = "",
+    seguidores: Int = 0,
+    seguidos: Int = 0,
+    materiasResenadas: Int = 0,
     onNombreChange: (String) -> Unit,
     guardarBottonPressed: () -> Unit = {},
     eliminarcuentaBottonPressed: () -> Unit = {},
@@ -96,7 +109,29 @@ fun BodyProfileScreen(
 
         ProfileAsyncImage(
             profileImage = profileImage,
-            size = 200
+            size = 150
+        )
+
+        Spacer(modifier = Modifier.weight(5.0F))
+
+        Text(
+            name,
+            fontFamily = ArvoFont,
+            fontSize = 18.sp
+        )
+        Text(
+            correo,
+            fontFamily = ArvoFont,
+            fontSize = 14.sp
+        )
+
+        Spacer(modifier = Modifier.weight(5.0F))
+
+        CuadrosInformacionPerfil(
+            seguidos = seguidos,
+            materiasResenadas = materiasResenadas,
+            seguidores = seguidores,
+            modifier = Modifier.width(320.dp)
         )
 
         Spacer(modifier = Modifier.weight(10.0F))
