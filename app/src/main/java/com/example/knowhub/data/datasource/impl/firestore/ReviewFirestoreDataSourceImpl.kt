@@ -5,7 +5,9 @@ import com.example.knowhub.data.datasource.dtos.CreateReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewDto
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -20,15 +22,17 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
 
     override suspend fun getAllReviews(): List<ReviewDto> {
         val snapshot = db.collection("reviews").get().await()
-        return snapshot.documents.mapNotNull { doc ->
-            doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
+        return snapshot.documents.map { doc ->
+            val review = doc.toObject(ReviewDto::class.java)
+            review?.copy(id = doc.id) ?: throw Exception("Reseña no encontrada")
         }
     }
 
     override suspend fun getReviewsByUser(userId: String): List<ReviewDto> {
         val snapshot = db.collection("reviews").whereEqualTo("userId", userId).get().await()
-        return snapshot.documents.mapNotNull { doc ->
-            doc.toObject(ReviewDto::class.java)?.copy(id = doc.id)
+        return snapshot.documents.map { doc ->
+            val review = doc.toObject(ReviewDto::class.java)
+            review?.copy(id = doc.id) ?: throw Exception("Reseña no encontrada")
         }
     }
 
@@ -89,6 +93,27 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
                 transaction.update(reviewRef, "likes", FieldValue.increment(1))
             }
         }.await()
+    }
+
+    override suspend fun listenAllReviews(): Flow<List<ReviewDto>> = callbackFlow {
+        val listener = db.collection("reviews").addSnapshotListener { snapshot, error ->
+            if(error!=null){
+                close(error)
+                return@addSnapshotListener
+            }
+
+            if (snapshot!=null){
+                val reviews = snapshot.documents.map { doc ->
+                    val review = doc.toObject(ReviewDto::class.java)
+                    review?.copy(id = doc.id) ?: throw Exception("Reseña no encontrada")
+                }
+                trySend(reviews).isSuccess
+            }
+
+        }
+
+        awaitClose { listener.remove() }
+
     }
 
 

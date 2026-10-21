@@ -90,7 +90,7 @@ fun Comment(
             }
 
             }
-            // Cuerpo del comentario y métricas de interacción
+
             Column(
                 modifier = Modifier.padding(10.dp)
             ) {

@@ -89,4 +89,5 @@
     <string name="guardar">GUARDAR</string>
     <string name="eliminar_resena">🗑 Eliminar</string>
     <string name="respuestas">RESPUESTAS</string>
+    <string name="dejar_de_seguir">Dejar de seguir</string>
 </resources>

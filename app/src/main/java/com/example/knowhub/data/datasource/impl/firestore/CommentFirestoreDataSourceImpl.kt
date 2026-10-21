@@ -26,8 +26,9 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
 
     override suspend fun getCommentsByReview(reviewId: String, currentUserId: String): List<CommentDto> {
         val snapshot = db.collection("comments").whereEqualTo("reviewId", reviewId).get().await()
-        return snapshot.documents.mapNotNull { doc ->
-            doc.toObject(CommentDto::class.java)?.copy(id = doc.id)
+        return snapshot.documents.map { doc ->
+            val comment = doc.toObject(CommentDto::class.java)
+            comment?.copy(id = doc.id) ?: throw Exception("Comentario no encontrado")
         }.filter { it.parentCommentId == null }
             .map { marcarLike(it, currentUserId) }
     }
@@ -39,10 +40,10 @@ class CommentFirestoreDataSourceImpl @Inject constructor(
         return marcarLike(comment, currentUserId)
     }
 
-    override suspend fun getReplies(commentId: String, currentUserId: String): List<CommentDto> {
-        val snapshot = db.collection("comments").whereEqualTo("parentCommentId", commentId).get().await()
-        return snapshot.documents.mapNotNull { doc ->
-            doc.toObject(CommentDto::class.java)?.copy(id = doc.id)
+    override suspend fun getReplies(commentId: String, currentUserId: String): List<CommentDto> {val snapshot = db.collection("comments").whereEqualTo("parentCommentId", commentId).get().await()
+        return snapshot.documents.map { doc ->
+            val comment = doc.toObject(CommentDto::class.java)
+            comment?.copy(id = doc.id) ?: throw Exception("Comentario no encontrado")
         }.map { marcarLike(it, currentUserId) }
     }
 

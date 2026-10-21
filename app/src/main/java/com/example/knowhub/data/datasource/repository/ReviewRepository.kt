@@ -10,6 +10,8 @@ import com.example.knowhub.data.datasource.dtos.CreateReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewUserDto
 import com.example.knowhub.data.datasource.dtos.toReview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ReviewRepository @Inject constructor(
@@ -125,6 +127,12 @@ class ReviewRepository @Inject constructor(
             Result.success(Unit)
         }catch (e: Exception){
             Result.failure  (e)
+        }
+    }
+
+    suspend fun getReviewLive(): Flow<List<Review>>{
+        return  reviewRemoteDataSource.listenAllReviews().map { reviews ->
+            reviews.map { it.toReview() }
         }
     }
 }

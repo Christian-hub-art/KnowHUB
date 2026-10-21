@@ -124,7 +124,7 @@ fun BodyBusquedaPerfilScrenn(
 
                 if (mostrarSeguir) {
                     AppButton(
-                        stringResource(if (followed) R.string.btn_siguiendo else R.string.btn_seguir),
+                        stringResource(if (followed) R.string.dejar_de_seguir else R.string.btn_seguir),
                         colorBoton = primaryContainerLight,
                         onClick = onClick
                     )
