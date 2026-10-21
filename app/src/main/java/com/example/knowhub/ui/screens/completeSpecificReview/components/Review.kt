@@ -32,9 +32,7 @@ import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
-import com.example.knowhub.ui.utils.generarEstrellas
 import com.example.knowhub.ui.utils.ProfileAsyncImage
-import com.example.knowhub.ui.utils.ReviewRatingControl
 
 //Componente que muestra la tarjeta detallada de una reseña específica incluyendo el profesor y la asignatura.
 @Composable
@@ -44,7 +42,6 @@ fun Review(
     autorPressed: (String) -> Unit = {},
     mostrarEliminar: Boolean = false,
     onEliminarClick: () -> Unit = {},
-    onRateReview: (String, Int) -> Unit = { _, _ -> },
     onLikeClick: (String) -> Unit = {},
     isUpdatingLike: Boolean = false
 ) {
@@ -87,12 +84,6 @@ fun Review(
                     )
                 }
                 Spacer(modifier = Modifier.width(20.dp))
-
-                val estrellas= generarEstrellas(review.calificacion)
-                Text(
-                    text = estrellas,
-                    fontSize = 18.sp
-                )
             }
             Row(
                 modifier = Modifier
@@ -137,12 +128,7 @@ fun Review(
                 Spacer(modifier = Modifier.height(20.dp))
                 Row( modifier= Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ) {// Calificación de la reseña
-                    ReviewRatingControl(
-                        review = review,
-                        onRate = { rating -> onRateReview(review.id, rating) }
-                    )
-                    // Contador de comentarios
+                ) {// Contador de likes y comentarios
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
                             onClick = { onLikeClick(review.id) },

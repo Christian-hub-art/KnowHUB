@@ -60,9 +60,6 @@ fun CompleteReviewsScreen(
             reviewPressed = reviewPressed,
             escribirBottonPressed = escribirBottonPressed,
             autorPressed = autorPressed,
-            onRateReview = { reviewId, rating ->
-                completeReviewsViewModel.rateReview(reviewId, rating)
-            },
             onLikeReview = completeReviewsViewModel::toggleReviewLike,
             isUpdatingReviewLike = state.isUpdatingReviewLike,
             onShowAll = completeReviewsViewModel::showAllReviews,
@@ -81,7 +78,6 @@ fun BodyCompleteReviewsScreen(
     escribirBottonPressed: () -> Unit,
     modifier: Modifier = Modifier,
     autorPressed: (String) -> Unit = {},
-    onRateReview: (String, Int) -> Unit = { _, _ -> },
     onLikeReview: (String) -> Unit = {},
     isUpdatingReviewLike: Boolean = false,
     showFollowingOnly: Boolean = false,
@@ -161,7 +157,6 @@ fun BodyCompleteReviewsScreen(
                     reviewPressed = reviewPressed,
                     modifier = Modifier.width(350.dp),
                     autorPressed = autorPressed,
-                    onRateReview = onRateReview,
                     onLikeClick = onLikeReview,
                     isUpdatingLike = isUpdatingReviewLike
                 )

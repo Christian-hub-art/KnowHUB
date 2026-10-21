@@ -67,9 +67,6 @@ fun BusquedaPerfilScreen(
             mostrarMensajeError = uiState.mostrarMensajeError,
             reviewPressed = reviewPressed,
             onClick = { viewModel.toggleFollow(userId) },
-            onRateReview = { reviewId, rating ->
-                viewModel.rateReview(reviewId, rating, userId)
-            },
             onLikeReview = viewModel::toggleReviewLike,
             isUpdatingReviewLike = uiState.isUpdatingReviewLike,
             onConnectionsClick = { esListaSeguidores ->
@@ -93,7 +90,6 @@ fun BodyBusquedaPerfilScreen(
     mostrarMensajeError: Boolean = false,
     reviewPressed: (String) -> Unit = {},
     onClick: () -> Unit = {},
-    onRateReview: (String, Int) -> Unit = { _, _ -> },
     onLikeReview: (String) -> Unit = {},
     isUpdatingReviewLike: Boolean = false,
     onConnectionsClick: (esListaSeguidores: Boolean) -> Unit = {},
@@ -168,7 +164,6 @@ fun BodyBusquedaPerfilScreen(
                 review,
                 reviewPressed = reviewPressed,
                 modifier = Modifier.width(350.dp),
-                onRateReview = onRateReview,
                 onLikeClick = onLikeReview,
                 isUpdatingLike = isUpdatingReviewLike
             )
