@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 //ViewModel encargado de gestionar la lógica de negocio
 @HiltViewModel
@@ -23,18 +24,24 @@ class CompleteReviewsViewModel @Inject constructor(
         if (generalReview != null) {
             _uiState.update { it.copy(generalReview = generalReview) }
         }
+    }
+
+    fun getAllReviews() {
         viewModelScope.launch {
-            val result = reviewRepository.getReviews()
-            if (result.isSuccess) {
-                _uiState.update { it.copy(allReviews = result.getOrNull() ?: emptyList(), mostrarMensajeError = false) }
-            } else {
-                _uiState.update {
-                    it.copy(
-                        mostrarMensajeError = true,
-                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudieron cargar las reseñas"
-                    )
+            _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
+            reviewRepository.getReviewLive()
+                .catch { e ->
+                    _uiState.update {
+                        it.copy(
+                            errorMessage = e.message ?: "No se pudieron cargar las reseñas",
+                            mostrarMensajeError = true,
+                            isLoading = false
+                        )
+                    }
                 }
-            }
+                .collect { reviews ->
+                    _uiState.update { it.copy(allReviews = reviews, isLoading = false, mostrarMensajeError = false) }
+                }
         }
     }
 }

@@ -44,6 +44,7 @@ fun CompleteReviewsScreen(
 
     LaunchedEffect(generalReviewId) {
         completeReviewsViewModel.loadData(generalReviewId)
+        completeReviewsViewModel.getAllReviews()
     }
 
     Box(

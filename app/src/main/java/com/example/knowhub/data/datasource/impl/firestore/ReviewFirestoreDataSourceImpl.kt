@@ -95,7 +95,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         }.await()
     }
 
-    override suspend fun listenAllReviews(): Flow<List<ReviewDto>> = callbackFlow {
+    override fun listenAllReviews(): Flow<List<ReviewDto>> = callbackFlow {
         val listener = db.collection("reviews").addSnapshotListener { snapshot, error ->
             if(error!=null){
                 close(error)

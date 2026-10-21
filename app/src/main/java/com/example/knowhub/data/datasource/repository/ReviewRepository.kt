@@ -130,7 +130,7 @@ class ReviewRepository @Inject constructor(
         }
     }
 
-    suspend fun getReviewLive(): Flow<List<Review>>{
+    fun getReviewLive(): Flow<List<Review>>{
         return  reviewRemoteDataSource.listenAllReviews().map { reviews ->
             reviews.map { it.toReview() }
         }

@@ -17,7 +17,7 @@ interface ReviewRemoteDataSource {
 
     suspend fun sendOrDeleteReviewLike(reviewId: String, userId: String): Unit
 
-    suspend fun listenAllReviews(): Flow<List<ReviewDto>>
+    fun listenAllReviews(): Flow<List<ReviewDto>>
 
 
 }
