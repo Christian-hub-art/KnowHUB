@@ -1,10 +1,16 @@
 const { initializeApp } = require("firebase-admin/app");
-const { getFirestore } = require("firebase-admin/firestore");
+const { FieldValue, getFirestore } = require("firebase-admin/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
 const { logger } = require("firebase-functions");
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const {
+  onDocumentCreated,
+  onDocumentUpdated,
+} = require("firebase-functions/v2/firestore");
 
 initializeApp();
+
+const db = getFirestore();
+const messaging = getMessaging();
 
 exports.sendNotification = onDocumentCreated(
   "users/{userId}/notifications/{notificationId}",
@@ -17,23 +23,15 @@ exports.sendNotification = onDocumentCreated(
       return;
     }
 
-    const userId = event.params.userId;
-    const tokenSnapshot = await getFirestore()
+    const tokens = await db
       .collection("users")
-      .doc(userId)
+      .doc(event.params.userId)
       .collection("fcmTokens")
       .get();
-    const tokens = tokenSnapshot.docs.map((document) => document.id).filter(Boolean);
 
-    if (tokens.length === 0) {
-      logger.info("User has no registered FCM tokens.", { userId });
-      return;
-    }
-
-    for (let start = 0; start < tokens.length; start += 500) {
-      const batch = tokens.slice(start, start + 500);
-      const response = await getMessaging().sendEachForMulticast({
-        tokens: batch,
+    for (const document of tokens.docs) {
+      await messaging.send({
+        token: document.id,
         notification: {
           title: notification.title || "KnowHUB",
           body: notification.body || "Tienes una nueva notificación.",
@@ -46,31 +44,69 @@ exports.sendNotification = onDocumentCreated(
           commentId: String(notification.commentId || ""),
         },
       });
+    }
+  }
+);
 
-      const invalidTokens = [];
-      response.responses.forEach((result, index) => {
-        if (
-          !result.success &&
-          (result.error?.code === "messaging/registration-token-not-registered" ||
-            result.error?.code === "messaging/invalid-registration-token")
-        ) {
-          invalidTokens.push(batch[index]);
-        }
+exports.notifyReviewLike = onDocumentCreated(
+  "reviews/{reviewId}/likes/{userId}",
+  async (event) => {
+    const { reviewId, userId } = event.params;
+    const review = await db.collection("reviews").doc(reviewId).get();
+    const ownerId = review.get("userId");
+
+    if (!review.exists || !ownerId || ownerId === userId) {
+      return;
+    }
+
+    const liker = await db.collection("users").doc(userId).get();
+    const likerName = liker.get("name") || liker.get("userName") || "Un usuario";
+
+    await db
+      .collection("users")
+      .doc(ownerId)
+      .collection("notifications")
+      .doc(event.id)
+      .set({
+        type: "like",
+        title: "Me gusta en tu reseña",
+        body: `${likerName} indicó que le gusta tu reseña.`,
+        actorId: userId,
+        reviewId,
+        createdAt: FieldValue.serverTimestamp(),
+        read: false,
       });
+  }
+);
 
-      if (invalidTokens.length > 0) {
-        const firestore = getFirestore();
-        const deletions = invalidTokens.map((token) =>
-          firestore.collection("users").doc(userId).collection("fcmTokens").doc(token).delete()
-        );
-        await Promise.all(deletions);
-      }
+exports.updateUserInfoInReviews = onDocumentUpdated(
+  "users/{userId}",
+  async (event) => {
+    const before = event.data.before.data();
+    const after = event.data.after.data();
+    const update = {};
 
-      logger.info("FCM notification processed.", {
-        userId,
-        successCount: response.successCount,
-        failureCount: response.failureCount,
-      });
+    if (before.name !== after.name) {
+      update["user.name"] = after.name;
+    }
+    if (before.userName !== after.userName) {
+      update["user.userName"] = after.userName;
+    }
+    if (before.foto !== after.foto) {
+      update["user.profileImage"] = after.foto;
+    }
+
+    if (Object.keys(update).length === 0) {
+      return;
+    }
+
+    const reviews = await db
+      .collection("reviews")
+      .where("userId", "==", event.params.userId)
+      .get();
+
+    for (const review of reviews.docs) {
+      await review.ref.update(update);
     }
   }
 );

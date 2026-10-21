@@ -120,7 +120,6 @@ fun BodyReviewScreen(
                     Materia = review.nombreAsignatura,
                     Profesor = review.nombreProfesor,
                     Reseña = review.descripcion,
-                    Calificacion = review.calificacion,
                     colorCaja = colorCaja,
                     colorTexto = colorTexto,
                     likes = review.likes,

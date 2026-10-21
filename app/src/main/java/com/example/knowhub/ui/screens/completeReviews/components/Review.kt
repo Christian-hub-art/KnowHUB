@@ -33,10 +33,7 @@ import com.example.knowhub.data.Review
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
-
-import com.example.knowhub.ui.utils.generarEstrellas
 import com.example.knowhub.ui.utils.ProfileAsyncImage
-import com.example.knowhub.ui.utils.ReviewRatingControl
 //Componente que muestra el detalle de una reseña individual con sus métricas e interacciones
 
 @Composable
@@ -45,7 +42,6 @@ fun Review(
     reviewPressed: (String) -> Unit,
     modifier: Modifier = Modifier,
     autorPressed: (String) -> Unit = {},
-    onRateReview: (String, Int) -> Unit = { _, _ -> },
     onLikeClick: (String) -> Unit = {},
     isUpdatingLike: Boolean = false
 ) {
@@ -72,12 +68,6 @@ fun Review(
                 )
             }
             Spacer(modifier = Modifier.width(20.dp))
-
-            val estrellas= generarEstrellas(review.calificacion)
-            Text(
-                text = estrellas,
-                fontSize = 18.sp
-            )
         }
         Spacer(modifier = Modifier.height(6.dp))
         Column(// Tarjeta contenedora con la descripción y botones de interacción
@@ -111,11 +101,7 @@ fun Review(
                 Spacer(modifier = Modifier.height(20.dp))
                 Row( modifier= Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
-                ) {// Calificación de la reseña y contador de comentarios
-                    ReviewRatingControl(
-                        review = review,
-                        onRate = { rating -> onRateReview(review.id, rating) }
-                    )
+                ) {// Contador de likes y comentarios
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
                             onClick = { onLikeClick(review.id) },

@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
-import com.example.knowhub.ui.utils.generarEstrellas
 import com.example.knowhub.R
 
 @Composable
@@ -38,7 +37,6 @@ fun CajaReview(
     Materia: String,
     Profesor: String,
     Reseña: String,
-    Calificacion: Int,
     colorCaja: Color,
     colorTexto: Color,
     likes: Int = 0,
@@ -112,12 +110,6 @@ fun CajaReview(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            val estrellas = generarEstrellas(Calificacion)
-            Text(
-                text = estrellas,
-                fontSize = 18.sp
-            )
-
             Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(R.drawable.iconolike),
@@ -179,7 +171,6 @@ fun CajaReviewPreview(){
         "Desarrollo Movil",
         "Angarita",
         "Es una muy buena clase.",
-        5,
         primaryContainerLight,
         primaryLight
     )
