@@ -56,7 +56,7 @@ class ProfileViewModel @Inject constructor(
     }
     //Actualiza el valor del nombre de usuario ingresado en la interfaz.
     fun updateNombre (input: String){
-        _uiState.update { it.copy( nombre =  input, mostrarMensajeErrorGuardar = false) }
+        _uiState.update { it.copy( nombre =  input) }
     }
     //Valida y procesa la acción de guardar los cambios del perfil.
     fun guardarBottonPressed () {
@@ -71,17 +71,7 @@ class ProfileViewModel @Inject constructor(
             userName = _uiState.value.nombre
         )
         viewModelScope.launch {
-            val result = userRepository.updateUserProfile(userId, updateUserDto)
-            if (result.isSuccess) {
-                _uiState.update { it.copy(mostrarMensajeErrorGuardar = true, errorMessageGuardar = "Nombre de usuario actualizado") }
-            } else {
-                _uiState.update {
-                    it.copy(
-                        mostrarMensajeErrorGuardar = true,
-                        errorMessageGuardar = result.exceptionOrNull()?.message ?: "No se pudo actualizar el nombre de usuario"
-                    )
-                }
-            }
+            userRepository.updateUserProfile(userId, updateUserDto)
         }
     }
     //Gestiona el evento de eliminación de la cuenta de usuario.
