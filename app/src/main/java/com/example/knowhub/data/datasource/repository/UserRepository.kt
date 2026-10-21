@@ -5,6 +5,9 @@ import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.dtos.RegisterUserDto
 import com.example.knowhub.data.datasource.dtos.UserProfileDto
 import com.example.knowhub.data.datasource.impl.firestore.UserFirestoreDataSourceImpl
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -16,7 +19,8 @@ class UserRepository @Inject constructor(
 
     suspend fun registerUser(name: String, userName: String, userId: String): Result<Unit>{
         return try {
-            val registerUserDto = RegisterUserDto(name,userName)
+            val fcmToken = FirebaseMessaging.getInstance().token.await()
+            val registerUserDto = RegisterUserDto(name,userName, fcmToken)
             userRemoteDataSource.registerUser(registerUserDto, userId)
             Result.success(Unit)
         }catch (e: Exception){
