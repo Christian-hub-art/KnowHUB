@@ -69,7 +69,7 @@ fun AppNavegation(
 
     NavHost(
         navController = navController,
-        startDestination = Screens.Start.route,
+        startDestination = Screens.Splash.route,
         modifier = modifier
     ) {
         composable(route = Screens.Start.route){
