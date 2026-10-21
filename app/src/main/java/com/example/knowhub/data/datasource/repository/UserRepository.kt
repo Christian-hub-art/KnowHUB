@@ -77,4 +77,24 @@ class UserRepository @Inject constructor(
             Result.failure(e)
         }
     }
+
+    suspend fun getFollowers(userId: String): Result<List<UserProfileDto>> {
+        return try {
+            val users = userRemoteDataSource.getFollowers(userId)
+            Result.success(users)
+        } catch (e: Exception) {
+            Log.d("TAG", "getFollowers: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getFollowing(userId: String): Result<List<UserProfileDto>> {
+        return try {
+            val users = userRemoteDataSource.getFollowing(userId)
+            Result.success(users)
+        } catch (e: Exception) {
+            Log.d("TAG", "getFollowing: ${e.message}")
+            Result.failure(e)
+        }
+    }
 }

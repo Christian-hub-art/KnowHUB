@@ -53,7 +53,14 @@ fun CompleteReviewsScreen(
         BackgroundImage()
         BodyCompleteReviewsScreen(
             generalReviewId = generalReviewId,
-            allReviews = state.allReviews,
+            allReviews = if (state.soloSiguiendo) {
+                state.allReviews.filter { it.userId in state.followingIds }
+            } else {
+                state.allReviews
+            },
+            soloSiguiendo = state.soloSiguiendo,
+            paraTiPressed = { completeReviewsViewModel.paraTiButtonPressed() },
+            siguiendoPressed = { completeReviewsViewModel.siguiendoButtonPressed() },
             errorMessage = state.errorMessage,
             mostrarMensajeError = state.mostrarMensajeError,
             reviewPressed = reviewPressed,
@@ -67,6 +74,9 @@ fun CompleteReviewsScreen(
 fun BodyCompleteReviewsScreen(
     generalReviewId: Int,
     allReviews: List<Review>,
+    soloSiguiendo: Boolean = false,
+    paraTiPressed: () -> Unit = {},
+    siguiendoPressed: () -> Unit = {},
     errorMessage: String,
     mostrarMensajeError: Boolean,
     reviewPressed: (String) -> Unit,
@@ -117,15 +127,17 @@ fun BodyCompleteReviewsScreen(
                 ) {// Filtros de navegación
                     AppButton(
                         stringResource(R.string.para_ti),
-                        primaryLight,
-                        primaryContainerLight,
+                        if (soloSiguiendo) tertiaryContainerLight else primaryLight,
+                        if (soloSiguiendo) secondaryContainerLight else primaryContainerLight,
+                        onClick = paraTiPressed,
                         modifier = Modifier.height(40.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     AppButton(
                         stringResource(R.string.siguiendo),
-                        tertiaryContainerLight,
-                        secondaryContainerLight,
+                        if (soloSiguiendo) primaryLight else tertiaryContainerLight,
+                        if (soloSiguiendo) primaryContainerLight else secondaryContainerLight,
+                        onClick = siguiendoPressed,
                         modifier = Modifier.height(40.dp)
                     )
                 }
@@ -133,6 +145,9 @@ fun BodyCompleteReviewsScreen(
             }
             if (mostrarMensajeError) {
                 item { Text(errorMessage) }
+            }
+            if (soloSiguiendo && allReviews.isEmpty()) {
+                item { Text(stringResource(R.string.sin_resenas_siguiendo)) }
             }
             // Listado de reseñas
             items(allReviews.size) { index ->

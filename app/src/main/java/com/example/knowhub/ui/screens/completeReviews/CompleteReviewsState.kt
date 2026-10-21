@@ -8,5 +8,7 @@ data class CompleteReviewsState(
     val allReviews: List<Review> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String = "",
-    val mostrarMensajeError: Boolean = false
+    val mostrarMensajeError: Boolean = false,
+    val soloSiguiendo: Boolean = false,
+    val followingIds: List<String> = emptyList()
 )

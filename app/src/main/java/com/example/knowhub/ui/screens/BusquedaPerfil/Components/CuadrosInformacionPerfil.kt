@@ -3,6 +3,7 @@ package com.example.knowhub.ui.screens.BusquedaPerfil.Components
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.foundation.clickable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.knowhub.R
@@ -14,7 +15,9 @@ fun CuadrosInformacionPerfil(
     seguidos: Int,
     materiasResenadas: Int,
     seguidores: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSeguidosClick: () -> Unit = {},
+    onSeguidoresClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier,
@@ -24,7 +27,9 @@ fun CuadrosInformacionPerfil(
         MiniCuadroInformacion(
             tipo = stringResource(R.string.seguidos),
             numero = seguidos,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .clickable { onSeguidosClick() }
         )
 
         // Bloque de métrica para materias evaluadas
@@ -38,7 +43,9 @@ fun CuadrosInformacionPerfil(
         MiniCuadroInformacion(
             tipo = stringResource(R.string.seguidores),
             numero = seguidores,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .clickable { onSeguidoresClick() }
         )
     }
 }

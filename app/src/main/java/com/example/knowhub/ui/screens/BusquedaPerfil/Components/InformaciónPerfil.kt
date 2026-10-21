@@ -30,7 +30,9 @@ fun InformacionPerfil(
     seguidos: Int,
     materiasResenadas: Int,
     seguidores: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSeguidosClick: () -> Unit = {},
+    onSeguidoresClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier.width(350.dp),
@@ -54,7 +56,9 @@ fun InformacionPerfil(
             materiasResenadas = materiasResenadas,
             seguidores = seguidores,
             modifier = Modifier
-                .weight(1f)
+                .weight(1f),
+            onSeguidosClick = onSeguidosClick,
+            onSeguidoresClick = onSeguidoresClick
         )
     }
 }

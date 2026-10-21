@@ -13,6 +13,8 @@ import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsScreen
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
 import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificReviewScreen
 import com.example.knowhub.ui.screens.commentDetail.CommentDetailScreen
+import com.example.knowhub.ui.screens.connections.ConnectionsScreen
+import com.example.knowhub.ui.screens.connections.ConnectionsViewModel
 import com.example.knowhub.ui.screens.commentDetail.CommentDetailViewModel
 import com.example.knowhub.ui.screens.inicio.InicioScreen
 import com.example.knowhub.ui.screens.login.LoginScreen
@@ -55,6 +57,9 @@ sealed class Screens(val route: String) {
     object Profile : Screens("profile")
     object Reviews : Screens("reviews")
     object Inicio : Screens("inicio")
+    object Connections : Screens("connections/{userId}/{followers}") {
+        fun createRoute(userId: String, followers: Boolean) = "connections/$userId/$followers"
+    }
     object BusquePerfil : Screens("busquedaPerfil/{userId}") {
         fun createRoute(userId: String) = "busquedaPerfil/$userId"
     }
@@ -201,7 +206,32 @@ fun AppNavegation(
             NotificatonsScreen()
         }
         composable ( route = Screens.Profile.route ){
-            ProfileScreen()
+            ProfileScreen(
+                seguidoresPressed = { userId ->
+                    navController.navigate(Screens.Connections.createRoute(userId, followers = true))
+                },
+                seguidosPressed = { userId ->
+                    navController.navigate(Screens.Connections.createRoute(userId, followers = false))
+                }
+            )
+        }
+        composable ( route = Screens.Connections.route,
+            arguments = listOf(
+                navArgument("userId"){type = NavType.StringType},
+                navArgument("followers"){type = NavType.BoolType}
+            )
+        ){
+            val userId = it.arguments?.getString("userId") ?: ""
+            val followers = it.arguments?.getBoolean("followers") ?: true
+            val viewModel: ConnectionsViewModel = hiltViewModel()
+            ConnectionsScreen(
+                userId = userId,
+                followers = followers,
+                connectionsViewModel = viewModel,
+                userPressed = { otherUserId ->
+                    navController.navigate(Screens.BusquePerfil.createRoute(otherUserId))
+                }
+            )
         }
         composable ( route = Screens.Reviews.route ){
             ReviewScreen(
@@ -274,6 +304,12 @@ fun AppNavegation(
                 viewModel = hiltViewModel(),
                 reviewPressed = { reviewId ->
                     navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
+                },
+                seguidoresPressed = { id ->
+                    navController.navigate(Screens.Connections.createRoute(id, followers = true))
+                },
+                seguidosPressed = { id ->
+                    navController.navigate(Screens.Connections.createRoute(id, followers = false))
                 }
             )
         }

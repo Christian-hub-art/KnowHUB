@@ -40,7 +40,9 @@ fun BusquedaPerfilScreen(
     userId: String,
     modifier: Modifier = Modifier,
     viewModel: BusquedaPerfilViewModel = viewModel(),
-    reviewPressed: (String) -> Unit = {}
+    reviewPressed: (String) -> Unit = {},
+    seguidoresPressed: (String) -> Unit = {},
+    seguidosPressed: (String) -> Unit = {}
 ){
     val uiState by viewModel.uiState.collectAsState()
 
@@ -64,7 +66,9 @@ fun BusquedaPerfilScreen(
             seguidores = uiState.seguidores,
             seguidos = uiState.seguidos,
             mostrarSeguir = userId != uiState.currentUserId,
-            onClick = { viewModel.followOrUnfollowUser(userId) }
+            onClick = { viewModel.followOrUnfollowUser(userId) },
+            seguidoresPressed = { seguidoresPressed(userId) },
+            seguidosPressed = { seguidosPressed(userId) }
         )
     }
 }
@@ -82,6 +86,8 @@ fun BodyBusquedaPerfilScrenn(
     seguidos: Int = 0,
     mostrarSeguir: Boolean = true,
     onClick: () -> Unit = {},
+    seguidoresPressed: () -> Unit = {},
+    seguidosPressed: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -112,7 +118,9 @@ fun BodyBusquedaPerfilScrenn(
                 fotoPerfil = fotoPerfil,
                 seguidos = seguidos,
                 materiasResenadas = reviews.map { it.nombreAsignatura }.distinct().size,
-                seguidores = seguidores
+                seguidores = seguidores,
+                onSeguidosClick = seguidosPressed,
+                onSeguidoresClick = seguidoresPressed
             )
 
             Spacer(modifier = Modifier.height(20.dp))

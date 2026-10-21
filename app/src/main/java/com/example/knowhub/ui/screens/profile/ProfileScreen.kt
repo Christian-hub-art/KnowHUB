@@ -35,7 +35,9 @@ import com.example.knowhub.ui.utils.ProfileAsyncImage
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    seguidoresPressed: (String) -> Unit = {},
+    seguidosPressed: (String) -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsState()
     Box(
@@ -56,6 +58,8 @@ fun ProfileScreen(
             seguidores = state.seguidores,
             seguidos = state.seguidos,
             materiasResenadas = state.materiasResenadas,
+            seguidoresPressed = { seguidoresPressed(state.userId) },
+            seguidosPressed = { seguidosPressed(state.userId) },
             onNombreChange = {viewModel.updateNombre(it)},
             guardarBottonPressed = {viewModel.guardarBottonPressed()},
             eliminarcuentaBottonPressed = {viewModel.eliminarcuentaBottonPressed()},
@@ -81,6 +85,8 @@ fun BodyProfileScreen(
     seguidores: Int = 0,
     seguidos: Int = 0,
     materiasResenadas: Int = 0,
+    seguidoresPressed: () -> Unit = {},
+    seguidosPressed: () -> Unit = {},
     onNombreChange: (String) -> Unit,
     guardarBottonPressed: () -> Unit = {},
     eliminarcuentaBottonPressed: () -> Unit = {},
@@ -131,7 +137,9 @@ fun BodyProfileScreen(
             seguidos = seguidos,
             materiasResenadas = materiasResenadas,
             seguidores = seguidores,
-            modifier = Modifier.width(320.dp)
+            modifier = Modifier.width(320.dp),
+            onSeguidosClick = seguidosPressed,
+            onSeguidoresClick = seguidoresPressed
         )
 
         Spacer(modifier = Modifier.weight(10.0F))

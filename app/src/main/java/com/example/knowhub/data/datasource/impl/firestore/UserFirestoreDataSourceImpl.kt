@@ -81,4 +81,21 @@ class UserFirestoreDataSourceImpl @Inject constructor (private val db: FirebaseF
         }.await()
     }
 
+    override suspend fun getFollowers(userId: String): List<UserProfileDto> {
+        val snapshot = db.collection("users").document(userId).collection("followers").get().await()
+        return snapshot.documents.map { doc ->
+            val userDoc = db.collection("users").document(doc.id).get().await()
+            val user = userDoc.toObject(UserProfileDto::class.java)
+            user?.copy(id = userDoc.id) ?: throw Exception("Usuario no encontrado")
+        }
+    }
+
+    override suspend fun getFollowing(userId: String): List<UserProfileDto> {
+        val snapshot = db.collection("users").document(userId).collection("following").get().await()
+        return snapshot.documents.map { doc ->
+            val userDoc = db.collection("users").document(doc.id).get().await()
+            val user = userDoc.toObject(UserProfileDto::class.java)
+            user?.copy(id = userDoc.id) ?: throw Exception("Usuario no encontrado")
+        }
+    }
 }

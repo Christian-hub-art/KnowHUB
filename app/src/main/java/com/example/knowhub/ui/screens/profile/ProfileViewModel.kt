@@ -48,6 +48,7 @@ class ProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         nombre = user?.userName ?: "",
+                        userId = userId,
                         name = user?.name ?: "",
                         correo = authRepository.currentUser?.email ?: "",
                         seguidores = user?.followersCount ?: 0,

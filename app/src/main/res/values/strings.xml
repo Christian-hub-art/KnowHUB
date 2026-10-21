@@ -90,4 +90,5 @@
     <string name="eliminar_resena">🗑 Eliminar</string>
     <string name="respuestas">RESPUESTAS</string>
     <string name="dejar_de_seguir">Dejar de seguir</string>
+    <string name="sin_resenas_siguiendo">Los usuarios que sigues no han reseñado esta materia</string>
 </resources>
