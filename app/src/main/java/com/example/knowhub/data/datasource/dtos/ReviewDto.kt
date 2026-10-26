@@ -32,7 +32,8 @@ data class CreateReviewDto(
     val nombreProfesor: String = "",
     val descripcion: String = "",
     val user: ReviewUserDto? = null,
-    val generalReviewId: Int = 0
+    val generalReviewId: Int = 0,
+    val calificacion: Int = 0
 )
 
 fun ReviewDto.toReview(): Review {
