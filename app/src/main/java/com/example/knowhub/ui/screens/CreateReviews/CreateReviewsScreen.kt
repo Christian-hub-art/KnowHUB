@@ -52,6 +52,7 @@ fun CreateReviewsScreen(
             tituloMateria = state.tituloMateria,
             nombreProfesor = state.nombreProfesor,
             resena = state.resena,
+            calificacion = state.calificacion,
             userName = state.userName,
             errorMessage = state.errorMessage,
             mostrarMensajeError = state.mostrarMensajeError,
@@ -60,6 +61,7 @@ fun CreateReviewsScreen(
             onTituloMateriaChange = { createReviewsViewModel.updateTituloMateria(it) },
             onNombreProfesorChange = { createReviewsViewModel.updateNombreProfesor(it) },
             onResenaChange = { createReviewsViewModel.updateResena(it) },
+            onCalificacionChange = { createReviewsViewModel.updateCalificacion(it) },
             onClick = { createReviewsViewModel.publicarButtonPressed() },
             onCancelarClick = { createReviewsViewModel.cancelarButtonPressed() }
         )
@@ -72,6 +74,7 @@ fun BodyCreateReviewsScreen(
     tituloMateria: String,
     nombreProfesor: String,
     resena: String,
+    calificacion: Int,
     userName: String,
     errorMessage: String,
     mostrarMensajeError: Boolean,
@@ -80,6 +83,7 @@ fun BodyCreateReviewsScreen(
     onTituloMateriaChange: (String) -> Unit,
     onNombreProfesorChange: (String) -> Unit,
     onResenaChange: (String) -> Unit,
+    onCalificacionChange: (Int) -> Unit,
     onClick: () -> Unit,
     onCancelarClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -111,10 +115,12 @@ fun BodyCreateReviewsScreen(
             tituloMateria = tituloMateria,
             nombreProfesor = nombreProfesor,
             resena = resena,
+            calificacion = calificacion,
             onClaseChange = onClaseChange,
             onTituloMateriaChange = onTituloMateriaChange,
             onNombreProfesorChange = onNombreProfesorChange,
             onResenaChange = onResenaChange,
+            onCalificacionChange = onCalificacionChange,
             onClick = onClick,
             onCancelarClick = onCancelarClick,
             textoPublicar = stringResource(if (editando) R.string.guardar else R.string.publicar)
