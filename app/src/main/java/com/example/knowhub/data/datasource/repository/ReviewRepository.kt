@@ -41,10 +41,10 @@ class ReviewRepository @Inject constructor(
         }
     }
 
-    suspend fun getReviewById(id: String): Result<Review> {
-        val currentUserId = authRemoteDataSource.currentUser?.uid ?: ""
+    suspend fun getReviewById(id: String, currentUserId: String = ""): Result<Review> {
+        val effectiveUserId = currentUserId.ifEmpty { authRemoteDataSource.currentUser?.uid ?: "" }
         return try {
-            val review = reviewRemoteDataSource.getReviewById(id, currentUserId)
+            val review = reviewRemoteDataSource.getReviewById(id, effectiveUserId)
             Result.success(review.toReview())
         } catch (e: Exception) {
             Log.d("TAG", "getReviewById: ${e.message}")

@@ -54,10 +54,22 @@ class ReviewRepositoryIntegrationTest {
 
         // Limpiar colecciones
         val reviews = db.collection("reviews").get().await()
-        for (doc in reviews) doc.reference.delete().await()
+        for (doc in reviews) {
+            val likes = doc.reference.collection("likes").get().await()
+            for (like in likes) like.reference.delete().await()
+            doc.reference.delete().await()
+        }
 
         val users = db.collection("users").get().await()
-        for (doc in users) doc.reference.delete().await()
+        for (doc in users) {
+            val followers = doc.reference.collection("followers").get().await()
+            for (f in followers) f.reference.delete().await()
+
+            val following = doc.reference.collection("following").get().await()
+            for (f in following) f.reference.delete().await()
+
+            doc.reference.delete().await()
+        }
 
         // Cargar usuarios de prueba
         val userBatch = db.batch()
@@ -71,7 +83,7 @@ class ReviewRepositoryIntegrationTest {
         }
         userBatch.commit().await()
 
-        // Cargar 10 reseñas de prueba usando batch
+        // Cargar 10 reseñas de prueba
         val reviewBatch = db.batch()
         repeat(10) { i ->
             val review = generateReview(i + 1)
@@ -84,13 +96,22 @@ class ReviewRepositoryIntegrationTest {
     fun tearDown() = runTest {
         try {
             val reviews = db.collection("reviews").get().await()
-            for (doc in reviews) doc.reference.delete().await()
+            for (doc in reviews) {
+                val likes = doc.reference.collection("likes").get().await()
+                for (like in likes) like.reference.delete().await()
+                doc.reference.delete().await()
+            }
 
             val users = db.collection("users").get().await()
-            for (doc in users) doc.reference.delete().await()
+            for (doc in users) {
+                val followers = doc.reference.collection("followers").get().await()
+                for (f in followers) f.reference.delete().await()
 
-            FirebaseAuth.getInstance().currentUser?.delete()?.await()
-            FirebaseAuth.getInstance().signOut()
+                val following = doc.reference.collection("following").get().await()
+                for (f in following) f.reference.delete().await()
+
+                doc.reference.delete().await()
+            }
         } catch (e: Exception) {
         }
     }
@@ -184,14 +205,14 @@ class ReviewRepositoryIntegrationTest {
         val reviewId = "review_1"
         val userId = "user_2"
 
-        val initialReview = repository.getReviewById(reviewId).getOrNull()
+        val initialReview = repository.getReviewById(reviewId, userId).getOrNull()
         val initialLikes = initialReview?.likes ?: 0
 
         val result = repository.sendOrDeleteReviewLike(reviewId, userId)
         Truth.assertThat(result.isSuccess).isTrue()
 
         // Verificar que los likes aumentaron y se marcó como liked
-        val updatedReview = repository.getReviewById(reviewId).getOrNull()
+        val updatedReview = repository.getReviewById(reviewId, userId).getOrNull()
         Truth.assertThat(updatedReview?.likes).isEqualTo(initialLikes + 1)
         Truth.assertThat(updatedReview?.liked).isTrue()
     }

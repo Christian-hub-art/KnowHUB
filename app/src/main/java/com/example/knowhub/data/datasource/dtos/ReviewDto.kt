@@ -31,7 +31,7 @@ data class CreateReviewDto(
     val nombreAsignatura: String = "",
     val nombreProfesor: String = "",
     val descripcion: String = "",
-    val user: ReviewUserDto? = null,
+    val user: ReviewUserDto = ReviewUserDto(),
     val generalReviewId: Int = 0,
     val calificacion: Int = 0
 )

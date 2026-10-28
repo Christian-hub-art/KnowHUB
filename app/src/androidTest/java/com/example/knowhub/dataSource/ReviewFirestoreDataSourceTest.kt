@@ -3,6 +3,7 @@ package com.example.knowhub.dataSource
 import com.example.knowhub.data.datasource.dtos.CreateReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewUserDto
+import com.example.knowhub.data.datasource.dtos.UserProfileDto
 import com.example.knowhub.data.datasource.impl.firestore.ReviewFirestoreDataSourceImpl
 import com.google.common.truth.Truth
 import com.google.firebase.Firebase
@@ -42,13 +43,36 @@ class ReviewFirestoreDataSourceTest {
 
         datasource = ReviewFirestoreDataSourceImpl(db)
 
-        // Limpiar la colección de reseñas
+        // Limpiar colecciones
         val reviews = db.collection("reviews").get().await()
         for (doc in reviews) {
+            val likes = doc.reference.collection("likes").get().await()
+            for (like in likes) like.reference.delete().await()
             doc.reference.delete().await()
         }
 
-        // Cargar 10 reseñas de prueba usando batch
+        val users = db.collection("users").get().await()
+        for (doc in users) {
+            val followers = doc.reference.collection("followers").get().await()
+            for (f in followers) f.reference.delete().await()
+            val following = doc.reference.collection("following").get().await()
+            for (f in following) f.reference.delete().await()
+            doc.reference.delete().await()
+        }
+
+        // Cargar usuarios de prueba
+        val userBatch = db.batch()
+        repeat(10) { i ->
+            val uDto = UserProfileDto(
+                id = "user_${i + 1}",
+                name = "User ${i + 1}",
+                userName = "user_${i + 1}"
+            )
+            userBatch.set(db.collection("users").document(uDto.id), uDto)
+        }
+        userBatch.commit().await()
+
+        // Cargar 10 reseñas de prueba
         val batch = db.batch()
         repeat(10) { i ->
             val review = generateReview(i + 1)
@@ -62,6 +86,17 @@ class ReviewFirestoreDataSourceTest {
         try {
             val reviews = db.collection("reviews").get().await()
             for (doc in reviews) {
+                val likes = doc.reference.collection("likes").get().await()
+                for (like in likes) like.reference.delete().await()
+                doc.reference.delete().await()
+            }
+
+            val users = db.collection("users").get().await()
+            for (doc in users) {
+                val followers = doc.reference.collection("followers").get().await()
+                for (f in followers) f.reference.delete().await()
+                val following = doc.reference.collection("following").get().await()
+                for (f in following) f.reference.delete().await()
                 doc.reference.delete().await()
             }
         } catch (e: Exception) {
@@ -100,7 +135,8 @@ class ReviewFirestoreDataSourceTest {
             nombreProfesor = "Prof. Newton",
             descripcion = "Muy buena física",
             calificacion = 5,
-            generalReviewId = 99
+            generalReviewId = 99,
+            user = ReviewUserDto(name = "User New", userName = "user_new")
         )
         datasource.createReview(newReviewDto)
 
