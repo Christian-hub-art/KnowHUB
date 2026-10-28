@@ -19,6 +19,11 @@ class AuthRemoteDataSource @Inject constructor(
 
     suspend fun signUp(correoElectronico: String, contrasena: String) {
         auth.createUserWithEmailAndPassword(correoElectronico, contrasena).await()
+        try {
+            auth.currentUser?.sendEmailVerification()?.await()
+        } catch (_: Exception) {
+            // No interrumpimos el registro si falla únicamente el envío de correo
+        }
     }
 
     fun signOut() {
