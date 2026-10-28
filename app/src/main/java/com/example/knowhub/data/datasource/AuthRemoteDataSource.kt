@@ -18,11 +18,12 @@ class AuthRemoteDataSource @Inject constructor(
     }
 
     suspend fun signUp(correoElectronico: String, contrasena: String) {
-        auth.createUserWithEmailAndPassword(correoElectronico, contrasena).await()
+        val authResult = auth.createUserWithEmailAndPassword(correoElectronico, contrasena).await()
         try {
-            auth.currentUser?.sendEmailVerification()?.await()
-        } catch (_: Exception) {
-            // No interrumpimos el registro si falla únicamente el envío de correo
+            authResult.user?.sendEmailVerification()?.await()
+            android.util.Log.d("AuthRemoteDataSource", "Correo de verificación enviado exitosamente a: $correoElectronico")
+        } catch (e: Exception) {
+            android.util.Log.e("AuthRemoteDataSource", "Error al enviar correo de verificación: ${e.message}", e)
         }
     }
 
