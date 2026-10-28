@@ -75,6 +75,7 @@ class CreateReviewsViewModel @Inject constructor(
                     tituloMateria = review.nombreAsignatura,
                     nombreProfesor = review.nombreProfesor,
                     resena = review.descripcion,
+                    calificacion = review.calificacion,
                     mostrarMensajeError = false
                 )
             }
@@ -96,6 +97,13 @@ class CreateReviewsViewModel @Inject constructor(
         }
         if (state.isLoading) return
 
+        val generalReviewId = if (state.generalReviewId != 0) {
+            state.generalReviewId
+        } else {
+            localGeneralReviewProvider.generalReviews
+                .find { it.codigoAsignatura.toString() == state.clase.trim() }?.id ?: 0
+        }
+
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
             val result = if (state.reviewId != null) {
@@ -104,7 +112,8 @@ class CreateReviewsViewModel @Inject constructor(
                     clase = state.clase,
                     nombreAsignatura = state.tituloMateria,
                     nombreProfesor = state.nombreProfesor,
-                    descripcion = state.resena
+                    descripcion = state.resena,
+                    calificacion = state.calificacion
                 )
             } else {
                 reviewRepository.createReview(
@@ -113,7 +122,8 @@ class CreateReviewsViewModel @Inject constructor(
                     nombreAsignatura = state.tituloMateria,
                     nombreProfesor = state.nombreProfesor,
                     descripcion = state.resena,
-                    generalReviewId = state.generalReviewId
+                    generalReviewId = generalReviewId,
+                    calificacion = state.calificacion
                 )
             }
             if (result.isSuccess) {
@@ -148,5 +158,9 @@ class CreateReviewsViewModel @Inject constructor(
     //Actualiza el contenido del texto de la reseña.
     fun updateResena(input: String) {
         _uiState.update { it.copy(resena = input) }
+    }
+    //Actualiza la calificación en estrellas.
+    fun updateCalificacion(input: Int) {
+        _uiState.update { it.copy(calificacion = input) }
     }
 }

@@ -68,7 +68,8 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
                 "clase" to review.clase,
                 "nombreAsignatura" to review.nombreAsignatura,
                 "nombreProfesor" to review.nombreProfesor,
-                "descripcion" to review.descripcion
+                "descripcion" to review.descripcion,
+                "calificacion" to review.calificacion
             )
         ).await()
     }

@@ -3,6 +3,7 @@ package com.example.knowhub.ui.screens.CreateReviews.components
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,10 +46,12 @@ fun CuadroResenas(
     tituloMateria: String,
     nombreProfesor: String,
     resena: String,
+    calificacion: Int,
     onClaseChange: (String) -> Unit,
     onTituloMateriaChange: (String) -> Unit,
     onNombreProfesorChange: (String) -> Unit,
     onResenaChange: (String) -> Unit,
+    onCalificacionChange: (Int) -> Unit,
     onClick: () -> Unit = {},
     onCancelarClick: () -> Unit = {},
     textoPublicar: String? = null,
@@ -141,12 +144,18 @@ fun CuadroResenas(
 
                 FormLabel(text = stringResource(R.string.tu_calificacion_label))
 
-                Row {
-                    val estrellas= generarEstrellas(4)
-                    Text(
-                        text = estrellas,
-                        fontSize = 18.sp
-                    )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    for (i in 1..5) {
+                        val starChar = if (i <= calificacion) "⭐" else "★"
+                        Text(
+                            text = starChar,
+                            fontSize = 24.sp,
+                            modifier = Modifier.clickable { onCalificacionChange(i) }
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))

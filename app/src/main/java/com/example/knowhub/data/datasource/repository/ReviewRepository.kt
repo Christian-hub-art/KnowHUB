@@ -41,10 +41,10 @@ class ReviewRepository @Inject constructor(
         }
     }
 
-    suspend fun getReviewById(id: String): Result<Review> {
-        val currentUserId = authRemoteDataSource.currentUser?.uid ?: ""
+    suspend fun getReviewById(id: String, currentUserId: String = ""): Result<Review> {
+        val effectiveUserId = currentUserId.ifEmpty { authRemoteDataSource.currentUser?.uid ?: "" }
         return try {
-            val review = reviewRemoteDataSource.getReviewById(id, currentUserId)
+            val review = reviewRemoteDataSource.getReviewById(id, effectiveUserId)
             Result.success(review.toReview())
         } catch (e: Exception) {
             Log.d("TAG", "getReviewById: ${e.message}")
@@ -58,7 +58,8 @@ class ReviewRepository @Inject constructor(
         nombreAsignatura: String,
         nombreProfesor: String,
         descripcion: String,
-        generalReviewId: Int = 0
+        generalReviewId: Int = 0,
+        calificacion: Int = 0
     ): Result<Unit> {
         return try {
 
@@ -78,7 +79,8 @@ class ReviewRepository @Inject constructor(
                 nombreProfesor = nombreProfesor,
                 descripcion = descripcion,
                 user = reviewUserDto,
-                generalReviewId = generalReviewId
+                generalReviewId = generalReviewId,
+                calificacion = calificacion
             )
 
             reviewRemoteDataSource.createReview(createReviewDto)
@@ -94,14 +96,16 @@ class ReviewRepository @Inject constructor(
         clase: String,
         nombreAsignatura: String,
         nombreProfesor: String,
-        descripcion: String
+        descripcion: String,
+        calificacion: Int = 0
     ): Result<Unit> {
         return try {
             val createReviewDto = CreateReviewDto(
                 clase = clase,
                 nombreAsignatura = nombreAsignatura,
                 nombreProfesor = nombreProfesor,
-                descripcion = descripcion
+                descripcion = descripcion,
+                calificacion = calificacion
             )
             reviewRemoteDataSource.updateReview(reviewId, createReviewDto)
             Result.success(Unit)
