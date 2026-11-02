@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 //ViewModel encargado de la lógica de negocio y carga inicial de reseñas generales
@@ -25,24 +26,24 @@ class InicioViewModel @Inject constructor(
     //Carga la lista de materias desde Firestore.
     fun loadMaterias() {
         viewModelScope.launch {
-            val result = generalReviewRepository.getGeneralReviews()
-            if (result.isSuccess) {
-                val allMaterias = result.getOrNull() ?: emptyList()
-                _uiState.update {
-                    it.copy(
-                        allGeneralReviews = allMaterias,
-                        categories = processCategories(allMaterias),
-                        mostrarMensajeError = false
-                    )
+            generalReviewRepository.getGeneralReviewsLive()
+                .catch { e ->
+                    _uiState.update {
+                        it.copy(
+                            mostrarMensajeError = true,
+                            errorMessage = e.message ?: "No se pudieron cargar las materias"
+                        )
+                    }
                 }
-            } else {
-                _uiState.update {
-                    it.copy(
-                        mostrarMensajeError = true,
-                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudieron cargar las materias"
-                    )
+                .collect { allMaterias ->
+                    _uiState.update {
+                        it.copy(
+                            allGeneralReviews = allMaterias,
+                            categories = processCategories(allMaterias),
+                            mostrarMensajeError = false
+                        )
+                    }
                 }
-            }
         }
     }
 

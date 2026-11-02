@@ -9,6 +9,7 @@ data class GeneralReviewDto(
     val codigoAsignatura: Int = 0,
     val cantidadReviews: Int = 0,
     val calificacionMedia: Int = 0,
+    val sumaCalificaciones: Int = 0,
     val dificultadMedia: String = "",
     val hashtags: List<String> = emptyList()
 )

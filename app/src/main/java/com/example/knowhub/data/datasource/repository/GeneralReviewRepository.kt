@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.datasource.dtos.toGeneralReview
 import com.example.knowhub.data.datasource.impl.firestore.GeneralReviewFirestoreDataSourceImpl
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GeneralReviewRepository @Inject constructor(
@@ -39,6 +41,12 @@ class GeneralReviewRepository @Inject constructor(
         } catch (e: Exception) {
             Log.d("TAG", "getGeneralReviewByCodigo: ${e.message}")
             Result.failure(e)
+        }
+    }
+
+    fun getGeneralReviewsLive(): Flow<List<GeneralReview>> {
+        return generalReviewRemoteDataSource.listenAllGeneralReviews().map { materias ->
+            materias.map { it.toGeneralReview() }
         }
     }
 }

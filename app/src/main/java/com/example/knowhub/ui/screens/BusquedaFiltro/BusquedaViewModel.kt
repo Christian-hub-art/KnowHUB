@@ -9,6 +9,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 //ViewModel encargado de gestionar la lógica de negocio y el estado de la pantalla de búsqueda.
@@ -29,23 +30,25 @@ class BusquedaViewModel @Inject constructor(
     private fun loadGeneralReviews() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
-            val result = generalReviewRepository.getGeneralReviews()
-            if (result.isSuccess) {
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        reviews = result.getOrNull() ?: emptyList(),
-                        isLoading = false
-                    )
+            generalReviewRepository.getGeneralReviewsLive()
+                .catch { e ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            mostrarMensajeError = true,
+                            errorMessage = e.message ?: "No se pudieron cargar las materias"
+                        )
+                    }
                 }
-            } else {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        mostrarMensajeError = true,
-                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudieron cargar las materias"
-                    )
+                .collect { materias ->
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            reviews = materias,
+                            isLoading = false,
+                            mostrarMensajeError = false
+                        )
+                    }
                 }
-            }
         }
     }
 
