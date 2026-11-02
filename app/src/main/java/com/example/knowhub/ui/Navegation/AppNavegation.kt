@@ -133,6 +133,7 @@ fun AppNavegation(
 
         composable ( route = Screens.Busqueda.route ){
             BusquedaScreen(
+                viewModel = hiltViewModel(),
                 generalReviewPressed = { generalReviewId ->
                     navController.navigate(Screens.CompleteReviews.createRoute(generalReviewId))
                 }

@@ -9,6 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import kotlin.math.roundToInt
 import javax.inject.Inject
 
 class ReviewFirestoreDataSourceImpl @Inject constructor(
@@ -17,7 +18,27 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
 
 
     override suspend fun createReview(review: CreateReviewDto) {
-        db.collection("reviews").add(review).await()
+        val reviewRef = db.collection("reviews").document()
+        val materiaRef = db.collection("materias").document(review.generalReviewId.toString())
+
+        db.runTransaction { transaction ->
+            val materiaDoc = transaction.get(materiaRef)
+
+            transaction.set(reviewRef, review)
+
+            if (materiaDoc.exists()) {
+                val cantidad = (materiaDoc.getLong("cantidadReviews") ?: 0L) + 1
+                val suma = (materiaDoc.getLong("sumaCalificaciones") ?: 0L) + review.calificacion
+                transaction.update(
+                    materiaRef,
+                    mapOf(
+                        "cantidadReviews" to cantidad,
+                        "sumaCalificaciones" to suma,
+                        "calificacionMedia" to (suma.toDouble() / cantidad).roundToInt()
+                    )
+                )
+            }
+        }.await()
     }
 
     override suspend fun getAllReviews(): List<ReviewDto> {
@@ -62,20 +83,66 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         id: String,
         review: CreateReviewDto
     ) {
-        // update en vez de set: así no se pierden likes, comentarios, fecha ni autor
-        db.collection("reviews").document(id).update(
-            mapOf(
-                "clase" to review.clase,
-                "nombreAsignatura" to review.nombreAsignatura,
-                "nombreProfesor" to review.nombreProfesor,
-                "descripcion" to review.descripcion,
-                "calificacion" to review.calificacion
+        val reviewRef = db.collection("reviews").document(id)
+
+        db.runTransaction { transaction ->
+            val reviewDoc = transaction.get(reviewRef)
+            val calificacionAnterior = reviewDoc.getLong("calificacion") ?: 0L
+            val generalReviewId = reviewDoc.getLong("generalReviewId") ?: 0L
+            val materiaRef = db.collection("materias").document(generalReviewId.toString())
+            val materiaDoc = transaction.get(materiaRef)
+
+            // update en vez de set: así no se pierden likes, comentarios, fecha ni autor
+            transaction.update(
+                reviewRef,
+                mapOf(
+                    "clase" to review.clase,
+                    "nombreAsignatura" to review.nombreAsignatura,
+                    "nombreProfesor" to review.nombreProfesor,
+                    "descripcion" to review.descripcion,
+                    "calificacion" to review.calificacion
+                )
             )
-        ).await()
+
+            if (materiaDoc.exists()) {
+                val cantidad = materiaDoc.getLong("cantidadReviews") ?: 0L
+                val suma = (materiaDoc.getLong("sumaCalificaciones") ?: 0L) - calificacionAnterior + review.calificacion
+                transaction.update(
+                    materiaRef,
+                    mapOf(
+                        "sumaCalificaciones" to suma,
+                        "calificacionMedia" to if (cantidad > 0) (suma.toDouble() / cantidad).roundToInt() else 0
+                    )
+                )
+            }
+        }.await()
     }
 
     override suspend fun deleteReview(id: String) {
-        db.collection("reviews").document(id).delete().await()
+        val reviewRef = db.collection("reviews").document(id)
+
+        db.runTransaction { transaction ->
+            val reviewDoc = transaction.get(reviewRef)
+            val calificacion = reviewDoc.getLong("calificacion") ?: 0L
+            val generalReviewId = reviewDoc.getLong("generalReviewId") ?: 0L
+            val materiaRef = db.collection("materias").document(generalReviewId.toString())
+            val materiaDoc = transaction.get(materiaRef)
+
+            transaction.delete(reviewRef)
+
+            if (reviewDoc.exists() && materiaDoc.exists()) {
+                val cantidad = ((materiaDoc.getLong("cantidadReviews") ?: 0L) - 1).coerceAtLeast(0L)
+                val suma = ((materiaDoc.getLong("sumaCalificaciones") ?: 0L) - calificacion).coerceAtLeast(0L)
+                transaction.update(
+                    materiaRef,
+                    mapOf(
+                        "cantidadReviews" to cantidad,
+                        "sumaCalificaciones" to suma,
+                        "calificacionMedia" to if (cantidad > 0) (suma.toDouble() / cantidad).roundToInt() else 0
+                    )
+                )
+            }
+        }.await()
     }
 
     override suspend fun sendOrDeleteReviewLike(reviewId: String, userId: String) {

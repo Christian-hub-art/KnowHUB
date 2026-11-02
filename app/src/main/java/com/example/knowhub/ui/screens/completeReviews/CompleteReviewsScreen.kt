@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
-import com.example.knowhub.data.local.localGeneralReviewProvider
+import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.Review
 import com.example.knowhub.ui.screens.completeReviews.components.CajaPrincipal
 import com.example.knowhub.ui.screens.completeReviews.components.Review as ReviewComponent
@@ -52,7 +52,7 @@ fun CompleteReviewsScreen(
     ){
         BackgroundImage()
         BodyCompleteReviewsScreen(
-            generalReviewId = generalReviewId,
+            generalReview = state.generalReview,
             allReviews = if (state.soloSiguiendo) {
                 state.allReviews.filter { it.userId in state.followingIds }
             } else {
@@ -72,7 +72,7 @@ fun CompleteReviewsScreen(
 //Estructura de la interfaz para la vista de reseñas completas.
 @Composable
 fun BodyCompleteReviewsScreen(
-    generalReviewId: Int,
+    generalReview: GeneralReview,
     allReviews: List<Review>,
     soloSiguiendo: Boolean = false,
     paraTiPressed: () -> Unit = {},
@@ -84,7 +84,6 @@ fun BodyCompleteReviewsScreen(
     modifier: Modifier = Modifier,
     autorPressed: (String) -> Unit = {}
 ){
-    val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.fillMaxSize()
@@ -93,7 +92,7 @@ fun BodyCompleteReviewsScreen(
             item {
 
                 Spacer(modifier = Modifier.height(35.dp))
-                if (generalReview != null) {
+                if (generalReview.id != 0) {
                     CajaPrincipal(
                         generalReview,
                         modifier = Modifier.width(350.dp)

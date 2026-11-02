@@ -46,7 +46,9 @@ fun InicioScreen(
         BackgroundImage()
         BodyInicioScreen(
             categories = state.categories,
-            onSeeAllClick = onSeeAllClick
+            onSeeAllClick = onSeeAllClick,
+            errorMessage = state.errorMessage,
+            mostrarMensajeError = state.mostrarMensajeError
         )
     }
 }
@@ -56,6 +58,8 @@ fun BodyInicioScreen(
     categories: List<Pair<String, List<MateriaResumida>>>,
     onSeeAllClick: () -> Unit,
     modifier: Modifier = Modifier,
+    errorMessage: String = "",
+    mostrarMensajeError: Boolean = false
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -86,6 +90,11 @@ fun BodyInicioScreen(
                     fontWeight = FontWeight.Bold,
                     fontFamily = ArvoFont
                 )
+
+                if (mostrarMensajeError) {
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(errorMessage)
+                }
             }
         }
 

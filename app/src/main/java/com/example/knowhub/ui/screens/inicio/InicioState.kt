@@ -6,5 +6,7 @@ import com.example.knowhub.data.MateriaResumida
 //Estado que representa los datos expuestos para la pantalla de Inicio.
 data class InicioState(
     val allGeneralReviews: List<GeneralReview> = emptyList(),
-    val categories: List<Pair<String, List<MateriaResumida>>> = emptyList()
+    val categories: List<Pair<String, List<MateriaResumida>>> = emptyList(),
+    val errorMessage: String = "",
+    val mostrarMensajeError: Boolean = false
 )

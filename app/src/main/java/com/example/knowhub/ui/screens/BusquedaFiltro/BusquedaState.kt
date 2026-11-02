@@ -4,5 +4,7 @@ import com.example.knowhub.data.GeneralReview
 data class BusquedaState(
     val filtro: String = "",
     val reviews: List<GeneralReview> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val errorMessage: String = "",
+    val mostrarMensajeError: Boolean = false
 )
