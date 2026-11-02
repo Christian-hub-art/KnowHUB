@@ -31,6 +31,8 @@ import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsViewModel
 import com.example.knowhub.ui.screens.Splash.SplashScreen
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsViewModel
+import com.example.knowhub.ui.screens.CreateMateria.CreateMateriaScreen
+import com.example.knowhub.ui.screens.CreateMateria.CreateMateriaViewModel
 import com.example.knowhub.ui.screens.completeSpecificReview.CompleteSpecificReviewViewModel
 import com.example.knowhub.ui.screens.inicio.InicioViewModel
 import com.example.knowhub.ui.screens.login.LoginViewModel
@@ -46,6 +48,10 @@ sealed class Screens(val route: String) {
     object CreateReviews : Screens("createReviews")
     object CreateReviewMateria : Screens("createReviews/materia/{generalReviewId}") {
         fun createRoute(generalReviewId: Int) = "createReviews/materia/$generalReviewId"
+    }
+    object CreateMateria : Screens("createMateria")
+    object EditMateria : Screens("createMateria/{generalReviewId}") {
+        fun createRoute(generalReviewId: Int) = "createMateria/$generalReviewId"
     }
     object CommentDetail : Screens("commentDetail/{commentId}") {
         fun createRoute(commentId: String) = "commentDetail/$commentId"
@@ -136,6 +142,9 @@ fun AppNavegation(
                 viewModel = hiltViewModel(),
                 generalReviewPressed = { generalReviewId ->
                     navController.navigate(Screens.CompleteReviews.createRoute(generalReviewId))
+                },
+                crearMateriaPressed = {
+                    navController.navigate(Screens.CreateMateria.route)
                 }
             )
         }
@@ -156,7 +165,44 @@ fun AppNavegation(
                 },
                 autorPressed = { userId ->
                     navController.navigate(Screens.BusquePerfil.createRoute(userId))
+                },
+                editarMateriaPressed = { generalReviewId ->
+                    navController.navigate(Screens.EditMateria.createRoute(generalReviewId))
                 }
+            )
+        }
+        composable ( route = Screens.CreateMateria.route ){
+            val viewModel: CreateMateriaViewModel = hiltViewModel()
+            val state by viewModel.uiState.collectAsState()
+            LaunchedEffect(state.navigateBack) {
+                if (state.navigateBack) {
+                    navController.popBackStack()
+                }
+            }
+            CreateMateriaScreen(
+                createMateriaViewModel = viewModel
+            )
+        }
+        composable ( route = Screens.EditMateria.route,
+            arguments = listOf(navArgument("generalReviewId"){type = NavType.IntType})
+        ){
+            val generalReviewId = it.arguments?.getInt("generalReviewId") ?: 0
+            val viewModel: CreateMateriaViewModel = hiltViewModel()
+            val state by viewModel.uiState.collectAsState()
+            LaunchedEffect(state.navigateBack) {
+                if (state.navigateBack) {
+                    navController.popBackStack()
+                }
+            }
+            // Si se elimina la materia, se sale también de su pantalla de reseñas
+            LaunchedEffect(state.materiaEliminada) {
+                if (state.materiaEliminada) {
+                    navController.popBackStack(Screens.CompleteReviews.route, inclusive = true)
+                }
+            }
+            CreateMateriaScreen(
+                createMateriaViewModel = viewModel,
+                generalReviewId = generalReviewId
             )
         }
         composable ( route = Screens.CreateReviews.route ){

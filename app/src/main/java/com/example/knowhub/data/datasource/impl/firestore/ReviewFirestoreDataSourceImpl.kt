@@ -57,6 +57,14 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun getReviewsByGeneralReview(generalReviewId: Int): List<ReviewDto> {
+        val snapshot = db.collection("reviews").whereEqualTo("generalReviewId", generalReviewId).get().await()
+        return snapshot.documents.map { doc ->
+            val review = doc.toObject(ReviewDto::class.java)
+            review?.copy(id = doc.id) ?: throw Exception("Reseña no encontrada")
+        }
+    }
+
     override suspend fun getReviewById(
         id: String,
         currentUserId: String

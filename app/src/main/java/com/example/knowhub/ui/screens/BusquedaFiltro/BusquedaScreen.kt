@@ -29,8 +29,10 @@ import com.example.knowhub.R
 import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.ui.screens.BusquedaFiltro.Components.BarraFiltro
 import com.example.knowhub.ui.theme.BangersFont
+import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
+import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.CajaBusqueda
 //Pantalla principal de búsqueda y filtrado de reseñas generales.
@@ -40,7 +42,8 @@ import com.example.knowhub.ui.utils.CajaBusqueda
 fun BusquedaScreen(
     generalReviewPressed: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: BusquedaViewModel = viewModel()
+    viewModel: BusquedaViewModel = viewModel(),
+    crearMateriaPressed: () -> Unit = {}
 ){
     // Subscripción reactiva al estado expuesto por el ViewModel
     val uiState by viewModel.uiState.collectAsState()
@@ -57,7 +60,8 @@ fun BusquedaScreen(
             errorMessage = uiState.errorMessage,
             mostrarMensajeError = uiState.mostrarMensajeError,
             onFiltroChange = { viewModel.onFiltroChange(it) },
-            generalReviewPressed = generalReviewPressed
+            generalReviewPressed = generalReviewPressed,
+            crearMateriaPressed = crearMateriaPressed
         )
     }
 }
@@ -70,7 +74,8 @@ fun BodyBusquedaScreen(
     modifier: Modifier = Modifier,
     reviews: List<GeneralReview> = emptyList(),
     errorMessage: String = "",
-    mostrarMensajeError: Boolean = false
+    mostrarMensajeError: Boolean = false,
+    crearMateriaPressed: () -> Unit = {}
 ){
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -80,6 +85,16 @@ fun BodyBusquedaScreen(
 
             item() {
                 Spacer(modifier = Modifier.height(35.dp))
+                AppButton(
+                    stringResource(R.string.crear_materia),
+                    colorTexto = primaryLight,
+                    colorBoton = primaryContainerLight,
+                    onClick = crearMateriaPressed,
+                    modifier = Modifier
+                        .width(325.dp)
+                        .height(45.dp)
+                )
+                Spacer(modifier = Modifier.height(15.dp))
                 // Contenedor del campo de entrada y el ícono de búsqueda
                 Row(
                     modifier = Modifier

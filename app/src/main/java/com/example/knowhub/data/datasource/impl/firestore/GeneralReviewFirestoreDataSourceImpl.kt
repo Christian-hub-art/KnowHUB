@@ -1,6 +1,7 @@
 package com.example.knowhub.data.datasource.impl.firestore
 
 import com.example.knowhub.data.datasource.GeneralReviewRemoteDataSource
+import com.example.knowhub.data.datasource.dtos.CreateGeneralReviewDto
 import com.example.knowhub.data.datasource.dtos.GeneralReviewDto
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
@@ -47,5 +48,34 @@ class GeneralReviewFirestoreDataSourceImpl @Inject constructor(
         }
 
         awaitClose { listener.remove() }
+    }
+
+    // El id de la materia es su código, así no se pueden crear dos materias con el mismo código
+    override suspend fun createGeneralReview(generalReview: CreateGeneralReviewDto) {
+        val materiaRef = db.collection("materias").document(generalReview.id.toString())
+
+        db.runTransaction { transaction ->
+            val materiaDoc = transaction.get(materiaRef)
+            if (materiaDoc.exists()) {
+                throw Exception("Ya existe una materia con el código ${generalReview.codigoAsignatura}")
+            }
+            transaction.set(materiaRef, generalReview)
+        }.await()
+    }
+
+    // update en vez de set: así no se pierden cantidadReviews, sumaCalificaciones ni calificacionMedia
+    override suspend fun updateGeneralReview(id: Int, generalReview: CreateGeneralReviewDto) {
+        db.collection("materias").document(id.toString()).update(
+            mapOf(
+                "nombreMateria" to generalReview.nombreMateria,
+                "nombreProfesor" to generalReview.nombreProfesor,
+                "dificultadMedia" to generalReview.dificultadMedia,
+                "hashtags" to generalReview.hashtags
+            )
+        ).await()
+    }
+
+    override suspend fun deleteGeneralReview(id: Int) {
+        db.collection("materias").document(id.toString()).delete().await()
     }
 }
