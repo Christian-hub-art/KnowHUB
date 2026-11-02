@@ -1,9 +1,9 @@
 package com.example.knowhub.ui.screens.completeReviews
 
 import androidx.lifecycle.ViewModel
-import com.example.knowhub.data.local.localGeneralReviewProvider
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.datasource.repository.AuthRepository
+import com.example.knowhub.data.datasource.repository.GeneralReviewRepository
 import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
 import kotlinx.coroutines.launch
@@ -18,15 +18,25 @@ import kotlinx.coroutines.flow.update
 class CompleteReviewsViewModel @Inject constructor(
     private val reviewRepository: ReviewRepository,
     private val userRepository: UserRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val generalReviewRepository: GeneralReviewRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CompleteReviewsState())
     val uiState: StateFlow<CompleteReviewsState> = _uiState
-    //Carga los datos correspondientes al ID de la reseña general recibida
+    //Carga desde Firestore la materia correspondiente al ID recibido
     fun loadData(generalReviewId: Int) {
-        val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId }
-        if (generalReview != null) {
-            _uiState.update { it.copy(generalReview = generalReview) }
+        viewModelScope.launch {
+            val result = generalReviewRepository.getGeneralReviewById(generalReviewId)
+            if (result.isSuccess) {
+                _uiState.update { it.copy(generalReview = result.getOrNull() ?: it.generalReview) }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeError = true,
+                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudo cargar la materia"
+                    )
+                }
+            }
         }
     }
 

@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.data.GeneralReview
-import com.example.knowhub.data.local.localGeneralReviewProvider
 import com.example.knowhub.ui.screens.BusquedaFiltro.Components.BarraFiltro
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryLight
@@ -55,6 +54,8 @@ fun BusquedaScreen(
         BodyBusquedaScreen(
             filtro = uiState.filtro,
             reviews = uiState.reviews,
+            errorMessage = uiState.errorMessage,
+            mostrarMensajeError = uiState.mostrarMensajeError,
             onFiltroChange = { viewModel.onFiltroChange(it) },
             generalReviewPressed = generalReviewPressed
         )
@@ -67,7 +68,9 @@ fun BodyBusquedaScreen(
     onFiltroChange: (String) -> Unit,
     generalReviewPressed: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    reviews: List<GeneralReview> = localGeneralReviewProvider.generalReviews
+    reviews: List<GeneralReview> = emptyList(),
+    errorMessage: String = "",
+    mostrarMensajeError: Boolean = false
 ){
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -123,6 +126,11 @@ fun BodyBusquedaScreen(
                 ) {}
 
                 Spacer(modifier = Modifier.height(10.dp))
+
+                if (mostrarMensajeError) {
+                    Text(errorMessage)
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
             }
             // Renderizado dinámico de la lista de reseñas
             items(reviews.size) { index ->

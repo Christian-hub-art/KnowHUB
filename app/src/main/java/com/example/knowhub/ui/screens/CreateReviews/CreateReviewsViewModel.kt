@@ -3,9 +3,9 @@ package com.example.knowhub.ui.screens.CreateReviews
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.datasource.repository.AuthRepository
+import com.example.knowhub.data.datasource.repository.GeneralReviewRepository
 import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
-import com.example.knowhub.data.local.localGeneralReviewProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,8 @@ import kotlinx.coroutines.launch
 class CreateReviewsViewModel @Inject constructor(
     private val reviewRepository: ReviewRepository,
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val generalReviewRepository: GeneralReviewRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CreateReviewsState())
     val uiState: StateFlow<CreateReviewsState> = _uiState
@@ -39,14 +40,17 @@ class CreateReviewsViewModel @Inject constructor(
 
 
     fun loadGeneralReview(generalReviewId: Int) {
-        val generalReview = localGeneralReviewProvider.generalReviews.find { it.id == generalReviewId } ?: return
-        _uiState.update {
-            it.copy(
-                generalReviewId = generalReviewId,
-                clase = generalReview.codigoAsignatura.toString(),
-                tituloMateria = generalReview.nombreMateria,
-                nombreProfesor = generalReview.nombreProfesor
-            )
+        viewModelScope.launch {
+            val result = generalReviewRepository.getGeneralReviewById(generalReviewId)
+            val generalReview = result.getOrNull() ?: return@launch
+            _uiState.update {
+                it.copy(
+                    generalReviewId = generalReviewId,
+                    clase = generalReview.codigoAsignatura.toString(),
+                    tituloMateria = generalReview.nombreMateria,
+                    nombreProfesor = generalReview.nombreProfesor
+                )
+            }
         }
     }
 
@@ -97,15 +101,14 @@ class CreateReviewsViewModel @Inject constructor(
         }
         if (state.isLoading) return
 
-        val generalReviewId = if (state.generalReviewId != 0) {
-            state.generalReviewId
-        } else {
-            localGeneralReviewProvider.generalReviews
-                .find { it.codigoAsignatura.toString() == state.clase.trim() }?.id ?: 0
-        }
-
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
+            val generalReviewId = if (state.generalReviewId != 0) {
+                state.generalReviewId
+            } else {
+                val codigo = state.clase.trim().toIntOrNull() ?: 0
+                generalReviewRepository.getGeneralReviewByCodigo(codigo).getOrNull()?.id ?: 0
+            }
             val result = if (state.reviewId != null) {
                 reviewRepository.updateReview(
                     reviewId = state.reviewId,

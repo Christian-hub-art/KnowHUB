@@ -1,32 +1,48 @@
 package com.example.knowhub.ui.screens.inicio
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.MateriaResumida
-import com.example.knowhub.data.local.localGeneralReviewProvider
+import com.example.knowhub.data.datasource.repository.GeneralReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 //ViewModel encargado de la lógica de negocio y carga inicial de reseñas generales
 @HiltViewModel
-class InicioViewModel @Inject constructor() : ViewModel() {
+class InicioViewModel @Inject constructor(
+    private val generalReviewRepository: GeneralReviewRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(InicioState())
     val uiState: StateFlow<InicioState> = _uiState
 
     init {
         loadMaterias()
     }
-    //Carga la lista inicial de reseñas generales desde el proveedor local de datos.
+    //Carga la lista de materias desde Firestore.
     fun loadMaterias() {
-        val allMaterias = localGeneralReviewProvider.generalReviews
-        val categories = processCategories(allMaterias)
-        _uiState.update {
-            it.copy(
-                allGeneralReviews = allMaterias,
-                categories = categories
-            )
+        viewModelScope.launch {
+            val result = generalReviewRepository.getGeneralReviews()
+            if (result.isSuccess) {
+                val allMaterias = result.getOrNull() ?: emptyList()
+                _uiState.update {
+                    it.copy(
+                        allGeneralReviews = allMaterias,
+                        categories = processCategories(allMaterias),
+                        mostrarMensajeError = false
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeError = true,
+                        errorMessage = result.exceptionOrNull()?.message ?: "No se pudieron cargar las materias"
+                    )
+                }
+            }
         }
     }
 
