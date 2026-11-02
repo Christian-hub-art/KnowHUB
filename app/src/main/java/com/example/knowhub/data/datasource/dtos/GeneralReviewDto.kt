@@ -14,6 +14,15 @@ data class GeneralReviewDto(
     val hashtags: List<String> = emptyList()
 )
 
+data class CreateGeneralReviewDto(
+    val id: Int = 0,
+    val nombreMateria: String = "",
+    val nombreProfesor: String = "",
+    val codigoAsignatura: Int = 0,
+    val dificultadMedia: String = "",
+    val hashtags: List<String> = emptyList()
+)
+
 fun GeneralReviewDto.toGeneralReview(): GeneralReview {
     return GeneralReview(
         id = id,

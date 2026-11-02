@@ -38,7 +38,8 @@ fun CompleteReviewsScreen(
     reviewPressed: (String) -> Unit,
     escribirBottonPressed: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    autorPressed: (String) -> Unit = {}
+    autorPressed: (String) -> Unit = {},
+    editarMateriaPressed: (Int) -> Unit = {}
 ){
     val state by completeReviewsViewModel.uiState.collectAsState()
 
@@ -65,7 +66,8 @@ fun CompleteReviewsScreen(
             mostrarMensajeError = state.mostrarMensajeError,
             reviewPressed = reviewPressed,
             escribirBottonPressed = { escribirBottonPressed(generalReviewId) },
-            autorPressed = autorPressed
+            autorPressed = autorPressed,
+            editarMateriaPressed = { editarMateriaPressed(generalReviewId) }
         )
     }
 }
@@ -82,7 +84,8 @@ fun BodyCompleteReviewsScreen(
     reviewPressed: (String) -> Unit,
     escribirBottonPressed: () -> Unit,
     modifier: Modifier = Modifier,
-    autorPressed: (String) -> Unit = {}
+    autorPressed: (String) -> Unit = {},
+    editarMateriaPressed: () -> Unit = {}
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -96,6 +99,16 @@ fun BodyCompleteReviewsScreen(
                     CajaPrincipal(
                         generalReview,
                         modifier = Modifier.width(350.dp)
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    AppButton(
+                        stringResource(R.string.editar_materia),
+                        tertiaryContainerLight,
+                        secondaryContainerLight,
+                        onClick = editarMateriaPressed,
+                        modifier = Modifier
+                            .width(350.dp)
+                            .height(40.dp)
                     )
                 }
                 Spacer(modifier = Modifier.height(30.dp))
