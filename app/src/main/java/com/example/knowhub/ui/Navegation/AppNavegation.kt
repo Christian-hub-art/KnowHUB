@@ -250,7 +250,9 @@ fun AppNavegation(
             )
         }
         composable ( route = Screens.Notifications.route ){
-            NotificatonsScreen()
+            NotificatonsScreen(
+                viewModel = hiltViewModel()
+            )
         }
         composable ( route = Screens.Profile.route ){
             ProfileScreen(

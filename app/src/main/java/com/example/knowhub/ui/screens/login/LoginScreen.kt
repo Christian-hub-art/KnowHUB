@@ -52,7 +52,8 @@ fun LoginScreen(
             onContrasenaChange = {loginViewModel.updateContrasena(it)},
             inciarSesionButtonPressed = {loginViewModel.inciarSesionButtonPressed()},
             registerButtonPressed = {loginViewModel.registerButtonPressed()},
-            continuarButtonPressed = {loginViewModel.continuarButtonPressed()}
+            continuarButtonPressed = {loginViewModel.continuarButtonPressed()},
+            olvidasteContrasenaPressed = {loginViewModel.olvidasteContrasenaPressed()}
         )
     }
 }
@@ -76,6 +77,7 @@ fun BodyLoginScreen(
     inciarSesionButtonPressed: () -> Unit,
     registerButtonPressed: () -> Unit,
     continuarButtonPressed: () -> Unit,
+    olvidasteContrasenaPressed: () -> Unit = {},
     modifier: Modifier = Modifier
 ){
 
@@ -95,8 +97,17 @@ fun BodyLoginScreen(
             onContrasenaChange = {onContrasenaChange(it)}
         )
         Spacer(modifier = Modifier.weight(0.5F))
-        Text(stringResource(R.string.olvidaste_contrasena),
-            fontFamily = BangersFont)
+        TextButton(
+            onClick = {
+                olvidasteContrasenaPressed()
+            }
+        ) {
+            Text(
+                text = stringResource(R.string.olvidaste_contrasena),
+                fontFamily = BangersFont,
+                color = tertiaryContainerLight
+            )
+        }
         Spacer(modifier = Modifier.weight(5.0F))
 
 

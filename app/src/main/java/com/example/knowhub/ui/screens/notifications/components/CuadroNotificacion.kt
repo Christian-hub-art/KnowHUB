@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.knowhub.R
 import com.example.knowhub.data.Notificacion
-import com.example.knowhub.data.local.LocalNotificacionProvider
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.theme.*
 import com.example.knowhub.ui.utils.AppButton
@@ -132,5 +131,5 @@ fun CuadroNotificacion(
 @Composable
 @Preview
 fun CuadroNotificacionPreview(){
-    CuadroNotificacion(LocalNotificacionProvider.notificaciones[9])
+    CuadroNotificacion(Notificacion("follower", "S4nti4g0 ha comenzado a seguirte.", "02 nov 2026, 19:49"))
 }

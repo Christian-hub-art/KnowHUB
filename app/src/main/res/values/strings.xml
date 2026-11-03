@@ -98,4 +98,5 @@
     <string name="dificultad_materia_label">DIFICULTAD:</string>
     <string name="hashtags_label">HASHTAGS:</string>
     <string name="hashtags_placeholder">#CALCULO #DERIVADAS</string>
+    <string name="sin_notificaciones">Aún no tienes notificaciones</string>
 </resources>
