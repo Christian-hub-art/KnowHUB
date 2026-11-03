@@ -1,4 +1,4 @@
-package com.example.knowhub.ui.screens.busquedaFiltro
+package com.example.knowhub.ui.screens.BusquedaFiltro
 import com.example.knowhub.data.GeneralReview
 //Estado inmutable que representa los datos necesarios para renderizar la pantalla de búsqueda.
 data class BusquedaState(
