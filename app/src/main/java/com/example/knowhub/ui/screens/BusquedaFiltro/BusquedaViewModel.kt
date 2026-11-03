@@ -3,7 +3,6 @@ package com.example.knowhub.ui.screens.BusquedaFiltro
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.datasource.repository.GeneralReviewRepository
-import com.example.knowhub.ui.screens.busquedaFiltro.BusquedaState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
