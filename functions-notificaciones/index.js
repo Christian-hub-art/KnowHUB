@@ -20,6 +20,14 @@ exports.sendFollowNotification = onDocumentCreated(
     const followerData = followerDoc.data();
     const followerName = followerData.userName;
 
+    // Se guarda en Firestore para mostrarla en la pantalla de notificaciones
+    await db.collection("users").doc(userId).collection("notificaciones").add({
+      tipo: "follower",
+      titulo: `${followerName} ha comenzado a seguirte.`,
+      descripcion: "",
+      fecha: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
     if (userToken) {
       const message = {
         token: userToken,
@@ -62,6 +70,14 @@ exports.sendLikeNotification = onDocumentCreated(
     const userDoc = await db.collection("users").doc(userId).get();
     const userData = userDoc.data();
     const userName = userData.userName;
+
+    // Se guarda en Firestore para mostrarla en la pantalla de notificaciones
+    await db.collection("users").doc(autorId).collection("notificaciones").add({
+      tipo: "like",
+      titulo: `A ${userName} le gustó tu reseña de ${reviewData.nombreAsignatura}.`,
+      descripcion: "",
+      fecha: admin.firestore.FieldValue.serverTimestamp(),
+    });
 
     if (autorToken) {
       const message = {

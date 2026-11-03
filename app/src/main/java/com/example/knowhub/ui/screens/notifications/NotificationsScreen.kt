@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.data.Notificacion
-import com.example.knowhub.data.local.LocalNotificacionProvider
 import com.example.knowhub.ui.screens.notifications.components.CuadroNotificacion
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
 import com.example.knowhub.ui.screens.register.BodyRegisterScreen
@@ -41,14 +41,18 @@ fun NotificatonsScreen(
 
     Box(modifier = modifier){
         BackgroundImage()
-        BodyNotificationsScreen(notifications = uiState.notifications)
+        BodyNotificationsScreen(
+            notifications = uiState.notifications,
+            errorMessage = uiState.errorMessage
+        )
     }
 }
 //Disposición del contenido visual y lista de elementos para las notificaciones.
 @Composable
 fun BodyNotificationsScreen(
     modifier: Modifier = Modifier,
-    notifications: List<Notificacion> = LocalNotificacionProvider.notificaciones
+    notifications: List<Notificacion> = emptyList(),
+    errorMessage: String? = null
 ){
     Column(
         modifier = modifier,
@@ -69,6 +73,14 @@ fun BodyNotificationsScreen(
                 )
 
                 Spacer(modifier = Modifier.height(25.dp))
+
+                if (errorMessage != null) {
+                    Text(errorMessage)
+                    Spacer(modifier = Modifier.height(15.dp))
+                } else if (notifications.isEmpty()) {
+                    Text(stringResource(R.string.sin_notificaciones))
+                    Spacer(modifier = Modifier.height(15.dp))
+                }
             }
             items(notifications.size){ index ->
                 CuadroNotificacion(
