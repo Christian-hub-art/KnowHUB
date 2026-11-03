@@ -93,6 +93,8 @@ fun KnowHUBApp (){
         Screens.CreateReviews.route,
         Screens.EditReview.route,
         Screens.CreateReviewMateria.route,
+        Screens.CreateMateria.route,
+        Screens.EditMateria.route,
         Screens.Busqueda.route,
         Screens.CompleteReviews.route,
         Screens.BusquePerfil.route,
