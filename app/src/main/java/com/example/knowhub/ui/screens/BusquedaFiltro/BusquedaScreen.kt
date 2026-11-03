@@ -35,8 +35,7 @@ import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.CajaBusqueda
-//Pantalla principal de búsqueda y filtrado de reseñas generales.
-// Conecta la UI con el ViewModel para seguir el patrón de arquitectura MVVM.
+
 
 @Composable
 fun BusquedaScreen(

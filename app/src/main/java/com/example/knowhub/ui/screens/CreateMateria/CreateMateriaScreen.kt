@@ -91,7 +91,7 @@ fun BodyCreateMateriaScreen(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(125.dp))
 
         AppLabelBig(
             texto = stringResource(if (editando) R.string.editar_materia else R.string.crea_nueva_materia),
