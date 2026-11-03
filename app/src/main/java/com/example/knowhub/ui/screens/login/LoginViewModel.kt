@@ -50,6 +50,32 @@ class LoginViewModel @Inject constructor(
 
         }
     }
+    //Envía al correo escrito un enlace para cambiar la contraseña.
+    fun olvidasteContrasenaPressed() {
+        val correo = _uiState.value.nombreOCorreo.trim()
+        if (correo.isEmpty()) {
+            _uiState.update { it.copy(mostrarMensajeError = true, errorMessage = "Escribe tu correo para recuperar la contraseña") }
+            return
+        }
+        viewModelScope.launch {
+            val result = authRepository.sendPasswordResetEmail(correo)
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeError = true,
+                        errorMessage = "Te enviamos un correo a $correo para cambiar tu contraseña"
+                    )
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        mostrarMensajeError = true,
+                        errorMessage = result.exceptionOrNull()?.message ?: ""
+                    )
+                }
+            }
+        }
+    }
     //Dispara la navegación a la pantalla de registro.
     fun registerButtonPressed () {
         _uiState.update { it.copy(navigateRegister = true) }
