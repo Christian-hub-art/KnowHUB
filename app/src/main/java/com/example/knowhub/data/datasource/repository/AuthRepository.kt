@@ -44,7 +44,8 @@ class AuthRepository @Inject constructor(
             Result.failure(Exception("Error al registrar usuario"))
         }
     }
-    fun signOut(){
+
+    fun signOut() {
         authRemoteDataSource.signOut()
     }
 

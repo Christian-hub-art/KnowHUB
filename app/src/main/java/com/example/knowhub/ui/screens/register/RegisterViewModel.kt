@@ -70,15 +70,13 @@ class RegisterViewModel @Inject constructor(
                     )
 
                     if (result.isSuccess) {
-
-
-                        val userId = authRepository.currentUser?.uid ?: throw Exception("No se pudo obtener el usuario actual")
+                        val userId = authRepository.currentUser?.uid
+                            ?: throw Exception("No se pudo obtener el usuario actual")
                         userRepository.registerUser(
                             name = _uiState.value.nombre,
                             userName = _uiState.value.nombreUsuario,
                             userId = userId
                         )
-
 
                         _uiState.update {
                             it.copy(
@@ -90,8 +88,7 @@ class RegisterViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 mostrarMensajeError = true,
-                                errorMessage = result.exceptionOrNull()?.message
-                                    ?: ""
+                                errorMessage = result.exceptionOrNull()?.message ?: ""
                             )
                         }
                     }
