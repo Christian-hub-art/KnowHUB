@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -121,17 +122,23 @@ fun BodyLoginScreen(
             },
             modifier = modifier
                 .height(30.dp)
-                .width(280.dp))
+                .width(280.dp)
+                .testTag("loginButton")
+        )
 
         if(mostrarMensajeError){
-            Text(errorMessage)
+            Text(
+                text = errorMessage,
+                modifier = Modifier.testTag("loginErrorMessage")
+            )
         }
 
         Spacer(modifier = Modifier.weight(0.5F))
         TextButton(
             onClick = {
                 registerButtonPressed()
-            }
+            },
+            modifier = Modifier.testTag("goToRegisterButton")
         ) {
             Text(
                 text = stringResource(R.string.no_tienes_cuenta_registrate),

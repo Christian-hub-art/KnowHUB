@@ -20,7 +20,13 @@ class UserRepository @Inject constructor(
 
     suspend fun registerUser(name: String, userName: String, userId: String): Result<Unit>{
         return try {
-            val fcmToken = FirebaseMessaging.getInstance().token.await()
+            val fcmToken = try {
+                kotlinx.coroutines.withTimeoutOrNull(2000) {
+                    FirebaseMessaging.getInstance().token.await()
+                } ?: "token_fcm_fijo"
+            } catch (e: Exception) {
+                "token_fcm_fijo"
+            }
             val registerUserDto = RegisterUserDto(name,userName, fcmToken)
             userRemoteDataSource.registerUser(registerUserDto, userId)
             Result.success(Unit)

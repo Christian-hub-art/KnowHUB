@@ -27,6 +27,8 @@ import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.tertiaryContainerLight
 //Componente contenedor en forma de caja que despliega una lista horizontal de materias resumidas bajo una categoría o tema general específico.
+import androidx.compose.ui.platform.testTag
+
 @Composable
 fun CajaReseñas(
     temaGeneral: String,
@@ -67,7 +69,7 @@ fun CajaReseñas(
             )
             TextButton(
                 onClick = onSeeAllClick,
-                modifier = Modifier.height(32.dp)
+                modifier = Modifier.height(32.dp).testTag("verMasButton")
             ) {
                 Text(
                     text = "Ver más ➔",

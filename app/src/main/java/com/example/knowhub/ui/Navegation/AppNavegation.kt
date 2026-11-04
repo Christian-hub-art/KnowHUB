@@ -89,17 +89,23 @@ fun AppNavegation(
         composable(route = Screens.Start.route){
             val loginViewModel: LoginViewModel = hiltViewModel()
             val state by loginViewModel.uiState.collectAsState()
-            if(state.navigateInicio){
-                navController.navigate(Screens.Inicio.route){
-                    popUpTo(0)
+            LaunchedEffect(state.navigateInicio) {
+                if(state.navigateInicio){
+                    navController.navigate(Screens.Inicio.route){
+                        popUpTo(0)
+                    }
                 }
             }
-            if(state.navigateRegister){
-                navController.navigate(Screens.Register.route)
+            LaunchedEffect(state.navigateRegister) {
+                if(state.navigateRegister){
+                    navController.navigate(Screens.Register.route)
+                }
             }
-            if(state.navigateContinuar){
-                navController.navigate(Screens.Inicio.route){
-                    popUpTo(0)
+            LaunchedEffect(state.navigateContinuar) {
+                if(state.navigateContinuar){
+                    navController.navigate(Screens.Inicio.route){
+                        popUpTo(0)
+                    }
                 }
             }
             LoginScreen(
@@ -124,13 +130,17 @@ fun AppNavegation(
         composable(route = Screens.Register.route) {
             val registerViewModel: RegisterViewModel = hiltViewModel()
             val state by registerViewModel.uiState.collectAsState()
-            if (state.navigateInicio) {
-                navController.navigate(Screens.Inicio.route) {
-                    popUpTo(0)
+            LaunchedEffect(state.navigateInicio) {
+                if (state.navigateInicio) {
+                    navController.navigate(Screens.Inicio.route) {
+                        popUpTo(0)
+                    }
                 }
             }
-            if(state.navigateLogin){
-                navController.navigate(Screens.Start.route)
+            LaunchedEffect(state.navigateLogin) {
+                if(state.navigateLogin){
+                    navController.navigate(Screens.Start.route)
+                }
             }
             RegisterScreen(
                 registerViewModel = registerViewModel

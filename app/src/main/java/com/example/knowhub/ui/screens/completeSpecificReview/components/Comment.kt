@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -111,7 +112,7 @@ fun Comment(
                     Row(verticalAlignment = Alignment.CenterVertically,) {
                         IconButton(
                             onClick = onLikeClick,
-                            modifier = Modifier.size(30.dp)
+                            modifier = Modifier.size(30.dp).testTag("likeCommentButton")
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.iconolike),
@@ -124,7 +125,8 @@ fun Comment(
                         Text(
                             text = "( "+ Likes + " )",
                             fontSize = 17.sp,
-                            fontFamily = BangersFont
+                            fontFamily = BangersFont,
+                            modifier = Modifier.testTag("commentLikesText")
                         )
                     } // Reacción: Respuestas / Comentarios
                     Row(verticalAlignment = Alignment.CenterVertically,) {

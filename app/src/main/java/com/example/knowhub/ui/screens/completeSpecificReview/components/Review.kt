@@ -36,6 +36,8 @@ import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
 import com.example.knowhub.ui.utils.ProfileAsyncImage
 
+import androidx.compose.ui.platform.testTag
+
 //Componente que muestra la tarjeta detallada de una reseña específica incluyendo el profesor y la asignatura.
 @Composable
 fun Review(
@@ -46,7 +48,7 @@ fun Review(
     onEliminarClick: () -> Unit = {},
     onLikeClick: () -> Unit = {}
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.testTag("reviewCard")) {
         // Tarjeta contenedora de la reseña
         Column(
             modifier = modifier
@@ -64,6 +66,7 @@ fun Review(
             Row(
                 modifier = Modifier
                     .padding(10.dp)
+                    .testTag("reviewAuthorRow")
                     .clickable { autorPressed(review.userId) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -116,7 +119,9 @@ fun Review(
                 text = "👨‍🏫 " + review.nombreProfesor,
                 fontSize = 15.sp,
                 fontFamily = BangersFont,
-                modifier = Modifier.padding(horizontal = 10.dp)
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .testTag("reviewProfessorText")
             )
             // Cuerpo descriptivo y contadores de interacción
             Column(
@@ -129,7 +134,8 @@ fun Review(
                 Text(
                     text = "\"" + review.descripcion + "\"",
                     fontSize = 12.sp,
-                    fontFamily = FontFamily.Monospace
+                    fontFamily = FontFamily.Monospace,
+                    modifier = Modifier.testTag("reviewDescriptionText")
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))

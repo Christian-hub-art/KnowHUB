@@ -25,6 +25,8 @@ import com.example.knowhub.ui.theme.tertiaryContainerLight
 import com.example.knowhub.ui.utils.generarEstrellas
 import com.example.knowhub.R
 
+import androidx.compose.ui.platform.testTag
+
 @Composable
 fun Materia(
     calificacion: Int,
@@ -36,6 +38,7 @@ fun Materia(
     Column(
         modifier = modifier
             .width(180.dp)
+            .testTag("materiaCard")
             .drawBehind {
                 drawRect(
                     color = Color.Black,
