@@ -11,6 +11,7 @@ data class GeneralReview(
     val calificacionMedia: Int,
     val dificultadMedia: String,
     val Hashtags: List<String>,
+    val userId: String = ""      // uid de quien creó la materia
 )
 
 

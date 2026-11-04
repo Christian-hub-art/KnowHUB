@@ -68,7 +68,9 @@ fun CompleteReviewsScreen(
             reviewPressed = reviewPressed,
             escribirBottonPressed = { escribirBottonPressed(generalReviewId) },
             autorPressed = autorPressed,
-            editarMateriaPressed = { editarMateriaPressed(generalReviewId) }
+            editarMateriaPressed = { editarMateriaPressed(generalReviewId) },
+            mostrarEditarMateria = state.generalReview.userId.isEmpty() ||
+                state.generalReview.userId == state.currentUserId
         )
     }
 }
@@ -86,7 +88,8 @@ fun BodyCompleteReviewsScreen(
     escribirBottonPressed: () -> Unit,
     modifier: Modifier = Modifier,
     autorPressed: (String) -> Unit = {},
-    editarMateriaPressed: () -> Unit = {}
+    editarMateriaPressed: () -> Unit = {},
+    mostrarEditarMateria: Boolean = false
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -102,15 +105,17 @@ fun BodyCompleteReviewsScreen(
                         modifier = Modifier.width(350.dp)
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    AppButton(
-                        stringResource(R.string.editar_materia),
-                        tertiaryContainerLight,
-                        secondaryContainerLight,
-                        onClick = editarMateriaPressed,
-                        modifier = Modifier
-                            .width(350.dp)
-                            .height(40.dp)
-                    )
+                    if (mostrarEditarMateria) {
+                        AppButton(
+                            stringResource(R.string.editar_materia),
+                            tertiaryContainerLight,
+                            secondaryContainerLight,
+                            onClick = editarMateriaPressed,
+                            modifier = Modifier
+                                .width(350.dp)
+                                .height(40.dp)
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(30.dp))
                 Row() {

@@ -60,7 +60,8 @@ class GeneralReviewRepository @Inject constructor(
         nombreProfesor: String,
         codigoAsignatura: Int,
         dificultadMedia: String,
-        hashtags: List<String>
+        hashtags: List<String>,
+        userId: String = ""
     ): Result<Unit> {
         return try {
             val createGeneralReviewDto = CreateGeneralReviewDto(
@@ -69,7 +70,8 @@ class GeneralReviewRepository @Inject constructor(
                 nombreProfesor = nombreProfesor,
                 codigoAsignatura = codigoAsignatura,
                 dificultadMedia = dificultadMedia,
-                hashtags = hashtags
+                hashtags = hashtags,
+                userId = userId
             )
             generalReviewRemoteDataSource.createGeneralReview(createGeneralReviewDto)
             Result.success(Unit)

@@ -11,7 +11,8 @@ data class GeneralReviewDto(
     val calificacionMedia: Int = 0,
     val sumaCalificaciones: Int = 0,
     val dificultadMedia: String = "",
-    val hashtags: List<String> = emptyList()
+    val hashtags: List<String> = emptyList(),
+    val userId: String = ""
 )
 
 data class CreateGeneralReviewDto(
@@ -20,7 +21,8 @@ data class CreateGeneralReviewDto(
     val nombreProfesor: String = "",
     val codigoAsignatura: Int = 0,
     val dificultadMedia: String = "",
-    val hashtags: List<String> = emptyList()
+    val hashtags: List<String> = emptyList(),
+    val userId: String = ""
 )
 
 fun GeneralReviewDto.toGeneralReview(): GeneralReview {
@@ -32,6 +34,7 @@ fun GeneralReviewDto.toGeneralReview(): GeneralReview {
         cantidadReviews = cantidadReviews,
         calificacionMedia = calificacionMedia,
         dificultadMedia = dificultadMedia,
-        Hashtags = hashtags
+        Hashtags = hashtags,
+        userId = userId
     )
 }

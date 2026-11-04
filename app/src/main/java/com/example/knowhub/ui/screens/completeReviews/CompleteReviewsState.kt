@@ -10,5 +10,6 @@ data class CompleteReviewsState(
     val errorMessage: String = "",
     val mostrarMensajeError: Boolean = false,
     val soloSiguiendo: Boolean = false,
-    val followingIds: List<String> = emptyList()
+    val followingIds: List<String> = emptyList(),
+    val currentUserId: String = ""
 )

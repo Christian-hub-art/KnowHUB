@@ -11,5 +11,6 @@ data class CreateMateriaState(
     val mostrarMensajeError: Boolean = false,
     val navigateBack: Boolean = false,
     val materiaEliminada: Boolean = false,
-    val generalReviewId: Int? = null    // distinto de null cuando se edita una materia
+    val generalReviewId: Int? = null,   // distinto de null cuando se edita una materia
+    val creadorId: String = ""         // uid de quien creó la materia que se edita
 )

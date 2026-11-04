@@ -25,6 +25,7 @@ class CompleteReviewsViewModel @Inject constructor(
     val uiState: StateFlow<CompleteReviewsState> = _uiState
     //Carga desde Firestore la materia correspondiente al ID recibido
     fun loadData(generalReviewId: Int) {
+        _uiState.update { it.copy(currentUserId = authRepository.currentUser?.uid ?: "") }
         viewModelScope.launch {
             val result = generalReviewRepository.getGeneralReviewById(generalReviewId)
             if (result.isSuccess) {

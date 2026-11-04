@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.CreateMateria
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.knowhub.data.datasource.repository.AuthRepository
 import com.example.knowhub.data.datasource.repository.GeneralReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 //ViewModel encargado del formulario para crear, editar y eliminar materias.
 @HiltViewModel
 class CreateMateriaViewModel @Inject constructor(
-    private val generalReviewRepository: GeneralReviewRepository
+    private val generalReviewRepository: GeneralReviewRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CreateMateriaState())
     val uiState: StateFlow<CreateMateriaState> = _uiState
@@ -39,10 +41,17 @@ class CreateMateriaViewModel @Inject constructor(
                     codigo = materia.codigoAsignatura.toString(),
                     dificultad = materia.dificultadMedia,
                     hashtags = materia.Hashtags.joinToString(" "),
-                    mostrarMensajeError = false
+                    creadorId = materia.userId,
+                    mostrarMensajeError = !esCreador(materia.userId),
+                    errorMessage = if (esCreador(materia.userId)) "" else "Solo quien creó la materia puede editarla"
                 )
             }
         }
+    }
+
+    // Las materias sin creador (creadas antes de guardar userId) las puede editar cualquiera
+    private fun esCreador(creadorId: String): Boolean {
+        return creadorId.isEmpty() || creadorId == authRepository.currentUser?.uid
     }
 
     fun guardarButtonPressed() {
@@ -57,6 +66,15 @@ class CreateMateriaViewModel @Inject constructor(
             return
         }
         if (state.isLoading) return
+        val userId = authRepository.currentUser?.uid
+        if (userId == null) {
+            _uiState.update { it.copy(mostrarMensajeError = true, errorMessage = "No hay un usuario autenticado") }
+            return
+        }
+        if (state.generalReviewId != null && !esCreador(state.creadorId)) {
+            _uiState.update { it.copy(mostrarMensajeError = true, errorMessage = "Solo quien creó la materia puede editarla") }
+            return
+        }
 
         // "#calculo derivadas" -> ["#calculo", "#derivadas"]
         val hashtags = state.hashtags.split(" ", ",")
@@ -80,7 +98,8 @@ class CreateMateriaViewModel @Inject constructor(
                     nombreProfesor = state.nombreProfesor.trim(),
                     codigoAsignatura = codigo,
                     dificultadMedia = state.dificultad,
-                    hashtags = hashtags
+                    hashtags = hashtags,
+                    userId = userId
                 )
             }
             if (result.isSuccess) {
@@ -100,6 +119,10 @@ class CreateMateriaViewModel @Inject constructor(
     fun eliminarButtonPressed() {
         val generalReviewId = _uiState.value.generalReviewId ?: return
         if (_uiState.value.isLoading) return
+        if (!esCreador(_uiState.value.creadorId)) {
+            _uiState.update { it.copy(mostrarMensajeError = true, errorMessage = "Solo quien creó la materia puede eliminarla") }
+            return
+        }
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
             val result = generalReviewRepository.deleteGeneralReview(generalReviewId)
