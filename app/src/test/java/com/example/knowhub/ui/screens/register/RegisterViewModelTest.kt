@@ -1,7 +1,6 @@
 package com.example.knowhub.ui.screens.register
 
 import com.example.knowhub.MainDispatcherRule
-import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.repository.AuthRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
 import com.google.firebase.auth.FirebaseUser
@@ -98,10 +97,8 @@ class RegisterViewModelTest {
     fun `fallo de registro muestra error y no registra el perfil`() =
         runTest(mainDispatcherRule.testDispatcher) {
             // Arrange
-            val authRemoteDataSource = mockk<AuthRemoteDataSource>()
-            coEvery { authRemoteDataSource.signUp("ana@example.com", "clave") } throws
-                IllegalStateException("El correo ya se encuentra registrado")
-            viewModel = RegisterViewModel(AuthRepository(authRemoteDataSource), userRepository)
+            coEvery { authRepository.signUp(any(), any()) } returns
+                Result.failure(IllegalStateException("El correo ya se encuentra registrado"))
             fillValidForm()
 
             // Act
@@ -110,9 +107,9 @@ class RegisterViewModelTest {
 
             // Assert
             assertTrue(viewModel.uiState.value.mostrarMensajeError)
-            assertEquals("Error al registrar usuario", viewModel.uiState.value.errorMessage)
+            assertEquals("El correo ya se encuentra registrado", viewModel.uiState.value.errorMessage)
             assertFalse(viewModel.uiState.value.navigateInicio)
-            coVerify(exactly = 1) { authRemoteDataSource.signUp("ana@example.com", "clave") }
+            coVerify(exactly = 1) { authRepository.signUp("ana@example.com", "clave") }
             coVerify(exactly = 0) { userRepository.registerUser(any(), any(), any()) }
         }
 

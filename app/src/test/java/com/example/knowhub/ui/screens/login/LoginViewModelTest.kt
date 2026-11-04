@@ -1,7 +1,6 @@
 package com.example.knowhub.ui.screens.login
 
 import com.example.knowhub.MainDispatcherRule
-import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.repository.AuthRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -67,10 +66,8 @@ class LoginViewModelTest {
     fun `fallo de inicio de sesion muestra el mensaje del resultado`() =
         runTest(mainDispatcherRule.testDispatcher) {
             // Arrange
-            val authRemoteDataSource = mockk<AuthRemoteDataSource>()
-            coEvery { authRemoteDataSource.signIn("ana@example.com", "incorrecta") } throws
-                IllegalArgumentException("Credenciales incorrectas")
-            viewModel = LoginViewModel(AuthRepository(authRemoteDataSource))
+            coEvery { authRepository.signIn(any(), any()) } returns
+                Result.failure(IllegalArgumentException("Credenciales incorrectas"))
             viewModel.updateNombreOCorreo("ana@example.com")
             viewModel.updateContrasena("incorrecta")
 
@@ -80,9 +77,9 @@ class LoginViewModelTest {
 
             // Assert
             assertTrue(viewModel.uiState.value.mostrarMensajeError)
-            assertEquals("Error al iniciar sesión", viewModel.uiState.value.errorMessage)
+            assertEquals("Credenciales incorrectas", viewModel.uiState.value.errorMessage)
             assertFalse(viewModel.uiState.value.navigateInicio)
-            coVerify(exactly = 1) { authRemoteDataSource.signIn("ana@example.com", "incorrecta") }
+            coVerify(exactly = 1) { authRepository.signIn("ana@example.com", "incorrecta") }
         }
 
     @Test
