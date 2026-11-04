@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.BusquedaFiltro
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.datasource.repository.GeneralReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -22,6 +23,8 @@ class BusquedaViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(BusquedaState())
     val uiState: StateFlow<BusquedaState> = _uiState.asStateFlow()
 
+    private var allReviews: List<GeneralReview> = emptyList()
+
     init {// Carga inicial de las reseñas al instanciar el ViewModel
         loadGeneralReviews()
     }
@@ -40,9 +43,10 @@ class BusquedaViewModel @Inject constructor(
                     }
                 }
                 .collect { materias ->
+                    allReviews = materias
                     _uiState.update { currentState ->
                         currentState.copy(
-                            reviews = materias,
+                            reviews = filterReviews(allReviews, currentState.filtro),
                             isLoading = false,
                             mostrarMensajeError = false
                         )
@@ -51,10 +55,43 @@ class BusquedaViewModel @Inject constructor(
         }
     }
 
-    // Función de evento para actualizar el texto de búsqueda
+    // Función de evento para actualizar el texto de búsqueda y filtrar
     fun onFiltroChange(nuevoFiltro: String) {
         _uiState.update { currentState ->
-            currentState.copy(filtro = nuevoFiltro)
+            currentState.copy(
+                filtro = nuevoFiltro,
+                reviews = filterReviews(allReviews, nuevoFiltro)
+            )
+        }
+    }
+
+    private fun filterReviews(reviews: List<GeneralReview>, filtro: String): List<GeneralReview> {
+        val query = filtro.trim()
+        if (query.isEmpty()) return reviews
+
+        if (query == "#") {
+            return reviews.filter { it.Hashtags.isNotEmpty() }
+        }
+
+        val searchTerms = query.split("\\s+".toRegex()).filter { it.isNotEmpty() }
+
+        return reviews.filter { review ->
+            searchTerms.all { term ->
+                val cleanTerm = term.removePrefix("#")
+
+                val matchesNombreMateria = review.nombreMateria.contains(term, ignoreCase = true) ||
+                                           (cleanTerm.isNotEmpty() && review.nombreMateria.contains(cleanTerm, ignoreCase = true))
+                val matchesNombreProfesor = review.nombreProfesor.contains(term, ignoreCase = true) ||
+                                            (cleanTerm.isNotEmpty() && review.nombreProfesor.contains(cleanTerm, ignoreCase = true))
+                val matchesIdMateria = (cleanTerm.isNotEmpty() && review.codigoAsignatura.toString().contains(cleanTerm, ignoreCase = true)) ||
+                                       (cleanTerm.isNotEmpty() && review.id.toString().contains(cleanTerm, ignoreCase = true))
+                val matchesHashtag = review.Hashtags.any { tag ->
+                    tag.contains(term, ignoreCase = true) ||
+                    (cleanTerm.isNotEmpty() && tag.removePrefix("#").contains(cleanTerm, ignoreCase = true))
+                }
+
+                matchesNombreMateria || matchesNombreProfesor || matchesIdMateria || matchesHashtag
+            }
         }
     }
 }
