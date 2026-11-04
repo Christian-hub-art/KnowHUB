@@ -103,11 +103,26 @@ class CreateReviewsViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
-            val generalReviewId = if (state.generalReviewId != 0) {
-                state.generalReviewId
-            } else {
+            var generalReviewId = state.generalReviewId
+            var tituloMateria = state.tituloMateria
+            var nombreProfesor = state.nombreProfesor
+            // Reseña nueva desde el menú: se busca la materia por el código escrito en # CLASE
+            if (state.reviewId == null && generalReviewId == 0) {
                 val codigo = state.clase.trim().toIntOrNull() ?: 0
-                generalReviewRepository.getGeneralReviewByCodigo(codigo).getOrNull()?.id ?: 0
+                val materia = generalReviewRepository.getGeneralReviewByCodigo(codigo).getOrNull()
+                if (materia == null) {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            mostrarMensajeError = true,
+                            errorMessage = "No existe una materia con el código ${state.clase.trim()}. Créala desde Búsqueda"
+                        )
+                    }
+                    return@launch
+                }
+                generalReviewId = materia.id
+                tituloMateria = materia.nombreMateria
+                nombreProfesor = materia.nombreProfesor
             }
             val result = if (state.reviewId != null) {
                 reviewRepository.updateReview(
@@ -122,8 +137,8 @@ class CreateReviewsViewModel @Inject constructor(
                 reviewRepository.createReview(
                     userId = userId,
                     clase = state.clase,
-                    nombreAsignatura = state.tituloMateria,
-                    nombreProfesor = state.nombreProfesor,
+                    nombreAsignatura = tituloMateria,
+                    nombreProfesor = nombreProfesor,
                     descripcion = state.resena,
                     generalReviewId = generalReviewId,
                     calificacion = state.calificacion
