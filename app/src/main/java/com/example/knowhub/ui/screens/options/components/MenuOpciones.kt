@@ -29,6 +29,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.*
 
+import androidx.compose.ui.platform.testTag
+
 //Menú lateral de navegación con las opciones principales de la aplicación.
 @Composable
 fun MenuOpciones(
@@ -56,7 +58,8 @@ fun MenuOpciones(
         Spacer(modifier = Modifier.weight(0.4F))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .clickable { inicioButtonPressed() },
+            .clickable { inicioButtonPressed() }
+            .testTag("drawerInicioOption"),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(

@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.platform.testTag
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -334,7 +335,8 @@ fun CajaBusqueda(
         modifier = modifier
             .background(primaryLight)
             .border(2.dp, tertiaryContainerLight)
-            .clickable { generalReviewPressed (generalReview.id) },
+            .clickable { generalReviewPressed (generalReview.id) }
+            .testTag("cajaBusquedaCard"),
     ) {
         Column {
             // Header Azul

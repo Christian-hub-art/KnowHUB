@@ -6,6 +6,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.foundation.clickable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.testTag
 import com.example.knowhub.R
 
 //Contenedor horizontal para las estadísticas del perfil del usuario.
@@ -46,6 +47,7 @@ fun CuadrosInformacionPerfil(
             modifier = Modifier
                 .weight(1f)
                 .clickable { onSeguidoresClick() }
+                .testTag("seguidoresMiniCuadro")
         )
     }
 }

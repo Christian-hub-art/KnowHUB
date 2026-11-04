@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -71,7 +72,7 @@ fun KnowHUBApp (){
 
         }
     )
-    LaunchedEffect(Unit) {
+    /*LaunchedEffect(Unit) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
             if(ContextCompat.checkSelfPermission(
                 context,
@@ -80,25 +81,15 @@ fun KnowHUBApp (){
 
             }
         }
-    }
+    }*/
 
     val currentUser = FirebaseAuth.getInstance().currentUser
     val userId: String  = currentUser?.uid ?: ""
 
-    val showTopBar = currentRoute in listOf(
-        Screens.Inicio.route,
-        Screens.Profile.route,
-        Screens.Reviews.route,
-        Screens.Notifications.route,
-        Screens.CreateReviews.route,
-        Screens.EditReview.route,
-        Screens.CreateReviewMateria.route,
-        Screens.CreateMateria.route,
-        Screens.EditMateria.route,
-        Screens.Busqueda.route,
-        Screens.CompleteReviews.route,
-        Screens.BusquePerfil.route,
-        Screens.Connections.route
+    val showTopBar = currentRoute !in listOf(
+        Screens.Start.route,
+        Screens.Register.route,
+        Screens.Splash.route
     )
 
     val showDrawer = currentRoute !in listOf(
@@ -195,6 +186,7 @@ fun KnowhubTopAppBar(
                 onClick = onMenuClick,
                 modifier = Modifier
                     .padding(end = 16.dp)
+                    .testTag("menuIconButton")
             ) {
                 Icon(
                     painter = painterResource(R.drawable.iconomenu),

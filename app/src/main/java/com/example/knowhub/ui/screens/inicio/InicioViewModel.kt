@@ -69,10 +69,8 @@ class InicioViewModel @Inject constructor(
             }
         }
 
-        // Descartar categorias que aparecen en menos de 2 materias
-
         // El Map wordsToMaterias se covierte en un List<Pair<String, List<MateriaResumida>>> y se retorna
-        return wordsToMaterias.filter { it.value.size >= 2 }
+        return wordsToMaterias.filter { it.value.isNotEmpty() }
             .map { (word, reviews) ->
                 word.uppercase() to reviews.distinctBy { it.id }.map { review ->
                     MateriaResumida(

@@ -6,6 +6,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.example.knowhub.R
@@ -24,6 +25,7 @@ fun TextosLogin(
         OutlinedTextField(
             value = correoOUsuario,
             onValueChange = onCorreoOUsuarioChange,
+            modifier = Modifier.testTag("loginEmailOrUserField"),
             label = { Text(stringResource(R.string.correo_electr_nico_o_usuario)) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = primaryLight,
@@ -35,6 +37,7 @@ fun TextosLogin(
         OutlinedTextField(
             value = contrasena,
             onValueChange = onContrasenaChange,
+            modifier = Modifier.testTag("loginPasswordField"),
             label = { Text(stringResource(R.string.contrase_a)) },
             visualTransformation = PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(

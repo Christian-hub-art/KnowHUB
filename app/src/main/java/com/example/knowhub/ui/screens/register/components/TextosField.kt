@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import com.example.knowhub.R
@@ -34,6 +35,7 @@ fun TextosField(
         OutlinedTextField(
             value = nombre,
             onValueChange = onNombreChange,
+            modifier = Modifier.testTag("nombreRegisterField"),
             label = { Text(stringResource(R.string.nombre)) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = primaryLight,
@@ -45,6 +47,7 @@ fun TextosField(
         OutlinedTextField(
             value = correoElectronico,
             onValueChange = onCorreoElectronicoChange,
+            modifier = Modifier.testTag("correoRegisterField"),
             label = { Text(stringResource(R.string.correo_electr_nico)) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = primaryLight,
@@ -56,6 +59,7 @@ fun TextosField(
         OutlinedTextField(
             value = nombreUsuario,
             onValueChange = onNombreUsuarioChange,
+            modifier = Modifier.testTag("usernameRegisterField"),
             label = { Text(stringResource(R.string.nombre_de_usuario)) },
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = primaryLight,
@@ -68,6 +72,7 @@ fun TextosField(
         OutlinedTextField(
             value = contrasena,
             onValueChange = onContrasenaChange,
+            modifier = Modifier.testTag("passwordRegisterField"),
             label = { Text(stringResource(R.string.contrase_a)) },
             visualTransformation = PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
@@ -81,6 +86,7 @@ fun TextosField(
         OutlinedTextField(
             value = confirmarContrasena,
             onValueChange = onConfirmarContrasenaChange,
+            modifier = Modifier.testTag("confirmPasswordRegisterField"),
             label = { Text(stringResource(R.string.confirmaci_n_de_contrase_a)) },
             visualTransformation = PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(

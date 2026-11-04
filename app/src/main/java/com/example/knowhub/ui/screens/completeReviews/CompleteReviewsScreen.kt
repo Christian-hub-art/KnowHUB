@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -142,7 +143,7 @@ fun BodyCompleteReviewsScreen(
                         if (soloSiguiendo) tertiaryContainerLight else primaryLight,
                         if (soloSiguiendo) secondaryContainerLight else primaryContainerLight,
                         onClick = paraTiPressed,
-                        modifier = Modifier.height(40.dp)
+                        modifier = Modifier.height(40.dp).testTag("paraTiTabButton")
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     AppButton(
@@ -150,7 +151,7 @@ fun BodyCompleteReviewsScreen(
                         if (soloSiguiendo) primaryLight else tertiaryContainerLight,
                         if (soloSiguiendo) primaryContainerLight else secondaryContainerLight,
                         onClick = siguiendoPressed,
-                        modifier = Modifier.height(40.dp)
+                        modifier = Modifier.height(40.dp).testTag("siguiendoTabButton")
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))

@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,9 +45,9 @@ fun Review(
     modifier: Modifier = Modifier,
     autorPressed: (String) -> Unit = {}
 ) {
-    Column(modifier = modifier) {// Cabecera con datos del estudiante, fecha y calificación
+    Column(modifier = modifier.testTag("reviewCard")) {// Cabecera con datos del estudiante, fecha y calificación
         Row(
-            modifier = Modifier.clickable { autorPressed(review.userId) },
+            modifier = Modifier.testTag("reviewAuthorRow").clickable { autorPressed(review.userId) },
             verticalAlignment = Alignment.CenterVertically
         ) {
             ProfileAsyncImage(
@@ -100,7 +101,8 @@ fun Review(
                 Text(
                     text = "\"" + review.descripcion + "\"",
                     fontSize = 12.sp,
-                    fontFamily = FontFamily.Monospace
+                    fontFamily = FontFamily.Monospace,
+                    modifier = Modifier.testTag("reviewDescriptionText")
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
