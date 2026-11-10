@@ -13,6 +13,7 @@ import com.example.knowhub.data.datasource.dtos.toReview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import java.util.concurrent.TimeUnit
 
 class ReviewRepository @Inject constructor(
     private val reviewRemoteDataSource: ReviewFirestoreDataSourceImpl,
@@ -27,6 +28,19 @@ class ReviewRepository @Inject constructor(
             Result.success(reviews.map { it.toReview() })
         } catch (e: Exception) {
             Log.d("TAG", "getReviews: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getReviewsPublishedInLast24Hours(): Result<List<Review>> {
+        return try {
+            val cutoff = System.currentTimeMillis() - TimeUnit.HOURS.toMillis(24)
+            val reviews = reviewRemoteDataSource.getReviewsPublishedSince(cutoff)
+            Result.success(reviews.map { it.toReview() }.filter {
+                it.latitude != null && it.longitude != null
+            })
+        } catch (e: Exception) {
+            Log.d("TAG", "getReviewsPublishedInLast24Hours: ${e.message}")
             Result.failure(e)
         }
     }
@@ -59,7 +73,9 @@ class ReviewRepository @Inject constructor(
         nombreProfesor: String,
         descripcion: String,
         generalReviewId: Int = 0,
-        calificacion: Int = 0
+        calificacion: Int = 0,
+        latitude: Double? = null,
+        longitude: Double? = null
     ): Result<Unit> {
         return try {
 
@@ -80,7 +96,9 @@ class ReviewRepository @Inject constructor(
                 descripcion = descripcion,
                 user = reviewUserDto,
                 generalReviewId = generalReviewId,
-                calificacion = calificacion
+                calificacion = calificacion,
+                latitude = latitude,
+                longitude = longitude
             )
 
             reviewRemoteDataSource.createReview(createReviewDto)

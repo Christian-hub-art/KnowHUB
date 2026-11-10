@@ -86,7 +86,7 @@ class CreateReviewsViewModel @Inject constructor(
         }
     }
 
-    fun publicarButtonPressed() {
+    fun publicarButtonPressed(latitude: Double? = null, longitude: Double? = null) {
         val state = _uiState.value
         if (state.clase.isBlank() || state.tituloMateria.isBlank() ||
             state.nombreProfesor.isBlank() || state.resena.isBlank()
@@ -141,7 +141,9 @@ class CreateReviewsViewModel @Inject constructor(
                     nombreProfesor = nombreProfesor,
                     descripcion = state.resena,
                     generalReviewId = generalReviewId,
-                    calificacion = state.calificacion
+                    calificacion = state.calificacion,
+                    latitude = latitude,
+                    longitude = longitude
                 )
             }
             if (result.isSuccess) {

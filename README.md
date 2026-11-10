@@ -56,3 +56,11 @@ El sistema busca ayudar a los estudiantes a tomar decisiones informadas sobre qu
 - Contraseña con requisitos mínimos de seguridad.
 - Calificaciones restringidas al rango 0-5.
 - Autenticación requerida para acceder a las funcionalidades principales.
+
+### 🗺️ Mapa de reseñas recientes
+- El mapa muestra reseñas publicadas durante las últimas 24 horas que tengan ubicación.
+- Al publicar una reseña se puede elegir compartir la ubicación aproximada del dispositivo; es opcional y requiere permiso.
+- Al tocar un marcador se muestran la materia, el profesor, el autor, la calificación y el texto de la reseña, con acceso a su detalle.
+- El mapa usa el SDK oficial de Mapbox para Jetpack Compose.
+- Configura `MAPBOX_PUBLIC_TOKEN` localmente para mostrar el mapa; si Mapbox Maven solicita autenticación, configura además `MAPBOX_DOWNLOADS_TOKEN` con permiso `DOWNLOADS:READ`. No guardes el token secreto en el repositorio ni lo compartas.
+- Las reseñas anteriores a esta funcionalidad no tienen coordenadas ni fecha de servidor y, por ello, no aparecen en el mapa.

@@ -22,6 +22,7 @@ import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.screens.profile.ProfileScreen
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.register.RegisterViewModel
+import com.example.knowhub.ui.screens.reviewMap.ReviewMapScreen
 import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
@@ -62,6 +63,7 @@ sealed class Screens(val route: String) {
     object Notifications : Screens("notifications")
     object Profile : Screens("profile")
     object Reviews : Screens("reviews")
+    object ReviewMap : Screens("reviewMap")
     object Inicio : Screens("inicio")
     object Connections : Screens("connections/{userId}/{followers}") {
         fun createRoute(userId: String, followers: Boolean) = "connections/$userId/$followers"
@@ -300,6 +302,14 @@ fun AppNavegation(
                 },
                 editarPressed = { reviewId ->
                     navController.navigate(Screens.EditReview.createRoute(reviewId))
+                }
+            )
+        }
+        composable(route = Screens.ReviewMap.route) {
+            ReviewMapScreen(
+                viewModel = hiltViewModel(),
+                onReviewPressed = { reviewId ->
+                    navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
                 }
             )
         }

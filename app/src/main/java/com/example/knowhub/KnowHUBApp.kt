@@ -128,6 +128,10 @@ fun KnowHUBApp (){
                         scope.launch { drawerState.close() }
                         navController.navigate(Screens.Busqueda.route)
                     },
+                    mapButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.ReviewMap.route)
+                    },
                     cerrarSesionButtonPressed = {
                         scope.launch { drawerState.close() }
                         navController.navigate(Screens.Start.route) {

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface ReviewRemoteDataSource {
     suspend fun createReview(review: CreateReviewDto): Unit
     suspend fun getAllReviews(): List<ReviewDto>
+    suspend fun getReviewsPublishedSince(timestampMillis: Long): List<ReviewDto>
     suspend fun getReviewsByUser(userId: String): List<ReviewDto>
     suspend fun getReviewsByGeneralReview(generalReviewId: Int): List<ReviewDto>
     suspend fun getReviewById(id: String, currentUserId: String = ""): ReviewDto

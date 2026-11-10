@@ -40,6 +40,7 @@ fun MenuOpciones(
     notificationsButtonPressed: () -> Unit,
     createReviewsButtonPressed: () -> Unit,
     buscarButtonPressed: () -> Unit,
+    mapButtonPressed: () -> Unit,
     cerrarSesionButtonPressed: () -> Unit,
     modifier: Modifier = Modifier,
     optionsViewModel: OptionsViewModel = hiltViewModel()
@@ -170,6 +171,21 @@ fun MenuOpciones(
                 fontFamily = ArvoFont,
             )
         }
+        Spacer(modifier = Modifier.weight(0.1F))
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .clickable { mapButtonPressed() },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("📍", fontSize = 24.sp)
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(
+                "Mapa de reseñas",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = ArvoFont,
+            )
+        }
         Spacer(modifier = Modifier.weight(1F))
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -201,6 +217,7 @@ fun MenuOpcionesPreview() {
         notificationsButtonPressed = {},
         createReviewsButtonPressed = {},
         buscarButtonPressed = {},
+        mapButtonPressed = {},
         cerrarSesionButtonPressed = {}
     )
 }
