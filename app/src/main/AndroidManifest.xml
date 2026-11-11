@@ -6,8 +6,10 @@
 
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Permite pedir ubicación aproximada al compartir una reseña en el mapa. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
+}
 
     <application
         android:networkSecurityConfig="@xml/network_security_config"

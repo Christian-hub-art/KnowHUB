@@ -16,6 +16,13 @@ tasks.withType<Test>().configureEach {
     systemProperty("net.bytebuddy.experimental", "true")
 }
 
+val mapboxPublicToken = providers.gradleProperty("MAPBOX_PUBLIC_TOKEN")
+    .orElse(providers.environmentVariable("MAPBOX_PUBLIC_TOKEN"))
+    .getOrElse("")
+val escapedMapboxPublicToken = mapboxPublicToken
+    .replace("\\", "\\\\")
+    .replace("\"", "\\\"")
+
 android {
     namespace = "com.example.knowhub"
     compileSdk = 35
@@ -26,6 +33,8 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        buildConfigField("String", "MAPBOX_PUBLIC_TOKEN", "\"$escapedMapboxPublicToken\"")
+        resValue("string", "mapbox_access_token", mapboxPublicToken)
 
         testInstrumentationRunner = "com.example.knowhub.HiltTestRunner"
     }
@@ -74,6 +83,9 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.compose.runtime.livedata)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.mapbox.maps.android)
+    implementation(libs.mapbox.maps.compose)
+    implementation(libs.play.services.location)
 
 
     

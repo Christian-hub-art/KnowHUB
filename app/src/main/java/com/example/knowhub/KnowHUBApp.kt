@@ -61,6 +61,12 @@ fun KnowHUBApp (){
     val context = LocalContext.current
 
     //Permisos al usuario desde el dispositivo
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            Log.d("LocationPermission", if (isGranted) "Permission granted" else "Permission denied")
+        }
+    )
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
@@ -82,6 +88,15 @@ fun KnowHUBApp (){
             }
         }
     }*/
+    LaunchedEffect(Unit) {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
+    }
 
     val currentUser = FirebaseAuth.getInstance().currentUser
     val userId: String  = currentUser?.uid ?: ""
@@ -127,6 +142,11 @@ fun KnowHUBApp (){
                     buscarButtonPressed = {
                         scope.launch { drawerState.close() }
                         navController.navigate(Screens.Busqueda.route)
+                    },
+                    // Cierra el menú y navega a la pantalla de reseñas en el mapa.
+                    mapButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.ReviewMap.route)
                     },
                     cerrarSesionButtonPressed = {
                         scope.launch { drawerState.close() }

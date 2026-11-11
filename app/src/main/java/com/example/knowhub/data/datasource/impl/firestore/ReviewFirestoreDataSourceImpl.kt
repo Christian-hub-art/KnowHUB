@@ -5,6 +5,7 @@ import com.example.knowhub.data.datasource.dtos.CreateReviewDto
 import com.example.knowhub.data.datasource.dtos.ReviewDto
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.Timestamp
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -25,6 +26,8 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
             val materiaDoc = transaction.get(materiaRef)
 
             transaction.set(reviewRef, review)
+            // Guarda una fecha del servidor para filtrar las reseñas recientes del mapa.
+            transaction.update(reviewRef, "publishedAt", FieldValue.serverTimestamp())
 
             if (materiaDoc.exists()) {
                 val cantidad = (materiaDoc.getLong("cantidadReviews") ?: 0L) + 1
@@ -43,6 +46,20 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
 
     override suspend fun getAllReviews(): List<ReviewDto> {
         val snapshot = db.collection("reviews").get().await()
+        return snapshot.documents.map { doc ->
+            val review = doc.toObject(ReviewDto::class.java)
+            review?.copy(id = doc.id) ?: throw Exception("Reseña no encontrada")
+        }
+    }
+
+    override suspend fun getReviewsPublishedSince(timestampMillis: Long): List<ReviewDto> {
+        // Consulta reseñas publicadas desde el límite recibido, de más nuevas a más antiguas.
+        val snapshot = db.collection("reviews")
+            .whereGreaterThanOrEqualTo("publishedAt", Timestamp(java.util.Date(timestampMillis)))
+            .orderBy("publishedAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .get()
+            .await()
+        // Convierte cada documento de Firestore al DTO de reseña, asignándole su ID real.
         return snapshot.documents.map { doc ->
             val review = doc.toObject(ReviewDto::class.java)
             review?.copy(id = doc.id) ?: throw Exception("Reseña no encontrada")

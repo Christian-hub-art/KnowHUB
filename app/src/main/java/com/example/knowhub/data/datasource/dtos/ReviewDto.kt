@@ -1,6 +1,7 @@
 package com.example.knowhub.data.datasource.dtos
 
 import com.example.knowhub.data.Review
+import com.google.firebase.Timestamp
 
 // Datos del autor copiados dentro de la reseña
 data class ReviewUserDto(
@@ -22,7 +23,11 @@ data class ReviewDto(
     val fechaPublicacion: String = "",
     val user: ReviewUserDto = ReviewUserDto(),
     var liked: Boolean = false,
-    val generalReviewId: Int = 0
+    val generalReviewId: Int = 0,
+    // Campos de ubicación y fecha que Firestore devuelve para mostrar el mapa.
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val publishedAt: Timestamp? = null
 )
 
 data class CreateReviewDto(
@@ -33,7 +38,10 @@ data class CreateReviewDto(
     val descripcion: String = "",
     val user: ReviewUserDto = ReviewUserDto(),
     val generalReviewId: Int = 0,
-    val calificacion: Int = 0
+    val calificacion: Int = 0,
+    // Se envían al crear la reseña solo si la persona comparte su ubicación.
+    val latitude: Double? = null,
+    val longitude: Double? = null
 )
 
 fun ReviewDto.toReview(): Review {
@@ -51,6 +59,9 @@ fun ReviewDto.toReview(): Review {
         fotoAutor = user.profileImage,
         userId = userId,
         liked = liked,
-        generalReviewId = generalReviewId
+        generalReviewId = generalReviewId,
+        latitude = latitude,
+        longitude = longitude,
+        publishedAt = publishedAt
     )
 }

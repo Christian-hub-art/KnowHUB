@@ -1,6 +1,6 @@
 package com.example.knowhub.data
 
-import java.util.Date
+import com.google.firebase.Timestamp
 
 data class Review(
     val id: String,
@@ -16,5 +16,9 @@ data class Review(
     val fotoAutor: String? = null,
     val userId: String = "",
     val liked: Boolean = false,
-    val generalReviewId: Int = 0
+    val generalReviewId: Int = 0,
+    // Coordenadas y fecha del servidor usadas para ubicar la reseña en el mapa reciente.
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val publishedAt: Timestamp? = null
 )

@@ -20,6 +20,7 @@
 # Local Configurations & Private Keys
 # =========================================================================
 local.properties
+developer-config.xml
 *.jks
 *.keystore
 *.pepk

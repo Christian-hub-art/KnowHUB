@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.datasource.repository.AuthRepository
 import com.example.knowhub.data.datasource.repository.GeneralReviewRepository
+import com.example.knowhub.data.datasource.repository.LocationRepository
 import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class CreateReviewsViewModel @Inject constructor(
     private val reviewRepository: ReviewRepository,
+    private val locationRepository: LocationRepository,
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
     private val generalReviewRepository: GeneralReviewRepository
@@ -103,6 +105,20 @@ class CreateReviewsViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, mostrarMensajeError = false) }
+            val location = if (state.compartirUbicacion) {
+                locationRepository.getCurrentLocation().getOrElse {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            mostrarMensajeError = true,
+                            errorMessage = "No se pudo obtener la ubicación. Activa la ubicación del dispositivo e inténtalo de nuevo."
+                        )
+                    }
+                    return@launch
+                }
+            } else {
+                null
+            }
             var generalReviewId = state.generalReviewId
             var tituloMateria = state.tituloMateria
             var nombreProfesor = state.nombreProfesor
@@ -141,7 +157,9 @@ class CreateReviewsViewModel @Inject constructor(
                     nombreProfesor = nombreProfesor,
                     descripcion = state.resena,
                     generalReviewId = generalReviewId,
-                    calificacion = state.calificacion
+                    calificacion = state.calificacion,
+                    latitude = location?.latitude,
+                    longitude = location?.longitude
                 )
             }
             if (result.isSuccess) {
@@ -161,6 +179,21 @@ class CreateReviewsViewModel @Inject constructor(
     fun cancelarButtonPressed() {
         _uiState.update { it.copy(navigateBack = true) }
     }
+
+    // Informa que no se pudo obtener la ubicación necesaria para el mapa.
+    fun mostrarErrorUbicacion() {
+        _uiState.update {
+            it.copy(
+                mostrarMensajeError = true,
+                errorMessage = "No se pudo obtener la ubicación. Activa la ubicación del dispositivo e inténtalo de nuevo."
+            )
+        }
+    }
+
+    fun updateCompartirUbicacion(compartir: Boolean) {
+        _uiState.update { it.copy(compartirUbicacion = compartir) }
+    }
+
     //Actualiza el valor del código de clase.
     fun updateClase(input: String) {
         _uiState.update { it.copy(clase = input) }
