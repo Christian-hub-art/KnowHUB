@@ -1,11 +1,11 @@
 package com.example.knowhub.ui.screens.CreateReviews
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -92,53 +92,55 @@ fun BodyCreateReviewsScreen(
     onCancelarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
+        item {
+            Spacer(modifier = Modifier.height(20.dp))
 
-        AppLabelBig(
-            texto = stringResource(if (editando) R.string.editar_resena else R.string.crea_nueva_resena),
-            colorTexto = primaryLight,
-            color = tertiaryContainerLight,
-            modifier = Modifier
-                .width(350.dp)
-                .height(45.dp)
-        )
+            AppLabelBig(
+                texto = stringResource(if (editando) R.string.editar_resena else R.string.crea_nueva_resena),
+                colorTexto = primaryLight,
+                color = tertiaryContainerLight,
+                modifier = Modifier
+                    .width(350.dp)
+                    .height(45.dp)
+            )
 
-        Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-        // Usuario Info
-        InformaciónUsuario(userName = userName)
+            // Usuario Info
+            InformaciónUsuario(userName = userName)
 
-        Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
-        CuadroResenas(
-            clase = clase,
-            tituloMateria = tituloMateria,
-            nombreProfesor = nombreProfesor,
-            resena = resena,
-            calificacion = calificacion,
-            onClaseChange = onClaseChange,
-            onTituloMateriaChange = onTituloMateriaChange,
-            onNombreProfesorChange = onNombreProfesorChange,
-            onResenaChange = onResenaChange,
-            onCalificacionChange = onCalificacionChange,
-            compartirUbicacion = compartirUbicacion,
-            onCompartirUbicacionChange = onCompartirUbicacionChange,
-            mostrarCompartirUbicacion = !editando,
-            onClick = onClick,
-            onCancelarClick = onCancelarClick,
-            textoPublicar = stringResource(if (editando) R.string.guardar else R.string.publicar)
-        )
+            CuadroResenas(
+                clase = clase,
+                tituloMateria = tituloMateria,
+                nombreProfesor = nombreProfesor,
+                resena = resena,
+                calificacion = calificacion,
+                onClaseChange = onClaseChange,
+                onTituloMateriaChange = onTituloMateriaChange,
+                onNombreProfesorChange = onNombreProfesorChange,
+                onResenaChange = onResenaChange,
+                onCalificacionChange = onCalificacionChange,
+                compartirUbicacion = compartirUbicacion,
+                onCompartirUbicacionChange = onCompartirUbicacionChange,
+                mostrarCompartirUbicacion = !editando,
+                onClick = onClick,
+                onCancelarClick = onCancelarClick,
+                textoPublicar = stringResource(if (editando) R.string.guardar else R.string.publicar)
+            )
 
-        if (mostrarMensajeError) {
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(errorMessage)
+            if (mostrarMensajeError) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(errorMessage)
+            }
+
+            Spacer(modifier = Modifier.height(40.dp))
         }
-
-        Spacer(modifier = Modifier.height(40.dp))
     }
 }
 
