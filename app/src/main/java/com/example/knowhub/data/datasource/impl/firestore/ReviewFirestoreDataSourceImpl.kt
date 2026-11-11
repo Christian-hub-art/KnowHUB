@@ -26,6 +26,7 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
             val materiaDoc = transaction.get(materiaRef)
 
             transaction.set(reviewRef, review)
+            // Guarda una fecha del servidor para filtrar las reseñas recientes del mapa.
             transaction.update(reviewRef, "publishedAt", FieldValue.serverTimestamp())
 
             if (materiaDoc.exists()) {
@@ -52,11 +53,13 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getReviewsPublishedSince(timestampMillis: Long): List<ReviewDto> {
+        // Consulta reseñas publicadas desde el límite recibido, de más nuevas a más antiguas.
         val snapshot = db.collection("reviews")
             .whereGreaterThanOrEqualTo("publishedAt", Timestamp(java.util.Date(timestampMillis)))
             .orderBy("publishedAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
             .get()
             .await()
+        // Convierte cada documento de Firestore al DTO de reseña, asignándole su ID real.
         return snapshot.documents.map { doc ->
             val review = doc.toObject(ReviewDto::class.java)
             review?.copy(id = doc.id) ?: throw Exception("Reseña no encontrada")

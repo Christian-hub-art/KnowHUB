@@ -36,6 +36,7 @@ class ReviewRepository @Inject constructor(
         return try {
             val cutoff = System.currentTimeMillis() - TimeUnit.HOURS.toMillis(24)
             val reviews = reviewRemoteDataSource.getReviewsPublishedSince(cutoff)
+            // Solo se muestran en el mapa las reseñas que tengan ambas coordenadas.
             Result.success(reviews.map { it.toReview() }.filter {
                 it.latitude != null && it.longitude != null
             })
@@ -74,6 +75,7 @@ class ReviewRepository @Inject constructor(
         descripcion: String,
         generalReviewId: Int = 0,
         calificacion: Int = 0,
+        // Las coordenadas opcionales se guardan para representar la reseña en el mapa.
         latitude: Double? = null,
         longitude: Double? = null
     ): Result<Unit> {

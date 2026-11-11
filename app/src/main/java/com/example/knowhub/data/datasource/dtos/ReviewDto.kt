@@ -24,6 +24,7 @@ data class ReviewDto(
     val user: ReviewUserDto = ReviewUserDto(),
     var liked: Boolean = false,
     val generalReviewId: Int = 0,
+    // Campos de ubicación y fecha que Firestore devuelve para mostrar el mapa.
     val latitude: Double? = null,
     val longitude: Double? = null,
     val publishedAt: Timestamp? = null
@@ -38,6 +39,7 @@ data class CreateReviewDto(
     val user: ReviewUserDto = ReviewUserDto(),
     val generalReviewId: Int = 0,
     val calificacion: Int = 0,
+    // Se envían al crear la reseña solo si la persona comparte su ubicación.
     val latitude: Double? = null,
     val longitude: Double? = null
 )

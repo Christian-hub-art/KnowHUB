@@ -17,6 +17,7 @@ data class Review(
     val userId: String = "",
     val liked: Boolean = false,
     val generalReviewId: Int = 0,
+    // Coordenadas y fecha del servidor usadas para ubicar la reseña en el mapa reciente.
     val latitude: Double? = null,
     val longitude: Double? = null,
     val publishedAt: Timestamp? = null

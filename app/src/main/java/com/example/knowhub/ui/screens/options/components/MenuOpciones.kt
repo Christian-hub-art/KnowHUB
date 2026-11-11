@@ -172,6 +172,7 @@ fun MenuOpciones(
             )
         }
         Spacer(modifier = Modifier.weight(0.1F))
+        // Opción del menú para abrir el mapa de reseñas.
         Row(modifier = Modifier
             .fillMaxWidth()
             .clickable { mapButtonPressed() },

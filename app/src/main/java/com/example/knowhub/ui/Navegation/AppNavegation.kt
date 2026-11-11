@@ -63,6 +63,7 @@ sealed class Screens(val route: String) {
     object Notifications : Screens("notifications")
     object Profile : Screens("profile")
     object Reviews : Screens("reviews")
+    // Ruta de la pantalla que presenta reseñas geolocalizadas en Mapbox.
     object ReviewMap : Screens("reviewMap")
     object Inicio : Screens("inicio")
     object Connections : Screens("connections/{userId}/{followers}") {
@@ -305,6 +306,7 @@ fun AppNavegation(
                 }
             )
         }
+        // Inyecta el ViewModel del mapa y abre el detalle al seleccionar una reseña.
         composable(route = Screens.ReviewMap.route) {
             ReviewMapScreen(
                 viewModel = hiltViewModel(),

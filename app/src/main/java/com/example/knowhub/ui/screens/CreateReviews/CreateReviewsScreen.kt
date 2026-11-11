@@ -1,10 +1,5 @@
 package com.example.knowhub.ui.screens.CreateReviews
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,14 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationTokenSource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -46,35 +33,6 @@ fun CreateReviewsScreen(
     generalReviewId: Int? = null
 ) {
     val state by createReviewsViewModel.uiState.collectAsState()
-    val context = LocalContext.current
-    var compartirUbicacion by remember { mutableStateOf(false) }
-    val locationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
-    val publishWithLocation = {
-        locationClient.getCurrentLocation(
-            Priority.PRIORITY_BALANCED_POWER_ACCURACY,
-            CancellationTokenSource().token
-        ).addOnSuccessListener { location ->
-            if (location != null) {
-                createReviewsViewModel.publicarButtonPressed(location.latitude, location.longitude)
-            } else {
-                Toast.makeText(context, "No se obtuvo la ubicación; se publicará sin ella.", Toast.LENGTH_LONG).show()
-                createReviewsViewModel.publicarButtonPressed()
-            }
-        }.addOnFailureListener { error ->
-            Toast.makeText(context, "No se pudo obtener la ubicación: ${error.localizedMessage}", Toast.LENGTH_LONG).show()
-            createReviewsViewModel.publicarButtonPressed()
-        }
-    }
-    val locationPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        if (granted) {
-            publishWithLocation()
-        } else {
-            Toast.makeText(context, "Se publicará la reseña sin ubicación.", Toast.LENGTH_LONG).show()
-            createReviewsViewModel.publicarButtonPressed()
-        }
-    }
 
     LaunchedEffect(generalReviewId) {
         if (generalReviewId != null) {
@@ -99,26 +57,14 @@ fun CreateReviewsScreen(
             errorMessage = state.errorMessage,
             mostrarMensajeError = state.mostrarMensajeError,
             editando = reviewId != null,
-            compartirUbicacion = compartirUbicacion,
-            onCompartirUbicacionChange = { compartirUbicacion = it },
+            compartirUbicacion = state.compartirUbicacion,
+            onCompartirUbicacionChange = { createReviewsViewModel.updateCompartirUbicacion(it) },
             onClaseChange = { createReviewsViewModel.updateClase(it) },
             onTituloMateriaChange = { createReviewsViewModel.updateTituloMateria(it) },
             onNombreProfesorChange = { createReviewsViewModel.updateNombreProfesor(it) },
             onResenaChange = { createReviewsViewModel.updateResena(it) },
             onCalificacionChange = { createReviewsViewModel.updateCalificacion(it) },
-            onClick = {
-                if (!compartirUbicacion) {
-                    createReviewsViewModel.publicarButtonPressed()
-                } else if (ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    publishWithLocation()
-                } else {
-                    locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-                }
-            },
+            onClick = { createReviewsViewModel.publicarButtonPressed() },
             onCancelarClick = { createReviewsViewModel.cancelarButtonPressed() }
         )
     }

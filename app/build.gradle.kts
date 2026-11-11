@@ -19,6 +19,9 @@ tasks.withType<Test>().configureEach {
 val mapboxPublicToken = providers.gradleProperty("MAPBOX_PUBLIC_TOKEN")
     .orElse(providers.environmentVariable("MAPBOX_PUBLIC_TOKEN"))
     .getOrElse("")
+val escapedMapboxPublicToken = mapboxPublicToken
+    .replace("\\", "\\\\")
+    .replace("\"", "\\\"")
 
 android {
     namespace = "com.example.knowhub"
@@ -30,6 +33,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        buildConfigField("String", "MAPBOX_PUBLIC_TOKEN", "\"$escapedMapboxPublicToken\"")
         resValue("string", "mapbox_access_token", mapboxPublicToken)
 
         testInstrumentationRunner = "com.example.knowhub.HiltTestRunner"

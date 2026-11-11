@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -165,9 +166,15 @@ fun CuadroResenas(
                 if (mostrarCompartirUbicacion) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
+                        // Mantiene visibles el borde y la marca del checkbox sobre el fondo blanco.
                         Checkbox(
                             checked = compartirUbicacion,
-                            onCheckedChange = onCompartirUbicacionChange
+                            onCheckedChange = onCompartirUbicacionChange,
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = primaryContainerLight,
+                                uncheckedColor = tertiaryContainerLight,
+                                checkmarkColor = primaryLight
+                            )
                         )
                         Text("Incluir ubicación aproximada en el mapa")
                     }
