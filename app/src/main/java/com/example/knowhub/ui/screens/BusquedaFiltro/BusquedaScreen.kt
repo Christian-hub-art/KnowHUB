@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -99,7 +101,9 @@ fun BodyBusquedaScreen(
                     modifier = Modifier
                         .width(325.dp)
                         .border(2.dp, tertiaryContainerLight)
-                        .background(primaryLight)
+                        .background(
+                            if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
+                        )
                         .padding(horizontal = 12.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -113,7 +117,7 @@ fun BodyBusquedaScreen(
                         painter = painterResource(id = R.drawable.buscar),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
-                        tint = tertiaryContainerLight
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
 
@@ -121,7 +125,9 @@ fun BodyBusquedaScreen(
 
                 Box(
                     modifier = modifier
-                        .background(tertiaryContainerLight)
+                        .background(
+                            if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+                        )
                         .height(2.5F.dp)
                         .width(300.dp)
                 ) {}
@@ -134,7 +140,9 @@ fun BodyBusquedaScreen(
                 Spacer(modifier = Modifier.width(10.dp))
                 Box(
                     modifier = modifier
-                        .background(tertiaryContainerLight)
+                        .background(
+                            if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+                        )
                         .height(2.5F.dp)
                         .width(300.dp)
                 ) {}

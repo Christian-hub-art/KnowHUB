@@ -4,6 +4,7 @@ import android.net.Uri
 
 //Representa el estado de la interfaz de usuario para la pantalla de Perfil.
 data class ProfileState(
+    val isAuthenticated: Boolean = false,
     val nombre: String = "",
     val userId: String = "",
     val name: String = "",
@@ -21,6 +22,7 @@ data class ProfileState(
     val mostrarMensajeErrorCancelar: Boolean = false,
     val errorMessageCambiar: String = "",
     val mostrarMensajeErrorCambiar: Boolean = false,
-    val errorMessageFoto: String = "",
-    val mostrarMensajeErrorFoto: Boolean = false
+    val errorMessageFotoResId: Int? = null,
+    val mostrarMensajeErrorFoto: Boolean = false,
+    val isUploadingFoto: Boolean = false
 )

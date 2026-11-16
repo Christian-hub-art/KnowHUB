@@ -20,6 +20,8 @@ import com.example.knowhub.ui.screens.inicio.InicioScreen
 import com.example.knowhub.ui.screens.login.LoginScreen
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.screens.profile.ProfileScreen
+import com.example.knowhub.ui.screens.profile.EditProfileScreen
+import com.example.knowhub.ui.screens.profile.ProfileViewModel
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.register.RegisterViewModel
 import com.example.knowhub.ui.screens.reviewMap.ReviewMapScreen
@@ -27,6 +29,7 @@ import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsViewModel
@@ -62,6 +65,7 @@ sealed class Screens(val route: String) {
     }
     object Notifications : Screens("notifications")
     object Profile : Screens("profile")
+    object EditProfile : Screens("profile/edit")
     object Reviews : Screens("reviews")
     // Ruta de la pantalla que presenta reseñas geolocalizadas en Mapbox.
     object ReviewMap : Screens("reviewMap")
@@ -274,6 +278,25 @@ fun AppNavegation(
                 },
                 seguidosPressed = { userId ->
                     navController.navigate(Screens.Connections.createRoute(userId, followers = false))
+                },
+                modificarDatosPressed = { navController.navigate(Screens.EditProfile.route) },
+                iniciarSesionPressed = {
+                    navController.navigate(Screens.Start.route)
+                },
+                registrarsePressed = {
+                    navController.navigate(Screens.Register.route)
+                }
+            )
+        }
+        composable(route = Screens.EditProfile.route) {
+            val profileEntry = remember(navController) {
+                navController.getBackStackEntry(Screens.Profile.route)
+            }
+            val profileViewModel: ProfileViewModel = hiltViewModel(profileEntry)
+            EditProfileScreen(
+                onBack = {
+                    profileViewModel.getUser()
+                    navController.popBackStack()
                 }
             )
         }
@@ -321,6 +344,9 @@ fun AppNavegation(
                 inicioViewModel = viewModel,
                 onSeeAllClick = {
                     navController.navigate(Screens.Busqueda.route)
+                },
+                onMateriaClick = { generalReviewId ->
+                    navController.navigate(Screens.CompleteReviews.createRoute(generalReviewId))
                 }
             )
         }

@@ -3,6 +3,7 @@ package com.example.knowhub.ui.screens.BusquedaPerfil.Components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +26,8 @@ fun MiniCuadroInformacion(
         Text(
             ("$numero"),
             fontFamily = BangersFont,
-            fontSize = 22.sp
+            fontSize = 22.sp,
+            color = MaterialTheme.colorScheme.onSurface
         )
         // Etiqueta descriptiva de la métrica
         Text(
@@ -33,8 +35,8 @@ fun MiniCuadroInformacion(
             fontFamily = BangersFont,
             fontSize = 9.sp,
             textAlign = TextAlign.Center,
-            lineHeight = 9.sp
+            lineHeight = 9.sp,
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
-

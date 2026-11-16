@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.platform.testTag
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,12 +29,16 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.asImageBitmap
+import android.graphics.BitmapFactory
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -59,12 +64,29 @@ import com.example.knowhub.ui.theme.tertiaryContainerLight
 
 @Composable
 fun BackgroundImage(){
-    Image(
-        painter = painterResource(R.drawable.fondoknowhub),
-        contentDescription = stringResource(R.string.fondo_knowhub),
-        modifier = Modifier.fillMaxSize(),
-        contentScale = ContentScale.Crop
-    )
+    if (isSystemInDarkTheme()) {
+        val context = LocalContext.current
+        val backgroundBitmap = remember(context) {
+            context.assets.open("fondoOscuro.png").use { stream ->
+                requireNotNull(BitmapFactory.decodeStream(stream)) {
+                    "No se pudo cargar app/src/main/assets/fondoOscuro.png"
+                }.asImageBitmap()
+            }
+        }
+        Image(
+            bitmap = backgroundBitmap,
+            contentDescription = stringResource(R.string.fondo_knowhub),
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+    } else {
+        Image(
+            painter = painterResource(R.drawable.fondoknowhub),
+            contentDescription = stringResource(R.string.fondo_knowhub),
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+    }
 }
 
 @Composable
@@ -85,23 +107,47 @@ fun AppButton(
     colorTexto: Color? =null,
     colorBoton: Color? = null,
     onClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
 ) {
+    val darkTheme = isSystemInDarkTheme()
+    val buttonColor = if (!darkTheme) {
+        colorBoton ?: MaterialTheme.colorScheme.primary
+    } else {
+        when (colorBoton) {
+            primaryContainerLight -> primaryContainerLight
+            secondaryContainerLight -> secondaryContainerLight
+            else -> MaterialTheme.colorScheme.surfaceContainerHigh
+        }
+    }
+    val textColor = if (!darkTheme) {
+        colorTexto ?: Color.Unspecified
+    } else if (colorTexto == primaryContainerLight || colorTexto == secondaryContainerLight) {
+        colorTexto
+    } else {
+        when (buttonColor) {
+            primaryContainerLight -> primaryLight
+            secondaryContainerLight -> tertiaryContainerLight
+            else -> MaterialTheme.colorScheme.onSurface
+        }
+    }
+
     Button(
         onClick = onClick,
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorBoton ?: MaterialTheme.colorScheme.primary
+            containerColor = buttonColor
         ),
         shape = RectangleShape,
         border = BorderStroke(
             2.dp,
-            tertiaryContainerLight
+            if (darkTheme) MaterialTheme.colorScheme.outline else tertiaryContainerLight
         ),
         modifier = modifier
     ) {
         Text(
             text = textoButon,
-            color = colorTexto ?: Color.Unspecified,
+            color = textColor,
             textAlign = TextAlign.Center,
             fontFamily = BangersFont,
             fontWeight = FontWeight.Bold
@@ -116,19 +162,41 @@ fun AppLabel(
     color: Color? = null,
     modifier: Modifier = Modifier
 ) {
+    val darkTheme = isSystemInDarkTheme()
+    val labelColor = if (!darkTheme) {
+        color ?: MaterialTheme.colorScheme.primary
+    } else {
+        when (color) {
+            primaryContainerLight -> primaryContainerLight
+            secondaryContainerLight -> secondaryContainerLight
+            else -> MaterialTheme.colorScheme.surfaceContainerHigh
+        }
+    }
+    val labelTextColor = if (!darkTheme) {
+        colorTexto ?: Color.Unspecified
+    } else if (colorTexto == primaryContainerLight || colorTexto == secondaryContainerLight) {
+        colorTexto
+    } else {
+        when (labelColor) {
+            primaryContainerLight -> primaryLight
+            secondaryContainerLight -> tertiaryContainerLight
+            else -> MaterialTheme.colorScheme.onSurface
+        }
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .background(color ?: MaterialTheme.colorScheme.primary)
+            .background(labelColor)
             .border(
                 2.dp,
-                tertiaryContainerLight
+                if (darkTheme) MaterialTheme.colorScheme.outline else tertiaryContainerLight
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
             text = texto,
-            color = colorTexto ?: Color.Unspecified,
+            color = labelTextColor,
             textAlign = TextAlign.Center,
             fontFamily = BangersFont,
             fontWeight = FontWeight.Bold
@@ -143,19 +211,41 @@ fun AppLabelBig(
     color: Color? = null,
     modifier: Modifier = Modifier
 ) {
+    val darkTheme = isSystemInDarkTheme()
+    val labelColor = if (!darkTheme) {
+        color ?: MaterialTheme.colorScheme.primary
+    } else {
+        when (color) {
+            primaryContainerLight -> primaryContainerLight
+            secondaryContainerLight -> secondaryContainerLight
+            else -> MaterialTheme.colorScheme.surfaceContainerHigh
+        }
+    }
+    val labelTextColor = if (!darkTheme) {
+        colorTexto ?: Color.Unspecified
+    } else if (colorTexto == primaryContainerLight || colorTexto == secondaryContainerLight) {
+        colorTexto
+    } else {
+        when (labelColor) {
+            primaryContainerLight -> primaryLight
+            secondaryContainerLight -> tertiaryContainerLight
+            else -> MaterialTheme.colorScheme.onSurface
+        }
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .background(color ?: MaterialTheme.colorScheme.primary)
+            .background(labelColor)
             .border(
                 2.dp,
-                tertiaryContainerLight
+                if (darkTheme) MaterialTheme.colorScheme.outline else tertiaryContainerLight
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(
             text = texto,
-            color = colorTexto ?: Color.Unspecified,
+            color = labelTextColor,
             textAlign = TextAlign.Center,
             fontFamily = BangersFont,
             fontWeight = FontWeight.Bold,
@@ -174,7 +264,7 @@ fun BarraArriba(
             .fillMaxWidth()
             .height(80.dp)
             .background(
-                primaryLight
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
             )
             .drawBehind {
                 val strokeWidth = 2.dp.toPx()
@@ -202,6 +292,7 @@ fun BarraArriba(
             fontSize = 42.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = ArvoFont,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.align(Alignment.Center)
         )
 
@@ -247,10 +338,15 @@ fun CuadroTexto(
         modifier = Modifier
             .height(alto)
             .width(ancho)
-            .background(fondoCuadro)
+            .background(
+                if (isSystemInDarkTheme() &&
+                    fondoCuadro != primaryContainerLight &&
+                    fondoCuadro != secondaryContainerLight
+                ) MaterialTheme.colorScheme.surfaceContainerHigh else fondoCuadro
+            )
             .border(
                 2.dp,
-                tertiaryContainerLight
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
             ),
         contentAlignment = Alignment.Center
     ){
@@ -269,21 +365,39 @@ fun AppButtonBig(
     onClick: () -> Unit ={},
     modifier: Modifier = Modifier
 ) {
+    val darkTheme = isSystemInDarkTheme()
+    val buttonColor = if (!darkTheme || colorBoton == primaryContainerLight || colorBoton == secondaryContainerLight) {
+        colorBoton
+    } else {
+        MaterialTheme.colorScheme.surfaceContainerHigh
+    }
+    val textColor = if (!darkTheme) {
+        colorTexto
+    } else if (colorTexto == primaryContainerLight || colorTexto == secondaryContainerLight) {
+        colorTexto
+    } else {
+        when (buttonColor) {
+            primaryContainerLight -> primaryLight
+            secondaryContainerLight -> tertiaryContainerLight
+            else -> MaterialTheme.colorScheme.onSurface
+        }
+    }
+
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = colorBoton
+            containerColor = buttonColor
         ),
         shape = RectangleShape,
         border = BorderStroke(
             2.dp,
-            tertiaryContainerLight
+            if (darkTheme) MaterialTheme.colorScheme.outline else tertiaryContainerLight
         ),
         modifier = modifier
     ) {
         Text(
             text = textoButon,
-            color = colorTexto,
+            color = textColor,
             textAlign = TextAlign.Center,
             fontFamily = BangersFont,
             fontWeight = FontWeight.Bold,
@@ -312,14 +426,18 @@ fun FormTextField(
         value = value,
         onValueChange = onValueChange,
         modifier = modifier
-            .fillMaxWidth()
-            .background(Color.White),
+            .fillMaxWidth(),
         label = { Text("$placeholder") },
         colors = OutlinedTextFieldDefaults.colors(
-            unfocusedContainerColor = primaryLight,
-            focusedContainerColor = primaryLight,
-            focusedBorderColor = tertiaryContainerLight,
-            unfocusedBorderColor = tertiaryContainerLight
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            cursorColor = MaterialTheme.colorScheme.primary,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline
         )
     )
 }
@@ -333,8 +451,13 @@ fun CajaBusqueda(
 ) {
     Box(
         modifier = modifier
-            .background(primaryLight)
-            .border(2.dp, tertiaryContainerLight)
+            .background(
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
+            )
+            .border(
+                2.dp,
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+            )
             .clickable { generalReviewPressed (generalReview.id) }
             .testTag("cajaBusquedaCard"),
     ) {
@@ -368,7 +491,11 @@ fun CajaBusqueda(
                         fontFamily = BangersFont,
                         fontSize = 22.sp,
                         fontStyle = FontStyle.Italic,
-                        color = tertiaryContainerLight
+                        color = if (isSystemInDarkTheme()) {
+                            MaterialTheme.colorScheme.onSurface
+                        } else {
+                            tertiaryContainerLight
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(4.dp))
@@ -379,7 +506,11 @@ fun CajaBusqueda(
                         Text(
                             text = stringResource(R.string.prof_label, generalReview.nombreProfesor),
                             fontSize = 16.sp,
-                            color = tertiaryContainerLight
+                            color = if (isSystemInDarkTheme()) {
+                                MaterialTheme.colorScheme.onSurface
+                            } else {
+                                tertiaryContainerLight
+                            }
                         )
                     }
 
@@ -395,7 +526,11 @@ fun CajaBusqueda(
                     Text(
                         text = stringResource(R.string.basado_en_resenas, generalReview.cantidadReviews),
                         fontSize = 14.sp,
-                        color = tertiaryContainerLight
+                        color = if (isSystemInDarkTheme()) {
+                            MaterialTheme.colorScheme.onSurface
+                        } else {
+                            tertiaryContainerLight
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -405,7 +540,10 @@ fun CajaBusqueda(
                             Box(
                                 modifier = Modifier
                                     .background(primaryContainerLight)
-                                    .border(1.dp, tertiaryContainerLight)
+                                    .border(
+                                        1.dp,
+                                        if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+                                    )
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             ) {
                                 Text(
@@ -423,7 +561,10 @@ fun CajaBusqueda(
                 Column(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .border(2.dp, tertiaryContainerLight),
+                        .border(
+                            2.dp,
+                            if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+                        ),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Box(
@@ -441,14 +582,20 @@ fun CajaBusqueda(
                     }
                     Box(
                         modifier = Modifier
-                            .background(primaryLight)
+                            .background(
+                                if (isSystemInDarkTheme()) {
+                                    MaterialTheme.colorScheme.surface
+                                } else {
+                                    primaryLight
+                                }
+                            )
                             .padding(horizontal = 4.dp, vertical = 2.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.dificultad),
                             fontFamily = BangersFont,
                             fontSize = 10.sp,
-                            color = tertiaryContainerLight,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -487,17 +634,25 @@ fun ProfileAsyncImage(
     size: Int,
     modifier: Modifier = Modifier
 ){
-
-    AsyncImage(
-        contentDescription = "User Image",
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(profileImage)
-            .crossfade(true)
-            .build(),
-        error = painterResource(id = R.drawable.perfil),
-        placeholder = painterResource(R.drawable.loading_image),
-        contentScale = ContentScale.Crop,
-        modifier = modifier.size(size.dp).clip(CircleShape)
-
-    )
+    if (profileImage.isNullOrBlank()) {
+        Image(
+            painter = painterResource(R.drawable.perfil),
+            contentDescription = "User Image",
+            contentScale = ContentScale.Crop,
+            colorFilter = if (isSystemInDarkTheme()) ColorFilter.tint(Color.White) else null,
+            modifier = modifier.size(size.dp).clip(CircleShape)
+        )
+    } else {
+        AsyncImage(
+            contentDescription = "User Image",
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(profileImage)
+                .crossfade(true)
+                .build(),
+            error = painterResource(id = R.drawable.perfil),
+            placeholder = painterResource(R.drawable.loading_image),
+            contentScale = ContentScale.Crop,
+            modifier = modifier.size(size.dp).clip(CircleShape)
+        )
+    }
 }

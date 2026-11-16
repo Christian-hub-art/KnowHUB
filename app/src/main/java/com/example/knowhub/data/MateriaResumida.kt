@@ -4,5 +4,6 @@ class MateriaResumida (
     val calificacion: Int,
     val nombreMateria: String,
     val profesor: String,
-    val numeroResenas: Int
+    val numeroResenas: Int,
+    val id: Int = 0
 )

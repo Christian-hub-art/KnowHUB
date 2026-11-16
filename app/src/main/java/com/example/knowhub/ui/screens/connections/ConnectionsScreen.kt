@@ -12,14 +12,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -75,8 +78,12 @@ fun BodyConnectionsScreen(
             Spacer(modifier = Modifier.height(35.dp))
             AppLabel(
                 stringResource(if (followers) R.string.seguidores else R.string.seguidos),
-                primaryLight,
-                tertiaryContainerLight,
+                colorTexto = if (isSystemInDarkTheme()) Color.White else primaryLight,
+                color = if (isSystemInDarkTheme()) {
+                    MaterialTheme.colorScheme.surfaceContainerHighest
+                } else {
+                    tertiaryContainerLight
+                },
                 modifier = Modifier
                     .height(40.dp)
                     .width(320.dp)
@@ -91,8 +98,13 @@ fun BodyConnectionsScreen(
             Row(
                 modifier = Modifier
                     .width(350.dp)
-                    .background(primaryLight)
-                    .border(2.dp, tertiaryContainerLight)
+                    .background(
+                        if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
+                    )
+                    .border(
+                        2.dp,
+                        if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+                    )
                     .clickable { userPressed(user.id) }
                     .padding(10.dp),
                 verticalAlignment = Alignment.CenterVertically

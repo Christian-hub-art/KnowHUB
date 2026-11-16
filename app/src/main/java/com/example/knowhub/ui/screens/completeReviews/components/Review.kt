@@ -16,6 +16,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -81,11 +84,11 @@ fun Review(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
                 .background(
-                    primaryLight
+                    if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
                 )
                 .border(
                     4.dp,
-                    tertiaryContainerLight ,
+                    if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight,
                     shape = RoundedCornerShape(16.dp)
                 )
                 .clickable { reviewPressed (review.id)}

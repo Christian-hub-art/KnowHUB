@@ -1,15 +1,19 @@
 package com.example.knowhub.ui.screens.inicio.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -33,31 +37,42 @@ fun Materia(
     nombreMateria: String,
     profesor: String,
     numeroResenas: Int,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    val isDarkTheme = isSystemInDarkTheme()
+    val outlineColor = if (isDarkTheme) MaterialTheme.colorScheme.outline else Color.Black
+    val cardBackground = if (isDarkTheme) {
+        MaterialTheme.colorScheme.surfaceContainerHigh
+    } else {
+        Color.White
+    }
+    val textColor = if (isDarkTheme) MaterialTheme.colorScheme.onSurface else tertiaryContainerLight
+
     Column(
         modifier = modifier
+            .clickable(role = Role.Button, onClick = onClick)
             .width(180.dp)
             .testTag("materiaCard")
             .drawBehind {
                 drawRect(
-                    color = Color.Black,
+                    color = outlineColor,
                     topLeft = Offset(4.dp.toPx(), 4.dp.toPx()),
                     size = size
                 )
             }
-            .border(2.dp, Color.Black)
-            .background(Color.White)
+            .border(2.dp, outlineColor)
+            .background(cardBackground)
             .padding(16.dp)
     ) {
         Text(
             text = nombreMateria,
-            color = tertiaryContainerLight,
+            color = textColor,
             fontFamily = BangersFont
         )
         Text(
             text = profesor,
-            color = tertiaryContainerLight,
+            color = textColor,
             fontFamily = FontFamily.Monospace
         )
 
@@ -73,7 +88,7 @@ fun Materia(
 
         Text(
             text = stringResource(R.string.numero_resenas, numeroResenas),
-            color = tertiaryContainerLight,
+            color = textColor,
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = ArvoFont

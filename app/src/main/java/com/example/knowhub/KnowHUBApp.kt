@@ -14,8 +14,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,23 +37,10 @@ import com.example.knowhub.ui.Navegation.Screens
 import com.example.knowhub.ui.screens.completeReviews.CompleteReviewsScreen
 import com.example.knowhub.ui.screens.options.components.MenuOpciones
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
 @Composable
 fun KnowHUBApp (){
-
-
-    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d("Token", task.result)
-            } else {
-                Log.e("Token", "Error obteniendo token")
-            }
-        }
-
-
-
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -59,14 +48,9 @@ fun KnowHUBApp (){
     val currentRoute = navBackStackEntry?.destination?.route
 
     val context = LocalContext.current
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    val userId: String = currentUser?.uid ?: ""
 
-    //Permisos al usuario desde el dispositivo
-    val locationPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted ->
-            Log.d("LocationPermission", if (isGranted) "Permission granted" else "Permission denied")
-        }
-    )
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
@@ -78,28 +62,16 @@ fun KnowHUBApp (){
 
         }
     )
-    /*LaunchedEffect(Unit) {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            if(ContextCompat.checkSelfPermission(
-                context,
-                    Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
-                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-
-            }
-        }
-    }*/
     LaunchedEffect(Unit) {
-        if (ContextCompat.checkSelfPermission(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(
                 context,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
-
-    val currentUser = FirebaseAuth.getInstance().currentUser
-    val userId: String  = currentUser?.uid ?: ""
 
     val showTopBar = currentRoute !in listOf(
         Screens.Start.route,
@@ -153,11 +125,19 @@ fun KnowHUBApp (){
                         navController.navigate(Screens.Start.route) {
                             popUpTo(0) { inclusive = true }
                         }
+                    },
+                    isAuthenticated = currentUser != null,
+                    iniciarSesionButtonPressed = {
+                        scope.launch { drawerState.close() }
+                        navController.navigate(Screens.Start.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
                     }
                 )
             }
         ) {
             Scaffold(
+                containerColor = MaterialTheme.colorScheme.background,
                 topBar = {
                     if (showTopBar) {
                         KnowhubTopAppBar(
@@ -191,6 +171,9 @@ fun KnowhubTopAppBar(
     onMenuClick: () -> Unit
 ){
     TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
         title = {
 
             Image(

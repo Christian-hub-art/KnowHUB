@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -121,7 +122,7 @@ fun BodyCompleteReviewsScreen(
                 Row() {
                     Box(
                         modifier = Modifier
-                            .background(tertiaryContainerLight)
+                            .background(MaterialTheme.colorScheme.outline)
                             .height(2.5.dp)
                             .width(150.dp)
                     ) {}
@@ -134,7 +135,7 @@ fun BodyCompleteReviewsScreen(
                     Spacer(modifier = Modifier.width(10.dp))
                     Box(
                         modifier = Modifier
-                            .background(tertiaryContainerLight)
+                            .background(MaterialTheme.colorScheme.outline)
                             .height(2.5.dp)
                             .width(150.dp)
                     ) {}

@@ -82,7 +82,8 @@ class ReviewRepository @Inject constructor(
         return try {
 
             val user = userRemoteDataSource.getUserById(userId)
-            val photoUrl = authRemoteDataSource.currentUser?.photoUrl?.toString()
+            val photoUrl = user.foto.takeIf { it.isNotBlank() }
+                ?: authRemoteDataSource.currentUser?.photoUrl?.toString()
 
             val reviewUserDto = ReviewUserDto(
                 name = user.name,

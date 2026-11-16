@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,8 +52,13 @@ fun CuadroMateria(
     Box(
         modifier = modifier
             .width(350.dp)
-            .background(primaryLight)
-            .border(2.dp, tertiaryContainerLight)
+            .background(
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
+            )
+            .border(
+                2.dp,
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+            )
     ) {
         Column {
 
@@ -59,7 +67,10 @@ fun CuadroMateria(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(primaryContainerLight)
-                    .border(1.dp, tertiaryContainerLight)
+                    .border(
+                        1.dp,
+                        if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+                    )
                     .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -73,17 +84,25 @@ fun CuadroMateria(
                 Box(
                     modifier = Modifier
                         .width(80.dp)
-                        .background(primaryLight)
-                        .border(1.dp, tertiaryContainerLight)
+                        .background(
+                            if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
+                        )
+                        .border(
+                            1.dp,
+                            if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+                        )
                         .padding(horizontal = 4.dp)
                 ) {
                     // El código es el id de la materia, por eso no se cambia al editar
                     if (editando) {
-                        Text(codigo)
+                        Text(codigo, color = MaterialTheme.colorScheme.onSurface)
                     } else {
                         BasicTextField(
                             value = codigo,
-                            onValueChange = onCodigoChange
+                            onValueChange = onCodigoChange,
+                            textStyle = TextStyle(
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
                         )
                     }
                 }
@@ -150,8 +169,8 @@ fun CuadroMateria(
 
                     AppButton(
                         textoButon = stringResource(R.string.cancelar_con_x),
-                        colorTexto = tertiaryContainerLight,
-                        colorBoton = primaryLight,
+                        colorTexto = MaterialTheme.colorScheme.onSurface,
+                        colorBoton = MaterialTheme.colorScheme.surfaceContainerHigh,
                         onClick = onCancelarClick,
                         modifier = Modifier
                             .height(40.dp)

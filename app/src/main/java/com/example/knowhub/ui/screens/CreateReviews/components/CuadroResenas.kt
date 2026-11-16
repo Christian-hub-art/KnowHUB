@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.Checkbox
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -63,13 +65,18 @@ fun CuadroResenas(
     modifier: Modifier = Modifier
 ) {
     // Cuadro de Reseña
-    val colorSombra = tertiaryContainerLight
+    val colorSombra = MaterialTheme.colorScheme.outline
 
     Box(
         modifier = modifier
             .width(350.dp)
-            .background(primaryLight)
-            .border(2.dp, tertiaryContainerLight)
+            .background(
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
+            )
+            .border(
+                2.dp,
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+            )
     ) {
         Column {
 
@@ -78,7 +85,10 @@ fun CuadroResenas(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(primaryContainerLight)
-                    .border(1.dp, tertiaryContainerLight)
+                    .border(
+                        1.dp,
+                        if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+                    )
                     .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -97,13 +107,25 @@ fun CuadroResenas(
                     Box(
                         modifier = Modifier
                             .width(80.dp)
-                            .background(primaryLight)
-                            .border(1.dp, tertiaryContainerLight)
+                            .background(
+                                if (isSystemInDarkTheme()) {
+                                    MaterialTheme.colorScheme.surface
+                                } else {
+                                    primaryLight
+                                }
+                            )
+                            .border(
+                                1.dp,
+                                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+                            )
                             .padding(horizontal = 4.dp)
                     ) {
                         BasicTextField(
                             value = clase,
-                            onValueChange = onClaseChange
+                            onValueChange = onClaseChange,
+                            textStyle = androidx.compose.ui.text.TextStyle(
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
                         )
                     }
                 }
@@ -166,13 +188,12 @@ fun CuadroResenas(
                 if (mostrarCompartirUbicacion) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        // Mantiene visibles el borde y la marca del checkbox sobre el fondo blanco.
                         Checkbox(
                             checked = compartirUbicacion,
                             onCheckedChange = onCompartirUbicacionChange,
                             colors = CheckboxDefaults.colors(
                                 checkedColor = primaryContainerLight,
-                                uncheckedColor = tertiaryContainerLight,
+                                uncheckedColor = MaterialTheme.colorScheme.outline,
                                 checkmarkColor = primaryLight
                             )
                         )
@@ -190,8 +211,8 @@ fun CuadroResenas(
 
                     AppButton(
                         textoButon = stringResource(R.string.cancelar_con_x),
-                        colorTexto = tertiaryContainerLight,
-                        colorBoton =primaryLight,
+                        colorTexto = MaterialTheme.colorScheme.onSurface,
+                        colorBoton = MaterialTheme.colorScheme.surfaceContainerHigh,
                         onClick = onCancelarClick,
                         modifier = Modifier
                             .height(40.dp)

@@ -3,6 +3,7 @@ package com.example.knowhub.data.datasource.repository
 import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
@@ -64,5 +65,33 @@ class AuthRepository @Inject constructor(
 
     suspend fun updateProfileImage(photoUrl: String) {
         authRemoteDataSource.updateProfileImage(photoUrl)
+    }
+
+    suspend fun reauthenticate(password: String): Result<Unit> =
+        runAuthUpdate { authRemoteDataSource.reauthenticate(password) }
+
+    suspend fun updateEmail(email: String): Result<Unit> =
+        runAuthUpdate { authRemoteDataSource.updateEmail(email) }
+
+    suspend fun updatePassword(password: String): Result<Unit> =
+        runAuthUpdate { authRemoteDataSource.updatePassword(password) }
+
+    private suspend fun runAuthUpdate(action: suspend () -> Unit): Result<Unit> {
+        return try {
+            action()
+            Result.success(Unit)
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            Result.failure(Exception("La contraseña actual no es correcta"))
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            Result.failure(Exception("La nueva contraseña debe tener al menos 6 caracteres"))
+        } catch (e: FirebaseAuthUserCollisionException) {
+            Result.failure(Exception("Ese correo ya está asociado a otra cuenta"))
+        } catch (e: FirebaseAuthInvalidUserException) {
+            Result.failure(Exception("La cuenta no está disponible. Inicia sesión de nuevo"))
+        } catch (e: FirebaseAuthRecentLoginRequiredException) {
+            Result.failure(Exception("Vuelve a iniciar sesión para cambiar estos datos"))
+        } catch (e: Exception) {
+            Result.failure(Exception("No se pudieron guardar los cambios"))
+        }
     }
 }

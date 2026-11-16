@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -53,10 +55,10 @@ fun CajaPrincipal(
             .fillMaxWidth()
             .border(
                 2.dp,
-                tertiaryContainerLight
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
             )
             .background(
-                primaryLight
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
             )
     ) {
 
@@ -68,7 +70,7 @@ fun CajaPrincipal(
                 .fillMaxWidth()
                 .border(
                     2.dp,
-                    tertiaryContainerLight
+                    if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
                 )
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween

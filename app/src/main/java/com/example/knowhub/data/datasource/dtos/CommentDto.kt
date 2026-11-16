@@ -32,6 +32,7 @@ fun CommentDto.toComment(): Comment {
         comentario = comentario,
         likes = likes,
         cantidadComentarios = cantidadComentarios,
+        profileImage = user.profileImage,
         userId = userId,
         reviewId = reviewId,
         liked = liked

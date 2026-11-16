@@ -7,14 +7,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,8 +75,12 @@ fun BodyReviewScreen(
 
         AppLabel(
             stringResource(R.string.tus_rese_as),
-            primaryLight,
-            tertiaryContainerLight,
+            colorTexto = if (isSystemInDarkTheme()) Color.White else primaryLight,
+            color = if (isSystemInDarkTheme()) {
+                MaterialTheme.colorScheme.surfaceContainerHighest
+            } else {
+                tertiaryContainerLight
+            },
             modifier = Modifier
                 .height(40.dp)
                 .width(320.dp)
@@ -83,16 +90,16 @@ fun BodyReviewScreen(
         Row {
             AppLabel(
                 usuario,
-                tertiaryContainerLight,
-                primaryLight
+                if (isSystemInDarkTheme()) Color.White else tertiaryContainerLight,
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surfaceContainerHigh else primaryLight
             )
 
             Spacer(modifier = Modifier.width(20.dp))
 
             AppLabel(
                 stringResource(R.string.num_resenas_label, reviews.size),
-                tertiaryContainerLight,
-                primaryLight
+                if (isSystemInDarkTheme()) Color.White else tertiaryContainerLight,
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surfaceContainerHigh else primaryLight
             )
             Spacer(modifier = Modifier.width(150.dp))
         }

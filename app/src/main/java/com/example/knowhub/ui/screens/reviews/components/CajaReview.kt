@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -59,10 +61,10 @@ fun CajaReview(
             .fillMaxWidth()
             .border(
                 2.dp,
-                tertiaryContainerLight
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
             )
             .background(
-                primaryLight
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
             )
     ) {
         Row(
@@ -71,7 +73,7 @@ fun CajaReview(
                 .fillMaxWidth()
                 .border(
                     2.dp,
-                    tertiaryContainerLight
+                    if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
                 )
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -119,7 +121,7 @@ fun CajaReview(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(2.dp, Color.Black)
+                    .border(2.dp, MaterialTheme.colorScheme.outline)
                     .padding(8.dp)
             ) {
                 Text(

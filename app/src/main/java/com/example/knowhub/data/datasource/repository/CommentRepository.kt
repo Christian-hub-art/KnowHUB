@@ -72,7 +72,9 @@ class CommentRepository @Inject constructor(
             val user = userRemoteDataSource.getUserById(userId)
             val reviewUserDto = ReviewUserDto(
                 name = user.name,
-                userName = user.userName
+                userName = user.userName,
+                profileImage = user.foto.takeIf { it.isNotBlank() }
+                    ?: authRemoteDataSource.currentUser?.photoUrl?.toString()
             )
             val fecha = SimpleDateFormat("dd MMM yyyy", Locale("es", "CO")).format(Date())
 

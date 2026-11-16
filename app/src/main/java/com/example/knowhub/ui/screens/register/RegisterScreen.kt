@@ -3,9 +3,11 @@ package com.example.knowhub.ui.screens.register
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
@@ -15,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -86,6 +89,7 @@ fun BodyRegisterScreen(
     errorMessage: String,
     modifier: Modifier = Modifier
 ) {
+    val loginLinkColor = if (isSystemInDarkTheme()) Color.White else Color.Black
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -94,6 +98,7 @@ fun BodyRegisterScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
+                .navigationBarsPadding()
                 .padding(top = 90.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -144,12 +149,18 @@ fun BodyRegisterScreen(
                     onClick = {
                         loginButtonPressed()
                     },
-                    modifier = Modifier.testTag("goToLoginButton")
+                    modifier = Modifier
+                        .height(32.dp)
+                        .testTag("goToLoginButton"),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                        horizontal = 12.dp,
+                        vertical = 0.dp
+                    )
                 ) {
                     Text(
                         text = stringResource(R.string.ya_tienes_cuenta_login),
                         fontFamily = BangersFont,
-                        color = tertiaryContainerLight
+                        color = loginLinkColor
                     )
                 }
 
@@ -159,8 +170,4 @@ fun BodyRegisterScreen(
         }
     }
 }
-
-
-
-
 

@@ -1,8 +1,10 @@
 package com.example.knowhub.ui.screens.register.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -31,6 +34,7 @@ fun TextosField(
     modifier: Modifier = Modifier
 ) {
 
+    val fieldFocusColor = if (isSystemInDarkTheme()) Color.White else Color.Black
     Column(modifier = modifier) {
         OutlinedTextField(
             value = nombre,
@@ -38,10 +42,15 @@ fun TextosField(
             modifier = Modifier.testTag("nombreRegisterField"),
             label = { Text(stringResource(R.string.nombre)) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = primaryLight,
-                focusedContainerColor = primaryLight,
-                focusedBorderColor = tertiaryContainerLight,
-                unfocusedBorderColor = tertiaryContainerLight
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedLabelColor = fieldFocusColor,
+                cursorColor = fieldFocusColor,
+                focusedBorderColor = fieldFocusColor,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline
             )
         )
         OutlinedTextField(
@@ -50,10 +59,15 @@ fun TextosField(
             modifier = Modifier.testTag("correoRegisterField"),
             label = { Text(stringResource(R.string.correo_electr_nico)) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = primaryLight,
-                focusedContainerColor = primaryLight,
-                focusedBorderColor = tertiaryContainerLight,
-                unfocusedBorderColor = tertiaryContainerLight
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedLabelColor = fieldFocusColor,
+                cursorColor = fieldFocusColor,
+                focusedBorderColor = fieldFocusColor,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline
             )
         )
         OutlinedTextField(
@@ -62,10 +76,15 @@ fun TextosField(
             modifier = Modifier.testTag("usernameRegisterField"),
             label = { Text(stringResource(R.string.nombre_de_usuario)) },
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = primaryLight,
-                focusedContainerColor = primaryLight,
-                focusedBorderColor = tertiaryContainerLight,
-                unfocusedBorderColor = tertiaryContainerLight
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedLabelColor = fieldFocusColor,
+                cursorColor = fieldFocusColor,
+                focusedBorderColor = fieldFocusColor,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline
 
             )
         )
@@ -76,10 +95,15 @@ fun TextosField(
             label = { Text(stringResource(R.string.contrase_a)) },
             visualTransformation = PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = primaryLight,
-                focusedContainerColor = primaryLight,
-                focusedBorderColor = tertiaryContainerLight,
-                unfocusedBorderColor = tertiaryContainerLight
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedLabelColor = fieldFocusColor,
+                cursorColor = fieldFocusColor,
+                focusedBorderColor = fieldFocusColor,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline
             ),
 
             )
@@ -90,12 +114,16 @@ fun TextosField(
             label = { Text(stringResource(R.string.confirmaci_n_de_contrase_a)) },
             visualTransformation = PasswordVisualTransformation(),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = primaryLight,
-                focusedContainerColor = primaryLight,
-                focusedBorderColor = tertiaryContainerLight,
-                unfocusedBorderColor = tertiaryContainerLight
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                focusedLabelColor = fieldFocusColor,
+                cursorColor = fieldFocusColor,
+                focusedBorderColor = fieldFocusColor,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline
             )
         )
     }
 }
-

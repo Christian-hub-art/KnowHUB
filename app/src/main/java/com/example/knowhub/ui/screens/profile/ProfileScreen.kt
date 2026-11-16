@@ -3,14 +3,18 @@ package com.example.knowhub.ui.screens.profile
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
-import androidx.compose.ui.unit.sp
+import androidx.compose.material3.MaterialTheme
 import com.example.knowhub.ui.screens.BusquedaPerfil.Components.CuadrosInformacionPerfil
-import com.example.knowhub.ui.theme.ArvoFont
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,13 +25,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.R
 import com.example.knowhub.ui.screens.profile.components.CuadroInformaciónPersonal
 import com.example.knowhub.ui.screens.profile.components.PickImageButton
-import com.example.knowhub.ui.theme.BangersFont
-import com.example.knowhub.ui.utils.AppButton
 import com.example.knowhub.ui.utils.AppLabel
 import com.example.knowhub.ui.utils.BackgroundImage
 import com.example.knowhub.ui.utils.ProfileAsyncImage
@@ -38,7 +39,10 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     seguidoresPressed: (String) -> Unit = {},
-    seguidosPressed: (String) -> Unit = {}
+    seguidosPressed: (String) -> Unit = {},
+    modificarDatosPressed: () -> Unit = {},
+    iniciarSesionPressed: () -> Unit = {},
+    registrarsePressed: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsState()
     Box(
@@ -49,24 +53,23 @@ fun ProfileScreen(
         BodyProfileScreen(
             viewModel,
             state.nombre,
-            state.errorMessageGuardar,
-            state.mostrarMensajeErrorGuardar,
             state.profileImageUrl,
+            state.errorMessageFotoResId,
+            state.mostrarMensajeErrorFoto,
+            state.isUploadingFoto,
             state.errorMessageCarga,
             state.mostrarMensajeErrorCarga,
-            name = state.name,
             correo = state.correo,
             seguidores = state.seguidores,
             seguidos = state.seguidos,
             materiasResenadas = state.materiasResenadas,
             seguidoresPressed = { seguidoresPressed(state.userId) },
             seguidosPressed = { seguidosPressed(state.userId) },
-            onNombreChange = {viewModel.updateNombre(it)},
-            guardarBottonPressed = {viewModel.guardarBottonPressed()},
+            modificarDatosPressed = modificarDatosPressed,
             eliminarcuentaBottonPressed = {viewModel.eliminarcuentaBottonPressed()},
-            cambiarcontraseñaBottonPressed = {viewModel.cambiarcontraseñaBottonPressed()},
-            cambiarCorreoBottonPressed = {viewModel.cambiairCorreoBottonPressed()}
-
+            isAuthenticated = state.isAuthenticated,
+            iniciarSesionPressed = iniciarSesionPressed,
+            registrarsePressed = registrarsePressed
         )
 
     }
@@ -76,114 +79,100 @@ fun ProfileScreen(
 fun BodyProfileScreen(
     profileViewModel: ProfileViewModel,
     nombre: String,
-    errorMessageGuardar: String,
-    mostrarMensajeErrorGuardar: Boolean,
     profileImage: String?,
+    errorMessageFotoResId: Int?,
+    mostrarMensajeErrorFoto: Boolean,
+    isUploadingFoto: Boolean,
     errorMessageCarga: String,
     mostrarMensajeErrorCarga: Boolean,
-    name: String = "",
     correo: String = "",
     seguidores: Int = 0,
     seguidos: Int = 0,
     materiasResenadas: Int = 0,
     seguidoresPressed: () -> Unit = {},
     seguidosPressed: () -> Unit = {},
-    onNombreChange: (String) -> Unit,
-    guardarBottonPressed: () -> Unit = {},
+    modificarDatosPressed: () -> Unit = {},
     eliminarcuentaBottonPressed: () -> Unit = {},
-    cambiarcontraseñaBottonPressed: () -> Unit = {},
-    cambiarCorreoBottonPressed: () -> Unit = {},
+    isAuthenticated: Boolean = true,
+    iniciarSesionPressed: () -> Unit = {},
+    registrarsePressed: () -> Unit = {},
     modifier: Modifier = Modifier
 ){
     Column(
-        modifier=modifier
-            .fillMaxWidth(),
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 18.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Spacer(modifier = Modifier.weight(17.0F))
 
         AppLabel(
             stringResource(R.string.perfil),
             colorResource(R.color.blancoKnowHUB),
             colorResource(R.color.NegroKnowHUB),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Row(
             modifier = Modifier
-                .height(40.dp)
-                .width(320.dp)
-        )
-
-        Spacer(modifier = Modifier.weight(10.0F))
-
-        ProfileAsyncImage(
-            profileImage = profileImage,
-            size = 150
-        )
-
-        Spacer(modifier = Modifier.weight(5.0F))
-
-        Text(
-            name,
-            fontFamily = BangersFont,
-            fontSize = 18.sp
-        )
-        Text(
-            correo,
-            fontFamily = BangersFont,
-            fontSize = 14.sp
-        )
-
-        Spacer(modifier = Modifier.weight(5.0F))
-
-        CuadrosInformacionPerfil(
-            seguidos = seguidos,
-            materiasResenadas = materiasResenadas,
-            seguidores = seguidores,
-            modifier = Modifier.width(320.dp),
-            onSeguidosClick = seguidosPressed,
-            onSeguidoresClick = seguidoresPressed
-        )
-
-        Spacer(modifier = Modifier.weight(10.0F))
-
-        PickImageButton(
-            action = {
-                profileViewModel.uploadImageToFirebase(it)
-            }
-        )
-
-        Spacer(modifier = Modifier.weight(10.0F))
-
-        CuadroInformaciónPersonal(
-            nombre,
-            onNombreChange = {onNombreChange(it)},
-            guardarBottonPressed = guardarBottonPressed,
-            cambiarcontraseñaBottonPressed = cambiarcontraseñaBottonPressed,
-            cambiarCorreoBottonPressed = cambiarCorreoBottonPressed
-        )
-
-        Spacer(modifier = Modifier.weight(0.5F))
-
-        if(mostrarMensajeErrorCarga){
-            Text(errorMessageCarga)
-        }
-
-        if(mostrarMensajeErrorGuardar){
-            Text(errorMessageGuardar)
-        }
-
-        Spacer(modifier = Modifier.weight(10.0F))
-        AppButton(stringResource(R.string.eliminar_cuenta),
-            colorResource(R.color.NegroKnowHUB),
-            colorResource(R.color.AmarilloKnowHUB),
-            onClick = {
-                eliminarcuentaBottonPressed()
-            },
-            modifier = Modifier
-                .height(40.dp)
-                .width(180.dp)
+                .fillMaxWidth()
+                .padding(vertical = 18.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(modifier = Modifier.size(104.dp)) {
+                ProfileAsyncImage(
+                    profileImage = profileImage,
+                    size = 104,
+                    modifier = Modifier.align(Alignment.TopStart)
                 )
+                PickImageButton(
+                    action = { profileViewModel.uploadImageToFirebase(it) },
+                    isUploading = isUploadingFoto,
+                    modifier = Modifier.align(Alignment.BottomEnd).size(36.dp)
+                )
+            }
 
-        Spacer(modifier = Modifier.weight(20.0F))
+            CuadrosInformacionPerfil(
+                seguidos = seguidos,
+                materiasResenadas = materiasResenadas,
+                seguidores = seguidores,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp),
+                onSeguidosClick = seguidosPressed,
+                onSeguidoresClick = seguidoresPressed
+            )
+        }
+
+        if (mostrarMensajeErrorFoto) {
+            errorMessageFotoResId?.let {
+                Text(
+                    stringResource(it),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        } else if (isUploadingFoto) {
+            Text(
+                stringResource(R.string.profile_photo_uploading),
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+
+        Spacer(modifier = Modifier.height(28.dp))
+        CuadroInformaciónPersonal(
+            nombre = nombre,
+            correo = correo,
+            isAuthenticated = isAuthenticated,
+            modificarDatosPressed = modificarDatosPressed,
+            eliminarCuentaPressed = eliminarcuentaBottonPressed,
+            iniciarSesionPressed = iniciarSesionPressed,
+            registrarsePressed = registrarsePressed
+        )
+
+        if (mostrarMensajeErrorCarga) {
+            Text(errorMessageCarga, color = MaterialTheme.colorScheme.error)
+        }
+
     }
 }
 

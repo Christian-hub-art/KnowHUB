@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.MaterialTheme
 import com.example.knowhub.R
 import com.example.knowhub.ui.theme.BangersFont
 import com.example.knowhub.ui.theme.tertiaryContainerLight
@@ -29,7 +30,7 @@ fun BarraFiltro(
         textStyle = TextStyle(
             fontSize = 15.sp,
             fontFamily = BangersFont,
-            color = tertiaryContainerLight
+            color = MaterialTheme.colorScheme.onSurface
         ),
         modifier = modifier.fillMaxWidth(),
         decorationBox = { innerTextField ->

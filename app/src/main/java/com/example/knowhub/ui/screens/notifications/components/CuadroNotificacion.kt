@@ -15,7 +15,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +41,7 @@ fun CuadroNotificacion(
     modifier: Modifier = Modifier
 ) {
 
-    val colorSombra = tertiaryContainerLight
+    val colorSombra = MaterialTheme.colorScheme.outline
     val colorNotificacion: Color
     val idImagen: Int
 
@@ -49,7 +51,11 @@ fun CuadroNotificacion(
             idImagen= R.drawable.iconofollower
         }
         "comment" -> {
-            colorNotificacion = secondaryLight
+            colorNotificacion = if (isSystemInDarkTheme()) {
+                MaterialTheme.colorScheme.surfaceContainerHigh
+            } else {
+                secondaryLight
+            }
             idImagen= R.drawable.iconocomentario
         }
         "like" -> {
@@ -58,7 +64,11 @@ fun CuadroNotificacion(
         }
         //Caso default, tipo de notificacion invalido
         else -> {
-            colorNotificacion = tertiaryContainerLight
+            colorNotificacion = if (isSystemInDarkTheme()) {
+                MaterialTheme.colorScheme.surfaceContainerHigh
+            } else {
+                tertiaryContainerLight
+            }
             idImagen= R.drawable.iconodesconocido
         }
     }
@@ -76,10 +86,12 @@ fun CuadroNotificacion(
                     size = size
                 )
             }
-            .background(primaryLight)
+            .background(
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else primaryLight
+            )
             .border(
                 2.dp,
-                tertiaryContainerLight
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
             )
             .height(80.dp)
             .width(360.dp)
@@ -90,7 +102,7 @@ fun CuadroNotificacion(
                 modifier = modifier
                     .size(20.dp, 100.dp)
                     .background(colorNotificacion)
-                    .border(2.dp, Color.Black)
+                    .border(2.dp, MaterialTheme.colorScheme.outline)
             )
 
             Spacer(modifier = Modifier.weight(1.0F))
@@ -103,14 +115,16 @@ fun CuadroNotificacion(
                     textAlign = TextAlign.Left,
                     fontFamily = ArvoFont,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
                     text = infoNotificacion.descripcion,
                     textAlign = TextAlign.Left,
                     fontFamily = ArvoFont,
-                    fontSize = 12.sp
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
 

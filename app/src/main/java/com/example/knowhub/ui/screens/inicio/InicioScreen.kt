@@ -5,19 +5,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +29,6 @@ import com.example.knowhub.R
 import com.example.knowhub.data.MateriaResumida
 import com.example.knowhub.ui.screens.inicio.components.CajaReseñas
 import com.example.knowhub.ui.theme.ArvoFont
-import com.example.knowhub.ui.theme.onTertiaryContainerLight
 import com.example.knowhub.ui.theme.primaryContainerLight
 import com.example.knowhub.ui.theme.primaryLight
 import com.example.knowhub.ui.theme.secondaryContainerLight
@@ -39,6 +40,7 @@ import com.example.knowhub.ui.utils.BackgroundImage
 fun InicioScreen(
     inicioViewModel: InicioViewModel,
     onSeeAllClick: () -> Unit,
+    onMateriaClick: (Int) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val state by inicioViewModel.uiState.collectAsState()
@@ -47,6 +49,7 @@ fun InicioScreen(
         BodyInicioScreen(
             categories = state.categories,
             onSeeAllClick = onSeeAllClick,
+            onMateriaClick = onMateriaClick,
             errorMessage = state.errorMessage,
             mostrarMensajeError = state.mostrarMensajeError
         )
@@ -57,6 +60,7 @@ fun InicioScreen(
 fun BodyInicioScreen(
     categories: List<Pair<String, List<MateriaResumida>>>,
     onSeeAllClick: () -> Unit,
+    onMateriaClick: (Int) -> Unit = {},
     modifier: Modifier = Modifier,
     errorMessage: String = "",
     mostrarMensajeError: Boolean = false
@@ -77,8 +81,12 @@ fun BodyInicioScreen(
 
                 AppLabel(
                     stringResource(R.string.bienvenido),
-                    colorResource(R.color.blancoKnowHUB),
-                    colorResource(R.color.NegroKnowHUB),
+                    colorTexto = Color.White,
+                    color = if (isSystemInDarkTheme()) {
+                        MaterialTheme.colorScheme.surfaceContainerHighest
+                    } else {
+                        Color.Black
+                    },
                     modifier = Modifier.height(35.dp)
                 )
 
@@ -86,7 +94,7 @@ fun BodyInicioScreen(
 
                 Text(
                     text = stringResource(R.string.explora_materias),
-                    color = onTertiaryContainerLight,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                     fontFamily = ArvoFont
                 )
@@ -115,6 +123,7 @@ fun BodyInicioScreen(
                 colorTexto = if (isEven) primaryLight else tertiaryContainerLight,
                 colorCaja = if (isEven) primaryContainerLight else secondaryContainerLight,
                 onSeeAllClick = onSeeAllClick,
+                onMateriaClick = onMateriaClick,
                 modifier = Modifier.height(240.dp)
             )
         }

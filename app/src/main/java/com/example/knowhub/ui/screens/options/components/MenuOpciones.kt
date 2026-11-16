@@ -14,11 +14,14 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,15 +46,23 @@ fun MenuOpciones(
     mapButtonPressed: () -> Unit,
     cerrarSesionButtonPressed: () -> Unit,
     modifier: Modifier = Modifier,
+    isAuthenticated: Boolean = true,
+    iniciarSesionButtonPressed: () -> Unit = {},
     optionsViewModel: OptionsViewModel = hiltViewModel()
 ) {
     Column(modifier = modifier
         .fillMaxHeight()
         .width(250.dp)
-        .background(primaryLight)
+        .background(
+            if (isSystemInDarkTheme()) {
+                Color.Black
+            } else {
+                primaryLight
+            }
+        )
         .border(
             4.dp,
-            secondaryLight
+            if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else secondaryLight
         )
         .navigationBarsPadding()
         .padding(15.dp)
@@ -66,7 +77,8 @@ fun MenuOpciones(
             Icon(
                 painter = painterResource(R.drawable.casa),
                 contentDescription = stringResource(R.string.inicio),
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
@@ -85,7 +97,8 @@ fun MenuOpciones(
             Icon(
                 painter = painterResource(R.drawable.inciotarea),
                 contentDescription = stringResource(R.string.perfil),
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
@@ -104,7 +117,8 @@ fun MenuOpciones(
             Icon(
                 painter = painterResource(R.drawable.libro),
                 contentDescription = stringResource(R.string.rese_a),
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
@@ -123,7 +137,8 @@ fun MenuOpciones(
             Icon(
                 painter = painterResource(R.drawable.notificacion),
                 contentDescription = stringResource(R.string.notificaci_n),
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
@@ -142,7 +157,8 @@ fun MenuOpciones(
             Icon(
                 painter = painterResource(R.drawable.mas),
                 contentDescription = stringResource(R.string.crear_resena),
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
@@ -161,7 +177,8 @@ fun MenuOpciones(
             Icon(
                 painter = painterResource(R.drawable.buscar),
                 contentDescription =stringResource(R.string.imagen_buscar),
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
+                tint = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(5.dp))
             Text(
@@ -185,23 +202,31 @@ fun MenuOpciones(
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
         Spacer(modifier = Modifier.weight(1F))
         Row(modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                optionsViewModel.logOut()
-                cerrarSesionButtonPressed()
+                if (isAuthenticated) {
+                    optionsViewModel.logOut()
+                    cerrarSesionButtonPressed()
+                } else {
+                    iniciarSesionButtonPressed()
+                }
             },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
             Text(
-                stringResource(R.string.cerrar_sesion),
+                stringResource(
+                    if (isAuthenticated) R.string.cerrar_sesion else R.string.iniciar_sesion
+                ),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ArvoFont,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }

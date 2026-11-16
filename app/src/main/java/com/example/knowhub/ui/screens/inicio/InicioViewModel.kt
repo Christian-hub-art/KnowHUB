@@ -77,7 +77,8 @@ class InicioViewModel @Inject constructor(
                         calificacion = review.calificacionMedia,
                         nombreMateria = review.nombreMateria,
                         profesor = review.nombreProfesor,
-                        numeroResenas = review.cantidadReviews
+                        numeroResenas = review.cantidadReviews,
+                        id = review.id
                     )
                 }
             }

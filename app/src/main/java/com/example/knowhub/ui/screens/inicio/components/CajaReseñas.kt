@@ -2,6 +2,7 @@ package com.example.knowhub.ui.screens.inicio.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +38,15 @@ fun CajaReseñas(
     colorTexto: Color,
     colorCaja: Color,
     onSeeAllClick: () -> Unit,
+    onMateriaClick: (Int) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    val cardBackground = if (isSystemInDarkTheme()) {
+        MaterialTheme.colorScheme.surface
+    } else {
+        primaryLight
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -50,14 +59,20 @@ fun CajaReseñas(
                     size = size
                 )
             }
-            .border(2.dp, tertiaryContainerLight)
-            .background(primaryLight)
+            .border(
+                2.dp,
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+            )
+            .background(cardBackground)
     ) {
         Row(
             modifier = Modifier
                 .background(colorCaja)
                 .fillMaxWidth()
-                .border(2.dp, tertiaryContainerLight)
+            .border(
+                2.dp,
+                if (isSystemInDarkTheme()) MaterialTheme.colorScheme.outline else tertiaryContainerLight
+            )
                 .padding(horizontal = 12.dp, vertical = 2.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -91,7 +106,8 @@ fun CajaReseñas(
                     nombreMateria = materia.nombreMateria,
                     profesor = materia.profesor,
                     numeroResenas = materia.numeroResenas,
-                    Modifier.height(175.dp)
+                    onClick = { onMateriaClick(materia.id) },
+                    modifier = Modifier.height(175.dp)
                 )
             }
         }
@@ -110,4 +126,3 @@ fun CajaReseñasPreview() {
         )
     )
 }
-

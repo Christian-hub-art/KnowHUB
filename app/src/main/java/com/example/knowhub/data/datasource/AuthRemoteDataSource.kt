@@ -2,6 +2,7 @@ package com.example.knowhub.data.datasource
 
 import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import jakarta.inject.Inject
@@ -42,6 +43,22 @@ class AuthRemoteDataSource @Inject constructor(
                 .setPhotoUri(uri)
                 .build()
         )?.await()
+    }
+
+    suspend fun reauthenticate(password: String) {
+        val user = currentUser ?: throw IllegalStateException("No hay una sesión activa")
+        val email = user.email ?: throw IllegalStateException("La cuenta no tiene un correo asociado")
+        user.reauthenticate(EmailAuthProvider.getCredential(email, password)).await()
+    }
+
+    suspend fun updateEmail(email: String) {
+        val user = currentUser ?: throw IllegalStateException("No hay una sesión activa")
+        user.updateEmail(email).await()
+    }
+
+    suspend fun updatePassword(password: String) {
+        val user = currentUser ?: throw IllegalStateException("No hay una sesión activa")
+        user.updatePassword(password).await()
     }
 
 

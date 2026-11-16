@@ -8,6 +8,7 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,10 +19,14 @@ class LocationDataSourceImpl @Inject constructor(
     // Cliente de Google Play Services que solicita la ubicación del dispositivo.
     private val locationClient = LocationServices.getFusedLocationProviderClient(context)
 
-    // Obtiene una ubicación aproximada de bajo consumo y espera el resultado de forma suspendible.
-    override suspend fun getCurrentLocation(): Location? =
-        locationClient.getCurrentLocation(
-            Priority.PRIORITY_BALANCED_POWER_ACCURACY,
-            CancellationTokenSource().token
-        ).await()
+    // Prefer a fresh fix, but use the cached fix if Play Services cannot produce one.
+    override suspend fun getCurrentLocation(): Location? {
+        val currentLocation = withTimeoutOrNull(12_000) {
+            locationClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                CancellationTokenSource().token
+            ).await()
+        }
+        return currentLocation ?: locationClient.lastLocation.await()
+    }
 }

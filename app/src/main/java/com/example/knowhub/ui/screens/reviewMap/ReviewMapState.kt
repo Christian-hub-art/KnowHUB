@@ -8,8 +8,11 @@ data class ReviewMapState(
     val reviews: List<Review> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val selectedReview: Review? = null,
+    val selectedReviews: List<Review> = emptyList(),
     val cameraLatitude: Double? = null,
     val cameraLongitude: Double? = null,
-    val cameraZoom: Double = 10.0
+    val cameraZoom: Double = 10.0,
+    val cameraUpdateId: Long = 0,
+    val isLocating: Boolean = false,
+    val locationErrorMessage: String? = null
 )
