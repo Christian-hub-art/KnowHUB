@@ -1,21 +1,25 @@
 package com.example.knowhub.data.datasource.repository
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.example.knowhub.R
 import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.StorageRemoteDataSource
 import com.google.firebase.storage.StorageException
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class StorageRepository @Inject constructor(
     private val storage: StorageRemoteDataSource,
-    private val auth: AuthRemoteDataSource
+    private val auth: AuthRemoteDataSource,
+    @ApplicationContext private val context: Context   // para leer los mensajes de strings.xml
 ) {
 
     suspend fun uploadProfileImage(uri: Uri): Result<String>{
         return try {
             val userId = auth.currentUser?.uid
-                ?: return Result.failure(Exception("Tu sesión no está activa. Inicia sesión e inténtalo de nuevo."))
+                ?: return Result.failure(Exception(context.getString(R.string.profile_photo_error_not_authenticated)))
 
             val path = "profileImages/$userId.jpg"
             val url = storage.uploadImage(path, uri)
@@ -23,7 +27,7 @@ class StorageRepository @Inject constructor(
             try {
                 auth.updateProfileImage(url)
             } catch (e: Exception) {
-                return Result.failure(Exception("La foto se subió, pero no se pudo actualizar tu perfil de autenticación."))
+                return Result.failure(Exception(context.getString(R.string.profile_photo_error_auth_update)))
             }
 
             Result.success(url)
@@ -31,23 +35,23 @@ class StorageRepository @Inject constructor(
             Log.e("StorageRepository", "Error al subir la foto (code=${e.errorCode})", e)
             val mensaje = when (e.errorCode) {
                 StorageException.ERROR_NOT_AUTHENTICATED ->
-                    "Tu sesión no está activa. Inicia sesión e inténtalo de nuevo."
+                    context.getString(R.string.profile_photo_error_not_authenticated)
                 StorageException.ERROR_NOT_AUTHORIZED ->
-                    "No se pudo actualizar tu foto de perfil. Inténtalo más tarde."
+                    context.getString(R.string.profile_photo_error_not_authorized)
                 StorageException.ERROR_BUCKET_NOT_FOUND,
                 StorageException.ERROR_PROJECT_NOT_FOUND ->
-                    "No se encontró el almacenamiento de Firebase. Revisa la configuración del bucket."
+                    context.getString(R.string.profile_photo_error_bucket)
                 StorageException.ERROR_QUOTA_EXCEEDED ->
-                    "Se excedió la cuota de almacenamiento de Firebase."
+                    context.getString(R.string.profile_photo_error_quota)
                 StorageException.ERROR_RETRY_LIMIT_EXCEEDED ->
-                    "No se pudo conectar con Firebase Storage. Revisa tu conexión e inténtalo otra vez."
+                    context.getString(R.string.profile_photo_error_network)
                 StorageException.ERROR_CANCELED ->
-                    "Se canceló la subida de la foto."
-                else -> "No se pudo subir la foto. Inténtalo de nuevo."
+                    context.getString(R.string.profile_photo_error_cancelled)
+                else -> context.getString(R.string.profile_photo_error_generic)
             }
             Result.failure(Exception(mensaje))
         } catch (e: Exception) {
-            Result.failure(Exception("No se pudo subir la foto. Inténtalo de nuevo."))
+            Result.failure(Exception(context.getString(R.string.profile_photo_error_generic)))
         }
     }
 

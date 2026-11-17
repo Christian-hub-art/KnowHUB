@@ -1,13 +1,16 @@
 package com.example.knowhub.ui.screens.profile
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.knowhub.R
 import com.example.knowhub.data.datasource.repository.AuthRepository
 import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.StorageRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +23,8 @@ class ProfileViewModel @Inject constructor(
     private val storageRepository: StorageRepository,
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository,
-    private val reviewRepository: ReviewRepository
+    private val reviewRepository: ReviewRepository,
+    @ApplicationContext private val context: Context   // para leer los mensajes de strings.xml
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState(
         isAuthenticated = authRepository.currentUser != null,
@@ -113,7 +117,7 @@ class ProfileViewModel @Inject constructor(
                         isUploadingFoto = false,
                         mostrarMensajeErrorFoto = true,
                         errorMessageFoto = result.exceptionOrNull()?.message
-                            ?: "No se pudo subir la foto. Inténtalo de nuevo."
+                            ?: context.getString(R.string.profile_photo_error_generic)
                     )
                 }
                 return@launch
@@ -133,7 +137,7 @@ class ProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         mostrarMensajeErrorFoto = true,
-                        errorMessageFoto = "Tu sesión no está activa. Inicia sesión e inténtalo de nuevo."
+                        errorMessageFoto = context.getString(R.string.profile_photo_error_not_authenticated)
                     )
                 }
                 return@launch
@@ -144,7 +148,7 @@ class ProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         mostrarMensajeErrorFoto = true,
-                        errorMessageFoto = "La foto se subió, pero no se pudo guardar en tu perfil."
+                        errorMessageFoto = context.getString(R.string.profile_photo_error_profile_save)
                     )
                 }
             }

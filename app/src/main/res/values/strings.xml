@@ -131,4 +131,14 @@
     <string name="mapa_permiso_texto">Permite el acceso a la ubicación para centrar el mapa en tu posición.</string>
     <string name="mapa_entendido">Entendido</string>
     <string name="mapa_estas_aqui">ESTÁS AQUÍ</string>
+    <!-- Errores al subir la foto de perfil -->
+    <string name="profile_photo_error_not_authenticated">Tu sesión no está activa. Inicia sesión e inténtalo de nuevo.</string>
+    <string name="profile_photo_error_not_authorized">No se pudo actualizar tu foto de perfil. Inténtalo más tarde.</string>
+    <string name="profile_photo_error_bucket">No se encontró el almacenamiento de Firebase. Revisa la configuración del bucket.</string>
+    <string name="profile_photo_error_quota">Se excedió la cuota de almacenamiento de Firebase.</string>
+    <string name="profile_photo_error_network">No se pudo conectar con Firebase Storage. Revisa tu conexión e inténtalo otra vez.</string>
+    <string name="profile_photo_error_cancelled">Se canceló la subida de la foto.</string>
+    <string name="profile_photo_error_auth_update">La foto se subió, pero no se pudo actualizar tu perfil de autenticación.</string>
+    <string name="profile_photo_error_profile_save">La foto se subió, pero no se pudo guardar en tu perfil.</string>
+    <string name="profile_photo_error_generic">No se pudo subir la foto. Inténtalo de nuevo.</string>
 </resources>
