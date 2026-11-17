@@ -1,5 +1,10 @@
 package com.example.knowhub.ui.screens.completeSpecificReview.components
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.example.knowhub.ui.utils.compartirResena
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -51,6 +56,7 @@ fun Review(
     onEliminarClick: () -> Unit = {},
     onLikeClick: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     Column(modifier = modifier.testTag("reviewCard")) {
         // Tarjeta contenedora de la reseña
         Column(
@@ -180,6 +186,19 @@ fun Review(
                             text = "( " + review.cantidadComentarios + " )",
                             fontSize = 17.sp,
                             fontFamily = BangersFont
+                        )
+                    }
+                    // Botón de compartir
+                    IconButton(
+                        onClick = { compartirResena(context, review) },
+                        modifier = Modifier
+                            .size(30.dp)
+                            .testTag("shareReviewButton")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = stringResource(R.string.compartir_resena),
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                     if (mostrarEliminar) {

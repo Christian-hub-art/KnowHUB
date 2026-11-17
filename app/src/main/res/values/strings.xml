@@ -136,4 +136,8 @@
     <string name="recuperar_contrasena_texto">Escribe el correo con el que te registraste y te enviaremos un enlace para crear una nueva contraseña.</string>
     <string name="enviar_correo">ENVIAR CORREO</string>
     <string name="volver_iniciar_sesion">Volver a iniciar sesión</string>
+    <!-- Compartir reseña -->
+    <string name="compartir_resena">Compartir reseña</string>
+    <string name="compartir_con">Compartir con</string>
+    <string name="compartir_resena_texto">📚 Reseña en KnowHUB\nMateria: %1$s\nProfesor: %2$s\nCalificación: %3$s\n\n\"%4$s\"\n— %5$s</string>
 </resources>
