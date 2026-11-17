@@ -287,7 +287,13 @@ fun AppNavegation(
         }
         composable ( route = Screens.Notifications.route ){
             NotificatonsScreen(
-                viewModel = hiltViewModel()
+                viewModel = hiltViewModel(),
+                reviewPressed = { reviewId ->
+                    navController.navigate(Screens.CompleteSpecificReview.createRoute(reviewId))
+                },
+                perfilPressed = { userId ->
+                    navController.navigate(Screens.BusquePerfil.createRoute(userId))
+                }
             )
         }
         composable ( route = Screens.Profile.route ){

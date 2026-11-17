@@ -11,7 +11,9 @@ data class NotificacionDto(
     val tipo: String = "",
     val titulo: String = "",
     val descripcion: String = "",
-    val fecha: Timestamp? = null
+    val fecha: Timestamp? = null,
+    val reviewId: String = "",
+    val userId: String = ""
 )
 
 fun NotificacionDto.toNotificacion(): Notificacion {
@@ -21,6 +23,8 @@ fun NotificacionDto.toNotificacion(): Notificacion {
     return Notificacion(
         tipo = tipo,
         titulo = titulo,
-        descripcion = if (descripcion.isNotEmpty()) "$descripcion\n$fechaTexto" else fechaTexto
+        descripcion = if (descripcion.isNotEmpty()) "$descripcion\n$fechaTexto" else fechaTexto,
+        reviewId = reviewId,
+        userId = userId
     )
 }

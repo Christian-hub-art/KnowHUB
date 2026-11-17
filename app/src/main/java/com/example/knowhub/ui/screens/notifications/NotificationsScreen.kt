@@ -40,7 +40,9 @@ import com.example.knowhub.ui.utils.BarraArriba
 @Composable
 fun NotificatonsScreen(
     modifier: Modifier = Modifier,
-    viewModel: NotificationsViewModel = viewModel()
+    viewModel: NotificationsViewModel = viewModel(),
+    reviewPressed: (String) -> Unit = {},
+    perfilPressed: (String) -> Unit = {}
 ){
     val uiState by viewModel.uiState.collectAsState()
 
@@ -48,7 +50,15 @@ fun NotificatonsScreen(
         BackgroundImage()
         BodyNotificationsScreen(
             notifications = uiState.notifications,
-            errorMessage = uiState.errorMessage
+            errorMessage = uiState.errorMessage,
+            notificationPressed = { notificacion ->
+                // Seguidor: abre su perfil. Like o comentario: abre la reseña
+                if (notificacion.tipo == "follower" && notificacion.userId.isNotEmpty()) {
+                    perfilPressed(notificacion.userId)
+                } else if (notificacion.reviewId.isNotEmpty()) {
+                    reviewPressed(notificacion.reviewId)
+                }
+            }
         )
     }
 }
@@ -57,7 +67,8 @@ fun NotificatonsScreen(
 fun BodyNotificationsScreen(
     modifier: Modifier = Modifier,
     notifications: List<Notificacion> = emptyList(),
-    errorMessage: String? = null
+    errorMessage: String? = null,
+    notificationPressed: (Notificacion) -> Unit = {}
 ){
     Column(
         modifier = modifier.fillMaxSize(),
@@ -96,7 +107,8 @@ fun BodyNotificationsScreen(
             }
             items(notifications.size){ index ->
                 CuadroNotificacion(
-                    infoNotificacion = notifications[index]
+                    infoNotificacion = notifications[index],
+                    onClick = { notificationPressed(notifications[index]) }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
             }

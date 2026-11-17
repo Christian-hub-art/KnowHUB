@@ -25,6 +25,7 @@ exports.sendFollowNotification = onDocumentCreated(
       tipo: "follower",
       titulo: `${followerName} ha comenzado a seguirte.`,
       descripcion: "",
+      userId: followerId,
       fecha: admin.firestore.FieldValue.serverTimestamp(),
     });
 
@@ -76,6 +77,7 @@ exports.sendLikeNotification = onDocumentCreated(
       tipo: "like",
       titulo: `A ${userName} le gustó tu reseña de ${reviewData.nombreAsignatura}.`,
       descripcion: "",
+      reviewId: reviewId,
       fecha: admin.firestore.FieldValue.serverTimestamp(),
     });
 
@@ -131,6 +133,7 @@ exports.sendCommentNotification = onDocumentCreated(
     await db.collection("users").doc(autorId).collection("notificaciones").add({
       tipo: "comment",
       titulo: `${userName} comentó tu reseña de ${reviewData.nombreAsignatura}.`,
+      reviewId: reviewId,
       // Se muestra el inicio del comentario debajo del título
       descripcion: commentData.comentario.length > 100 ?
         `${commentData.comentario.substring(0, 100)}…` :
