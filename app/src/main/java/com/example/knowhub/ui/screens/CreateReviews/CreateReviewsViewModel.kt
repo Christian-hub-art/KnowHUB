@@ -190,6 +190,17 @@ class CreateReviewsViewModel @Inject constructor(
         }
     }
 
+    // El usuario no dio permiso de ubicación: la reseña se publica sin ubicación
+    fun permisoUbicacionDenegado() {
+        _uiState.update {
+            it.copy(
+                compartirUbicacion = false,
+                mostrarMensajeError = true,
+                errorMessage = "Permite el acceso a la ubicación para compartirla en la reseña."
+            )
+        }
+    }
+
     fun updateCompartirUbicacion(compartir: Boolean) {
         _uiState.update { it.copy(compartirUbicacion = compartir) }
     }

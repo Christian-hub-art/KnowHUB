@@ -1,5 +1,9 @@
 package com.example.knowhub.ui.screens.CreateReviews
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,9 +18,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.knowhub.ui.screens.CreateReviews.components.CuadroResenas
 import com.example.knowhub.ui.screens.CreateReviews.components.InformaciónUsuario
@@ -34,6 +40,20 @@ fun CreateReviewsScreen(
     generalReviewId: Int? = null
 ) {
     val state by createReviewsViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+
+    // Pide el permiso de ubicación al activar "compartir ubicación", igual que en el mapa
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        if (granted) {
+            createReviewsViewModel.updateCompartirUbicacion(true)
+        } else {
+            createReviewsViewModel.permisoUbicacionDenegado()
+        }
+    }
 
     LaunchedEffect(generalReviewId) {
         if (generalReviewId != null) {
@@ -59,7 +79,26 @@ fun CreateReviewsScreen(
             mostrarMensajeError = state.mostrarMensajeError,
             editando = reviewId != null,
             compartirUbicacion = state.compartirUbicacion,
-            onCompartirUbicacionChange = { createReviewsViewModel.updateCompartirUbicacion(it) },
+            onCompartirUbicacionChange = { compartir ->
+                val granted = ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                if (!compartir || granted) {
+                    createReviewsViewModel.updateCompartirUbicacion(compartir)
+                } else {
+                    locationPermissionLauncher.launch(
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    )
+                }
+            },
             onClaseChange = { createReviewsViewModel.updateClase(it) },
             onTituloMateriaChange = { createReviewsViewModel.updateTituloMateria(it) },
             onNombreProfesorChange = { createReviewsViewModel.updateNombreProfesor(it) },
