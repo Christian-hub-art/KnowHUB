@@ -77,12 +77,14 @@ fun KnowHUBApp (){
     val showTopBar = currentRoute !in listOf(
         Screens.Start.route,
         Screens.Register.route,
+        Screens.RecuperarContrasena.route,
         Screens.Splash.route
     )
 
     val showDrawer = currentRoute !in listOf(
         Screens.Start.route,
-        Screens.Register.route
+        Screens.Register.route,
+        Screens.RecuperarContrasena.route
     )
 
 

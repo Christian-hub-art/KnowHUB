@@ -18,6 +18,8 @@ import com.example.knowhub.ui.screens.connections.ConnectionsViewModel
 import com.example.knowhub.ui.screens.commentDetail.CommentDetailViewModel
 import com.example.knowhub.ui.screens.inicio.InicioScreen
 import com.example.knowhub.ui.screens.login.LoginScreen
+import com.example.knowhub.ui.screens.recuperarContrasena.RecuperarContrasenaScreen
+import com.example.knowhub.ui.screens.recuperarContrasena.RecuperarContrasenaViewModel
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.screens.profile.ProfileScreen
 import com.example.knowhub.ui.screens.profile.EditProfileScreen
@@ -43,6 +45,7 @@ sealed class Screens(val route: String) {
     object Splash : Screens("splash")
     object Start : Screens("start")
     object Register : Screens("register")
+    object RecuperarContrasena : Screens("recuperarContrasena")
     object Busqueda : Screens("busqueda")
     object CompleteReviews : Screens("completeReviews/{generalReviewId}") {
         fun createRoute(id: Int) = "completeReviews/$id"
@@ -113,8 +116,26 @@ fun AppNavegation(
                     }
                 }
             }
+            LaunchedEffect(state.navigateRecuperarContrasena) {
+                if(state.navigateRecuperarContrasena){
+                    navController.navigate(Screens.RecuperarContrasena.route)
+                    loginViewModel.recuperarContrasenaNavegado()
+                }
+            }
             LoginScreen(
                loginViewModel = loginViewModel
+            )
+        }
+        composable(route = Screens.RecuperarContrasena.route){
+            val viewModel: RecuperarContrasenaViewModel = hiltViewModel()
+            val state by viewModel.uiState.collectAsState()
+            LaunchedEffect(state.navigateBack) {
+                if(state.navigateBack){
+                    navController.popBackStack()
+                }
+            }
+            RecuperarContrasenaScreen(
+                recuperarContrasenaViewModel = viewModel
             )
         }
         composable (route = Screens.Splash.route){

@@ -43,4 +43,9 @@
     <string name="profile_photo_error_auth_update">The photo uploaded, but your authentication profile could not be updated.</string>
     <string name="profile_photo_error_profile_save">The photo uploaded, but it could not be saved to your profile.</string>
     <string name="profile_photo_error_generic">Could not upload the photo. Please try again.</string>
+    <!-- Recuperar contraseña -->
+    <string name="recuperar_contrasena_titulo">RECOVER PASSWORD</string>
+    <string name="recuperar_contrasena_texto">Enter the email you signed up with and we will send you a link to create a new password.</string>
+    <string name="enviar_correo">SEND EMAIL</string>
+    <string name="volver_iniciar_sesion">Back to sign in</string>
 </resources>

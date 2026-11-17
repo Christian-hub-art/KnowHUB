@@ -141,4 +141,9 @@
     <string name="profile_photo_error_auth_update">La foto se subió, pero no se pudo actualizar tu perfil de autenticación.</string>
     <string name="profile_photo_error_profile_save">La foto se subió, pero no se pudo guardar en tu perfil.</string>
     <string name="profile_photo_error_generic">No se pudo subir la foto. Inténtalo de nuevo.</string>
+    <!-- Recuperar contraseña -->
+    <string name="recuperar_contrasena_titulo">RECUPERAR CONTRASEÑA</string>
+    <string name="recuperar_contrasena_texto">Escribe el correo con el que te registraste y te enviaremos un enlace para crear una nueva contraseña.</string>
+    <string name="enviar_correo">ENVIAR CORREO</string>
+    <string name="volver_iniciar_sesion">Volver a iniciar sesión</string>
 </resources>

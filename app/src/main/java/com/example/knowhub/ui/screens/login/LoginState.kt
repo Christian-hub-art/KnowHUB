@@ -12,5 +12,6 @@ data class LoginState(
     val mostrarMensajeError: Boolean = false,
     val navigateInicio: Boolean = false,
     val navigateRegister: Boolean = false,
-    val navigateContinuar: Boolean = false
+    val navigateContinuar: Boolean = false,
+    val navigateRecuperarContrasena: Boolean = false
 )
