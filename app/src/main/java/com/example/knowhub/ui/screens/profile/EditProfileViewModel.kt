@@ -104,11 +104,16 @@ class EditProfileViewModel @Inject constructor(
                 return@launch
             }
 
+            // Si cambió el correo se queda en la pantalla para que el usuario lea que debe confirmarlo
             _uiState.update {
                 it.copy(
                     isSaving = false,
-                    successMessage = "Tus datos se actualizaron correctamente.",
-                    navigateBack = true
+                    successMessage = if (emailChanged) {
+                        "Te enviamos un correo a $correo. Tu correo cambiará cuando lo confirmes."
+                    } else {
+                        "Tus datos se actualizaron correctamente."
+                    },
+                    navigateBack = !emailChanged
                 )
             }
         }

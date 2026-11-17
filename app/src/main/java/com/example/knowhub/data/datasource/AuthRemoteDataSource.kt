@@ -51,9 +51,10 @@ class AuthRemoteDataSource @Inject constructor(
         user.reauthenticate(EmailAuthProvider.getCredential(email, password)).await()
     }
 
+    // Envía un enlace al correo nuevo; el correo cambia cuando el usuario lo confirma
     suspend fun updateEmail(email: String) {
         val user = currentUser ?: throw IllegalStateException("No hay una sesión activa")
-        user.updateEmail(email).await()
+        user.verifyBeforeUpdateEmail(email).await()
     }
 
     suspend fun updatePassword(password: String) {
