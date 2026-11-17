@@ -29,7 +29,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,8 +36,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.asImageBitmap
-import android.graphics.BitmapFactory
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -64,29 +61,14 @@ import com.example.knowhub.ui.theme.tertiaryContainerLight
 
 @Composable
 fun BackgroundImage(){
-    if (isSystemInDarkTheme()) {
-        val context = LocalContext.current
-        val backgroundBitmap = remember(context) {
-            context.assets.open("fondoOscuro.png").use { stream ->
-                requireNotNull(BitmapFactory.decodeStream(stream)) {
-                    "No se pudo cargar app/src/main/assets/fondoOscuro.png"
-                }.asImageBitmap()
-            }
-        }
-        Image(
-            bitmap = backgroundBitmap,
-            contentDescription = stringResource(R.string.fondo_knowhub),
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-    } else {
-        Image(
-            painter = painterResource(R.drawable.fondoknowhub),
-            contentDescription = stringResource(R.string.fondo_knowhub),
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-    }
+    // En modo oscuro se usa el fondo oscuro, igual que el normal desde res/drawable
+    val fondo = if (isSystemInDarkTheme()) R.drawable.fondooscuro else R.drawable.fondoknowhub
+    Image(
+        painter = painterResource(fondo),
+        contentDescription = stringResource(R.string.fondo_knowhub),
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
+    )
 }
 
 @Composable
