@@ -101,3 +101,62 @@ exports.sendLikeNotification = onDocumentCreated(
     }
   }
 );
+
+exports.sendCommentNotification = onDocumentCreated(
+  "comments/{commentId}",
+  async (event) => {
+    const commentData = event.data.data();
+
+    // Solo comentarios hechos directamente a la reseña, no respuestas a otros comentarios
+    if (commentData.parentCommentId) return;
+
+    const reviewId = commentData.reviewId;
+    const userId = commentData.userId;
+
+    const reviewDoc = await db.collection("reviews").doc(reviewId).get();
+    const reviewData = reviewDoc.data();
+    const autorId = reviewData.userId;
+
+    if (autorId === userId) return;
+
+    const autorDoc = await db.collection("users").doc(autorId).get();
+    const autorData = autorDoc.data();
+    const autorToken = autorData.fcmToken;
+
+    const userDoc = await db.collection("users").doc(userId).get();
+    const userData = userDoc.data();
+    const userName = userData.userName;
+
+    // Se guarda en Firestore para mostrarla en la pantalla de notificaciones
+    await db.collection("users").doc(autorId).collection("notificaciones").add({
+      tipo: "comment",
+      titulo: `${userName} comentó tu reseña de ${reviewData.nombreAsignatura}.`,
+      // Se muestra el inicio del comentario debajo del título
+      descripcion: commentData.comentario.length > 100 ?
+        `${commentData.comentario.substring(0, 100)}…` :
+        commentData.comentario,
+      fecha: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    if (autorToken) {
+      const message = {
+        token: autorToken,
+        notification: {
+          title: "Nuevo comentario",
+          body: `${userName} comentó tu reseña de ${reviewData.nombreAsignatura}.`,
+        },
+      };
+
+      try {
+        await admin.messaging().send(message);
+        logger.log(
+          `Notificación enviada a ${autorId} por comentario de: ${userName}`
+        );
+      } catch (error) {
+        logger.error(`Error al enviar notificación a ${autorId}:`, error);
+      }
+    } else {
+      logger.log(`El usuario ${autorId} no tiene un token FCM válido.`);
+    }
+  }
+);
