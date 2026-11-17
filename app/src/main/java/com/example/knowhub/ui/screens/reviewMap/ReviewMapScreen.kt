@@ -41,6 +41,7 @@ import com.example.knowhub.ui.screens.reviewMap.components.ReviewLocationGroup
 import com.example.knowhub.ui.screens.reviewMap.components.ReviewMapCarousel
 import com.example.knowhub.ui.screens.reviewMap.components.ReviewMapHeader
 import com.example.knowhub.ui.screens.reviewMap.components.ReviewMapMarker
+import com.example.knowhub.ui.screens.reviewMap.components.UserLocationMarker
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.dsl.cameraOptions
@@ -69,9 +70,12 @@ fun ReviewMapScreen(
     var locationPermissionDenied by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
+    // Pide ubicación precisa y aproximada; Android deja que el usuario elija cuál dar
     val locationPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val granted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
         if (granted) {
             val locationManager = context.getSystemService(LocationManager::class.java)
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
@@ -101,10 +105,19 @@ fun ReviewMapScreen(
         onLocateMe = {
             val granted = ContextCompat.checkSelfPermission(
                 context,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
             if (!granted) {
-                locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+                locationPermissionLauncher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
             } else {
                 val locationManager = context.getSystemService(LocationManager::class.java)
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
@@ -232,6 +245,18 @@ private fun BodyReviewMapScreen(
                     }
                 }
 
+                val userLatitude = state.userLatitude
+                val userLongitude = state.userLongitude
+                if (userLatitude != null && userLongitude != null) {
+                    ViewAnnotation(
+                        options = viewAnnotationOptions {
+                            geometry(Point.fromLngLat(userLongitude, userLatitude))
+                            allowOverlap(true)
+                        }
+                    ) {
+                        UserLocationMarker()
+                    }
+                }
             }
         }
 

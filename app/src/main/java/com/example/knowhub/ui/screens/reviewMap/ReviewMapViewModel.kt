@@ -66,6 +66,8 @@ class ReviewMapViewModel @Inject constructor(
                     isLocating = false,
                     locationErrorMessage = result.exceptionOrNull()?.localizedMessage
                         ?: if (location == null) "No se pudo obtener tu ubicación." else null,
+                    userLatitude = location?.latitude ?: it.userLatitude,
+                    userLongitude = location?.longitude ?: it.userLongitude,
                     cameraLatitude = location?.latitude ?: it.cameraLatitude,
                     cameraLongitude = location?.longitude ?: it.cameraLongitude,
                     cameraZoom = if (location != null) 15.0 else it.cameraZoom,

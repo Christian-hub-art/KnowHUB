@@ -139,4 +139,5 @@
     <string name="mapa_permiso_titulo">Permiso de ubicación</string>
     <string name="mapa_permiso_texto">Permite el acceso a la ubicación para centrar el mapa en tu posición.</string>
     <string name="mapa_entendido">Entendido</string>
+    <string name="mapa_estas_aqui">ESTÁS AQUÍ</string>
 </resources>

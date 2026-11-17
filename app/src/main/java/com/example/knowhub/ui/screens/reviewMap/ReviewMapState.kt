@@ -14,5 +14,7 @@ data class ReviewMapState(
     val cameraZoom: Double = 10.0,
     val cameraUpdateId: Long = 0,
     val isLocating: Boolean = false,
-    val locationErrorMessage: String? = null
+    val locationErrorMessage: String? = null,
+    val userLatitude: Double? = null,      // ubicación del usuario para el marcador "Estás aquí"
+    val userLongitude: Double? = null
 )
