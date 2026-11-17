@@ -21,7 +21,6 @@ import com.example.knowhub.ui.screens.login.LoginScreen
 import com.example.knowhub.ui.screens.notifications.NotificatonsScreen
 import com.example.knowhub.ui.screens.profile.ProfileScreen
 import com.example.knowhub.ui.screens.profile.EditProfileScreen
-import com.example.knowhub.ui.screens.profile.ProfileViewModel
 import com.example.knowhub.ui.screens.register.RegisterScreen
 import com.example.knowhub.ui.screens.register.RegisterViewModel
 import com.example.knowhub.ui.screens.reviewMap.ReviewMapScreen
@@ -29,7 +28,6 @@ import com.example.knowhub.ui.screens.reviews.ReviewScreen
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.knowhub.ui.screens.BusquedaPerfil.BusquedaPerfilScreen
 import com.example.knowhub.ui.screens.CreateReviews.CreateReviewsViewModel
@@ -289,13 +287,8 @@ fun AppNavegation(
             )
         }
         composable(route = Screens.EditProfile.route) {
-            val profileEntry = remember(navController) {
-                navController.getBackStackEntry(Screens.Profile.route)
-            }
-            val profileViewModel: ProfileViewModel = hiltViewModel(profileEntry)
             EditProfileScreen(
                 onBack = {
-                    profileViewModel.getUser()
                     navController.popBackStack()
                 }
             )

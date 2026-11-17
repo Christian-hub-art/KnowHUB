@@ -3,11 +3,7 @@ package com.example.knowhub.ui.screens.profile
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.knowhub.R
-import com.example.knowhub.data.datasource.dtos.UpdateUserDto
 import com.example.knowhub.data.datasource.repository.AuthRepository
-import com.example.knowhub.data.datasource.repository.ProfileImageUploadException
-import com.example.knowhub.data.datasource.repository.ProfileImageUploadFailureReason
 import com.example.knowhub.data.datasource.repository.ReviewRepository
 import com.example.knowhub.data.datasource.repository.StorageRepository
 import com.example.knowhub.data.datasource.repository.UserRepository
@@ -33,10 +29,6 @@ class ProfileViewModel @Inject constructor(
 
     val uiState: StateFlow<ProfileState> = _uiState
 
-    init {
-        getUser()
-        getUserReviews()
-    }
 
     fun getUser() {
         val userId = authRepository.currentUser?.uid
@@ -100,40 +92,17 @@ class ProfileViewModel @Inject constructor(
     fun updateNombre (input: String){
         _uiState.update { it.copy( nombre =  input) }
     }
-    //Valida y procesa la acción de guardar los cambios del perfil.
-    fun guardarBottonPressed () {
-        if (_uiState.value.nombre.isNullOrEmpty()
-        ) {
-            _uiState.update { it.copy(mostrarMensajeErrorGuardar = true, errorMessageGuardar = "No ha puesto un nombre nuevo") }
-            return
-        }
-
-        val userId = authRepository.currentUser?.uid ?: return
-        val updateUserDto = UpdateUserDto(
-            userName = _uiState.value.nombre
-        )
-        viewModelScope.launch {
-            userRepository.updateUserProfile(userId, updateUserDto)
-        }
-    }
     //Gestiona el evento de eliminación de la cuenta de usuario.
     fun eliminarcuentaBottonPressed () {
 
     }//Gestiona el flujo de cambio de contraseña.
-    fun cambiarcontraseñaBottonPressed (){
-
-    }// Gestiona el flujo de cambio de correo electrónico.
-    fun cambiairCorreoBottonPressed (){
-
-    }
-
     fun uploadImageToFirebase(uri: Uri){
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
                     isUploadingFoto = true,
                     mostrarMensajeErrorFoto = false,
-                    errorMessageFotoResId = null
+                    errorMessageFoto = ""
                 )
             }
 
@@ -143,9 +112,8 @@ class ProfileViewModel @Inject constructor(
                     it.copy(
                         isUploadingFoto = false,
                         mostrarMensajeErrorFoto = true,
-                        errorMessageFotoResId = profileImageErrorMessage(
-                            result.exceptionOrNull()
-                        )
+                        errorMessageFoto = result.exceptionOrNull()?.message
+                            ?: "No se pudo subir la foto. Inténtalo de nuevo."
                     )
                 }
                 return@launch
@@ -156,7 +124,7 @@ class ProfileViewModel @Inject constructor(
                 it.copy(
                     profileImageUrl = photoUrl,
                     isUploadingFoto = false,
-                    errorMessageFotoResId = null
+                    errorMessageFoto = ""
                 )
             }
 
@@ -165,7 +133,7 @@ class ProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         mostrarMensajeErrorFoto = true,
-                        errorMessageFotoResId = R.string.profile_photo_error_not_authenticated
+                        errorMessageFoto = "Tu sesión no está activa. Inicia sesión e inténtalo de nuevo."
                     )
                 }
                 return@launch
@@ -176,31 +144,11 @@ class ProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         mostrarMensajeErrorFoto = true,
-                        errorMessageFotoResId = R.string.profile_photo_error_profile_save
+                        errorMessageFoto = "La foto se subió, pero no se pudo guardar en tu perfil."
                     )
                 }
             }
         }
     }
 
-    private fun profileImageErrorMessage(error: Throwable?): Int {
-        val reason = (error as? ProfileImageUploadException)?.reason
-        return when (reason) {
-            ProfileImageUploadFailureReason.NOT_AUTHENTICATED ->
-                R.string.profile_photo_error_not_authenticated
-            ProfileImageUploadFailureReason.NOT_AUTHORIZED ->
-                R.string.profile_photo_error_not_authorized
-            ProfileImageUploadFailureReason.BUCKET_NOT_FOUND ->
-                R.string.profile_photo_error_bucket
-            ProfileImageUploadFailureReason.QUOTA_EXCEEDED ->
-                R.string.profile_photo_error_quota
-            ProfileImageUploadFailureReason.NETWORK ->
-                R.string.profile_photo_error_network
-            ProfileImageUploadFailureReason.CANCELLED ->
-                R.string.profile_photo_error_cancelled
-            ProfileImageUploadFailureReason.PROFILE_UPDATE_FAILED ->
-                R.string.profile_photo_error_auth_update
-            else -> R.string.profile_photo_error_generic
-        }
-    }
 }

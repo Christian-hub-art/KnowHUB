@@ -5,24 +5,7 @@ import android.util.Log
 import com.example.knowhub.data.datasource.AuthRemoteDataSource
 import com.example.knowhub.data.datasource.StorageRemoteDataSource
 import com.google.firebase.storage.StorageException
-import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
-
-enum class ProfileImageUploadFailureReason {
-    NOT_AUTHENTICATED,
-    NOT_AUTHORIZED,
-    BUCKET_NOT_FOUND,
-    QUOTA_EXCEEDED,
-    NETWORK,
-    CANCELLED,
-    PROFILE_UPDATE_FAILED,
-    UNKNOWN
-}
-
-class ProfileImageUploadException(
-    val reason: ProfileImageUploadFailureReason,
-    cause: Throwable? = null
-) : Exception(cause)
 
 class StorageRepository @Inject constructor(
     private val storage: StorageRemoteDataSource,
@@ -31,54 +14,40 @@ class StorageRepository @Inject constructor(
 
     suspend fun uploadProfileImage(uri: Uri): Result<String>{
         return try {
-            val userId = auth.currentUser?.uid ?: return Result.failure(
-                ProfileImageUploadException(ProfileImageUploadFailureReason.NOT_AUTHENTICATED)
-            )
+            val userId = auth.currentUser?.uid
+                ?: return Result.failure(Exception("Tu sesión no está activa. Inicia sesión e inténtalo de nuevo."))
 
             val path = "profileImages/$userId.jpg"
             val url = storage.uploadImage(path, uri)
 
             try {
                 auth.updateProfileImage(url)
-            } catch (e: CancellationException) {
-                throw e
             } catch (e: Exception) {
-                throw ProfileImageUploadException(
-                    ProfileImageUploadFailureReason.PROFILE_UPDATE_FAILED,
-                    e
-                )
+                return Result.failure(Exception("La foto se subió, pero no se pudo actualizar tu perfil de autenticación."))
             }
 
             Result.success(url)
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: ProfileImageUploadException) {
-            Result.failure(e)
         } catch (e: StorageException) {
-            Log.e(
-                "StorageRepository",
-                "Profile image upload failed in Firebase Storage (code=${e.errorCode})",
-                e
-            )
-            val reason = when (e.errorCode) {
+            Log.e("StorageRepository", "Error al subir la foto (code=${e.errorCode})", e)
+            val mensaje = when (e.errorCode) {
                 StorageException.ERROR_NOT_AUTHENTICATED ->
-                    ProfileImageUploadFailureReason.NOT_AUTHENTICATED
+                    "Tu sesión no está activa. Inicia sesión e inténtalo de nuevo."
                 StorageException.ERROR_NOT_AUTHORIZED ->
-                    ProfileImageUploadFailureReason.NOT_AUTHORIZED
+                    "No se pudo actualizar tu foto de perfil. Inténtalo más tarde."
                 StorageException.ERROR_BUCKET_NOT_FOUND,
                 StorageException.ERROR_PROJECT_NOT_FOUND ->
-                    ProfileImageUploadFailureReason.BUCKET_NOT_FOUND
+                    "No se encontró el almacenamiento de Firebase. Revisa la configuración del bucket."
                 StorageException.ERROR_QUOTA_EXCEEDED ->
-                    ProfileImageUploadFailureReason.QUOTA_EXCEEDED
+                    "Se excedió la cuota de almacenamiento de Firebase."
                 StorageException.ERROR_RETRY_LIMIT_EXCEEDED ->
-                    ProfileImageUploadFailureReason.NETWORK
+                    "No se pudo conectar con Firebase Storage. Revisa tu conexión e inténtalo otra vez."
                 StorageException.ERROR_CANCELED ->
-                    ProfileImageUploadFailureReason.CANCELLED
-                else -> ProfileImageUploadFailureReason.UNKNOWN
+                    "Se canceló la subida de la foto."
+                else -> "No se pudo subir la foto. Inténtalo de nuevo."
             }
-            Result.failure(ProfileImageUploadException(reason, e))
+            Result.failure(Exception(mensaje))
         } catch (e: Exception) {
-            Result.failure(ProfileImageUploadException(ProfileImageUploadFailureReason.UNKNOWN, e))
+            Result.failure(Exception("No se pudo subir la foto. Inténtalo de nuevo."))
         }
     }
 

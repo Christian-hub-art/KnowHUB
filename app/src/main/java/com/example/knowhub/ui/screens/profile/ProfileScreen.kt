@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import com.example.knowhub.ui.screens.BusquedaPerfil.Components.CuadrosInformacionPerfil
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -45,6 +46,13 @@ fun ProfileScreen(
     registrarsePressed: () -> Unit = {}
 ) {
     val state by viewModel.uiState.collectAsState()
+
+    // Carga el perfil al entrar y al volver de Editar perfil
+    LaunchedEffect(Unit) {
+        viewModel.getUser()
+        viewModel.getUserReviews()
+    }
+
     Box(
         modifier = modifier
     ) {
@@ -54,7 +62,7 @@ fun ProfileScreen(
             viewModel,
             state.nombre,
             state.profileImageUrl,
-            state.errorMessageFotoResId,
+            state.errorMessageFoto,
             state.mostrarMensajeErrorFoto,
             state.isUploadingFoto,
             state.errorMessageCarga,
@@ -80,7 +88,7 @@ fun BodyProfileScreen(
     profileViewModel: ProfileViewModel,
     nombre: String,
     profileImage: String?,
-    errorMessageFotoResId: Int?,
+    errorMessageFoto: String,
     mostrarMensajeErrorFoto: Boolean,
     isUploadingFoto: Boolean,
     errorMessageCarga: String,
@@ -145,12 +153,10 @@ fun BodyProfileScreen(
         }
 
         if (mostrarMensajeErrorFoto) {
-            errorMessageFotoResId?.let {
-                Text(
-                    stringResource(it),
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
+            Text(
+                errorMessageFoto,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         } else if (isUploadingFoto) {
             Text(
                 stringResource(R.string.profile_photo_uploading),

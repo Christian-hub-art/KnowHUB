@@ -1,15 +1,6 @@
 <resources>
     <string name="subir_foto">📸 Upload photo</string>
     <string name="profile_photo_uploading">Uploading photo…</string>
-    <string name="profile_photo_error_not_authenticated">Your session is not active. Sign in and try again.</string>
-    <string name="profile_photo_error_not_authorized">Your profile photo could not be updated. Please try again later.</string>
-    <string name="profile_photo_error_bucket">Firebase Storage could not find the bucket. Check the bucket configuration.</string>
-    <string name="profile_photo_error_quota">The Firebase Storage quota has been exceeded.</string>
-    <string name="profile_photo_error_network">Could not connect to Firebase Storage. Check your connection and try again.</string>
-    <string name="profile_photo_error_cancelled">The photo upload was cancelled.</string>
-    <string name="profile_photo_error_auth_update">The photo uploaded, but your authentication profile could not be updated.</string>
-    <string name="profile_photo_error_profile_save">The photo uploaded, but it could not be saved to your profile.</string>
-    <string name="profile_photo_error_generic">Could not upload the photo. Please try again.</string>
     <string name="iniciar_sesion">Sign in</string>
     <string name="modificar_datos">EDIT DETAILS</string>
     <string name="volver">BACK</string>

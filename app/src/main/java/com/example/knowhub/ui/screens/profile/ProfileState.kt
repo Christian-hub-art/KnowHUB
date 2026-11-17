@@ -22,7 +22,7 @@ data class ProfileState(
     val mostrarMensajeErrorCancelar: Boolean = false,
     val errorMessageCambiar: String = "",
     val mostrarMensajeErrorCambiar: Boolean = false,
-    val errorMessageFotoResId: Int? = null,
+    val errorMessageFoto: String = "",
     val mostrarMensajeErrorFoto: Boolean = false,
     val isUploadingFoto: Boolean = false
 )

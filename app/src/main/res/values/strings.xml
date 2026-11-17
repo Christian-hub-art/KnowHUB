@@ -100,15 +100,6 @@
     <string name="hashtags_placeholder">#CALCULO #DERIVADAS</string>
     <string name="sin_notificaciones">Aún no tienes notificaciones</string>
     <string name="profile_photo_uploading">Subiendo foto…</string>
-    <string name="profile_photo_error_not_authenticated">Tu sesión no está activa. Inicia sesión e inténtalo de nuevo.</string>
-    <string name="profile_photo_error_not_authorized">No se pudo actualizar tu foto de perfil. Inténtalo más tarde.</string>
-    <string name="profile_photo_error_bucket">No se encontró el almacenamiento de Firebase. Revisa la configuración del bucket.</string>
-    <string name="profile_photo_error_quota">Se excedió la cuota de almacenamiento de Firebase.</string>
-    <string name="profile_photo_error_network">No se pudo conectar con Firebase Storage. Revisa tu conexión e inténtalo otra vez.</string>
-    <string name="profile_photo_error_cancelled">Se canceló la subida de la foto.</string>
-    <string name="profile_photo_error_auth_update">La foto se subió, pero no se pudo actualizar tu perfil de autenticación.</string>
-    <string name="profile_photo_error_profile_save">La foto se subió, pero no se pudo guardar en tu perfil.</string>
-    <string name="profile_photo_error_generic">No se pudo subir la foto. Inténtalo de nuevo.</string>
     <string name="iniciar_sesion">Iniciar sesión</string>
     <string name="modificar_datos">MODIFICAR DATOS</string>
     <string name="volver">VOLVER</string>
