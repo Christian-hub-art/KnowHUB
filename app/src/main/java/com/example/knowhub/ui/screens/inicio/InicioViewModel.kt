@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.knowhub.data.GeneralReview
 import com.example.knowhub.data.MateriaResumida
+import com.example.knowhub.data.datasource.repository.AuthRepository
 import com.example.knowhub.data.datasource.repository.GeneralReviewRepository
+import com.example.knowhub.data.datasource.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,13 +17,25 @@ import kotlinx.coroutines.launch
 //ViewModel encargado de la lógica de negocio y carga inicial de reseñas generales
 @HiltViewModel
 class InicioViewModel @Inject constructor(
-    private val generalReviewRepository: GeneralReviewRepository
+    private val generalReviewRepository: GeneralReviewRepository,
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(InicioState())
     val uiState: StateFlow<InicioState> = _uiState
 
     init {
         loadMaterias()
+        guardarTokenNotificaciones()
+    }
+
+    // Se llega a Inicio después de iniciar sesión, registrarse o abrir la app con sesión,
+    // así el token de este celular queda guardado y los push llegan aquí
+    private fun guardarTokenNotificaciones() {
+        val userId = authRepository.currentUser?.uid ?: return
+        viewModelScope.launch {
+            userRepository.updateFcmToken(userId)
+        }
     }
     //Carga la lista de materias desde Firestore.
     fun loadMaterias() {

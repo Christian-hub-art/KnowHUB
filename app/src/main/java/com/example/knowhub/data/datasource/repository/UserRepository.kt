@@ -63,6 +63,20 @@ class UserRepository @Inject constructor(
         }
     }
 
+    // Guarda el token de este celular para que los push lleguen aquí (al entrar con sesión)
+    suspend fun updateFcmToken(userId: String): Result<Unit> {
+        return try {
+            val fcmToken = kotlinx.coroutines.withTimeoutOrNull(2000) {
+                FirebaseMessaging.getInstance().token.await()
+            } ?: return Result.failure(Exception("No se pudo obtener el token de notificaciones"))
+            userRemoteDataSource.updateFcmToken(userId, fcmToken)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("TAG", "updateFcmToken: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
     suspend fun updateUserProfileImage(userId: String, photoUrl: String): Result<Unit> {
         return try {
             userRemoteDataSource.updateUserProfileImage(userId, photoUrl)

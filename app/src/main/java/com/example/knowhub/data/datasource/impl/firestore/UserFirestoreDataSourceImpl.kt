@@ -43,6 +43,10 @@ class UserFirestoreDataSourceImpl @Inject constructor (private val db: FirebaseF
         db.collection("users").document(userId).update("foto", photoUrl).await()
     }
 
+    override suspend fun updateFcmToken(userId: String, fcmToken: String) {
+        db.collection("users").document(userId).update("fcmToken", fcmToken).await()
+    }
+
     override suspend fun updateUserProfile(userId: String, updateUserDto: UpdateUserDto) {
         val docRef = db.collection("users").document(userId)
         docRef.update(
