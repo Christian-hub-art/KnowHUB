@@ -70,8 +70,8 @@ fun CompleteReviewsScreen(
             escribirBottonPressed = { escribirBottonPressed(generalReviewId) },
             autorPressed = autorPressed,
             editarMateriaPressed = { editarMateriaPressed(generalReviewId) },
-            mostrarEditarMateria = state.generalReview.userId.isEmpty() ||
-                state.generalReview.userId == state.currentUserId
+            mostrarEditarMateria = state.currentUserId.isNotEmpty() &&
+                (state.generalReview.userId.isEmpty() || state.generalReview.userId == state.currentUserId)
         )
     }
 }
