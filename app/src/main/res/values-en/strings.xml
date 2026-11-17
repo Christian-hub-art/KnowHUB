@@ -17,4 +17,28 @@
     <string name="nueva_contrasena">New password</string>
     <string name="confirmar_nueva_contrasena">Confirm new password</string>
     <string name="informacion_personal_header">PERSONAL INFORMATION</string>
+    <!-- Mapa de reseñas -->
+    <string name="mapa_titulo">REVIEW MAP</string>
+    <string name="mapa_subtitulo">Published in the last 24 hours</string>
+    <string name="mapa_modo_claro">Switch to light mode</string>
+    <string name="mapa_modo_oscuro">Switch to dark mode</string>
+    <string name="mapa_creditos">Maps © Mapbox</string>
+    <string name="mapa_actualizar">Refresh reviews</string>
+    <string name="mapa_sin_token">The map could not be shown. Set up the Mapbox public token.</string>
+    <string name="mapa_error_resenas">Reviews could not be loaded: %1$s</string>
+    <string name="mapa_sin_resenas">There are no located reviews in this period yet. Be the first to share one!</string>
+    <string name="mapa_acercar">Zoom in</string>
+    <string name="mapa_alejar">Zoom out</string>
+    <string name="mapa_centrar">Center on my location</string>
+    <string name="mapa_icono_resena">Course review</string>
+    <string name="mapa_desliza">Swipe to see the reviews from this place</string>
+    <string name="mapa_profesor">Prof. %1$s</string>
+    <string name="mapa_ver_resena">SEE REVIEW</string>
+    <string name="mapa_activa_ubicacion_titulo">Turn on location</string>
+    <string name="mapa_activa_ubicacion_texto">Turn on your device location to center the map on your position.</string>
+    <string name="mapa_abrir_ajustes">Open settings</string>
+    <string name="mapa_cancelar">Cancel</string>
+    <string name="mapa_permiso_titulo">Location permission</string>
+    <string name="mapa_permiso_texto">Allow location access to center the map on your position.</string>
+    <string name="mapa_entendido">Got it</string>
 </resources>

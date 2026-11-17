@@ -115,4 +115,28 @@
     <string name="contrasena_actual">Contraseña actual</string>
     <string name="nueva_contrasena">Nueva contraseña</string>
     <string name="confirmar_nueva_contrasena">Confirma la nueva contraseña</string>
+    <!-- Mapa de reseñas -->
+    <string name="mapa_titulo">MAPA DE RESEÑAS</string>
+    <string name="mapa_subtitulo">Publicadas en las últimas 24 horas</string>
+    <string name="mapa_modo_claro">Cambiar a modo claro</string>
+    <string name="mapa_modo_oscuro">Cambiar a modo oscuro</string>
+    <string name="mapa_creditos">Mapas © Mapbox</string>
+    <string name="mapa_actualizar">Actualizar reseñas</string>
+    <string name="mapa_sin_token">No se pudo mostrar el mapa. Configura el token público de Mapbox.</string>
+    <string name="mapa_error_resenas">No se pudieron cargar las reseñas: %1$s</string>
+    <string name="mapa_sin_resenas">Aún no hay reseñas ubicadas en este periodo. ¡Sé el primero en compartir una!</string>
+    <string name="mapa_acercar">Acercar mapa</string>
+    <string name="mapa_alejar">Alejar mapa</string>
+    <string name="mapa_centrar">Centrar en mi ubicación</string>
+    <string name="mapa_icono_resena">Reseña de materia</string>
+    <string name="mapa_desliza">Desliza para ver las reseñas de este lugar</string>
+    <string name="mapa_profesor">Prof. %1$s</string>
+    <string name="mapa_ver_resena">VER RESEÑA</string>
+    <string name="mapa_activa_ubicacion_titulo">Activa la ubicación</string>
+    <string name="mapa_activa_ubicacion_texto">Enciende la ubicación del dispositivo para centrar el mapa en tu posición.</string>
+    <string name="mapa_abrir_ajustes">Abrir ajustes</string>
+    <string name="mapa_cancelar">Cancelar</string>
+    <string name="mapa_permiso_titulo">Permiso de ubicación</string>
+    <string name="mapa_permiso_texto">Permite el acceso a la ubicación para centrar el mapa en tu posición.</string>
+    <string name="mapa_entendido">Entendido</string>
 </resources>
