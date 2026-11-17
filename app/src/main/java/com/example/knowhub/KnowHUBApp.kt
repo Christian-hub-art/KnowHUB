@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DrawerValue
@@ -150,9 +151,10 @@ fun KnowHUBApp (){
                     }
                 }
             ) {
+                // imePadding: cuando sube el teclado la pantalla se achica para no tapar los campos
                 AppNavegation(
                     navController = navController,
-                    modifier = Modifier.padding(it)
+                    modifier = Modifier.padding(it).imePadding()
                 )
             }
         }
@@ -160,7 +162,8 @@ fun KnowHUBApp (){
     } else {
 
         AppNavegation(
-            navController = navController
+            navController = navController,
+            modifier = Modifier.imePadding()
         )
     }
 }
